@@ -1,0 +1,20 @@
+{
+    "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+    "spaces": 4,
+    "generator-cli": {
+        "version": "7.8.0",
+        "generators": {
+            "fetch": {
+                "enablePostProcessFile": true,
+                "generatorName": "typescript-axios",
+                "inputSpec": "http://localhost:5004/xapi/v1/swagger.yaml",
+                "output": "src/xapi",
+                "additionalProperties": {
+                    "useSingleRequestParameter": true,
+                    "typescriptThreePlus": true,
+                    "supportsES6": true
+                }
+            }
+        }
+    }
+}

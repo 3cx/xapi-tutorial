@@ -1,0 +1,23 @@
+{
+  "name": "xapi_test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node --swc example.ts",
+    "gen": "openapi-generator-cli generate"
+  },
+  "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.13",
+    "@swc/core": "1.7.26",
+    "@types/node": "^20.16.10",
+    "async-lock": "^1.4.1",
+    "axios": "^1.7.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  },
+  "packageManager": "yarn@4.5.0",
+  "devDependencies": {
+    "@types/async-lock": "^1.4.2"
+  }
+}
