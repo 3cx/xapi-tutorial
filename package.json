@@ -4,20 +4,25 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint",
     "start": "ts-node --swc example.ts",
     "gen": "openapi-generator-cli generate"
   },
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.13",
-    "@swc/core": "1.7.26",
+    "@swc/core": "1.7.28",
     "@types/node": "^20.16.10",
     "async-lock": "^1.4.1",
     "axios": "^1.7.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "5.5.4"
   },
   "packageManager": "yarn@4.5.0",
   "devDependencies": {
-    "@types/async-lock": "^1.4.2"
+    "@eslint/js": "^9.12.0",
+    "@types/async-lock": "^1.4.2",
+    "eslint": "^9.12.0",
+    "globals": "^15.10.0",
+    "typescript-eslint": "^8.8.0"
   }
 }
