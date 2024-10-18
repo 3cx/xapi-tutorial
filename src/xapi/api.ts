@@ -6027,16 +6027,22 @@ export interface PbxDestination {
     'Number'?: string | null;
     /**
      * 
-     * @type {PbxPeerType}
+     * @type {Array<PbxUserTag>}
      * @memberof PbxDestination
      */
-    'PeerType'?: PbxPeerType | null;
+    'Tags'?: Array<PbxUserTag>;
     /**
      * 
      * @type {PbxDestinationType}
      * @memberof PbxDestination
      */
     'To'?: PbxDestinationType;
+    /**
+     * 
+     * @type {PbxPeerType}
+     * @memberof PbxDestination
+     */
+    'Type'?: PbxPeerType | null;
 }
 
 
@@ -6502,28 +6508,6 @@ export interface PbxDirectoryParameters {
      */
     'Path'?: string | null;
 }
-
-
-/**
- * 
- * @export
- * @enum {string}
- */
-
-export const PbxDnType = {
-    None: 'None',
-    Extension: 'Extension',
-    Queue: 'Queue',
-    RingGroup: 'RingGroup',
-    Ivr: 'IVR',
-    Fax: 'Fax',
-    Conference: 'Conference',
-    Parking: 'Parking',
-    ExternalLine: 'ExternalLine',
-    SpecialMenu: 'SpecialMenu'
-} as const;
-
-export type PbxDnType = typeof PbxDnType[keyof typeof PbxDnType];
 
 
 /**
@@ -19028,10 +19012,16 @@ export interface PbxUserGroup {
     'Rights'?: PbxRights | null;
     /**
      * 
-     * @type {PbxDnType}
+     * @type {Array<PbxUserTag>}
      * @memberof PbxUserGroup
      */
-    'Type'?: PbxDnType | null;
+    'Tags'?: Array<PbxUserTag>;
+    /**
+     * 
+     * @type {PbxPeerType}
+     * @memberof PbxUserGroup
+     */
+    'Type'?: PbxPeerType | null;
 }
 
 
@@ -19065,7 +19055,8 @@ export const PbxUserTag = {
     Teams: 'Teams',
     Google: 'Google',
     WakeUp: 'WakeUp',
-    FaxServer: 'FaxServer'
+    FaxServer: 'FaxServer',
+    Principal: 'Principal'
 } as const;
 
 export type PbxUserTag = typeof PbxUserTag[keyof typeof PbxUserTag];
@@ -78846,6 +78837,44 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
         },
         /**
          * 
+         * @summary Invoke function GetRequestHelpLink
+         * @param {number} grantPeriodDays Usage: grantPeriodDays&#x3D;{grantPeriodDays}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRequestHelpLink: async (grantPeriodDays: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'grantPeriodDays' is not null or undefined
+            assertParamExists('getRequestHelpLink', 'grantPeriodDays', grantPeriodDays)
+            const localVarPath = `/SystemStatus/Pbx.GetRequestHelpLink(grantPeriodDays={grantPeriodDays})`
+                .replace(`{${"grantPeriodDays"}}`, encodeURIComponent(String(grantPeriodDays)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get SystemStatus
          * @param {Set<string>} [$select] Select properties to be returned
          * @param {Set<string>} [$expand] Expand related entities
@@ -79261,6 +79290,19 @@ export const SystemStatusApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke function GetRequestHelpLink
+         * @param {number} grantPeriodDays Usage: grantPeriodDays&#x3D;{grantPeriodDays}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRequestHelpLink(grantPeriodDays: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerateApiKey200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRequestHelpLink(grantPeriodDays, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemStatusApi.getRequestHelpLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Get SystemStatus
          * @param {Set<string>} [$select] Select properties to be returned
          * @param {Set<string>} [$expand] Expand related entities
@@ -79410,6 +79452,16 @@ export const SystemStatusApiFactory = function (configuration?: Configuration, b
         },
         /**
          * 
+         * @summary Invoke function GetRequestHelpLink
+         * @param {SystemStatusApiGetRequestHelpLinkRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRequestHelpLink(requestParameters: SystemStatusApiGetRequestHelpLinkRequest, options?: RawAxiosRequestConfig): AxiosPromise<GenerateApiKey200Response> {
+            return localVarFp.getRequestHelpLink(requestParameters.grantPeriodDays, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get SystemStatus
          * @param {SystemStatusApiGetSystemStatusRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -79505,6 +79557,20 @@ export const SystemStatusApiFactory = function (configuration?: Configuration, b
         },
     };
 };
+
+/**
+ * Request parameters for getRequestHelpLink operation in SystemStatusApi.
+ * @export
+ * @interface SystemStatusApiGetRequestHelpLinkRequest
+ */
+export interface SystemStatusApiGetRequestHelpLinkRequest {
+    /**
+     * Usage: grantPeriodDays&#x3D;{grantPeriodDays}
+     * @type {number}
+     * @memberof SystemStatusApiGetRequestHelpLink
+     */
+    readonly grantPeriodDays: number
+}
 
 /**
  * Request parameters for getSystemStatus operation in SystemStatusApi.
@@ -79627,6 +79693,18 @@ export class SystemStatusApi extends BaseAPI {
      */
     public aPIToken(options?: RawAxiosRequestConfig) {
         return SystemStatusApiFp(this.configuration).aPIToken(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetRequestHelpLink
+     * @param {SystemStatusApiGetRequestHelpLinkRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SystemStatusApi
+     */
+    public getRequestHelpLink(requestParameters: SystemStatusApiGetRequestHelpLinkRequest, options?: RawAxiosRequestConfig) {
+        return SystemStatusApiFp(this.configuration).getRequestHelpLink(requestParameters.grantPeriodDays, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -86946,40 +87024,6 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
-         * @summary Invoke function Is3CXAIEnabled
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        is3CXAIEnabled: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/VoicemailSettings/Pbx.Is3CXAIEnabled()`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Update VoicemailSettings
          * @param {PbxVoicemailSettings} pbxVoicemailSettings New property values
          * @param {*} [options] Override http request option.
@@ -87073,18 +87117,6 @@ export const VoicemailSettingsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Invoke function Is3CXAIEnabled
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async is3CXAIEnabled(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCanCreateBackup200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.is3CXAIEnabled(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['VoicemailSettingsApi.is3CXAIEnabled']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary Update VoicemailSettings
          * @param {PbxVoicemailSettings} pbxVoicemailSettings New property values
          * @param {*} [options] Override http request option.
@@ -87134,15 +87166,6 @@ export const VoicemailSettingsApiFactory = function (configuration?: Configurati
          */
         getVoicemailSettings(requestParameters: VoicemailSettingsApiGetVoicemailSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxVoicemailSettings> {
             return localVarFp.getVoicemailSettings(requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Invoke function Is3CXAIEnabled
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        is3CXAIEnabled(options?: RawAxiosRequestConfig): AxiosPromise<GetCanCreateBackup200Response> {
-            return localVarFp.is3CXAIEnabled(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -87274,17 +87297,6 @@ export class VoicemailSettingsApi extends BaseAPI {
      */
     public getVoicemailSettings(requestParameters: VoicemailSettingsApiGetVoicemailSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return VoicemailSettingsApiFp(this.configuration).getVoicemailSettings(requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Invoke function Is3CXAIEnabled
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof VoicemailSettingsApi
-     */
-    public is3CXAIEnabled(options?: RawAxiosRequestConfig) {
-        return VoicemailSettingsApiFp(this.configuration).is3CXAIEnabled(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

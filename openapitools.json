@@ -7,7 +7,7 @@
             "fetch": {
                 "enablePostProcessFile": true,
                 "generatorName": "typescript-axios",
-                "inputSpec": "http://localhost:5004/xapi/v1/swagger.yaml",
+                "inputSpec": "swagger.yaml",
                 "output": "src/xapi",
                 "additionalProperties": {
                     "useSingleRequestParameter": true,
