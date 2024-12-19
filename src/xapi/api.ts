@@ -246,13 +246,13 @@ export interface CallCostSettingsUpdateCostRequestBody {
 /**
  * 
  * @export
- * @interface CallFlowAppsCallFlowAppDeleteAudioFileRequestBody
+ * @interface CallFlowAppsCallFlowAppDeleteFileRequestBody
  */
-export interface CallFlowAppsCallFlowAppDeleteAudioFileRequestBody {
+export interface CallFlowAppsCallFlowAppDeleteFileRequestBody {
     /**
      * 
      * @type {string}
-     * @memberof CallFlowAppsCallFlowAppDeleteAudioFileRequestBody
+     * @memberof CallFlowAppsCallFlowAppDeleteFileRequestBody
      */
     'filename'?: string;
 }
@@ -578,6 +578,25 @@ export interface CollectionOfExtensionsStatisticsByRingGroups {
      * @memberof CollectionOfExtensionsStatisticsByRingGroups
      */
     'value'?: Array<PbxExtensionsStatisticsByRingGroups>;
+}
+/**
+ * 
+ * @export
+ * @interface CollectionOfInboundRule
+ */
+export interface CollectionOfInboundRule {
+    /**
+     * 
+     * @type {number}
+     * @memberof CollectionOfInboundRule
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxInboundRule>}
+     * @memberof CollectionOfInboundRule
+     */
+    'value'?: Array<PbxInboundRule>;
 }
 /**
  * 
@@ -1186,25 +1205,6 @@ export interface GetActive200Response {
 /**
  * 
  * @export
- * @interface GetAudioFiles200Response
- */
-export interface GetAudioFiles200Response {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetAudioFiles200Response
-     */
-    '@odata.count'?: number | null;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GetAudioFiles200Response
-     */
-    'value'?: Array<string>;
-}
-/**
- * 
- * @export
  * @interface GetCallQualityReport200Response
  */
 export interface GetCallQualityReport200Response {
@@ -1321,6 +1321,25 @@ export interface GetFaxFilesSize200Response {
      * @memberof GetFaxFilesSize200Response
      */
     'value'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface GetFiles200Response
+ */
+export interface GetFiles200Response {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetFiles200Response
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GetFiles200Response
+     */
+    'value'?: Array<string>;
 }
 /**
  * 
@@ -1507,11 +1526,57 @@ export interface GetUsersByPrincipalNames200Response {
     '@odata.count'?: number | null;
     /**
      * 
-     * @type {Array<PbxMicrosoft365User>}
+     * @type {Array<PbxExternalAccount>}
      * @memberof GetUsersByPrincipalNames200Response
      */
-    'value'?: Array<PbxMicrosoft365User>;
+    'value'?: Array<PbxExternalAccount>;
 }
+/**
+ * 
+ * @export
+ * @interface GoogleSettingsGetGoogleUsersRequestBody
+ */
+export interface GoogleSettingsGetGoogleUsersRequestBody {
+    /**
+     * 
+     * @type {GoogleSettingsGetGoogleUsersRequestBodyOptions}
+     * @memberof GoogleSettingsGetGoogleUsersRequestBody
+     */
+    'options'?: GoogleSettingsGetGoogleUsersRequestBodyOptions;
+}
+/**
+ * 
+ * @export
+ * @interface GoogleSettingsGetGoogleUsersRequestBodyOptions
+ */
+export interface GoogleSettingsGetGoogleUsersRequestBodyOptions {
+    /**
+     * 
+     * @type {number}
+     * @memberof GoogleSettingsGetGoogleUsersRequestBodyOptions
+     */
+    'Count'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GoogleSettingsGetGoogleUsersRequestBodyOptions
+     */
+    'NextPageToken'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GoogleSettingsGetGoogleUsersRequestBodyOptions
+     */
+    'Search'?: string | null;
+    /**
+     * 
+     * @type {PbxTypeOfUser}
+     * @memberof GoogleSettingsGetGoogleUsersRequestBodyOptions
+     */
+    'TypeOfUser'?: PbxTypeOfUser;
+}
+
+
 /**
  * 
  * @export
@@ -1707,6 +1772,19 @@ export interface Microsoft365IntegrationAuthorizePresenceRequestBody {
 /**
  * 
  * @export
+ * @interface Microsoft365IntegrationGetM365UsersRequestBody
+ */
+export interface Microsoft365IntegrationGetM365UsersRequestBody {
+    /**
+     * 
+     * @type {GoogleSettingsGetGoogleUsersRequestBodyOptions}
+     * @memberof Microsoft365IntegrationGetM365UsersRequestBody
+     */
+    'options'?: GoogleSettingsGetGoogleUsersRequestBodyOptions;
+}
+/**
+ * 
+ * @export
  * @interface Microsoft365IntegrationGetUsersByPrincipalNamesRequestBody
  */
 export interface Microsoft365IntegrationGetUsersByPrincipalNamesRequestBody {
@@ -1717,52 +1795,6 @@ export interface Microsoft365IntegrationGetUsersByPrincipalNamesRequestBody {
      */
     'principalNames'?: Array<string>;
 }
-/**
- * 
- * @export
- * @interface Microsoft365IntegrationGetUsersRequestBody
- */
-export interface Microsoft365IntegrationGetUsersRequestBody {
-    /**
-     * 
-     * @type {Microsoft365IntegrationGetUsersRequestBodyOptions}
-     * @memberof Microsoft365IntegrationGetUsersRequestBody
-     */
-    'options'?: Microsoft365IntegrationGetUsersRequestBodyOptions;
-}
-/**
- * 
- * @export
- * @interface Microsoft365IntegrationGetUsersRequestBodyOptions
- */
-export interface Microsoft365IntegrationGetUsersRequestBodyOptions {
-    /**
-     * 
-     * @type {number}
-     * @memberof Microsoft365IntegrationGetUsersRequestBodyOptions
-     */
-    'Count'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Microsoft365IntegrationGetUsersRequestBodyOptions
-     */
-    'Search'?: string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof Microsoft365IntegrationGetUsersRequestBodyOptions
-     */
-    'Start'?: number;
-    /**
-     * 
-     * @type {PbxTypeOfUser}
-     * @memberof Microsoft365IntegrationGetUsersRequestBodyOptions
-     */
-    'TypeOfUser'?: PbxTypeOfUser;
-}
-
-
 /**
  * 
  * @export
@@ -1844,6 +1876,12 @@ export interface PbxADUsersSyncConfiguration {
      * @type {boolean}
      * @memberof PbxADUsersSyncConfiguration
      */
+    'IsSyncDepartments'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxADUsersSyncConfiguration
+     */
     'IsSyncOfficePhone'?: boolean | null;
     /**
      * 
@@ -1869,6 +1907,12 @@ export interface PbxADUsersSyncConfiguration {
      * @memberof PbxADUsersSyncConfiguration
      */
     'StartingExtensionNumber'?: string;
+    /**
+     * 
+     * @type {PbxStatusSyncConfiguration}
+     * @memberof PbxADUsersSyncConfiguration
+     */
+    'StatusSyncConfiguration'?: PbxStatusSyncConfiguration | null;
     /**
      * 
      * @type {boolean}
@@ -2652,6 +2696,19 @@ export type PbxAuthenticationType = typeof PbxAuthenticationType[keyof typeof Pb
 /**
  * 
  * @export
+ * @interface PbxAutoProvisionTrunk
+ */
+export interface PbxAutoProvisionTrunk {
+    /**
+     * 
+     * @type {Array<PbxTwilioPhoneNumber>}
+     * @memberof PbxAutoProvisionTrunk
+     */
+    'AvailableNumbers'?: Array<PbxTwilioPhoneNumber>;
+}
+/**
+ * 
+ * @export
  * @interface PbxAutoSchedulerSettings
  */
 export interface PbxAutoSchedulerSettings {
@@ -2741,6 +2798,20 @@ export interface PbxAvailableRouting {
      */
     'NotRegisteredInternal'?: PbxDestination | null;
 }
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const PbxAvatarStyle = {
+    Square: 'Square',
+    Circle: 'Circle'
+} as const;
+
+export type PbxAvatarStyle = typeof PbxAvatarStyle[keyof typeof PbxAvatarStyle];
+
+
 /**
  * 
  * @export
@@ -4845,12 +4916,6 @@ export interface PbxConcealedPassword {
 export interface PbxConferenceSettings {
     /**
      * 
-     * @type {string}
-     * @memberof PbxConferenceSettings
-     */
-    'ApiKey'?: string | null;
-    /**
-     * 
      * @type {boolean}
      * @memberof PbxConferenceSettings
      */
@@ -5261,13 +5326,43 @@ export interface PbxCreateTrunk {
      * @type {string}
      * @memberof PbxCreateTrunk
      */
-    'Name'?: string;
+    'AccountSid'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCreateTrunk
+     */
+    'ApiKey'?: string | null;
+    /**
+     * 
+     * @type {PbxInboundRule}
+     * @memberof PbxCreateTrunk
+     */
+    'DefaultRule'?: PbxInboundRule | null;
+    /**
+     * 
+     * @type {Array<PbxUserGroup>}
+     * @memberof PbxCreateTrunk
+     */
+    'Groups'?: Array<PbxUserGroup>;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCreateTrunk
+     */
+    'Name'?: string | null;
+    /**
+     * 
+     * @type {Array<PbxTwilioPhoneNumber>}
+     * @memberof PbxCreateTrunk
+     */
+    'PhoneNumbers'?: Array<PbxTwilioPhoneNumber>;
     /**
      * 
      * @type {PbxTrunkType}
      * @memberof PbxCreateTrunk
      */
-    'TrunkType'?: PbxTrunkType;
+    'Type'?: PbxTrunkType | null;
 }
 
 
@@ -7129,6 +7224,69 @@ export interface PbxExtensionsStatisticsByRingGroupsCollectionResponse {
 /**
  * 
  * @export
+ * @interface PbxExternalAccount
+ */
+export interface PbxExternalAccount {
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxExternalAccount
+     */
+    'Email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxExternalAccount
+     */
+    'Id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxExternalAccount
+     */
+    'Name'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PbxExternalAccountCollectionResponse
+ */
+export interface PbxExternalAccountCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxExternalAccountCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxExternalAccount>}
+     * @memberof PbxExternalAccountCollectionResponse
+     */
+    'value'?: Array<PbxExternalAccount>;
+}
+/**
+ * 
+ * @export
+ * @interface PbxExternalAccountsPage
+ */
+export interface PbxExternalAccountsPage {
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxExternalAccountsPage
+     */
+    'NextPageToken'?: string | null;
+    /**
+     * 
+     * @type {Array<PbxExternalAccount>}
+     * @memberof PbxExternalAccountsPage
+     */
+    'Users'?: Array<PbxExternalAccount>;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -7689,6 +7847,12 @@ export interface PbxFxsCollectionResponse {
 export interface PbxFxsModel {
     /**
      * 
+     * @type {boolean}
+     * @memberof PbxFxsModel
+     */
+    'CanBeSBC'?: boolean | null;
+    /**
+     * 
      * @type {string}
      * @memberof PbxFxsModel
      */
@@ -7848,6 +8012,12 @@ export interface PbxFxsTemplate {
      * @memberof PbxFxsTemplate
      */
     'NumberOfExtensions'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxFxsTemplate
+     */
+    'RpsEnabled'?: boolean | null;
     /**
      * 
      * @type {PbxTemplateType}
@@ -8462,6 +8632,30 @@ export interface PbxGeneralSettingsForApps {
     'AutoSchedulerSettings'?: PbxAutoSchedulerSettings | null;
     /**
      * 
+     * @type {PbxAvatarStyle}
+     * @memberof PbxGeneralSettingsForApps
+     */
+    'AvatarStyle'?: PbxAvatarStyle | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxGeneralSettingsForApps
+     */
+    'BrandLogoImage'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxGeneralSettingsForApps
+     */
+    'BrandMainImage'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxGeneralSettingsForApps
+     */
+    'BrandUrl'?: string | null;
+    /**
+     * 
      * @type {boolean}
      * @memberof PbxGeneralSettingsForApps
      */
@@ -8503,6 +8697,8 @@ export interface PbxGeneralSettingsForApps {
      */
     'NameOfCustomOutOfOfficeStatus'?: string | null;
 }
+
+
 /**
  * 
  * @export
@@ -8611,8 +8807,83 @@ export interface PbxGoogleSettings {
      * @type {string}
      * @memberof PbxGoogleSettings
      */
+    'ProjectId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxGoogleSettings
+     */
     'ProvisionUrl'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxGoogleSettings
+     */
+    'ReCaptchaEnabled'?: boolean | null;
+    /**
+     * 
+     * @type {PbxGoogleUserSync}
+     * @memberof PbxGoogleSettings
+     */
+    'UserSync'?: PbxGoogleUserSync | null;
 }
+/**
+ * 
+ * @export
+ * @interface PbxGoogleUserSync
+ */
+export interface PbxGoogleUserSync {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxGoogleUserSync
+     */
+    'IsEnabled'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxGoogleUserSync
+     */
+    'IsSyncDepartments'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxGoogleUserSync
+     */
+    'IsSyncPersonalContacts'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxGoogleUserSync
+     */
+    'IsSyncPhoto'?: boolean | null;
+    /**
+     * 
+     * @type {Array<string | null>}
+     * @memberof PbxGoogleUserSync
+     */
+    'SelectedUsers'?: Array<string | null>;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxGoogleUserSync
+     */
+    'StartingExtensionNumber'?: string | null;
+    /**
+     * 
+     * @type {PbxIntegrationSyncType}
+     * @memberof PbxGoogleUserSync
+     */
+    'SyncType'?: PbxIntegrationSyncType | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxGoogleUserSync
+     */
+    'UseCalendarEventsAsPresence'?: boolean | null;
+}
+
+
 /**
  * 
  * @export
@@ -9055,6 +9326,12 @@ export interface PbxGroupProps {
      * @memberof PbxGroupProps
      */
     'TrunkNumberTo'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxGroupProps
+     */
+    'TrunksMaxCount'?: number | null;
     /**
      * 
      * @type {string}
@@ -10045,6 +10322,46 @@ export interface PbxLoggingSettings {
 /**
  * 
  * @export
+ * @interface PbxM365ToPbxBinding
+ */
+export interface PbxM365ToPbxBinding {
+    /**
+     * 
+     * @type {PbxSynchronizedM365Profile}
+     * @memberof PbxM365ToPbxBinding
+     */
+    'From'?: PbxSynchronizedM365Profile | null;
+    /**
+     * 
+     * @type {PbxSynchronizedPbxProfile}
+     * @memberof PbxM365ToPbxBinding
+     */
+    'To'?: PbxSynchronizedPbxProfile | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface PbxM365ToPbxBindingCollectionResponse
+ */
+export interface PbxM365ToPbxBindingCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxM365ToPbxBindingCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxM365ToPbxBinding>}
+     * @memberof PbxM365ToPbxBindingCollectionResponse
+     */
+    'value'?: Array<PbxM365ToPbxBinding>;
+}
+/**
+ * 
+ * @export
  * @interface PbxMCURequestStatus
  */
 export interface PbxMCURequestStatus {
@@ -10090,7 +10407,8 @@ export interface PbxMCURequestStatus {
 export const PbxMailServerType = {
     Tcx: 'Tcx',
     Ms365: 'MS365',
-    Custom: 'Custom'
+    Custom: 'Custom',
+    GoogleWorkspace: 'GoogleWorkspace'
 } as const;
 
 export type PbxMailServerType = typeof PbxMailServerType[keyof typeof PbxMailServerType];
@@ -10490,69 +10808,6 @@ export interface PbxMicrosoft365TeamsIntegration {
 /**
  * 
  * @export
- * @interface PbxMicrosoft365User
- */
-export interface PbxMicrosoft365User {
-    /**
-     * 
-     * @type {string}
-     * @memberof PbxMicrosoft365User
-     */
-    'Email'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PbxMicrosoft365User
-     */
-    'Id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PbxMicrosoft365User
-     */
-    'Name'?: string;
-}
-/**
- * 
- * @export
- * @interface PbxMicrosoft365UserCollectionResponse
- */
-export interface PbxMicrosoft365UserCollectionResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof PbxMicrosoft365UserCollectionResponse
-     */
-    '@odata.count'?: number | null;
-    /**
-     * 
-     * @type {Array<PbxMicrosoft365User>}
-     * @memberof PbxMicrosoft365UserCollectionResponse
-     */
-    'value'?: Array<PbxMicrosoft365User>;
-}
-/**
- * 
- * @export
- * @interface PbxMicrosoft365UsersPage
- */
-export interface PbxMicrosoft365UsersPage {
-    /**
-     * 
-     * @type {number}
-     * @memberof PbxMicrosoft365UsersPage
-     */
-    'Total'?: number | null;
-    /**
-     * 
-     * @type {Array<PbxMicrosoft365User>}
-     * @memberof PbxMicrosoft365UsersPage
-     */
-    'Users'?: Array<PbxMicrosoft365User>;
-}
-/**
- * 
- * @export
  * @interface PbxMonitoringState
  */
 export interface PbxMonitoringState {
@@ -10647,6 +10902,18 @@ export interface PbxMultiEditUserData {
      * @memberof PbxMultiEditUserData
      */
     'ForwardingProfiles'?: Array<PbxForwardingProfile>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxMultiEditUserData
+     */
+    'GoogleCalendarEnabled'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxMultiEditUserData
+     */
+    'GoogleContactsEnabled'?: boolean | null;
     /**
      * 
      * @type {boolean}
@@ -10761,6 +11028,12 @@ export interface PbxMultiEditUserData {
      * @memberof PbxMultiEditUserData
      */
     'RecordCalls'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxMultiEditUserData
+     */
+    'RecordEmailNotify'?: boolean | null;
     /**
      * 
      * @type {boolean}
@@ -12127,6 +12400,46 @@ export interface PbxParticipantDetailsCollectionResponse {
 /**
  * 
  * @export
+ * @interface PbxPbxToM365Binding
+ */
+export interface PbxPbxToM365Binding {
+    /**
+     * 
+     * @type {PbxSynchronizedPbxProfile}
+     * @memberof PbxPbxToM365Binding
+     */
+    'From'?: PbxSynchronizedPbxProfile | null;
+    /**
+     * 
+     * @type {PbxSynchronizedM365Profile}
+     * @memberof PbxPbxToM365Binding
+     */
+    'To'?: PbxSynchronizedM365Profile | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface PbxPbxToM365BindingCollectionResponse
+ */
+export interface PbxPbxToM365BindingCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxPbxToM365BindingCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxPbxToM365Binding>}
+     * @memberof PbxPbxToM365BindingCollectionResponse
+     */
+    'value'?: Array<PbxPbxToM365Binding>;
+}
+/**
+ * 
+ * @export
  * @interface PbxPeer
  */
 export interface PbxPeer {
@@ -12258,9 +12571,9 @@ export const PbxPeerType = {
     Ivr: 'IVR',
     Fax: 'Fax',
     Conference: 'Conference',
+    SpecialMenu: 'SpecialMenu',
     Parking: 'Parking',
     ExternalLine: 'ExternalLine',
-    SpecialMenu: 'SpecialMenu',
     Group: 'Group',
     RoutePoint: 'RoutePoint'
 } as const;
@@ -13116,10 +13429,28 @@ export interface PbxPhonesSettings {
     'CustomDNDProfile'?: string | null;
     /**
      * 
+     * @type {number}
+     * @memberof PbxPhonesSettings
+     */
+    'FanvilUpdateInterval'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxPhonesSettings
+     */
+    'GrandstreamUpdateInterval'?: number | null;
+    /**
+     * 
      * @type {boolean}
      * @memberof PbxPhonesSettings
      */
     'PhoneAllowMultiFirmwares'?: boolean | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxPhonesSettings
+     */
+    'SnomUpdateInterval'?: number | null;
     /**
      * 
      * @type {boolean}
@@ -13132,6 +13463,12 @@ export interface PbxPhonesSettings {
      * @memberof PbxPhonesSettings
      */
     'UseRpcForLocalPhones'?: boolean | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxPhonesSettings
+     */
+    'YealinkUpdateInterval'?: number | null;
 }
 /**
  * 
@@ -13481,19 +13818,6 @@ export type PbxProvType = typeof PbxProvType[keyof typeof PbxProvType];
 /**
  * 
  * @export
- * @interface PbxProvisionedTrunk
- */
-export interface PbxProvisionedTrunk {
-    /**
-     * 
-     * @type {string}
-     * @memberof PbxProvisionedTrunk
-     */
-    'FinalizeURL'?: string | null;
-}
-/**
- * 
- * @export
  * @interface PbxPurgeSettings
  */
 export interface PbxPurgeSettings {
@@ -13764,6 +14088,12 @@ export interface PbxQueue {
      * @memberof PbxQueue
      */
     'ForwardNoAnswer'?: PbxDestination | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxQueue
+     */
+    'GreetingFile'?: string | null;
     /**
      * 
      * @type {Array<PbxUserGroup>}
@@ -15158,6 +15488,55 @@ export interface PbxRefreshTokenCollectionResponse {
 /**
  * 
  * @export
+ * @interface PbxRegenerateOptions
+ */
+export interface PbxRegenerateOptions {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRegenerateOptions
+     */
+    'ConfigurationLink'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRegenerateOptions
+     */
+    'DeskphonePassword'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRegenerateOptions
+     */
+    'RpsKey'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRegenerateOptions
+     */
+    'SendWelcomeEmail'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRegenerateOptions
+     */
+    'SipAuth'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRegenerateOptions
+     */
+    'VoicemailPIN'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRegenerateOptions
+     */
+    'WebclientPassword'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface PbxRegistrarFxs
  */
 export interface PbxRegistrarFxs {
@@ -15321,44 +15700,6 @@ export interface PbxReportExtensionStatisticsByGroupCollectionResponse {
      * @memberof PbxReportExtensionStatisticsByGroupCollectionResponse
      */
     'value'?: Array<PbxReportExtensionStatisticsByGroup>;
-}
-/**
- * 
- * @export
- * @interface PbxReportGroup
- */
-export interface PbxReportGroup {
-    /**
-     * 
-     * @type {number}
-     * @memberof PbxReportGroup
-     */
-    'GroupID'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PbxReportGroup
-     */
-    'GroupName'?: string | null;
-}
-/**
- * 
- * @export
- * @interface PbxReportGroupCollectionResponse
- */
-export interface PbxReportGroupCollectionResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof PbxReportGroupCollectionResponse
-     */
-    '@odata.count'?: number | null;
-    /**
-     * 
-     * @type {Array<PbxReportGroup>}
-     * @memberof PbxReportGroupCollectionResponse
-     */
-    'value'?: Array<PbxReportGroup>;
 }
 /**
  * 
@@ -15581,6 +15922,19 @@ export interface PbxRestrictions {
 /**
  * 
  * @export
+ * @interface PbxRetreivePeersRequest
+ */
+export interface PbxRetreivePeersRequest {
+    /**
+     * 
+     * @type {Array<string | null>}
+     * @memberof PbxRetreivePeersRequest
+     */
+    'DnNumbers'?: Array<string | null>;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -15765,6 +16119,12 @@ export interface PbxRingGroup {
      * @memberof PbxRingGroup
      */
     'ForwardNoAnswer'?: PbxDestination | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxRingGroup
+     */
+    'GreetingFile'?: string | null;
     /**
      * 
      * @type {Array<PbxUserGroup>}
@@ -16712,6 +17072,31 @@ export interface PbxStatisticSlaCollectionResponse {
 /**
  * 
  * @export
+ * @interface PbxStatusSyncConfiguration
+ */
+export interface PbxStatusSyncConfiguration {
+    /**
+     * 
+     * @type {Array<PbxM365ToPbxBinding>}
+     * @memberof PbxStatusSyncConfiguration
+     */
+    'M365ToPbxBindings'?: Array<PbxM365ToPbxBinding>;
+    /**
+     * 
+     * @type {Array<PbxPbxToM365Binding>}
+     * @memberof PbxStatusSyncConfiguration
+     */
+    'PBXToM365Bindings'?: Array<PbxPbxToM365Binding>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxStatusSyncConfiguration
+     */
+    'PBXToM365Busy'?: boolean | null;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -16722,6 +17107,42 @@ export const PbxStrategyType = {
 } as const;
 
 export type PbxStrategyType = typeof PbxStrategyType[keyof typeof PbxStrategyType];
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const PbxSynchronizedM365Profile = {
+    Available: 'Available',
+    Busy: 'Busy',
+    Away: 'Away',
+    AvailableIdle: 'AvailableIdle',
+    BusyIdle: 'BusyIdle',
+    DoNotDisturb: 'DoNotDisturb',
+    BeRightBack: 'BeRightBack',
+    InMeeting: 'InMeeting',
+    InCall: 'InCall'
+} as const;
+
+export type PbxSynchronizedM365Profile = typeof PbxSynchronizedM365Profile[keyof typeof PbxSynchronizedM365Profile];
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const PbxSynchronizedPbxProfile = {
+    Available: 'Available',
+    OutOfOffice: 'OutOfOffice',
+    Away: 'Away'
+} as const;
+
+export type PbxSynchronizedPbxProfile = typeof PbxSynchronizedPbxProfile[keyof typeof PbxSynchronizedPbxProfile];
 
 
 /**
@@ -16956,6 +17377,12 @@ export interface PbxSystemParameters {
      * @memberof PbxSystemParameters
      */
     'IsMulticompanyMode'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxSystemParameters
+     */
+    'IsRemoteBackup'?: boolean | null;
     /**
      * 
      * @type {boolean}
@@ -17585,10 +18012,10 @@ export interface PbxTrunk {
     'AuthID'?: string | null;
     /**
      * 
-     * @type {string}
+     * @type {PbxConcealedPassword}
      * @memberof PbxTrunk
      */
-    'AuthPassword'?: string | null;
+    'AuthPassword'?: PbxConcealedPassword | null;
     /**
      * 
      * @type {string}
@@ -17885,6 +18312,18 @@ export interface PbxTrunkMessaging {
     'Enabled'?: boolean | null;
     /**
      * 
+     * @type {number}
+     * @memberof PbxTrunkMessaging
+     */
+    'NumberLength'?: number | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxTrunkMessaging
+     */
+    'NumberLengthEnabled'?: boolean | null;
+    /**
+     * 
      * @type {string}
      * @memberof PbxTrunkMessaging
      */
@@ -18046,7 +18485,8 @@ export interface PbxTrunkTemplateCollectionResponse {
  */
 
 export const PbxTrunkType = {
-    Voxtelesys: 'Voxtelesys'
+    Voxtelesys: 'Voxtelesys',
+    Twilio: 'Twilio'
 } as const;
 
 export type PbxTrunkType = typeof PbxTrunkType[keyof typeof PbxTrunkType];
@@ -18160,6 +18600,62 @@ export const PbxTrunkVariableType = {
 export type PbxTrunkVariableType = typeof PbxTrunkVariableType[keyof typeof PbxTrunkVariableType];
 
 
+/**
+ * 
+ * @export
+ * @interface PbxTwilioPhoneNumber
+ */
+export interface PbxTwilioPhoneNumber {
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxTwilioPhoneNumber
+     */
+    'FriendlyName'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxTwilioPhoneNumber
+     */
+    'IsInTrunk'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxTwilioPhoneNumber
+     */
+    'IsMessagingEnabled'?: boolean | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxTwilioPhoneNumber
+     */
+    'PhoneNumber'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxTwilioPhoneNumber
+     */
+    'Sid'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PbxTwilioPhoneNumberCollectionResponse
+ */
+export interface PbxTwilioPhoneNumberCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxTwilioPhoneNumberCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxTwilioPhoneNumber>}
+     * @memberof PbxTwilioPhoneNumberCollectionResponse
+     */
+    'value'?: Array<PbxTwilioPhoneNumber>;
+}
 /**
  * 
  * @export
@@ -18644,6 +19140,18 @@ export interface PbxUser {
      * @type {boolean}
      * @memberof PbxUser
      */
+    'GoogleCalendarEnabled'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxUser
+     */
+    'GoogleContactsEnabled'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxUser
+     */
     'GoogleSignInEnabled'?: boolean | null;
     /**
      * 
@@ -18825,6 +19333,12 @@ export interface PbxUser {
      * @memberof PbxUser
      */
     'RecordCalls'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxUser
+     */
+    'RecordEmailNotify'?: boolean | null;
     /**
      * 
      * @type {boolean}
@@ -19018,6 +19532,12 @@ export interface PbxUserGroup {
     'Tags'?: Array<PbxUserTag>;
     /**
      * 
+     * @type {PbxTranscriptionType}
+     * @memberof PbxUserGroup
+     */
+    'TranscriptionMode'?: PbxTranscriptionType | null;
+    /**
+     * 
      * @type {PbxPeerType}
      * @memberof PbxUserGroup
      */
@@ -19079,13 +19599,13 @@ export interface PbxUsersRequestOptions {
      * @type {string}
      * @memberof PbxUsersRequestOptions
      */
-    'Search'?: string | null;
+    'NextPageToken'?: string | null;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof PbxUsersRequestOptions
      */
-    'Start'?: number;
+    'Search'?: string | null;
     /**
      * 
      * @type {PbxTypeOfUser}
@@ -19350,6 +19870,7 @@ export const PbxWarnings = {
     LicenseNotFound: 'WARNINGS.LICENSE_NOT_FOUND',
     LimitReached: 'WARNINGS.LIMIT_REACHED',
     XapiInvalid: 'WARNINGS.XAPI.INVALID',
+    XapiCaptchaError: 'WARNINGS.XAPI.CAPTCHA_ERROR',
     XapiInvalidPinNumber: 'WARNINGS.XAPI.INVALID_PIN_NUMBER',
     XapiNotSupported: 'WARNINGS.XAPI.NOT_SUPPORTED',
     XapiUserRoleDowngrade: 'WARNINGS.XAPI.USER_ROLE_DOWNGRADE',
@@ -19369,6 +19890,7 @@ export const PbxWarnings = {
     XapiPlaylistInUse: 'WARNINGS.XAPI.PLAYLIST_IN_USE',
     XapiOutOfTheRange: 'WARNINGS.XAPI.OUT_OF_THE_RANGE',
     XapiTooManyPhones: 'WARNINGS.XAPI.TOO_MANY_PHONES',
+    XapiTooManyTrunks: 'WARNINGS.XAPI.TOO_MANY_TRUNKS',
     XapiTooManySbc: 'WARNINGS.XAPI.TOO_MANY_SBC',
     XapiTooManyPrompts: 'WARNINGS.XAPI.TOO_MANY_PROMPTS',
     XapiOutboundRulesLimitReached: 'WARNINGS.XAPI.OUTBOUND_RULES_LIMIT_REACHED',
@@ -19758,6 +20280,19 @@ export type PbxXferTypeEnum = typeof PbxXferTypeEnum[keyof typeof PbxXferTypeEnu
 /**
  * 
  * @export
+ * @interface PeersRetreivePeersByNumbersRequestBody
+ */
+export interface PeersRetreivePeersByNumbersRequestBody {
+    /**
+     * 
+     * @type {PbxRetreivePeersRequest}
+     * @memberof PeersRetreivePeersByNumbersRequestBody
+     */
+    'peersRequest'?: PbxRetreivePeersRequest;
+}
+/**
+ * 
+ * @export
  * @interface PlaylistsDeletePlaylistFileRequestBody
  */
 export interface PlaylistsDeletePlaylistFileRequestBody {
@@ -19934,46 +20469,10 @@ export interface ReferenceUpdate {
 export interface RegenerateRequestBody {
     /**
      * 
-     * @type {boolean}
+     * @type {PbxRegenerateOptions}
      * @memberof RegenerateRequestBody
      */
-    'SipAuth'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RegenerateRequestBody
-     */
-    'WebclientPassword'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RegenerateRequestBody
-     */
-    'VoicemailPIN'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RegenerateRequestBody
-     */
-    'DeskphonePassword'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RegenerateRequestBody
-     */
-    'SendWelcomeEmail'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RegenerateRequestBody
-     */
-    'ConfigurationLink'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RegenerateRequestBody
-     */
-    'RpsKey'?: boolean;
+    'opts'?: PbxRegenerateOptions;
 }
 /**
  * 
@@ -20324,13 +20823,26 @@ export interface SystemStatusSetMultiCompanyModeRequestBody {
 /**
  * 
  * @export
- * @interface TrunksProvisionTrunkRequestBody
+ * @interface TrunksFinalizeTrunkProvisioningRequestBody
  */
-export interface TrunksProvisionTrunkRequestBody {
+export interface TrunksFinalizeTrunkProvisioningRequestBody {
     /**
      * 
      * @type {PbxCreateTrunk}
-     * @memberof TrunksProvisionTrunkRequestBody
+     * @memberof TrunksFinalizeTrunkProvisioningRequestBody
+     */
+    'model'?: PbxCreateTrunk;
+}
+/**
+ * 
+ * @export
+ * @interface TrunksGetProviderAvailablePhoneNumbersRequestBody
+ */
+export interface TrunksGetProviderAvailablePhoneNumbersRequestBody {
+    /**
+     * 
+     * @type {PbxCreateTrunk}
+     * @memberof TrunksGetProviderAvailablePhoneNumbersRequestBody
      */
     'model'?: PbxCreateTrunk;
 }
@@ -20516,46 +21028,10 @@ export interface UsersRebootPhoneRequestBody {
 export interface UsersRegeneratePasswordsRequestBody {
     /**
      * 
-     * @type {boolean}
+     * @type {PbxRegenerateOptions}
      * @memberof UsersRegeneratePasswordsRequestBody
      */
-    'SipAuth'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UsersRegeneratePasswordsRequestBody
-     */
-    'WebclientPassword'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UsersRegeneratePasswordsRequestBody
-     */
-    'VoicemailPIN'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UsersRegeneratePasswordsRequestBody
-     */
-    'DeskphonePassword'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UsersRegeneratePasswordsRequestBody
-     */
-    'SendWelcomeEmail'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UsersRegeneratePasswordsRequestBody
-     */
-    'ConfigurationLink'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UsersRegeneratePasswordsRequestBody
-     */
-    'RpsKey'?: boolean;
+    'opts'?: PbxRegenerateOptions;
     /**
      * 
      * @type {Array<number>}
@@ -25112,50 +25588,6 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
         },
         /**
          * 
-         * @summary Invoke action DeleteAudioFile
-         * @param {number} id The unique identifier of CallFlowApp
-         * @param {CallFlowAppsCallFlowAppDeleteAudioFileRequestBody} callFlowAppsCallFlowAppDeleteAudioFileRequestBody Action parameters
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteAudioFile: async (id: number, callFlowAppsCallFlowAppDeleteAudioFileRequestBody: CallFlowAppsCallFlowAppDeleteAudioFileRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('deleteAudioFile', 'id', id)
-            // verify required parameter 'callFlowAppsCallFlowAppDeleteAudioFileRequestBody' is not null or undefined
-            assertParamExists('deleteAudioFile', 'callFlowAppsCallFlowAppDeleteAudioFileRequestBody', callFlowAppsCallFlowAppDeleteAudioFileRequestBody)
-            const localVarPath = `/CallFlowApps({Id})/Pbx.DeleteAudioFile`
-                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(callFlowAppsCallFlowAppDeleteAudioFileRequestBody, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Delete entity from CallFlowApps
          * @param {number} id The unique identifier of CallFlowApp
          * @param {string} [ifMatch] ETag
@@ -25199,20 +25631,18 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
         },
         /**
          * 
-         * @summary Invoke function GetAudioFiles
+         * @summary Invoke action DeleteFile
          * @param {number} id The unique identifier of CallFlowApp
-         * @param {number} [$top] Show only the first n items
-         * @param {number} [$skip] Skip the first n items
-         * @param {string} [$search] Search items by search phrases
-         * @param {string} [$filter] Filter items by property values
-         * @param {boolean} [$count] Include count of items
+         * @param {CallFlowAppsCallFlowAppDeleteFileRequestBody} callFlowAppsCallFlowAppDeleteFileRequestBody Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAudioFiles: async (id: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteFile: async (id: number, callFlowAppsCallFlowAppDeleteFileRequestBody: CallFlowAppsCallFlowAppDeleteFileRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('getAudioFiles', 'id', id)
-            const localVarPath = `/CallFlowApps({Id})/Pbx.GetAudioFiles()`
+            assertParamExists('deleteFile', 'id', id)
+            // verify required parameter 'callFlowAppsCallFlowAppDeleteFileRequestBody' is not null or undefined
+            assertParamExists('deleteFile', 'callFlowAppsCallFlowAppDeleteFileRequestBody', callFlowAppsCallFlowAppDeleteFileRequestBody)
+            const localVarPath = `/CallFlowApps({Id})/Pbx.DeleteFile`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25221,7 +25651,7 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -25229,31 +25659,14 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
-            if ($top !== undefined) {
-                localVarQueryParameter['$top'] = $top;
-            }
-
-            if ($skip !== undefined) {
-                localVarQueryParameter['$skip'] = $skip;
-            }
-
-            if ($search !== undefined) {
-                localVarQueryParameter['$search'] = $search;
-            }
-
-            if ($filter !== undefined) {
-                localVarQueryParameter['$filter'] = $filter;
-            }
-
-            if ($count !== undefined) {
-                localVarQueryParameter['$count'] = $count;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(callFlowAppsCallFlowAppDeleteFileRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25295,6 +25708,69 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
 
             if ($expand) {
                 localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke function GetFiles
+         * @param {number} id The unique identifier of CallFlowApp
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFiles: async (id: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getFiles', 'id', id)
+            const localVarPath = `/CallFlowApps({Id})/Pbx.GetFiles()`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
             }
 
 
@@ -25451,20 +25927,6 @@ export const CallFlowAppsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Invoke action DeleteAudioFile
-         * @param {number} id The unique identifier of CallFlowApp
-         * @param {CallFlowAppsCallFlowAppDeleteAudioFileRequestBody} callFlowAppsCallFlowAppDeleteAudioFileRequestBody Action parameters
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async deleteAudioFile(id: number, callFlowAppsCallFlowAppDeleteAudioFileRequestBody: CallFlowAppsCallFlowAppDeleteAudioFileRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAudioFile(id, callFlowAppsCallFlowAppDeleteAudioFileRequestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CallFlowAppsApi.deleteAudioFile']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary Delete entity from CallFlowApps
          * @param {number} id The unique identifier of CallFlowApp
          * @param {string} [ifMatch] ETag
@@ -25479,20 +25941,16 @@ export const CallFlowAppsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Invoke function GetAudioFiles
+         * @summary Invoke action DeleteFile
          * @param {number} id The unique identifier of CallFlowApp
-         * @param {number} [$top] Show only the first n items
-         * @param {number} [$skip] Skip the first n items
-         * @param {string} [$search] Search items by search phrases
-         * @param {string} [$filter] Filter items by property values
-         * @param {boolean} [$count] Include count of items
+         * @param {CallFlowAppsCallFlowAppDeleteFileRequestBody} callFlowAppsCallFlowAppDeleteFileRequestBody Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAudioFiles(id: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAudioFiles200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAudioFiles(id, $top, $skip, $search, $filter, $count, options);
+        async deleteFile(id: number, callFlowAppsCallFlowAppDeleteFileRequestBody: CallFlowAppsCallFlowAppDeleteFileRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteFile(id, callFlowAppsCallFlowAppDeleteFileRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CallFlowAppsApi.getAudioFiles']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CallFlowAppsApi.deleteFile']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -25508,6 +25966,24 @@ export const CallFlowAppsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCallFlowApp(id, $select, $expand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CallFlowAppsApi.getCallFlowApp']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke function GetFiles
+         * @param {number} id The unique identifier of CallFlowApp
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getFiles(id: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFiles200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getFiles(id, $top, $skip, $search, $filter, $count, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CallFlowAppsApi.getFiles']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -25566,16 +26042,6 @@ export const CallFlowAppsApiFactory = function (configuration?: Configuration, b
         },
         /**
          * 
-         * @summary Invoke action DeleteAudioFile
-         * @param {CallFlowAppsApiDeleteAudioFileRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteAudioFile(requestParameters: CallFlowAppsApiDeleteAudioFileRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteAudioFile(requestParameters.id, requestParameters.callFlowAppsCallFlowAppDeleteAudioFileRequestBody, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary Delete entity from CallFlowApps
          * @param {CallFlowAppsApiDeleteCallFlowAppRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -25586,13 +26052,13 @@ export const CallFlowAppsApiFactory = function (configuration?: Configuration, b
         },
         /**
          * 
-         * @summary Invoke function GetAudioFiles
-         * @param {CallFlowAppsApiGetAudioFilesRequest} requestParameters Request parameters.
+         * @summary Invoke action DeleteFile
+         * @param {CallFlowAppsApiDeleteFileRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAudioFiles(requestParameters: CallFlowAppsApiGetAudioFilesRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetAudioFiles200Response> {
-            return localVarFp.getAudioFiles(requestParameters.id, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(axios, basePath));
+        deleteFile(requestParameters: CallFlowAppsApiDeleteFileRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteFile(requestParameters.id, requestParameters.callFlowAppsCallFlowAppDeleteFileRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -25603,6 +26069,16 @@ export const CallFlowAppsApiFactory = function (configuration?: Configuration, b
          */
         getCallFlowApp(requestParameters: CallFlowAppsApiGetCallFlowAppRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxCallFlowApp> {
             return localVarFp.getCallFlowApp(requestParameters.id, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke function GetFiles
+         * @param {CallFlowAppsApiGetFilesRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFiles(requestParameters: CallFlowAppsApiGetFilesRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetFiles200Response> {
+            return localVarFp.getFiles(requestParameters.id, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -25642,27 +26118,6 @@ export interface CallFlowAppsApiCreateCallFlowAppRequest {
 }
 
 /**
- * Request parameters for deleteAudioFile operation in CallFlowAppsApi.
- * @export
- * @interface CallFlowAppsApiDeleteAudioFileRequest
- */
-export interface CallFlowAppsApiDeleteAudioFileRequest {
-    /**
-     * The unique identifier of CallFlowApp
-     * @type {number}
-     * @memberof CallFlowAppsApiDeleteAudioFile
-     */
-    readonly id: number
-
-    /**
-     * Action parameters
-     * @type {CallFlowAppsCallFlowAppDeleteAudioFileRequestBody}
-     * @memberof CallFlowAppsApiDeleteAudioFile
-     */
-    readonly callFlowAppsCallFlowAppDeleteAudioFileRequestBody: CallFlowAppsCallFlowAppDeleteAudioFileRequestBody
-}
-
-/**
  * Request parameters for deleteCallFlowApp operation in CallFlowAppsApi.
  * @export
  * @interface CallFlowAppsApiDeleteCallFlowAppRequest
@@ -25684,52 +26139,24 @@ export interface CallFlowAppsApiDeleteCallFlowAppRequest {
 }
 
 /**
- * Request parameters for getAudioFiles operation in CallFlowAppsApi.
+ * Request parameters for deleteFile operation in CallFlowAppsApi.
  * @export
- * @interface CallFlowAppsApiGetAudioFilesRequest
+ * @interface CallFlowAppsApiDeleteFileRequest
  */
-export interface CallFlowAppsApiGetAudioFilesRequest {
+export interface CallFlowAppsApiDeleteFileRequest {
     /**
      * The unique identifier of CallFlowApp
      * @type {number}
-     * @memberof CallFlowAppsApiGetAudioFiles
+     * @memberof CallFlowAppsApiDeleteFile
      */
     readonly id: number
 
     /**
-     * Show only the first n items
-     * @type {number}
-     * @memberof CallFlowAppsApiGetAudioFiles
+     * Action parameters
+     * @type {CallFlowAppsCallFlowAppDeleteFileRequestBody}
+     * @memberof CallFlowAppsApiDeleteFile
      */
-    readonly $top?: number
-
-    /**
-     * Skip the first n items
-     * @type {number}
-     * @memberof CallFlowAppsApiGetAudioFiles
-     */
-    readonly $skip?: number
-
-    /**
-     * Search items by search phrases
-     * @type {string}
-     * @memberof CallFlowAppsApiGetAudioFiles
-     */
-    readonly $search?: string
-
-    /**
-     * Filter items by property values
-     * @type {string}
-     * @memberof CallFlowAppsApiGetAudioFiles
-     */
-    readonly $filter?: string
-
-    /**
-     * Include count of items
-     * @type {boolean}
-     * @memberof CallFlowAppsApiGetAudioFiles
-     */
-    readonly $count?: boolean
+    readonly callFlowAppsCallFlowAppDeleteFileRequestBody: CallFlowAppsCallFlowAppDeleteFileRequestBody
 }
 
 /**
@@ -25758,6 +26185,55 @@ export interface CallFlowAppsApiGetCallFlowAppRequest {
      * @memberof CallFlowAppsApiGetCallFlowApp
      */
     readonly $expand?: Set<string>
+}
+
+/**
+ * Request parameters for getFiles operation in CallFlowAppsApi.
+ * @export
+ * @interface CallFlowAppsApiGetFilesRequest
+ */
+export interface CallFlowAppsApiGetFilesRequest {
+    /**
+     * The unique identifier of CallFlowApp
+     * @type {number}
+     * @memberof CallFlowAppsApiGetFiles
+     */
+    readonly id: number
+
+    /**
+     * Show only the first n items
+     * @type {number}
+     * @memberof CallFlowAppsApiGetFiles
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     * @type {number}
+     * @memberof CallFlowAppsApiGetFiles
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     * @type {string}
+     * @memberof CallFlowAppsApiGetFiles
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     * @type {string}
+     * @memberof CallFlowAppsApiGetFiles
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     * @type {boolean}
+     * @memberof CallFlowAppsApiGetFiles
+     */
+    readonly $count?: boolean
 }
 
 /**
@@ -25865,18 +26341,6 @@ export class CallFlowAppsApi extends BaseAPI {
 
     /**
      * 
-     * @summary Invoke action DeleteAudioFile
-     * @param {CallFlowAppsApiDeleteAudioFileRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CallFlowAppsApi
-     */
-    public deleteAudioFile(requestParameters: CallFlowAppsApiDeleteAudioFileRequest, options?: RawAxiosRequestConfig) {
-        return CallFlowAppsApiFp(this.configuration).deleteAudioFile(requestParameters.id, requestParameters.callFlowAppsCallFlowAppDeleteAudioFileRequestBody, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary Delete entity from CallFlowApps
      * @param {CallFlowAppsApiDeleteCallFlowAppRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -25889,14 +26353,14 @@ export class CallFlowAppsApi extends BaseAPI {
 
     /**
      * 
-     * @summary Invoke function GetAudioFiles
-     * @param {CallFlowAppsApiGetAudioFilesRequest} requestParameters Request parameters.
+     * @summary Invoke action DeleteFile
+     * @param {CallFlowAppsApiDeleteFileRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CallFlowAppsApi
      */
-    public getAudioFiles(requestParameters: CallFlowAppsApiGetAudioFilesRequest, options?: RawAxiosRequestConfig) {
-        return CallFlowAppsApiFp(this.configuration).getAudioFiles(requestParameters.id, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(this.axios, this.basePath));
+    public deleteFile(requestParameters: CallFlowAppsApiDeleteFileRequest, options?: RawAxiosRequestConfig) {
+        return CallFlowAppsApiFp(this.configuration).deleteFile(requestParameters.id, requestParameters.callFlowAppsCallFlowAppDeleteFileRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -25909,6 +26373,18 @@ export class CallFlowAppsApi extends BaseAPI {
      */
     public getCallFlowApp(requestParameters: CallFlowAppsApiGetCallFlowAppRequest, options?: RawAxiosRequestConfig) {
         return CallFlowAppsApiFp(this.configuration).getCallFlowApp(requestParameters.id, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetFiles
+     * @param {CallFlowAppsApiGetFilesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CallFlowAppsApi
+     */
+    public getFiles(requestParameters: CallFlowAppsApiGetFilesRequest, options?: RawAxiosRequestConfig) {
+        return CallFlowAppsApiFp(this.configuration).getFiles(requestParameters.id, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -28295,6 +28771,40 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
     return {
         /**
          * 
+         * @summary Invoke action DeleteApiKey
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteApiKey: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/ConferenceSettings/Pbx.DeleteApiKey`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke function GenerateApiKey
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28771,6 +29281,18 @@ export const ConferenceSettingsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Invoke action DeleteApiKey
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteApiKey(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteApiKey(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ConferenceSettingsApi.deleteApiKey']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke function GenerateApiKey
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28882,7 +29404,7 @@ export const ConferenceSettingsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getWebMeetingZones($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAudioFiles200Response>> {
+        async getWebMeetingZones($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFiles200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWebMeetingZones($top, $skip, $search, $filter, $count, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ConferenceSettingsApi.getWebMeetingZones']?.[localVarOperationServerIndex]?.url;
@@ -28924,6 +29446,15 @@ export const ConferenceSettingsApiFp = function(configuration?: Configuration) {
 export const ConferenceSettingsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ConferenceSettingsApiFp(configuration)
     return {
+        /**
+         * 
+         * @summary Invoke action DeleteApiKey
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteApiKey(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteApiKey(options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @summary Invoke function GenerateApiKey
@@ -28999,7 +29530,7 @@ export const ConferenceSettingsApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getWebMeetingZones(requestParameters: ConferenceSettingsApiGetWebMeetingZonesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<GetAudioFiles200Response> {
+        getWebMeetingZones(requestParameters: ConferenceSettingsApiGetWebMeetingZonesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<GetFiles200Response> {
             return localVarFp.getWebMeetingZones(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29263,6 +29794,17 @@ export interface ConferenceSettingsApiUpdateMCURequestStatusRequest {
  * @extends {BaseAPI}
  */
 export class ConferenceSettingsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Invoke action DeleteApiKey
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ConferenceSettingsApi
+     */
+    public deleteApiKey(options?: RawAxiosRequestConfig) {
+        return ConferenceSettingsApiFp(this.configuration).deleteApiKey(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Invoke function GenerateApiKey
@@ -29928,6 +30470,40 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
+         * @summary Invoke action GooglePersonalContactsBulkDelete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        googlePersonalContactsBulkDelete: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Contacts/Pbx.GooglePersonalContactsBulkDelete`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get entities from Contacts
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
@@ -30267,6 +30843,18 @@ export const ContactsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke action GooglePersonalContactsBulkDelete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async googlePersonalContactsBulkDelete(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.googlePersonalContactsBulkDelete(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ContactsApi.googlePersonalContactsBulkDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Get entities from Contacts
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
@@ -30421,6 +31009,15 @@ export const ContactsApiFactory = function (configuration?: Configuration, baseP
          */
         getDirSearchSettings(options?: RawAxiosRequestConfig): AxiosPromise<PbxContactsDirSearchSettings> {
             return localVarFp.getDirSearchSettings(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action GooglePersonalContactsBulkDelete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        googlePersonalContactsBulkDelete(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.googlePersonalContactsBulkDelete(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -30745,6 +31342,17 @@ export class ContactsApi extends BaseAPI {
      */
     public getDirSearchSettings(options?: RawAxiosRequestConfig) {
         return ContactsApiFp(this.configuration).getDirSearchSettings(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action GooglePersonalContactsBulkDelete
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ContactsApi
+     */
+    public googlePersonalContactsBulkDelete(options?: RawAxiosRequestConfig) {
+        return ContactsApiFp(this.configuration).googlePersonalContactsBulkDelete(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -41092,6 +41700,46 @@ export const GoogleSettingsApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
+         * @summary Invoke action GetGoogleUsers
+         * @param {GoogleSettingsGetGoogleUsersRequestBody} googleSettingsGetGoogleUsersRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getGoogleUsers: async (googleSettingsGetGoogleUsersRequestBody: GoogleSettingsGetGoogleUsersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'googleSettingsGetGoogleUsersRequestBody' is not null or undefined
+            assertParamExists('getGoogleUsers', 'googleSettingsGetGoogleUsersRequestBody', googleSettingsGetGoogleUsersRequestBody)
+            const localVarPath = `/GoogleSettings/Pbx.GetGoogleUsers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(googleSettingsGetGoogleUsersRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update GoogleSettings
          * @param {PbxGoogleSettings} pbxGoogleSettings New property values
          * @param {*} [options] Override http request option.
@@ -41156,6 +41804,19 @@ export const GoogleSettingsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke action GetGoogleUsers
+         * @param {GoogleSettingsGetGoogleUsersRequestBody} googleSettingsGetGoogleUsersRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getGoogleUsers(googleSettingsGetGoogleUsersRequestBody: GoogleSettingsGetGoogleUsersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxExternalAccountsPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getGoogleUsers(googleSettingsGetGoogleUsersRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GoogleSettingsApi.getGoogleUsers']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Update GoogleSettings
          * @param {PbxGoogleSettings} pbxGoogleSettings New property values
          * @param {*} [options] Override http request option.
@@ -41186,6 +41847,16 @@ export const GoogleSettingsApiFactory = function (configuration?: Configuration,
          */
         getGoogleSettings(requestParameters: GoogleSettingsApiGetGoogleSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxGoogleSettings> {
             return localVarFp.getGoogleSettings(requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action GetGoogleUsers
+         * @param {GoogleSettingsApiGetGoogleUsersRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getGoogleUsers(requestParameters: GoogleSettingsApiGetGoogleUsersRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxExternalAccountsPage> {
+            return localVarFp.getGoogleUsers(requestParameters.googleSettingsGetGoogleUsersRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -41222,6 +41893,20 @@ export interface GoogleSettingsApiGetGoogleSettingsRequest {
 }
 
 /**
+ * Request parameters for getGoogleUsers operation in GoogleSettingsApi.
+ * @export
+ * @interface GoogleSettingsApiGetGoogleUsersRequest
+ */
+export interface GoogleSettingsApiGetGoogleUsersRequest {
+    /**
+     * Action parameters
+     * @type {GoogleSettingsGetGoogleUsersRequestBody}
+     * @memberof GoogleSettingsApiGetGoogleUsers
+     */
+    readonly googleSettingsGetGoogleUsersRequestBody: GoogleSettingsGetGoogleUsersRequestBody
+}
+
+/**
  * Request parameters for updateGoogleSettings operation in GoogleSettingsApi.
  * @export
  * @interface GoogleSettingsApiUpdateGoogleSettingsRequest
@@ -41252,6 +41937,18 @@ export class GoogleSettingsApi extends BaseAPI {
      */
     public getGoogleSettings(requestParameters: GoogleSettingsApiGetGoogleSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return GoogleSettingsApiFp(this.configuration).getGoogleSettings(requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action GetGoogleUsers
+     * @param {GoogleSettingsApiGetGoogleUsersRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof GoogleSettingsApi
+     */
+    public getGoogleUsers(requestParameters: GoogleSettingsApiGetGoogleUsersRequest, options?: RawAxiosRequestConfig) {
+        return GoogleSettingsApiFp(this.configuration).getGoogleUsers(requestParameters.googleSettingsGetGoogleUsersRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -43141,6 +43838,80 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
         },
         /**
          * 
+         * @summary Invoke function ExportCallerIdRules
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exportCallerIdRules: async ($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/InboundRules/Pbx.ExportCallerIdRules()`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
+            }
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($orderby) {
+                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get entity from InboundRules by key
          * @param {number} id The unique identifier of InboundRule
          * @param {Set<string>} [$select] Select properties to be returned
@@ -43357,6 +44128,26 @@ export const InboundRulesApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke function ExportCallerIdRules
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async exportCallerIdRules($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfInboundRule>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exportCallerIdRules($top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['InboundRulesApi.exportCallerIdRules']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Get entity from InboundRules by key
          * @param {number} id The unique identifier of InboundRule
          * @param {Set<string>} [$select] Select properties to be returned
@@ -43446,6 +44237,16 @@ export const InboundRulesApiFactory = function (configuration?: Configuration, b
         },
         /**
          * 
+         * @summary Invoke function ExportCallerIdRules
+         * @param {InboundRulesApiExportCallerIdRulesRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exportCallerIdRules(requestParameters: InboundRulesApiExportCallerIdRulesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfInboundRule> {
+            return localVarFp.exportCallerIdRules(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get entity from InboundRules by key
          * @param {InboundRulesApiGetInboundRuleRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -43524,6 +44325,69 @@ export interface InboundRulesApiDeleteInboundRuleRequest {
      * @memberof InboundRulesApiDeleteInboundRule
      */
     readonly ifMatch?: string
+}
+
+/**
+ * Request parameters for exportCallerIdRules operation in InboundRulesApi.
+ * @export
+ * @interface InboundRulesApiExportCallerIdRulesRequest
+ */
+export interface InboundRulesApiExportCallerIdRulesRequest {
+    /**
+     * Show only the first n items
+     * @type {number}
+     * @memberof InboundRulesApiExportCallerIdRules
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     * @type {number}
+     * @memberof InboundRulesApiExportCallerIdRules
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     * @type {string}
+     * @memberof InboundRulesApiExportCallerIdRules
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     * @type {string}
+     * @memberof InboundRulesApiExportCallerIdRules
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     * @type {boolean}
+     * @memberof InboundRulesApiExportCallerIdRules
+     */
+    readonly $count?: boolean
+
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof InboundRulesApiExportCallerIdRules
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Order items by property values
+     * @type {Set<string>}
+     * @memberof InboundRulesApiExportCallerIdRules
+     */
+    readonly $orderby?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof InboundRulesApiExportCallerIdRules
+     */
+    readonly $expand?: Set<string>
 }
 
 /**
@@ -43679,6 +44543,18 @@ export class InboundRulesApi extends BaseAPI {
      */
     public deleteInboundRule(requestParameters: InboundRulesApiDeleteInboundRuleRequest, options?: RawAxiosRequestConfig) {
         return InboundRulesApiFp(this.configuration).deleteInboundRule(requestParameters.id, requestParameters.ifMatch, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function ExportCallerIdRules
+     * @param {InboundRulesApiExportCallerIdRulesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof InboundRulesApi
+     */
+    public exportCallerIdRules(requestParameters: InboundRulesApiExportCallerIdRulesRequest = {}, options?: RawAxiosRequestConfig) {
+        return InboundRulesApiFp(this.configuration).exportCallerIdRules(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -44657,6 +45533,46 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
         },
         /**
          * 
+         * @summary Invoke action GetM365Users
+         * @param {Microsoft365IntegrationGetM365UsersRequestBody} microsoft365IntegrationGetM365UsersRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getM365Users: async (microsoft365IntegrationGetM365UsersRequestBody: Microsoft365IntegrationGetM365UsersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'microsoft365IntegrationGetM365UsersRequestBody' is not null or undefined
+            assertParamExists('getM365Users', 'microsoft365IntegrationGetM365UsersRequestBody', microsoft365IntegrationGetM365UsersRequestBody)
+            const localVarPath = `/Microsoft365Integration/Pbx.GetM365Users`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(microsoft365IntegrationGetM365UsersRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke function GetMicrosoft365Directory
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -44761,46 +45677,6 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Invoke action GetUsers
-         * @param {Microsoft365IntegrationGetUsersRequestBody} microsoft365IntegrationGetUsersRequestBody Action parameters
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUsers: async (microsoft365IntegrationGetUsersRequestBody: Microsoft365IntegrationGetUsersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'microsoft365IntegrationGetUsersRequestBody' is not null or undefined
-            assertParamExists('getUsers', 'microsoft365IntegrationGetUsersRequestBody', microsoft365IntegrationGetUsersRequestBody)
-            const localVarPath = `/Microsoft365Integration/Pbx.GetUsers`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(microsoft365IntegrationGetUsersRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -44992,6 +45868,19 @@ export const Microsoft365IntegrationApiFp = function(configuration?: Configurati
         },
         /**
          * 
+         * @summary Invoke action GetM365Users
+         * @param {Microsoft365IntegrationGetM365UsersRequestBody} microsoft365IntegrationGetM365UsersRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getM365Users(microsoft365IntegrationGetM365UsersRequestBody: Microsoft365IntegrationGetM365UsersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxExternalAccountsPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getM365Users(microsoft365IntegrationGetM365UsersRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['Microsoft365IntegrationApi.getM365Users']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke function GetMicrosoft365Directory
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -45026,19 +45915,6 @@ export const Microsoft365IntegrationApiFp = function(configuration?: Configurati
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMicrosoftAccessToken(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['Microsoft365IntegrationApi.getMicrosoftAccessToken']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Invoke action GetUsers
-         * @param {Microsoft365IntegrationGetUsersRequestBody} microsoft365IntegrationGetUsersRequestBody Action parameters
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getUsers(microsoft365IntegrationGetUsersRequestBody: Microsoft365IntegrationGetUsersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxMicrosoft365UsersPage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUsers(microsoft365IntegrationGetUsersRequestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['Microsoft365IntegrationApi.getUsers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -45122,6 +45998,16 @@ export const Microsoft365IntegrationApiFactory = function (configuration?: Confi
         },
         /**
          * 
+         * @summary Invoke action GetM365Users
+         * @param {Microsoft365IntegrationApiGetM365UsersRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getM365Users(requestParameters: Microsoft365IntegrationApiGetM365UsersRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxExternalAccountsPage> {
+            return localVarFp.getM365Users(requestParameters.microsoft365IntegrationGetM365UsersRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Invoke function GetMicrosoft365Directory
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -45147,16 +46033,6 @@ export const Microsoft365IntegrationApiFactory = function (configuration?: Confi
          */
         getMicrosoftAccessToken(options?: RawAxiosRequestConfig): AxiosPromise<GenerateApiKey200Response> {
             return localVarFp.getMicrosoftAccessToken(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Invoke action GetUsers
-         * @param {Microsoft365IntegrationApiGetUsersRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUsers(requestParameters: Microsoft365IntegrationApiGetUsersRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxMicrosoft365UsersPage> {
-            return localVarFp.getUsers(requestParameters.microsoft365IntegrationGetUsersRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -45214,6 +46090,20 @@ export interface Microsoft365IntegrationApiAuthorizePresenceRequest {
 }
 
 /**
+ * Request parameters for getM365Users operation in Microsoft365IntegrationApi.
+ * @export
+ * @interface Microsoft365IntegrationApiGetM365UsersRequest
+ */
+export interface Microsoft365IntegrationApiGetM365UsersRequest {
+    /**
+     * Action parameters
+     * @type {Microsoft365IntegrationGetM365UsersRequestBody}
+     * @memberof Microsoft365IntegrationApiGetM365Users
+     */
+    readonly microsoft365IntegrationGetM365UsersRequestBody: Microsoft365IntegrationGetM365UsersRequestBody
+}
+
+/**
  * Request parameters for getMicrosoft365Integration operation in Microsoft365IntegrationApi.
  * @export
  * @interface Microsoft365IntegrationApiGetMicrosoft365IntegrationRequest
@@ -45232,20 +46122,6 @@ export interface Microsoft365IntegrationApiGetMicrosoft365IntegrationRequest {
      * @memberof Microsoft365IntegrationApiGetMicrosoft365Integration
      */
     readonly $expand?: Set<string>
-}
-
-/**
- * Request parameters for getUsers operation in Microsoft365IntegrationApi.
- * @export
- * @interface Microsoft365IntegrationApiGetUsersRequest
- */
-export interface Microsoft365IntegrationApiGetUsersRequest {
-    /**
-     * Action parameters
-     * @type {Microsoft365IntegrationGetUsersRequestBody}
-     * @memberof Microsoft365IntegrationApiGetUsers
-     */
-    readonly microsoft365IntegrationGetUsersRequestBody: Microsoft365IntegrationGetUsersRequestBody
 }
 
 /**
@@ -45308,6 +46184,18 @@ export class Microsoft365IntegrationApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke action GetM365Users
+     * @param {Microsoft365IntegrationApiGetM365UsersRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Microsoft365IntegrationApi
+     */
+    public getM365Users(requestParameters: Microsoft365IntegrationApiGetM365UsersRequest, options?: RawAxiosRequestConfig) {
+        return Microsoft365IntegrationApiFp(this.configuration).getM365Users(requestParameters.microsoft365IntegrationGetM365UsersRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Invoke function GetMicrosoft365Directory
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -45338,18 +46226,6 @@ export class Microsoft365IntegrationApi extends BaseAPI {
      */
     public getMicrosoftAccessToken(options?: RawAxiosRequestConfig) {
         return Microsoft365IntegrationApiFp(this.configuration).getMicrosoftAccessToken(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Invoke action GetUsers
-     * @param {Microsoft365IntegrationApiGetUsersRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof Microsoft365IntegrationApi
-     */
-    public getUsers(requestParameters: Microsoft365IntegrationApiGetUsersRequest, options?: RawAxiosRequestConfig) {
-        return Microsoft365IntegrationApiFp(this.configuration).getUsers(requestParameters.microsoft365IntegrationGetUsersRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -48649,7 +49525,7 @@ export const NetworkSettingsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getIfaces($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAudioFiles200Response>> {
+        async getIfaces($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFiles200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getIfaces($top, $skip, $search, $filter, $count, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['NetworkSettingsApi.getIfaces']?.[localVarOperationServerIndex]?.url;
@@ -48699,7 +49575,7 @@ export const NetworkSettingsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getIfaces(requestParameters: NetworkSettingsApiGetIfacesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<GetAudioFiles200Response> {
+        getIfaces(requestParameters: NetworkSettingsApiGetIfacesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<GetFiles200Response> {
             return localVarFp.getIfaces(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(axios, basePath));
         },
         /**
@@ -52172,6 +53048,46 @@ export const PeersApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Invoke action RetreivePeersByNumbers
+         * @param {PeersRetreivePeersByNumbersRequestBody} peersRetreivePeersByNumbersRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retreivePeersByNumbers: async (peersRetreivePeersByNumbersRequestBody: PeersRetreivePeersByNumbersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'peersRetreivePeersByNumbersRequestBody' is not null or undefined
+            assertParamExists('retreivePeersByNumbers', 'peersRetreivePeersByNumbersRequestBody', peersRetreivePeersByNumbersRequestBody)
+            const localVarPath = `/Peers/Pbx.RetreivePeersByNumbers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(peersRetreivePeersByNumbersRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -52235,6 +53151,19 @@ export const PeersApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['PeersApi.listPeer']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @summary Invoke action RetreivePeersByNumbers
+         * @param {PeersRetreivePeersByNumbersRequestBody} peersRetreivePeersByNumbersRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retreivePeersByNumbers(peersRetreivePeersByNumbersRequestBody: PeersRetreivePeersByNumbersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfPeer>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retreivePeersByNumbers(peersRetreivePeersByNumbersRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PeersApi.retreivePeersByNumbers']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -52274,6 +53203,16 @@ export const PeersApiFactory = function (configuration?: Configuration, basePath
          */
         listPeer(requestParameters: PeersApiListPeerRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxPeerCollectionResponse> {
             return localVarFp.listPeer(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action RetreivePeersByNumbers
+         * @param {PeersApiRetreivePeersByNumbersRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retreivePeersByNumbers(requestParameters: PeersApiRetreivePeersByNumbersRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfPeer> {
+            return localVarFp.retreivePeersByNumbers(requestParameters.peersRetreivePeersByNumbersRequestBody, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -52419,6 +53358,20 @@ export interface PeersApiListPeerRequest {
 }
 
 /**
+ * Request parameters for retreivePeersByNumbers operation in PeersApi.
+ * @export
+ * @interface PeersApiRetreivePeersByNumbersRequest
+ */
+export interface PeersApiRetreivePeersByNumbersRequest {
+    /**
+     * Action parameters
+     * @type {PeersRetreivePeersByNumbersRequestBody}
+     * @memberof PeersApiRetreivePeersByNumbers
+     */
+    readonly peersRetreivePeersByNumbersRequestBody: PeersRetreivePeersByNumbersRequestBody
+}
+
+/**
  * PeersApi - object-oriented interface
  * @export
  * @class PeersApi
@@ -52459,6 +53412,18 @@ export class PeersApi extends BaseAPI {
      */
     public listPeer(requestParameters: PeersApiListPeerRequest = {}, options?: RawAxiosRequestConfig) {
         return PeersApiFp(this.configuration).listPeer(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action RetreivePeersByNumbers
+     * @param {PeersApiRetreivePeersByNumbersRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PeersApi
+     */
+    public retreivePeersByNumbers(requestParameters: PeersApiRetreivePeersByNumbersRequest, options?: RawAxiosRequestConfig) {
+        return PeersApiFp(this.configuration).retreivePeersByNumbers(requestParameters.peersRetreivePeersByNumbersRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -67072,224 +68037,6 @@ export class ReportExtensionsStatisticsByRingGroupsApi extends BaseAPI {
 
 
 /**
- * ReportGroupApi - axios parameter creator
- * @export
- */
-export const ReportGroupApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Get entities from ReportGroup
-         * @param {number} [$top] Show only the first n items
-         * @param {number} [$skip] Skip the first n items
-         * @param {string} [$search] Search items by search phrases
-         * @param {string} [$filter] Filter items by property values
-         * @param {boolean} [$count] Include count of items
-         * @param {Set<string>} [$orderby] Order items by property values
-         * @param {Set<string>} [$select] Select properties to be returned
-         * @param {Set<string>} [$expand] Expand related entities
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        listReportGroup: async ($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $orderby?: Set<string>, $select?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/ReportGroup`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            if ($top !== undefined) {
-                localVarQueryParameter['$top'] = $top;
-            }
-
-            if ($skip !== undefined) {
-                localVarQueryParameter['$skip'] = $skip;
-            }
-
-            if ($search !== undefined) {
-                localVarQueryParameter['$search'] = $search;
-            }
-
-            if ($filter !== undefined) {
-                localVarQueryParameter['$filter'] = $filter;
-            }
-
-            if ($count !== undefined) {
-                localVarQueryParameter['$count'] = $count;
-            }
-
-            if ($orderby) {
-                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
-            }
-
-            if ($select) {
-                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
-            }
-
-            if ($expand) {
-                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * ReportGroupApi - functional programming interface
- * @export
- */
-export const ReportGroupApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ReportGroupApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @summary Get entities from ReportGroup
-         * @param {number} [$top] Show only the first n items
-         * @param {number} [$skip] Skip the first n items
-         * @param {string} [$search] Search items by search phrases
-         * @param {string} [$filter] Filter items by property values
-         * @param {boolean} [$count] Include count of items
-         * @param {Set<string>} [$orderby] Order items by property values
-         * @param {Set<string>} [$select] Select properties to be returned
-         * @param {Set<string>} [$expand] Expand related entities
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async listReportGroup($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $orderby?: Set<string>, $select?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxReportGroupCollectionResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listReportGroup($top, $skip, $search, $filter, $count, $orderby, $select, $expand, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ReportGroupApi.listReportGroup']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * ReportGroupApi - factory interface
- * @export
- */
-export const ReportGroupApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ReportGroupApiFp(configuration)
-    return {
-        /**
-         * 
-         * @summary Get entities from ReportGroup
-         * @param {ReportGroupApiListReportGroupRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        listReportGroup(requestParameters: ReportGroupApiListReportGroupRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxReportGroupCollectionResponse> {
-            return localVarFp.listReportGroup(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for listReportGroup operation in ReportGroupApi.
- * @export
- * @interface ReportGroupApiListReportGroupRequest
- */
-export interface ReportGroupApiListReportGroupRequest {
-    /**
-     * Show only the first n items
-     * @type {number}
-     * @memberof ReportGroupApiListReportGroup
-     */
-    readonly $top?: number
-
-    /**
-     * Skip the first n items
-     * @type {number}
-     * @memberof ReportGroupApiListReportGroup
-     */
-    readonly $skip?: number
-
-    /**
-     * Search items by search phrases
-     * @type {string}
-     * @memberof ReportGroupApiListReportGroup
-     */
-    readonly $search?: string
-
-    /**
-     * Filter items by property values
-     * @type {string}
-     * @memberof ReportGroupApiListReportGroup
-     */
-    readonly $filter?: string
-
-    /**
-     * Include count of items
-     * @type {boolean}
-     * @memberof ReportGroupApiListReportGroup
-     */
-    readonly $count?: boolean
-
-    /**
-     * Order items by property values
-     * @type {Set<string>}
-     * @memberof ReportGroupApiListReportGroup
-     */
-    readonly $orderby?: Set<string>
-
-    /**
-     * Select properties to be returned
-     * @type {Set<string>}
-     * @memberof ReportGroupApiListReportGroup
-     */
-    readonly $select?: Set<string>
-
-    /**
-     * Expand related entities
-     * @type {Set<string>}
-     * @memberof ReportGroupApiListReportGroup
-     */
-    readonly $expand?: Set<string>
-}
-
-/**
- * ReportGroupApi - object-oriented interface
- * @export
- * @class ReportGroupApi
- * @extends {BaseAPI}
- */
-export class ReportGroupApi extends BaseAPI {
-    /**
-     * 
-     * @summary Get entities from ReportGroup
-     * @param {ReportGroupApiListReportGroupRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ReportGroupApi
-     */
-    public listReportGroup(requestParameters: ReportGroupApiListReportGroupRequest = {}, options?: RawAxiosRequestConfig) {
-        return ReportGroupApiFp(this.configuration).listReportGroup(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
  * ReportInboundRulesApi - axios parameter creator
  * @export
  */
@@ -81196,6 +81943,46 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
         },
         /**
          * 
+         * @summary Invoke action FinalizeTrunkProvisioning
+         * @param {TrunksFinalizeTrunkProvisioningRequestBody} trunksFinalizeTrunkProvisioningRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        finalizeTrunkProvisioning: async (trunksFinalizeTrunkProvisioningRequestBody: TrunksFinalizeTrunkProvisioningRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'trunksFinalizeTrunkProvisioningRequestBody' is not null or undefined
+            assertParamExists('finalizeTrunkProvisioning', 'trunksFinalizeTrunkProvisioningRequestBody', trunksFinalizeTrunkProvisioningRequestBody)
+            const localVarPath = `/Trunks/Pbx.FinalizeTrunkProvisioning`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(trunksFinalizeTrunkProvisioningRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke function GetFirstAvailableTrunkNumber
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -81222,6 +82009,46 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action GetProviderAvailablePhoneNumbers
+         * @param {TrunksGetProviderAvailablePhoneNumbersRequestBody} trunksGetProviderAvailablePhoneNumbersRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProviderAvailablePhoneNumbers: async (trunksGetProviderAvailablePhoneNumbersRequestBody: TrunksGetProviderAvailablePhoneNumbersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'trunksGetProviderAvailablePhoneNumbersRequestBody' is not null or undefined
+            assertParamExists('getProviderAvailablePhoneNumbers', 'trunksGetProviderAvailablePhoneNumbersRequestBody', trunksGetProviderAvailablePhoneNumbersRequestBody)
+            const localVarPath = `/Trunks/Pbx.GetProviderAvailablePhoneNumbers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(trunksGetProviderAvailablePhoneNumbersRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -81496,46 +82323,6 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
         },
         /**
          * 
-         * @summary Invoke action ProvisionTrunk
-         * @param {TrunksProvisionTrunkRequestBody} trunksProvisionTrunkRequestBody Action parameters
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        provisionTrunk: async (trunksProvisionTrunkRequestBody: TrunksProvisionTrunkRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'trunksProvisionTrunkRequestBody' is not null or undefined
-            assertParamExists('provisionTrunk', 'trunksProvisionTrunkRequestBody', trunksProvisionTrunkRequestBody)
-            const localVarPath = `/Trunks/Pbx.ProvisionTrunk`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(trunksProvisionTrunkRequestBody, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Invoke action RefreshRegistration
          * @param {TrunksRefreshRegistrationRequestBody} trunksRefreshRegistrationRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -81710,6 +82497,19 @@ export const TrunksApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke action FinalizeTrunkProvisioning
+         * @param {TrunksFinalizeTrunkProvisioningRequestBody} trunksFinalizeTrunkProvisioningRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async finalizeTrunkProvisioning(trunksFinalizeTrunkProvisioningRequestBody: TrunksFinalizeTrunkProvisioningRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxTrunk>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.finalizeTrunkProvisioning(trunksFinalizeTrunkProvisioningRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrunksApi.finalizeTrunkProvisioning']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke function GetFirstAvailableTrunkNumber
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -81718,6 +82518,19 @@ export const TrunksApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFirstAvailableTrunkNumber(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TrunksApi.getFirstAvailableTrunkNumber']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action GetProviderAvailablePhoneNumbers
+         * @param {TrunksGetProviderAvailablePhoneNumbersRequestBody} trunksGetProviderAvailablePhoneNumbersRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProviderAvailablePhoneNumbers(trunksGetProviderAvailablePhoneNumbersRequestBody: TrunksGetProviderAvailablePhoneNumbersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxAutoProvisionTrunk>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProviderAvailablePhoneNumbers(trunksGetProviderAvailablePhoneNumbersRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TrunksApi.getProviderAvailablePhoneNumbers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -81807,19 +82620,6 @@ export const TrunksApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Invoke action ProvisionTrunk
-         * @param {TrunksProvisionTrunkRequestBody} trunksProvisionTrunkRequestBody Action parameters
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async provisionTrunk(trunksProvisionTrunkRequestBody: TrunksProvisionTrunkRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxProvisionedTrunk>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.provisionTrunk(trunksProvisionTrunkRequestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['TrunksApi.provisionTrunk']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary Invoke action RefreshRegistration
          * @param {TrunksRefreshRegistrationRequestBody} trunksRefreshRegistrationRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -81900,12 +82700,32 @@ export const TrunksApiFactory = function (configuration?: Configuration, basePat
         },
         /**
          * 
+         * @summary Invoke action FinalizeTrunkProvisioning
+         * @param {TrunksApiFinalizeTrunkProvisioningRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        finalizeTrunkProvisioning(requestParameters: TrunksApiFinalizeTrunkProvisioningRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxTrunk> {
+            return localVarFp.finalizeTrunkProvisioning(requestParameters.trunksFinalizeTrunkProvisioningRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Invoke function GetFirstAvailableTrunkNumber
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getFirstAvailableTrunkNumber(options?: RawAxiosRequestConfig): AxiosPromise<PbxFirstAvailableNumber> {
             return localVarFp.getFirstAvailableTrunkNumber(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action GetProviderAvailablePhoneNumbers
+         * @param {TrunksApiGetProviderAvailablePhoneNumbersRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProviderAvailablePhoneNumbers(requestParameters: TrunksApiGetProviderAvailablePhoneNumbersRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxAutoProvisionTrunk> {
+            return localVarFp.getProviderAvailablePhoneNumbers(requestParameters.trunksGetProviderAvailablePhoneNumbersRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -81964,16 +82784,6 @@ export const TrunksApiFactory = function (configuration?: Configuration, basePat
          */
         listTrunk(requestParameters: TrunksApiListTrunkRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxTrunkCollectionResponse> {
             return localVarFp.listTrunk(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Invoke action ProvisionTrunk
-         * @param {TrunksApiProvisionTrunkRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        provisionTrunk(requestParameters: TrunksApiProvisionTrunkRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxProvisionedTrunk> {
-            return localVarFp.provisionTrunk(requestParameters.trunksProvisionTrunkRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -82055,6 +82865,34 @@ export interface TrunksApiExportTrunkRequest {
      * @memberof TrunksApiExportTrunk
      */
     readonly id: number
+}
+
+/**
+ * Request parameters for finalizeTrunkProvisioning operation in TrunksApi.
+ * @export
+ * @interface TrunksApiFinalizeTrunkProvisioningRequest
+ */
+export interface TrunksApiFinalizeTrunkProvisioningRequest {
+    /**
+     * Action parameters
+     * @type {TrunksFinalizeTrunkProvisioningRequestBody}
+     * @memberof TrunksApiFinalizeTrunkProvisioning
+     */
+    readonly trunksFinalizeTrunkProvisioningRequestBody: TrunksFinalizeTrunkProvisioningRequestBody
+}
+
+/**
+ * Request parameters for getProviderAvailablePhoneNumbers operation in TrunksApi.
+ * @export
+ * @interface TrunksApiGetProviderAvailablePhoneNumbersRequest
+ */
+export interface TrunksApiGetProviderAvailablePhoneNumbersRequest {
+    /**
+     * Action parameters
+     * @type {TrunksGetProviderAvailablePhoneNumbersRequestBody}
+     * @memberof TrunksApiGetProviderAvailablePhoneNumbers
+     */
+    readonly trunksGetProviderAvailablePhoneNumbersRequestBody: TrunksGetProviderAvailablePhoneNumbersRequestBody
 }
 
 /**
@@ -82177,20 +83015,6 @@ export interface TrunksApiListTrunkRequest {
 }
 
 /**
- * Request parameters for provisionTrunk operation in TrunksApi.
- * @export
- * @interface TrunksApiProvisionTrunkRequest
- */
-export interface TrunksApiProvisionTrunkRequest {
-    /**
-     * Action parameters
-     * @type {TrunksProvisionTrunkRequestBody}
-     * @memberof TrunksApiProvisionTrunk
-     */
-    readonly trunksProvisionTrunkRequestBody: TrunksProvisionTrunkRequestBody
-}
-
-/**
  * Request parameters for refreshRegistration operation in TrunksApi.
  * @export
  * @interface TrunksApiRefreshRegistrationRequest
@@ -82284,6 +83108,18 @@ export class TrunksApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke action FinalizeTrunkProvisioning
+     * @param {TrunksApiFinalizeTrunkProvisioningRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrunksApi
+     */
+    public finalizeTrunkProvisioning(requestParameters: TrunksApiFinalizeTrunkProvisioningRequest, options?: RawAxiosRequestConfig) {
+        return TrunksApiFp(this.configuration).finalizeTrunkProvisioning(requestParameters.trunksFinalizeTrunkProvisioningRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Invoke function GetFirstAvailableTrunkNumber
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -82291,6 +83127,18 @@ export class TrunksApi extends BaseAPI {
      */
     public getFirstAvailableTrunkNumber(options?: RawAxiosRequestConfig) {
         return TrunksApiFp(this.configuration).getFirstAvailableTrunkNumber(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action GetProviderAvailablePhoneNumbers
+     * @param {TrunksApiGetProviderAvailablePhoneNumbersRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TrunksApi
+     */
+    public getProviderAvailablePhoneNumbers(requestParameters: TrunksApiGetProviderAvailablePhoneNumbersRequest, options?: RawAxiosRequestConfig) {
+        return TrunksApiFp(this.configuration).getProviderAvailablePhoneNumbers(requestParameters.trunksGetProviderAvailablePhoneNumbersRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -82361,18 +83209,6 @@ export class TrunksApi extends BaseAPI {
      */
     public listTrunk(requestParameters: TrunksApiListTrunkRequest = {}, options?: RawAxiosRequestConfig) {
         return TrunksApiFp(this.configuration).listTrunk(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Invoke action ProvisionTrunk
-     * @param {TrunksApiProvisionTrunkRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof TrunksApi
-     */
-    public provisionTrunk(requestParameters: TrunksApiProvisionTrunkRequest, options?: RawAxiosRequestConfig) {
-        return TrunksApiFp(this.configuration).provisionTrunk(requestParameters.trunksProvisionTrunkRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -84882,7 +85718,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDuplicatedEmails(usersGetDuplicatedEmailsRequestBody: UsersGetDuplicatedEmailsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAudioFiles200Response>> {
+        async getDuplicatedEmails(usersGetDuplicatedEmailsRequestBody: UsersGetDuplicatedEmailsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFiles200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getDuplicatedEmails(usersGetDuplicatedEmailsRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UsersApi.getDuplicatedEmails']?.[localVarOperationServerIndex]?.url;
@@ -85365,7 +86201,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDuplicatedEmails(requestParameters: UsersApiGetDuplicatedEmailsRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetAudioFiles200Response> {
+        getDuplicatedEmails(requestParameters: UsersApiGetDuplicatedEmailsRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetFiles200Response> {
             return localVarFp.getDuplicatedEmails(requestParameters.usersGetDuplicatedEmailsRequestBody, options).then((request) => request(axios, basePath));
         },
         /**

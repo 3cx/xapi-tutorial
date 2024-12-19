@@ -1328,13 +1328,13 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
-  '/CallFlowApps({Id})/Pbx.GetAudioFiles()':
-    description: Provides operations to call the GetAudioFiles method.
+  '/CallFlowApps({Id})/Pbx.GetFiles()':
+    description: Provides operations to call the GetFiles method.
     get:
       tags:
         - CallFlowApps
-      summary: Invoke function GetAudioFiles
-      operationId: GetAudioFiles
+      summary: Invoke function GetFiles
+      operationId: GetFiles
       parameters:
         - name: Id
           in: path
@@ -1369,13 +1369,13 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
-  '/CallFlowApps({Id})/Pbx.DeleteAudioFile':
-    description: Provides operations to call the DeleteAudioFile method.
+  '/CallFlowApps({Id})/Pbx.DeleteFile':
+    description: Provides operations to call the DeleteFile method.
     post:
       tags:
         - CallFlowApps
-      summary: Invoke action DeleteAudioFile
-      operationId: DeleteAudioFile
+      summary: Invoke action DeleteFile
+      operationId: DeleteFile
       parameters:
         - name: Id
           in: path
@@ -1392,7 +1392,7 @@ paths:
         content:
           application/json:
             schema:
-              title: CallFlowAppsCallFlowAppDeleteAudioFileRequestBody
+              title: CallFlowAppsCallFlowAppDeleteFileRequestBody
               type: object
               properties:
                 filename:
@@ -2127,6 +2127,19 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
+  /ConferenceSettings/Pbx.DeleteApiKey:
+    description: Provides operations to call the DeleteApiKey method.
+    post:
+      tags:
+        - ConferenceSettings
+      summary: Invoke action DeleteApiKey
+      operationId: DeleteApiKey
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /ConferenceSettings:
     description: Provides operations to manage the ConferenceSettings singleton.
     get:
@@ -2544,6 +2557,19 @@ paths:
         - Contacts
       summary: Invoke action Office365PersonalContactsBulkDelete
       operationId: Office365PersonalContactsBulkDelete
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /Contacts/Pbx.GooglePersonalContactsBulkDelete:
+    description: Provides operations to call the GooglePersonalContactsBulkDelete method.
+    post:
+      tags:
+        - Contacts
+      summary: Invoke action GooglePersonalContactsBulkDelete
+      operationId: GooglePersonalContactsBulkDelete
       responses:
         '204':
           description: Success
@@ -5466,6 +5492,37 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  /GoogleSettings/Pbx.GetGoogleUsers:
+    description: Provides operations to call the GetGoogleUsers method.
+    post:
+      tags:
+        - GoogleSettings
+      summary: Invoke action GetGoogleUsers
+      operationId: GetGoogleUsers
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: GoogleSettingsGetGoogleUsersRequestBody
+              type: object
+              properties:
+                options:
+                  anyOf:
+                    - $ref: '#/components/schemas/Pbx.UsersRequestOptions'
+                    - type: object
+                      nullable: true
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.ExternalAccountsPage'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   '/Groups({Id})':
     description: Provides operations to manage the collection of Group entities.
     get:
@@ -6157,6 +6214,68 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
+  /InboundRules/Pbx.ExportCallerIdRules():
+    description: Provides operations to call the ExportCallerIdRules method.
+    get:
+      tags:
+        - InboundRules
+      summary: Invoke function ExportCallerIdRules
+      operationId: ExportCallerIdRules
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of InboundRule
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pbx.InboundRule'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
   /LicenseStatus/Pbx.RefreshLicenseStatus:
     description: Provides operations to call the RefreshLicenseStatus method.
     post:
@@ -6533,19 +6652,19 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
-  /Microsoft365Integration/Pbx.GetUsers:
-    description: Provides operations to call the GetUsers method.
+  /Microsoft365Integration/Pbx.GetM365Users:
+    description: Provides operations to call the GetM365Users method.
     post:
       tags:
         - Microsoft365Integration
-      summary: Invoke action GetUsers
-      operationId: GetUsers
+      summary: Invoke action GetM365Users
+      operationId: GetM365Users
       requestBody:
         description: Action parameters
         content:
           application/json:
             schema:
-              title: Microsoft365IntegrationGetUsersRequestBody
+              title: Microsoft365IntegrationGetM365UsersRequestBody
               type: object
               properties:
                 options:
@@ -6560,7 +6679,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pbx.Microsoft365UsersPage'
+                $ref: '#/components/schemas/Pbx.ExternalAccountsPage'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -6598,7 +6717,7 @@ paths:
                       value:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Pbx.Microsoft365User'
+                          $ref: '#/components/schemas/Pbx.ExternalAccount'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -8478,6 +8597,43 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
+  /Peers/Pbx.RetreivePeersByNumbers:
+    description: Provides operations to call the RetreivePeersByNumbers method.
+    post:
+      tags:
+        - Peers
+      summary: Invoke action RetreivePeersByNumbers
+      operationId: RetreivePeersByNumbers
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: PeersRetreivePeersByNumbersRequestBody
+              type: object
+              properties:
+                peersRequest:
+                  $ref: '#/components/schemas/Pbx.RetreivePeersRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of Peer
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pbx.Peer'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /PhoneBookSettings:
     description: Provides operations to manage the PhoneBookSettings singleton.
     get:
@@ -13281,54 +13437,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
-  /ReportGroup:
-    description: Provides operations to manage the collection of ReportGroup entities.
-    get:
-      tags:
-        - ReportGroup
-      summary: Get entities from ReportGroup
-      operationId: ListReportGroup
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          $ref: '#/components/responses/Pbx.ReportGroupCollectionResponse'
-        default:
-          $ref: '#/components/responses/error'
   /ReportInboundRules/Pbx.GetInboundRulesData():
     description: Provides operations to call the GetInboundRulesData method.
     get:
@@ -17960,19 +18068,19 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
-  /Trunks/Pbx.ProvisionTrunk:
-    description: Provides operations to call the ProvisionTrunk method.
+  /Trunks/Pbx.GetProviderAvailablePhoneNumbers:
+    description: Provides operations to call the GetProviderAvailablePhoneNumbers method.
     post:
       tags:
         - Trunks
-      summary: Invoke action ProvisionTrunk
-      operationId: ProvisionTrunk
+      summary: Invoke action GetProviderAvailablePhoneNumbers
+      operationId: GetProviderAvailablePhoneNumbers
       requestBody:
         description: Action parameters
         content:
           application/json:
             schema:
-              title: TrunksProvisionTrunkRequestBody
+              title: TrunksGetProviderAvailablePhoneNumbersRequestBody
               type: object
               properties:
                 model:
@@ -17984,7 +18092,35 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pbx.ProvisionedTrunk'
+                $ref: '#/components/schemas/Pbx.AutoProvisionTrunk'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /Trunks/Pbx.FinalizeTrunkProvisioning:
+    description: Provides operations to call the FinalizeTrunkProvisioning method.
+    post:
+      tags:
+        - Trunks
+      summary: Invoke action FinalizeTrunkProvisioning
+      operationId: FinalizeTrunkProvisioning
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: TrunksFinalizeTrunkProvisioningRequestBody
+              type: object
+              properties:
+                model:
+                  $ref: '#/components/schemas/Pbx.CreateTrunk'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.Trunk'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -18643,27 +18779,8 @@ paths:
               title: UsersRegeneratePasswordsRequestBody
               type: object
               properties:
-                SipAuth:
-                  type: boolean
-                  default: false
-                WebclientPassword:
-                  type: boolean
-                  default: false
-                VoicemailPIN:
-                  type: boolean
-                  default: false
-                DeskphonePassword:
-                  type: boolean
-                  default: false
-                SendWelcomeEmail:
-                  type: boolean
-                  default: false
-                ConfigurationLink:
-                  type: boolean
-                  default: false
-                RpsKey:
-                  type: boolean
-                  default: false
+                opts:
+                  $ref: '#/components/schemas/Pbx.RegenerateOptions'
                 Ids:
                   type: array
                   items:
@@ -20024,6 +20141,9 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.Destination'
           nullable: true
+        GreetingFile:
+          type: string
+          nullable: true
         Groups:
           type: array
           items:
@@ -20245,6 +20365,9 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.Destination'
           nullable: true
+        GreetingFile:
+          type: string
+          nullable: true
         Groups:
           type: array
           items:
@@ -20381,6 +20504,7 @@ components:
           type: string
           nullable: true
         Blfs:
+          maxLength: 20480
           type: string
           nullable: true
         BreakTime:
@@ -20451,6 +20575,12 @@ components:
           items:
             $ref: '#/components/schemas/Pbx.ForwardingProfile'
           x-ms-navigationProperty: true
+        GoogleCalendarEnabled:
+          type: boolean
+          nullable: true
+        GoogleContactsEnabled:
+          type: boolean
+          nullable: true
         GoogleSignInEnabled:
           type: boolean
           nullable: true
@@ -20563,6 +20693,9 @@ components:
         RecordCalls:
           type: boolean
           nullable: true
+        RecordEmailNotify:
+          type: boolean
+          nullable: true
         RecordExternalCallsOnly:
           type: boolean
           nullable: true
@@ -20642,6 +20775,24 @@ components:
             - $ref: '#/components/schemas/Pbx.CallParticipant'
           nullable: true
           x-ms-navigationProperty: true
+    Pbx.RegenerateOptions:
+      title: RegenerateOptions
+      type: object
+      properties:
+        ConfigurationLink:
+          type: boolean
+        DeskphonePassword:
+          type: boolean
+        RpsKey:
+          type: boolean
+        SendWelcomeEmail:
+          type: boolean
+        SipAuth:
+          type: boolean
+        VoicemailPIN:
+          type: boolean
+        WebclientPassword:
+          type: boolean
     Pbx.PhoneRegistrar:
       title: PhoneRegistrar
       type: object
@@ -20697,6 +20848,7 @@ components:
           type: boolean
           nullable: true
         Blfs:
+          maxLength: 10240
           type: string
           nullable: true
         CallScreening:
@@ -20730,6 +20882,12 @@ components:
           items:
             $ref: '#/components/schemas/Pbx.ForwardingProfile'
           x-ms-navigationProperty: true
+        GoogleCalendarEnabled:
+          type: boolean
+          nullable: true
+        GoogleContactsEnabled:
+          type: boolean
+          nullable: true
         GoogleSignInEnabled:
           type: boolean
           nullable: true
@@ -20792,6 +20950,9 @@ components:
           type: string
           nullable: true
         RecordCalls:
+          type: boolean
+          nullable: true
+        RecordEmailNotify:
           type: boolean
           nullable: true
         RecordExternalCallsOnly:
@@ -21424,6 +21585,7 @@ components:
           type: string
           nullable: true
         Value:
+          maxLength: 131072
           type: string
           nullable: true
     Pbx.DNProperty:
@@ -21442,6 +21604,7 @@ components:
         Name:
           type: string
         Value:
+          maxLength: 131072
           type: string
     Pbx.Peer:
       title: Peer
@@ -21475,6 +21638,15 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.PeerType'
           nullable: true
+    Pbx.RetreivePeersRequest:
+      title: RetreivePeersRequest
+      type: object
+      properties:
+        DnNumbers:
+          type: array
+          items:
+            type: string
+            nullable: true
     Pbx.Trunk:
       title: Trunk
       type: object
@@ -21483,7 +21655,9 @@ components:
           type: string
           nullable: true
         AuthPassword:
-          type: string
+          title: Pbx.ConcealedPassword
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
           nullable: true
         Certificate:
           type: string
@@ -21659,17 +21833,43 @@ components:
       title: CreateTrunk
       type: object
       properties:
-        Name:
-          type: string
-        TrunkType:
-          $ref: '#/components/schemas/Pbx.TrunkType'
-    Pbx.ProvisionedTrunk:
-      title: ProvisionedTrunk
-      type: object
-      properties:
-        FinalizeURL:
+        AccountSid:
           type: string
           nullable: true
+        ApiKey:
+          type: string
+          nullable: true
+        DefaultRule:
+          title: Pbx.InboundRule
+          allOf:
+            - $ref: '#/components/schemas/Pbx.InboundRule'
+          nullable: true
+          x-ms-navigationProperty: true
+        Groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.UserGroup'
+          x-ms-navigationProperty: true
+        Name:
+          type: string
+          nullable: true
+        PhoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.TwilioPhoneNumber'
+        Type:
+          title: Pbx.TrunkType
+          allOf:
+            - $ref: '#/components/schemas/Pbx.TrunkType'
+          nullable: true
+    Pbx.AutoProvisionTrunk:
+      title: AutoProvisionTrunk
+      type: object
+      properties:
+        AvailableNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.TwilioPhoneNumber'
     Pbx.InboundRule:
       title: InboundRule
       type: object
@@ -22005,6 +22205,7 @@ components:
         Name:
           type: string
         Value:
+          maxLength: 131072
           type: string
     Pbx.FxsTemplate:
       title: FxsTemplate
@@ -22043,6 +22244,9 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+        RpsEnabled:
+          type: boolean
+          nullable: true
         TemplateType:
           $ref: '#/components/schemas/Pbx.TemplateType'
         TimeZones:
@@ -22241,7 +22445,6 @@ components:
             - $ref: '#/components/schemas/Pbx.BackupContents'
           nullable: true
         Name:
-          maxLength: 50
           type: string
     Pbx.BackupExtras:
       title: BackupExtras
@@ -22447,6 +22650,7 @@ components:
             - $ref: '#/components/schemas/Pbx.CfaRoutingType'
           nullable: true
         ScriptCode:
+          maxLength: 200000
           type: string
           nullable: true
         TranscriptionMode:
@@ -22852,8 +23056,8 @@ components:
           nullable: true
         TenantId:
           type: string
-    Pbx.Microsoft365User:
-      title: Microsoft365User
+    Pbx.ExternalAccount:
+      title: ExternalAccount
       type: object
       properties:
         Email:
@@ -22888,20 +23092,17 @@ components:
         ProvisionUrl:
           type: string
           nullable: true
-    Pbx.Microsoft365UsersPage:
-      title: Microsoft365UsersPage
+    Pbx.ExternalAccountsPage:
+      title: ExternalAccountsPage
       type: object
       properties:
-        Total:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
+        NextPageToken:
+          type: string
           nullable: true
         Users:
           type: array
           items:
-            $ref: '#/components/schemas/Pbx.Microsoft365User'
+            $ref: '#/components/schemas/Pbx.ExternalAccount'
     Pbx.UsersRequestOptions:
       title: UsersRequestOptions
       type: object
@@ -22911,14 +23112,13 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+        NextPageToken:
+          maxLength: 10240
+          type: string
+          nullable: true
         Search:
           type: string
           nullable: true
-        Start:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
         TypeOfUser:
           $ref: '#/components/schemas/Pbx.TypeOfUser'
     Pbx.Microsoft365TeamsIntegration:
@@ -23058,9 +23258,6 @@ components:
       title: ConferenceSettings
       type: object
       properties:
-        ApiKey:
-          type: string
-          nullable: true
         AutoCallParticipants:
           type: boolean
           nullable: true
@@ -23074,7 +23271,6 @@ components:
           type: string
           nullable: true
         ExternalNumbers:
-          maxLength: 500
           type: string
           nullable: true
         Id:
@@ -23411,6 +23607,7 @@ components:
       type: object
       properties:
         Body:
+          maxLength: 10240
           type: string
         From:
           type: string
@@ -23796,6 +23993,7 @@ components:
           type: integer
           format: int32
         IssueDescription:
+          maxLength: 2048
           type: string
         Name:
           type: string
@@ -25290,18 +25488,6 @@ components:
           type: integer
           format: int32
           nullable: true
-    Pbx.ReportGroup:
-      title: ReportGroup
-      type: object
-      properties:
-        GroupID:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
-        GroupName:
-          type: string
-          nullable: true
     Pbx.ScheduledReport:
       title: ScheduledReport
       type: object
@@ -25309,7 +25495,6 @@ components:
         DN:
           type: string
         EmailAddresses:
-          maxLength: 2048
           type: string
         FilterDescription:
           maxLength: 2048
@@ -25320,10 +25505,8 @@ components:
           type: integer
           format: int32
         Name:
-          maxLength: 50
           type: string
         ReportLink:
-          maxLength: 2048
           type: string
         ReportParams:
           type: string
@@ -25391,6 +25574,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Pbx.UserTag'
+        TranscriptionMode:
+          title: Pbx.TranscriptionType
+          allOf:
+            - $ref: '#/components/schemas/Pbx.TranscriptionType'
+          nullable: true
         Type:
           title: Pbx.PeerType
           allOf:
@@ -25925,6 +26113,9 @@ components:
         IsMulticompanyMode:
           type: boolean
           nullable: true
+        IsRemoteBackup:
+          type: boolean
+          nullable: true
         IsStaticIp:
           type: boolean
           nullable: true
@@ -25992,8 +26183,19 @@ components:
         IsExtensionSignInEnabled:
           type: boolean
           nullable: true
+        ProjectId:
+          type: string
+          nullable: true
         ProvisionUrl:
           type: string
+          nullable: true
+        ReCaptchaEnabled:
+          type: boolean
+          nullable: true
+        UserSync:
+          title: Pbx.GoogleUserSync
+          allOf:
+            - $ref: '#/components/schemas/Pbx.GoogleUserSync'
           nullable: true
     Pbx.ConsoleRestrictions:
       title: ConsoleRestrictions
@@ -26082,6 +26284,22 @@ components:
           title: Pbx.AutoSchedulerSettings
           allOf:
             - $ref: '#/components/schemas/Pbx.AutoSchedulerSettings'
+          nullable: true
+        AvatarStyle:
+          title: Pbx.AvatarStyle
+          allOf:
+            - $ref: '#/components/schemas/Pbx.AvatarStyle'
+          nullable: true
+        BrandLogoImage:
+          maxLength: 1398101
+          type: string
+          nullable: true
+        BrandMainImage:
+          maxLength: 2796202
+          type: string
+          nullable: true
+        BrandUrl:
+          type: string
           nullable: true
         EnableChat:
           type: boolean
@@ -26291,14 +26509,38 @@ components:
         CustomDNDProfile:
           type: string
           nullable: true
+        FanvilUpdateInterval:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        GrandstreamUpdateInterval:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
         PhoneAllowMultiFirmwares:
           type: boolean
+          nullable: true
+        SnomUpdateInterval:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
         UseProvisioningSecret:
           type: boolean
           nullable: true
         UseRpcForLocalPhones:
           type: boolean
+          nullable: true
+        YealinkUpdateInterval:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
     Pbx.OfficeHours:
       title: OfficeHours
@@ -27151,6 +27393,12 @@ components:
         TrunkNumberTo:
           type: string
           nullable: true
+        TrunksMaxCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
         UserNumberFrom:
           type: string
           nullable: true
@@ -27284,6 +27532,15 @@ components:
         Enabled:
           type: boolean
           nullable: true
+        NumberLength:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        NumberLengthEnabled:
+          type: boolean
+          nullable: true
         Provider:
           type: string
           nullable: true
@@ -27345,6 +27602,24 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+    Pbx.TwilioPhoneNumber:
+      title: TwilioPhoneNumber
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          nullable: true
+        IsInTrunk:
+          type: boolean
+          nullable: true
+        IsMessagingEnabled:
+          type: boolean
+          nullable: true
+        PhoneNumber:
+          type: string
+          nullable: true
+        Sid:
+          type: string
     Pbx.FxsProvisioning:
       title: FxsProvisioning
       type: object
@@ -27416,6 +27691,9 @@ components:
       title: FxsModel
       type: object
       properties:
+        CanBeSBC:
+          type: boolean
+          nullable: true
         DisplayName:
           type: string
         UserAgent:
@@ -27520,6 +27798,7 @@ components:
           type: boolean
           nullable: true
         Style:
+          maxLength: 2048
           type: string
           nullable: true
         UseRubik:
@@ -27614,6 +27893,7 @@ components:
             - $ref: '#/components/schemas/Pbx.LiveChatMinimizedStyle'
           nullable: true
         OperatorIcon:
+          maxLength: 1398101
           type: string
           nullable: true
         OperatorName:
@@ -27623,6 +27903,7 @@ components:
           type: boolean
           nullable: true
         WindowIcon:
+          maxLength: 1398101
           type: string
           nullable: true
     Pbx.BackupSchedule:
@@ -27895,6 +28176,9 @@ components:
         IsEnabled:
           type: boolean
           nullable: true
+        IsSyncDepartments:
+          type: boolean
+          nullable: true
         IsSyncOfficePhone:
           type: boolean
           nullable: true
@@ -27911,6 +28195,11 @@ components:
           nullable: true
         StartingExtensionNumber:
           type: string
+        StatusSyncConfiguration:
+          title: Pbx.StatusSyncConfiguration
+          allOf:
+            - $ref: '#/components/schemas/Pbx.StatusSyncConfiguration'
+          nullable: true
         SyncEvents:
           type: boolean
           nullable: true
@@ -27924,6 +28213,49 @@ components:
           title: Pbx.IntegrationSyncType
           allOf:
             - $ref: '#/components/schemas/Pbx.IntegrationSyncType'
+          nullable: true
+    Pbx.StatusSyncConfiguration:
+      title: StatusSyncConfiguration
+      type: object
+      properties:
+        M365ToPbxBindings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.M365ToPbxBinding'
+        PBXToM365Bindings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.PbxToM365Binding'
+        PBXToM365Busy:
+          type: boolean
+          nullable: true
+    Pbx.PbxToM365Binding:
+      title: PbxToM365Binding
+      type: object
+      properties:
+        From:
+          title: Pbx.SynchronizedPbxProfile
+          allOf:
+            - $ref: '#/components/schemas/Pbx.SynchronizedPbxProfile'
+          nullable: true
+        To:
+          title: Pbx.SynchronizedM365Profile
+          allOf:
+            - $ref: '#/components/schemas/Pbx.SynchronizedM365Profile'
+          nullable: true
+    Pbx.M365ToPbxBinding:
+      title: M365ToPbxBinding
+      type: object
+      properties:
+        From:
+          title: Pbx.SynchronizedM365Profile
+          allOf:
+            - $ref: '#/components/schemas/Pbx.SynchronizedM365Profile'
+          nullable: true
+        To:
+          title: Pbx.SynchronizedPbxProfile
+          allOf:
+            - $ref: '#/components/schemas/Pbx.SynchronizedPbxProfile'
           nullable: true
     Pbx.UsersSyncConfiguration:
       title: UsersSyncConfiguration
@@ -28311,6 +28643,38 @@ components:
         ProductCode:
           type: string
           nullable: true
+    Pbx.GoogleUserSync:
+      title: GoogleUserSync
+      type: object
+      properties:
+        IsEnabled:
+          type: boolean
+          nullable: true
+        IsSyncDepartments:
+          type: boolean
+          nullable: true
+        IsSyncPersonalContacts:
+          type: boolean
+          nullable: true
+        IsSyncPhoto:
+          type: boolean
+          nullable: true
+        SelectedUsers:
+          type: array
+          items:
+            type: string
+            nullable: true
+        StartingExtensionNumber:
+          type: string
+          nullable: true
+        SyncType:
+          title: Pbx.IntegrationSyncType
+          allOf:
+            - $ref: '#/components/schemas/Pbx.IntegrationSyncType'
+          nullable: true
+        UseCalendarEventsAsPresence:
+          type: boolean
+          nullable: true
     Pbx.AutoSchedulerSettings:
       title: AutoSchedulerSettings
       type: object
@@ -28355,9 +28719,9 @@ components:
         - IVR
         - Fax
         - Conference
+        - SpecialMenu
         - Parking
         - ExternalLine
-        - SpecialMenu
         - Group
         - RoutePoint
       type: string
@@ -28728,6 +29092,7 @@ components:
       title: TrunkType
       enum:
         - Voxtelesys
+        - Twilio
       type: string
     Pbx.DeviceType:
       title: DeviceType
@@ -28919,6 +29284,26 @@ components:
         - SyncAllUsersExceptSelected
         - SyncSelected
       type: string
+    Pbx.SynchronizedPbxProfile:
+      title: SynchronizedPbxProfile
+      enum:
+        - Available
+        - OutOfOffice
+        - Away
+      type: string
+    Pbx.SynchronizedM365Profile:
+      title: SynchronizedM365Profile
+      enum:
+        - Available
+        - Busy
+        - Away
+        - AvailableIdle
+        - BusyIdle
+        - DoNotDisturb
+        - BeRightBack
+        - InMeeting
+        - InCall
+      type: string
     Pbx.TypeOfUser:
       title: TypeOfUser
       enum:
@@ -28961,6 +29346,7 @@ components:
         - Tcx
         - MS365
         - Custom
+        - GoogleWorkspace
       type: string
     Pbx.PmsIntegrationType:
       title: PmsIntegrationType
@@ -29040,6 +29426,12 @@ components:
         - Monthly
         - Hourly
         - NotScheduled
+      type: string
+    Pbx.AvatarStyle:
+      title: AvatarStyle
+      enum:
+        - Square
+        - Circle
       type: string
     Pbx.TypeOfAutoPickupForward:
       title: TypeOfAutoPickupForward
@@ -29927,17 +30319,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.TimeReportData'
-    Pbx.ReportGroupCollectionResponse:
-      title: Collection of ReportGroup
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-        - type: object
-          properties:
-            value:
-              type: array
-              items:
-                $ref: '#/components/schemas/Pbx.ReportGroup'
     Pbx.ScheduledReportCollectionResponse:
       title: Collection of ScheduledReport
       type: object
@@ -30246,6 +30627,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.SetRoute'
+    Pbx.TwilioPhoneNumberCollectionResponse:
+      title: Collection of Pbx.TwilioPhoneNumber
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.TwilioPhoneNumber'
     Pbx.DeviceLineCollectionResponse:
       title: Collection of Pbx.DeviceLine
       type: object
@@ -30334,8 +30726,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.CDRSettingsField'
-    Pbx.Microsoft365UserCollectionResponse:
-      title: Collection of Pbx.Microsoft365User
+    Pbx.ExternalAccountCollectionResponse:
+      title: Collection of Pbx.ExternalAccount
       type: object
       allOf:
         - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
@@ -30344,7 +30736,7 @@ components:
             value:
               type: array
               items:
-                $ref: '#/components/schemas/Pbx.Microsoft365User'
+                $ref: '#/components/schemas/Pbx.ExternalAccount'
     Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipantCollectionResponse:
       title: Collection of Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipant
       type: object
@@ -30466,6 +30858,28 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.FxsVariableChoice'
+    Pbx.PbxToM365BindingCollectionResponse:
+      title: Collection of Pbx.PbxToM365Binding
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.PbxToM365Binding'
+    Pbx.M365ToPbxBindingCollectionResponse:
+      title: Collection of Pbx.M365ToPbxBinding
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.M365ToPbxBinding'
     Pbx.ParticipantDetailsCollectionResponse:
       title: Collection of Pbx.ParticipantDetails
       type: object
@@ -30533,27 +30947,8 @@ components:
     RegenerateRequestBody:
       type: object
       properties:
-        SipAuth:
-          type: boolean
-          default: false
-        WebclientPassword:
-          type: boolean
-          default: false
-        VoicemailPIN:
-          type: boolean
-          default: false
-        DeskphonePassword:
-          type: boolean
-          default: false
-        SendWelcomeEmail:
-          type: boolean
-          default: false
-        ConfigurationLink:
-          type: boolean
-          default: false
-        RpsKey:
-          type: boolean
-          default: false
+        opts:
+          $ref: '#/components/schemas/Pbx.RegenerateOptions'
     MakeCallUserRecordGreetingRequestBody:
       type: object
       properties:
@@ -30582,6 +30977,7 @@ components:
         - WARNINGS.LICENSE_NOT_FOUND
         - WARNINGS.LIMIT_REACHED
         - WARNINGS.XAPI.INVALID
+        - WARNINGS.XAPI.CAPTCHA_ERROR
         - WARNINGS.XAPI.INVALID_PIN_NUMBER
         - WARNINGS.XAPI.NOT_SUPPORTED
         - WARNINGS.XAPI.USER_ROLE_DOWNGRADE
@@ -30601,6 +30997,7 @@ components:
         - WARNINGS.XAPI.PLAYLIST_IN_USE
         - WARNINGS.XAPI.OUT_OF_THE_RANGE
         - WARNINGS.XAPI.TOO_MANY_PHONES
+        - WARNINGS.XAPI.TOO_MANY_TRUNKS
         - WARNINGS.XAPI.TOO_MANY_SBC
         - WARNINGS.XAPI.TOO_MANY_PROMPTS
         - WARNINGS.XAPI.OUTBOUND_RULES_LIMIT_REACHED
@@ -31117,12 +31514,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.TimeReportDataCollectionResponse'
-    Pbx.ReportGroupCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pbx.ReportGroupCollectionResponse'
     Pbx.ScheduledReportCollectionResponse:
       description: Retrieved collection
       content:
@@ -31291,6 +31682,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.SetRouteCollectionResponse'
+    Pbx.TwilioPhoneNumberCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.TwilioPhoneNumberCollectionResponse'
     Pbx.DeviceLineCollectionResponse:
       description: Retrieved collection
       content:
@@ -31339,12 +31736,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.CDRSettingsFieldCollectionResponse'
-    Pbx.Microsoft365UserCollectionResponse:
+    Pbx.ExternalAccountCollectionResponse:
       description: Retrieved collection
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Pbx.Microsoft365UserCollectionResponse'
+            $ref: '#/components/schemas/Pbx.ExternalAccountCollectionResponse'
     Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipantCollectionResponse:
       description: Retrieved collection
       content:
@@ -31411,6 +31808,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.FxsVariableChoiceCollectionResponse'
+    Pbx.PbxToM365BindingCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.PbxToM365BindingCollectionResponse'
+    Pbx.M365ToPbxBindingCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.M365ToPbxBindingCollectionResponse'
     Pbx.ParticipantDetailsCollectionResponse:
       description: Retrieved collection
       content:
@@ -31578,6 +31987,7 @@ components:
         ClickToCallId: String
         ForwardNoAnswer:
           '@odata.type': Pbx.Destination
+        GreetingFile: String
         Groups:
           - '@odata.type': Pbx.UserGroup
         HolidaysRoute:
@@ -31652,6 +32062,7 @@ components:
         EnableIntro: true
         ForwardNoAnswer:
           '@odata.type': Pbx.Destination
+        GreetingFile: String
         Groups:
           - '@odata.type': Pbx.UserGroup
         HolidaysRoute:
@@ -31721,6 +32132,8 @@ components:
           - '@odata.type': Pbx.ExtensionRule
         ForwardingProfiles:
           - '@odata.type': Pbx.ForwardingProfile
+        GoogleCalendarEnabled: true
+        GoogleContactsEnabled: true
         GoogleSignInEnabled: true
         Greetings:
           - '@odata.type': Pbx.Greeting
@@ -31758,6 +32171,7 @@ components:
         QueueStatus:
           '@odata.type': Pbx.QueueStatusType
         RecordCalls: true
+        RecordEmailNotify: true
         RecordExternalCallsOnly: true
         Require2FA: true
         SendEmailMissedCalls: true
@@ -31789,6 +32203,15 @@ components:
         ReasonText: String
         Result:
           '@odata.type': Pbx.CallParticipant
+    Pbx.RegenerateOptions:
+      value:
+        ConfigurationLink: true
+        DeskphonePassword: true
+        RpsKey: true
+        SendWelcomeEmail: true
+        SipAuth: true
+        VoicemailPIN: true
+        WebclientPassword: true
     Pbx.PhoneRegistrar:
       value:
         Capabilities: 0
@@ -31820,6 +32243,8 @@ components:
           - '@odata.type': Pbx.ExtensionRule
         ForwardingProfiles:
           - '@odata.type': Pbx.ForwardingProfile
+        GoogleCalendarEnabled: true
+        GoogleContactsEnabled: true
         GoogleSignInEnabled: true
         Greetings:
           - '@odata.type': Pbx.Greeting
@@ -31841,6 +32266,7 @@ components:
         PinProtectTimeout: 0
         PromptSet: String
         RecordCalls: true
+        RecordEmailNotify: true
         RecordExternalCallsOnly: true
         SendEmailMissedCalls: true
         SRTPMode:
@@ -32078,10 +32504,15 @@ components:
           - '@odata.type': Pbx.UserTag
         Type:
           '@odata.type': Pbx.PeerType
+    Pbx.RetreivePeersRequest:
+      value:
+        DnNumbers:
+          - String
     Pbx.Trunk:
       value:
         AuthID: String
-        AuthPassword: String
+        AuthPassword:
+          '@odata.type': Pbx.ConcealedPassword
         Certificate: String
         CertificateName: String
         ConfigurationIssue: String
@@ -32144,12 +32575,21 @@ components:
           - '@odata.type': Pbx.SetRoute
     Pbx.CreateTrunk:
       value:
+        AccountSid: String
+        ApiKey: String
+        DefaultRule:
+          '@odata.type': Pbx.InboundRule
+        Groups:
+          - '@odata.type': Pbx.UserGroup
         Name: String
-        TrunkType:
+        PhoneNumbers:
+          - '@odata.type': Pbx.TwilioPhoneNumber
+        Type:
           '@odata.type': Pbx.TrunkType
-    Pbx.ProvisionedTrunk:
+    Pbx.AutoProvisionTrunk:
       value:
-        FinalizeURL: String
+        AvailableNumbers:
+          - '@odata.type': Pbx.TwilioPhoneNumber
     Pbx.InboundRule:
       value:
         AlterDestinationDuringHolidays: true
@@ -32288,6 +32728,7 @@ components:
         Models:
           - '@odata.type': Pbx.FxsModel
         NumberOfExtensions: 0
+        RpsEnabled: true
         TemplateType:
           '@odata.type': Pbx.TemplateType
         TimeZones:
@@ -32572,7 +33013,7 @@ components:
         SharedMailboxesSync:
           '@odata.type': Pbx.UsersSyncConfiguration
         TenantId: String
-    Pbx.Microsoft365User:
+    Pbx.ExternalAccount:
       value:
         Email: String
         Id: String
@@ -32587,16 +33028,16 @@ components:
         ApplicationId: String
         ExceptionMessage: String
         ProvisionUrl: String
-    Pbx.Microsoft365UsersPage:
+    Pbx.ExternalAccountsPage:
       value:
-        Total: 0
+        NextPageToken: String
         Users:
-          - '@odata.type': Pbx.Microsoft365User
+          - '@odata.type': Pbx.ExternalAccount
     Pbx.UsersRequestOptions:
       value:
         Count: 0
+        NextPageToken: String
         Search: String
-        Start: 0
         TypeOfUser:
           '@odata.type': Pbx.TypeOfUser
     Pbx.Microsoft365TeamsIntegration:
@@ -32641,7 +33082,6 @@ components:
         Name: String
     Pbx.ConferenceSettings:
       value:
-        ApiKey: String
         AutoCallParticipants: true
         EnableLocalMCU: true
         EnablePin: true
@@ -33345,10 +33785,6 @@ components:
         XValue: '0001-01-01T00:00:00.0000000+00:00'
         YValue1: 0
         YValue2: 0
-    Pbx.ReportGroup:
-      value:
-        GroupID: 0
-        GroupName: String
     Pbx.ScheduledReport:
       value:
         DN: String
@@ -33381,6 +33817,8 @@ components:
           '@odata.type': Pbx.Rights
         Tags:
           - '@odata.type': Pbx.UserTag
+        TranscriptionMode:
+          '@odata.type': Pbx.TranscriptionType
         Type:
           '@odata.type': Pbx.PeerType
     Pbx.Codec:
@@ -33567,6 +34005,7 @@ components:
         IsHosted: true
         IsHosted3CX: true
         IsMulticompanyMode: true
+        IsRemoteBackup: true
         IsStaticIp: true
         IsTranscriptionEnabled: true
         License:
@@ -33587,7 +34026,11 @@ components:
           '@odata.type': Pbx.ConcealedPassword
         Id: String (identifier)
         IsExtensionSignInEnabled: true
+        ProjectId: String
         ProvisionUrl: String
+        ReCaptchaEnabled: true
+        UserSync:
+          '@odata.type': Pbx.GoogleUserSync
     Pbx.ConsoleRestrictions:
       value:
         AccessRestricted: true
@@ -33621,6 +34064,11 @@ components:
         AllowChangePassword: true
         AutoSchedulerSettings:
           '@odata.type': Pbx.AutoSchedulerSettings
+        AvatarStyle:
+          '@odata.type': Pbx.AvatarStyle
+        BrandLogoImage: String
+        BrandMainImage: String
+        BrandUrl: String
         EnableChat: true
         HideAbandonedQueueCalls: true
         HideCRMContacts: true
@@ -33692,9 +34140,13 @@ components:
         AllowMultiQueueRingtones: true
         AutoCleanupFirmware: true
         CustomDNDProfile: String
+        FanvilUpdateInterval: 0
+        GrandstreamUpdateInterval: 0
         PhoneAllowMultiFirmwares: true
+        SnomUpdateInterval: 0
         UseProvisioningSecret: true
         UseRpcForLocalPhones: true
+        YealinkUpdateInterval: 0
     Pbx.OfficeHours:
       value:
         BreakTime:
@@ -33982,6 +34434,7 @@ components:
         SystemNumberTo: String
         TrunkNumberFrom: String
         TrunkNumberTo: String
+        TrunksMaxCount: 0
         UserNumberFrom: String
         UserNumberTo: String
     Pbx.Holiday:
@@ -34024,6 +34477,8 @@ components:
     Pbx.TrunkMessaging:
       value:
         Enabled: true
+        NumberLength: 0
+        NumberLengthEnabled: true
         Provider: String
         Webhook: String
     Pbx.GatewayParameterBinding:
@@ -34045,6 +34500,13 @@ components:
         DID: String
         DisplayName: String
         TrunkId: 0
+    Pbx.TwilioPhoneNumber:
+      value:
+        FriendlyName: String
+        IsInTrunk: true
+        IsMessagingEnabled: true
+        PhoneNumber: String
+        Sid: String
     Pbx.FxsProvisioning:
       value:
         LocalAudioPortEnd: 0
@@ -34068,6 +34530,7 @@ components:
         Value: String
     Pbx.FxsModel:
       value:
+        CanBeSBC: true
         DisplayName: String
         UserAgent: String
     Pbx.FxsVariable:
@@ -34248,17 +34711,39 @@ components:
       value:
         EnableSSO: true
         IsEnabled: true
+        IsSyncDepartments: true
         IsSyncOfficePhone: true
         IsSyncPhoto: true
         SelectedUsers:
           - String
         SetTeamsPresence: true
         StartingExtensionNumber: String
+        StatusSyncConfiguration:
+          '@odata.type': Pbx.StatusSyncConfiguration
         SyncEvents: true
         SyncGuestUsers: true
         SyncPersonalContacts: true
         SyncType:
           '@odata.type': Pbx.IntegrationSyncType
+    Pbx.StatusSyncConfiguration:
+      value:
+        M365ToPbxBindings:
+          - '@odata.type': Pbx.M365ToPbxBinding
+        PBXToM365Bindings:
+          - '@odata.type': Pbx.PbxToM365Binding
+        PBXToM365Busy: true
+    Pbx.PbxToM365Binding:
+      value:
+        From:
+          '@odata.type': Pbx.SynchronizedPbxProfile
+        To:
+          '@odata.type': Pbx.SynchronizedM365Profile
+    Pbx.M365ToPbxBinding:
+      value:
+        From:
+          '@odata.type': Pbx.SynchronizedM365Profile
+        To:
+          '@odata.type': Pbx.SynchronizedPbxProfile
     Pbx.UsersSyncConfiguration:
       value:
         IsEnabled: true
@@ -34378,6 +34863,18 @@ components:
         CountryCode: String
         IsMaintainceExpired: true
         ProductCode: String
+    Pbx.GoogleUserSync:
+      value:
+        IsEnabled: true
+        IsSyncDepartments: true
+        IsSyncPersonalContacts: true
+        IsSyncPhoto: true
+        SelectedUsers:
+          - String
+        StartingExtensionNumber: String
+        SyncType:
+          '@odata.type': Pbx.IntegrationSyncType
+        UseCalendarEventsAsPresence: true
     Pbx.AutoSchedulerSettings:
       value:
         Enabled: true
