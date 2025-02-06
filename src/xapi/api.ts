@@ -1882,6 +1882,12 @@ export interface PbxADUsersSyncConfiguration {
      * @type {boolean}
      * @memberof PbxADUsersSyncConfiguration
      */
+    'IsSyncDetails'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxADUsersSyncConfiguration
+     */
     'IsSyncOfficePhone'?: boolean | null;
     /**
      * 
@@ -5315,6 +5321,49 @@ export interface PbxCreateBackup {
      */
     'Name'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface PbxCreateTicket
+ */
+export interface PbxCreateTicket {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxCreateTicket
+     */
+    'CanCreateTicket'?: boolean | null;
+    /**
+     * 
+     * @type {PbxCreateTicketStatus}
+     * @memberof PbxCreateTicket
+     */
+    'CreateTicketStatus'?: PbxCreateTicketStatus | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCreateTicket
+     */
+    'FixUrl'?: string | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const PbxCreateTicketStatus = {
+    Ok: 'OK',
+    KeyNotAssignedToUser: 'KeyNotAssignedToUser',
+    KeyIsNotCommercial: 'KeyIsNotCommercial',
+    KeyHasNoSupportTickets: 'KeyHasNoSupportTickets'
+} as const;
+
+export type PbxCreateTicketStatus = typeof PbxCreateTicketStatus[keyof typeof PbxCreateTicketStatus];
+
+
 /**
  * 
  * @export
@@ -15729,7 +15778,7 @@ export interface PbxRequestHelp {
      * @type {number}
      * @memberof PbxRequestHelp
      */
-    'GrantPeriodDays'?: number;
+    'GrantPeriodDays'?: number | null;
     /**
      * 
      * @type {string}
@@ -15754,12 +15803,6 @@ export interface PbxRequestHelp {
      * @memberof PbxRequestHelp
      */
     'ReplyEmail'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PbxRequestHelp
-     */
-    'SupportEmail'?: string | null;
 }
 /**
  * 
@@ -18240,6 +18283,12 @@ export interface PbxTrunk {
     'TransportRestriction'?: PbxTypeOfTransportRestriction | null;
     /**
      * 
+     * @type {Array<PbxVariable>}
+     * @memberof PbxTrunk
+     */
+    'TrunkRegTimes'?: Array<PbxVariable>;
+    /**
+     * 
      * @type {boolean}
      * @memberof PbxTrunk
      */
@@ -19576,7 +19625,9 @@ export const PbxUserTag = {
     Google: 'Google',
     WakeUp: 'WakeUp',
     FaxServer: 'FaxServer',
-    Principal: 'Principal'
+    Principal: 'Principal',
+    WeakId: 'WeakID',
+    WeakPass: 'WeakPass'
 } as const;
 
 export type PbxUserTag = typeof PbxUserTag[keyof typeof PbxUserTag];
@@ -19762,6 +19813,12 @@ export interface PbxVoicemailSettings {
      * @memberof PbxVoicemailSettings
      */
     'MinDuration'?: number | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxVoicemailSettings
+     */
+    'OperatorEnabled'?: boolean | null;
     /**
      * 
      * @type {number}
@@ -20762,7 +20819,7 @@ export interface SystemStatusRequestHelpRequestBodyDescription {
      * @type {number}
      * @memberof SystemStatusRequestHelpRequestBodyDescription
      */
-    'GrantPeriodDays'?: number;
+    'GrantPeriodDays'?: number | null;
     /**
      * 
      * @type {string}
@@ -20787,12 +20844,6 @@ export interface SystemStatusRequestHelpRequestBodyDescription {
      * @memberof SystemStatusRequestHelpRequestBodyDescription
      */
     'ReplyEmail'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SystemStatusRequestHelpRequestBodyDescription
-     */
-    'SupportEmail'?: string | null;
 }
 /**
  * 
@@ -80080,7 +80131,7 @@ export const SystemStatusApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async isRequestHelpEnabled(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCanCreateBackup200Response>> {
+        async isRequestHelpEnabled(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxCreateTicket>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.isRequestHelpEnabled(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemStatusApi.isRequestHelpEnabled']?.[localVarOperationServerIndex]?.url;
@@ -80232,7 +80283,7 @@ export const SystemStatusApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        isRequestHelpEnabled(options?: RawAxiosRequestConfig): AxiosPromise<GetCanCreateBackup200Response> {
+        isRequestHelpEnabled(options?: RawAxiosRequestConfig): AxiosPromise<PbxCreateTicket> {
             return localVarFp.isRequestHelpEnabled(options).then((request) => request(axios, basePath));
         },
         /**

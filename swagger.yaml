@@ -17321,11 +17321,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  value:
-                    type: boolean
-                    default: false
+                $ref: '#/components/schemas/Pbx.CreateTicket'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
@@ -21801,6 +21797,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.TypeOfTransportRestriction'
           nullable: true
+        TrunkRegTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.Variable'
         TunnelEnabled:
           type: boolean
           nullable: true
@@ -22650,7 +22650,6 @@ components:
             - $ref: '#/components/schemas/Pbx.CfaRoutingType'
           nullable: true
         ScriptCode:
-          maxLength: 200000
           type: string
           nullable: true
         TranscriptionMode:
@@ -23205,6 +23204,9 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+          nullable: true
+        OperatorEnabled:
+          type: boolean
           nullable: true
         Quota:
           maximum: 2147483647
@@ -23917,6 +23919,21 @@ components:
         Type:
           type: string
           nullable: true
+    Pbx.CreateTicket:
+      title: CreateTicket
+      type: object
+      properties:
+        CanCreateTicket:
+          type: boolean
+          nullable: true
+        CreateTicketStatus:
+          title: Pbx.CreateTicketStatus
+          allOf:
+            - $ref: '#/components/schemas/Pbx.CreateTicketStatus'
+          nullable: true
+        FixUrl:
+          type: string
+          nullable: true
     Pbx.SystemDatabaseInformation:
       title: SystemDatabaseInformation
       type: object
@@ -23992,6 +24009,7 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+          nullable: true
         IssueDescription:
           maxLength: 2048
           type: string
@@ -24002,9 +24020,6 @@ components:
           nullable: true
         ReplyEmail:
           type: string
-        SupportEmail:
-          type: string
-          nullable: true
     Pbx.Playlist:
       title: Playlist
       type: object
@@ -27588,6 +27603,14 @@ components:
         SourcePattern:
           type: string
           nullable: true
+    Pbx.Variable:
+      title: Variable
+      type: object
+      properties:
+        Name:
+          type: string
+        Value:
+          type: string
     Pbx.SetRoute:
       title: SetRoute
       type: object
@@ -27678,14 +27701,6 @@ components:
           type: string
           nullable: true
         Number:
-          type: string
-    Pbx.Variable:
-      title: Variable
-      type: object
-      properties:
-        Name:
-          type: string
-        Value:
           type: string
     Pbx.FxsModel:
       title: FxsModel
@@ -28177,6 +28192,9 @@ components:
           type: boolean
           nullable: true
         IsSyncDepartments:
+          type: boolean
+          nullable: true
+        IsSyncDetails:
           type: boolean
           nullable: true
         IsSyncOfficePhone:
@@ -28765,6 +28783,8 @@ components:
         - WakeUp
         - FaxServer
         - Principal
+        - WeakID
+        - WeakPass
       type: string
     Pbx.TranscriptionType:
       title: TranscriptionType
@@ -29360,6 +29380,14 @@ components:
         - Other
         - Linux
         - Windows
+      type: string
+    Pbx.CreateTicketStatus:
+      title: CreateTicketStatus
+      enum:
+        - OK
+        - KeyNotAssignedToUser
+        - KeyIsNotCommercial
+        - KeyHasNoSupportTickets
       type: string
     Pbx.PhonebookPriorityOptions:
       title: PhonebookPriorityOptions
@@ -30616,6 +30644,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.CIDFormatting'
+    Pbx.VariableCollectionResponse:
+      title: Collection of Pbx.Variable
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.Variable'
     Pbx.SetRouteCollectionResponse:
       title: Collection of Pbx.SetRoute
       type: object
@@ -30649,17 +30688,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.DeviceLine'
-    Pbx.VariableCollectionResponse:
-      title: Collection of Pbx.Variable
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-        - type: object
-          properties:
-            value:
-              type: array
-              items:
-                $ref: '#/components/schemas/Pbx.Variable'
     Pbx.FxsModelCollectionResponse:
       title: Collection of Pbx.FxsModel
       type: object
@@ -31676,6 +31704,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.CIDFormattingCollectionResponse'
+    Pbx.VariableCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.VariableCollectionResponse'
     Pbx.SetRouteCollectionResponse:
       description: Retrieved collection
       content:
@@ -31694,12 +31728,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.DeviceLineCollectionResponse'
-    Pbx.VariableCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pbx.VariableCollectionResponse'
     Pbx.FxsModelCollectionResponse:
       description: Retrieved collection
       content:
@@ -32564,6 +32592,8 @@ components:
           '@odata.type': Pbx.TranscriptionType
         TransportRestriction:
           '@odata.type': Pbx.TypeOfTransportRestriction
+        TrunkRegTimes:
+          - '@odata.type': Pbx.Variable
         TunnelEnabled: true
         TunnelRemoteAddr: String
         TunnelRemotePort: 0
@@ -33065,6 +33095,7 @@ components:
         Extension: String
         Id: 0
         MinDuration: 0
+        OperatorEnabled: true
         Quota: 0
         RemoteStorageEnabled: true
         SendEmailQuotaEnabled: true
@@ -33293,6 +33324,12 @@ components:
         Name: String
         Number: String
         Type: String
+    Pbx.CreateTicket:
+      value:
+        CanCreateTicket: true
+        CreateTicketStatus:
+          '@odata.type': Pbx.CreateTicketStatus
+        FixUrl: String
     Pbx.SystemDatabaseInformation:
       value:
         CallHistoryCount: 0
@@ -33319,7 +33356,6 @@ components:
         Name: String
         PhoneNumber: String
         ReplyEmail: String
-        SupportEmail: String
     Pbx.Playlist:
       value:
         AutoGain: true
@@ -34495,6 +34531,10 @@ components:
         Priority: 0
         ReplacePattern: String
         SourcePattern: String
+    Pbx.Variable:
+      value:
+        Name: String
+        Value: String
     Pbx.SetRoute:
       value:
         DID: String
@@ -34524,10 +34564,6 @@ components:
         Key: 0
         Name: String
         Number: String
-    Pbx.Variable:
-      value:
-        Name: String
-        Value: String
     Pbx.FxsModel:
       value:
         CanBeSBC: true
@@ -34712,6 +34748,7 @@ components:
         EnableSSO: true
         IsEnabled: true
         IsSyncDepartments: true
+        IsSyncDetails: true
         IsSyncOfficePhone: true
         IsSyncPhoto: true
         SelectedUsers:
