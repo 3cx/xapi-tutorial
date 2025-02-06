@@ -18,7 +18,13 @@ From the Admin Console in the 3CX Webclient, go to Integrations > API:
 
 ## Test run
 
-1. In the example.ts file put your base PBX URL, client_id from step 2. and client_secret from step 4.
-2. Launch yarn
-3. Launch yarn.start
+In the config.ts file put your base PBX URL, client_id from step 2. and client_secret from step 4.
 
+Note the following:
+Run tests inband because only one access token can be created at a time.
+The tests CAN ALTER your PBX! Please make a backup or use a separate instance.  
+
+You can explore Jest test suites in src folder and see how to perform actions
+Launch "yarn jest -i" to launch them all
+
+Launch "yarn jest -i src/fax.spec.ts" to launch individual test

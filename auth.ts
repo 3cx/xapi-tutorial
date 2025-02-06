@@ -1,5 +1,12 @@
 import {Configuration} from "./src/xapi";
 import AsyncLock from 'async-lock';
+import axios, {AxiosError} from "axios";
+
+axios.interceptors.response.use(response => {
+    return response;
+}, error => {
+    return Promise.reject(error instanceof AxiosError ? new Error(JSON.stringify(error.response?.data)) : error);
+})
 
 export interface TokenResponse {
     token_type: string;

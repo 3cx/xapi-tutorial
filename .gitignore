@@ -8,3 +8,5 @@
 !.yarn/sdks
 !.yarn/versions
 /*.json
+
+node_modules
