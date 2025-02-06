@@ -1,6 +1,8 @@
 import {afterEach, beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import {PbxRingGroup, RingGroupsApi} from "./xapi";
 import {xapiConfig} from "../config";
+import {colorize} from "json-colorizer";
+import {odataParamEncoder} from "../auth";
 
 describe('Ring group tests', () => {
     let api: RingGroupsApi;
@@ -23,6 +25,20 @@ describe('Ring group tests', () => {
         await api.deleteRingGroup({
             id: item.Id!
         })
+    })
+
+    it('List', async () => {
+        const response = await api.listRingGroup({
+            $select: new Set<string>(['Id'])
+        })
+        console.log(colorize(response.data));
+    })
+
+    it('Get', async () => {
+        const response = await api.getRingGroupByNumber({
+            number: odataParamEncoder(item.Number!)
+        })
+        console.log(colorize(response.data));
     })
 
     it('Create, update and delete RingGroup', async () => {

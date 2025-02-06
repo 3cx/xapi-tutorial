@@ -1,6 +1,8 @@
 import {afterEach, beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import {FaxApi, PbxFax} from "./xapi";
 import {xapiConfig} from "../config";
+import {colorize} from "json-colorizer";
+import {odataParamEncoder} from "../auth";
 
 describe('FAX tests', () => {
     let api: FaxApi;
@@ -22,6 +24,20 @@ describe('FAX tests', () => {
         await api.deleteFax({
             id: item.Id!
         })
+    })
+
+    it('List', async () => {
+        const response = await api.listFax({
+            $select: new Set<string>(['Id'])
+        })
+        console.log(colorize(response.data));
+    })
+
+    it('Get', async () => {
+        const response = await api.getFaxByNumber({
+            number: odataParamEncoder(item.Number!)
+        })
+        console.log(colorize(response.data));
     })
 
     it('Create, update and delete', async () => {

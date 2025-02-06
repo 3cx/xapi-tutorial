@@ -1,6 +1,8 @@
 import {afterEach, beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import {ParkingsApi, PbxParking} from "./xapi";
 import {xapiConfig} from "../config";
+import {colorize} from "json-colorizer";
+import {odataParamEncoder} from "../auth";
 
 describe('Parking tests', () => {
     let api: ParkingsApi;
@@ -23,6 +25,20 @@ describe('Parking tests', () => {
         await api.deleteParking({
             id: item.Id!
         })
+    })
+
+    it('List', async () => {
+        const response = await api.listParking({
+            $select: new Set<string>(['Id'])
+        })
+        console.log(colorize(response.data));
+    })
+
+    it('Get', async () => {
+        const response = await api.getByNumber({
+            number: odataParamEncoder(item.Number!)
+        })
+        console.log(colorize(response.data));
     })
 
     it('Create, update and delete', async () => {

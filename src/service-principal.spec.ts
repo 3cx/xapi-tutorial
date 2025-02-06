@@ -1,6 +1,7 @@
 import {afterEach, beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import {PbxServicePrincipal, ServicePrincipalsApi} from "./xapi";
 import {xapiConfig} from "../config";
+import {colorize} from "json-colorizer";
 
 describe('Service principal tests', () => {
     let api: ServicePrincipalsApi;
@@ -23,6 +24,13 @@ describe('Service principal tests', () => {
         await api.deleteServicePrincipal({
             id: item.Id!
         })
+    })
+
+    it('List', async () => {
+        const response = await api.listServicePrincipal({
+            $select: new Set<string>(['Id'])
+        })
+        console.log(colorize(response.data));
     })
 
     it('Create, update and delete RingGroup', async () => {

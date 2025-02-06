@@ -20,6 +20,7 @@ __metadata:
     eslint: "npm:^9.17.0"
     globals: "npm:^15.14.0"
     jest: "npm:^29.7.0"
+    json-colorizer: "npm:^3.0.1"
     ts-jest: "npm:^29.2.5"
     ts-node: "npm:^10.9.2"
     typescript: "npm:5.7.2"
@@ -2015,6 +2016,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"colorette@npm:^2.0.20":
+  version: 2.0.20
+  resolution: "colorette@npm:2.0.20"
+  checksum: 10/0b8de48bfa5d10afc160b8eaa2b9938f34a892530b2f7d7897e0458d9535a066e3998b49da9d21161c78225b272df19ae3a64d6df28b4c9734c0e55bbd02406f
+  languageName: node
+  linkType: hard
+
 "combined-stream@npm:^1.0.8":
   version: 1.0.8
   resolution: "combined-stream@npm:1.0.8"
@@ -3734,6 +3742,15 @@ __metadata:
   version: 3.0.1
   resolution: "json-buffer@npm:3.0.1"
   checksum: 10/82876154521b7b68ba71c4f969b91572d1beabadd87bd3a6b236f85fbc7dc4695089191ed60bb59f9340993c51b33d479f45b6ba9f3548beb519705281c32c3c
+  languageName: node
+  linkType: hard
+
+"json-colorizer@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "json-colorizer@npm:3.0.1"
+  dependencies:
+    colorette: "npm:^2.0.20"
+  checksum: 10/3132c9529f9b56b6035684b0fa1cc2b59cc8db44ec2a1cbd87fb150623f5e313be2e7ed7bc9d50250ee8caebc5d8388a4e709de4eeb3bcc80b49f7947ac7fd3b
   languageName: node
   linkType: hard
 

@@ -1,6 +1,8 @@
 import {afterEach, beforeAll, beforeEach, describe, expect, it} from '@jest/globals';
 import {PbxReceptionist, ReceptionistsApi} from "./xapi";
 import {xapiConfig} from "../config";
+import {odataParamEncoder} from "../auth";
+import {colorize} from "json-colorizer";
 
 describe('IVR tests', () => {
     let api: ReceptionistsApi;
@@ -23,6 +25,20 @@ describe('IVR tests', () => {
         await api.deleteReceptionist({
             id: item.Id!
         })
+    })
+
+    it('List', async () => {
+        const response = await api.listReceptionist({
+            $select: new Set<string>(['Id'])
+        })
+        console.log(colorize(response.data));
+    })
+
+    it('Get', async () => {
+        const response = await api.getReceptionistByNumber({
+            number: odataParamEncoder(item.Number!)
+        })
+        console.log(colorize(response.data));
     })
 
     it('Create, update and delete', async () => {
