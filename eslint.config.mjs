@@ -1,7 +1,7 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import airBnbBase from './eslint-airbnb.config.js';
+import airBnbBase from '@3cx/eslint-config-airbnb';
 
 export default [
     {
@@ -17,6 +17,7 @@ export default [
     },
     {
         rules: {
+            'max-len': 'off',
             'no-console': 'off',
             indent: [
                 'error',

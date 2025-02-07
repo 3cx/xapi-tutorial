@@ -5,10 +5,20 @@ __metadata:
   version: 8
   cacheKey: 10
 
+"@3cx/eslint-config-airbnb@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@3cx/eslint-config-airbnb@npm:1.0.0"
+  dependencies:
+    confusing-browser-globals: "npm:^1.0.11"
+  checksum: 10/ac42d70ad1f2f744de71d4926a45832e53e73078dbe764af4c08cec66836279644382debcb6a4b751971219d2021eb1a6cd49c44ec0653696730229814de005b
+  languageName: node
+  linkType: hard
+
 "@3cx/xapi_test@workspace:.":
   version: 0.0.0-use.local
   resolution: "@3cx/xapi_test@workspace:."
   dependencies:
+    "@3cx/eslint-config-airbnb": "npm:^1.0.0"
     "@eslint/js": "npm:^9.19.0"
     "@jest/globals": "npm:^29.7.0"
     "@openapitools/openapi-generator-cli": "npm:^2.16.3"
@@ -17,7 +27,6 @@ __metadata:
     "@types/node": "npm:^22.13.1"
     async-lock: "npm:^1.4.1"
     axios: "npm:^1.7.9"
-    confusing-browser-globals: "npm:^1.0.11"
     eslint: "npm:^9.19.0"
     globals: "npm:^15.14.0"
     jest: "npm:^29.7.0"
