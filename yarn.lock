@@ -28,6 +28,7 @@ __metadata:
     async-lock: "npm:^1.4.1"
     axios: "npm:^1.7.9"
     eslint: "npm:^9.19.0"
+    generate-password: "npm:^1.7.1"
     globals: "npm:^15.14.0"
     jest: "npm:^29.7.0"
     json-colorizer: "npm:^3.0.1"
@@ -2634,6 +2635,13 @@ __metadata:
   version: 1.1.2
   resolution: "function-bind@npm:1.1.2"
   checksum: 10/185e20d20f10c8d661d59aac0f3b63b31132d492e1b11fcc2a93cb2c47257ebaee7407c38513efd2b35cafdf972d9beb2ea4593c1e0f3bf8f2744836928d7454
+  languageName: node
+  linkType: hard
+
+"generate-password@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "generate-password@npm:1.7.1"
+  checksum: 10/e892bfe38ef2f31efb724870514c2615af233b7d45a773e523cf926ffc4233e94cb254f22c83c4c472d322238ad7828898064f4a5d08d5bb5c09717309df0c4e
   languageName: node
   linkType: hard
 
