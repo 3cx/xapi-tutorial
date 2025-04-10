@@ -411,6 +411,25 @@ export interface CollectionOfCallCostByExtensionGroup {
 /**
  * 
  * @export
+ * @interface CollectionOfCallDistribution
+ */
+export interface CollectionOfCallDistribution {
+    /**
+     * 
+     * @type {number}
+     * @memberof CollectionOfCallDistribution
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxCallDistribution>}
+     * @memberof CollectionOfCallDistribution
+     */
+    'value'?: Array<PbxCallDistribution>;
+}
+/**
+ * 
+ * @export
  * @interface CollectionOfCallHistoryView
  */
 export interface CollectionOfCallHistoryView {
@@ -582,6 +601,25 @@ export interface CollectionOfExtensionsStatisticsByRingGroups {
 /**
  * 
  * @export
+ * @interface CollectionOfInboundCall
+ */
+export interface CollectionOfInboundCall {
+    /**
+     * 
+     * @type {number}
+     * @memberof CollectionOfInboundCall
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxInboundCall>}
+     * @memberof CollectionOfInboundCall
+     */
+    'value'?: Array<PbxInboundCall>;
+}
+/**
+ * 
+ * @export
  * @interface CollectionOfInboundRule
  */
 export interface CollectionOfInboundRule {
@@ -616,6 +654,25 @@ export interface CollectionOfInboundRuleReport {
      * @memberof CollectionOfInboundRuleReport
      */
     'value'?: Array<PbxInboundRuleReport>;
+}
+/**
+ * 
+ * @export
+ * @interface CollectionOfOutboundCall
+ */
+export interface CollectionOfOutboundCall {
+    /**
+     * 
+     * @type {number}
+     * @memberof CollectionOfOutboundCall
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxOutboundCall>}
+     * @memberof CollectionOfOutboundCall
+     */
+    'value'?: Array<PbxOutboundCall>;
 }
 /**
  * 
@@ -924,6 +981,25 @@ export interface CollectionOfUser {
 /**
  * 
  * @export
+ * @interface CollectionOfUserActivity
+ */
+export interface CollectionOfUserActivity {
+    /**
+     * 
+     * @type {number}
+     * @memberof CollectionOfUserActivity
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxUserActivity>}
+     * @memberof CollectionOfUserActivity
+     */
+    'value'?: Array<PbxUserActivity>;
+}
+/**
+ * 
+ * @export
  * @interface ConferenceSettingsUpdateMCURequestStatusRequestBody
  */
 export interface ConferenceSettingsUpdateMCURequestStatusRequestBody {
@@ -1213,7 +1289,7 @@ export interface GetCallQualityReport200Response {
      * @type {PbxCallCostSettingsRate}
      * @memberof GetCallQualityReport200Response
      */
-    'MOS'?: PbxCallCostSettingsRate | null;
+    'MOS'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {number}
@@ -1232,6 +1308,12 @@ export interface GetCallQualityReport200Response {
      * @memberof GetCallQualityReport200Response
      */
     'Party2'?: PbxQualityParty | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetCallQualityReport200Response
+     */
+    'Reason'?: string | null;
     /**
      * 
      * @type {number}
@@ -1736,6 +1818,12 @@ export interface MakeCall200Response {
      * @memberof MakeCall200Response
      */
     'Result'?: PbxCallParticipant | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MakeCall200Response
+     */
+    'VttId'?: string | null;
 }
 /**
  * 
@@ -3500,6 +3588,12 @@ export interface PbxCallControlResultResponse {
      * @memberof PbxCallControlResultResponse
      */
     'Result'?: PbxCallParticipant | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCallControlResultResponse
+     */
+    'VttId'?: string | null;
 }
 /**
  * 
@@ -3551,10 +3645,10 @@ export interface PbxCallCostByExtensionGroup {
     'RingingDur'?: string | null;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof PbxCallCostByExtensionGroup
      */
-    'SegId'?: number;
+    'SegId'?: string;
     /**
      * 
      * @type {string}
@@ -3634,7 +3728,7 @@ export interface PbxCallCostSettings {
      * @type {PbxCallCostSettingsRate}
      * @memberof PbxCallCostSettings
      */
-    'Rate'?: PbxCallCostSettingsRate | null;
+    'Rate'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {boolean}
@@ -3667,6 +3761,50 @@ export interface PbxCallCostSettingsCollectionResponse {
  */
 export type PbxCallCostSettingsRate = ReferenceNumeric | number | string;
 
+/**
+ * 
+ * @export
+ * @interface PbxCallDistribution
+ */
+export interface PbxCallDistribution {
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCallDistribution
+     */
+    'DateTimeInterval'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxCallDistribution
+     */
+    'IncomingCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxCallDistribution
+     */
+    'OutgoingCount'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface PbxCallDistributionCollectionResponse
+ */
+export interface PbxCallDistributionCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxCallDistributionCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxCallDistribution>}
+     * @memberof PbxCallDistributionCollectionResponse
+     */
+    'value'?: Array<PbxCallDistribution>;
+}
 /**
  * 
  * @export
@@ -4081,10 +4219,28 @@ export interface PbxCallLogData {
     'CallCost'?: number | null;
     /**
      * 
+     * @type {string}
+     * @memberof PbxCallLogData
+     */
+    'CallHistoryId'?: string | null;
+    /**
+     * 
      * @type {number}
      * @memberof PbxCallLogData
      */
     'CallId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCallLogData
+     */
+    'CallType'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCallLogData
+     */
+    'CdrId'?: string;
     /**
      * 
      * @type {string}
@@ -4111,6 +4267,12 @@ export interface PbxCallLogData {
     'DestinationType'?: number | null;
     /**
      * 
+     * @type {string}
+     * @memberof PbxCallLogData
+     */
+    'Direction'?: string | null;
+    /**
+     * 
      * @type {number}
      * @memberof PbxCallLogData
      */
@@ -4121,6 +4283,12 @@ export interface PbxCallLogData {
      * @memberof PbxCallLogData
      */
     'Indent'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCallLogData
+     */
+    'MainCallHistoryId'?: string | null;
     /**
      * 
      * @type {boolean}
@@ -4192,7 +4360,13 @@ export interface PbxCallLogData {
      * @type {string}
      * @memberof PbxCallLogData
      */
-    'StartTime'?: string;
+    'StartTime'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxCallLogData
+     */
+    'Status'?: string | null;
     /**
      * 
      * @type {number}
@@ -5356,7 +5530,9 @@ export interface PbxCreateTicket {
 
 export const PbxCreateTicketStatus = {
     Ok: 'OK',
+    KeyNotFound: 'KeyNotFound',
     KeyNotAssignedToUser: 'KeyNotAssignedToUser',
+    KeyAssignedToPartner: 'KeyAssignedToPartner',
     KeyIsNotCommercial: 'KeyIsNotCommercial',
     KeyHasNoSupportTickets: 'KeyHasNoSupportTickets'
 } as const;
@@ -5931,12 +6107,6 @@ export interface PbxCustomPrompt {
     'Filename'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof PbxCustomPrompt
-     */
-    'Fullpath'?: string | null;
-    /**
-     * 
      * @type {PbxPromptType}
      * @memberof PbxCustomPrompt
      */
@@ -6089,6 +6259,45 @@ export interface PbxDNRangeCollectionResponse {
      */
     'value'?: Array<PbxDNRange>;
 }
+/**
+ * 
+ * @export
+ * @interface PbxDataConnectorSettings
+ */
+export interface PbxDataConnectorSettings {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxDataConnectorSettings
+     */
+    'IsBigQueryEnabled'?: boolean | null;
+    /**
+     * 
+     * @type {PbxOffloadDestination}
+     * @memberof PbxDataConnectorSettings
+     */
+    'OffloadDestination'?: PbxOffloadDestination | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxDataConnectorSettings
+     */
+    'PurgeAfterSync'?: boolean | null;
+    /**
+     * 
+     * @type {PbxRemotePostgreConfig}
+     * @memberof PbxDataConnectorSettings
+     */
+    'RemotePostgreConfig'?: PbxRemotePostgreConfig | null;
+    /**
+     * 
+     * @type {PbxBackupSchedule}
+     * @memberof PbxDataConnectorSettings
+     */
+    'Schedule'?: PbxBackupSchedule | null;
+}
+
+
 /**
  * 
  * @export
@@ -9601,6 +9810,170 @@ export type PbxIVRType = typeof PbxIVRType[keyof typeof PbxIVRType];
 /**
  * 
  * @export
+ * @interface PbxInboundCall
+ */
+export interface PbxInboundCall {
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'CallDuration'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'CallHistoryId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'CdrId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'DestinationCallerId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'DestinationDisplayName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'DestinationDn'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'Did'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxInboundCall
+     */
+    'QualityReport'?: boolean | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxInboundCall
+     */
+    'RecordingId'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'RecordingUrl'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'RingingDuration'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'RuleName'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxInboundCall
+     */
+    'SentimentScore'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'SourceCallerId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'SourceDisplayName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'SourceDn'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'StartTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'Status'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'Summary'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'TalkingDuration'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'Transcription'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'TrunkName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxInboundCall
+     */
+    'TrunkNumber'?: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface PbxInboundCallCollectionResponse
+ */
+export interface PbxInboundCallCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxInboundCallCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxInboundCall>}
+     * @memberof PbxInboundCallCollectionResponse
+     */
+    'value'?: Array<PbxInboundCall>;
+}
+/**
+ * 
+ * @export
  * @interface PbxInboundRule
  */
 export interface PbxInboundRule {
@@ -10346,6 +10719,44 @@ export interface PbxLocationSettings {
 /**
  * 
  * @export
+ * @interface PbxLogEntry
+ */
+export interface PbxLogEntry {
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxLogEntry
+     */
+    'Text'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxLogEntry
+     */
+    'TimeStamp'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PbxLogEntryCollectionResponse
+ */
+export interface PbxLogEntryCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxLogEntryCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxLogEntry>}
+     * @memberof PbxLogEntryCollectionResponse
+     */
+    'value'?: Array<PbxLogEntry>;
+}
+/**
+ * 
+ * @export
  * @interface PbxLoggingSettings
  */
 export interface PbxLoggingSettings {
@@ -10368,6 +10779,20 @@ export interface PbxLoggingSettings {
      */
     'LoggingLevel'?: number | null;
 }
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const PbxLoginType = {
+    Local: 'Local',
+    Guest: 'Guest'
+} as const;
+
+export type PbxLoginType = typeof PbxLoginType[keyof typeof PbxLoginType];
+
+
 /**
  * 
  * @export
@@ -11659,6 +12084,12 @@ export interface PbxOauthState {
      * @type {string}
      * @memberof PbxOauthState
      */
+    'CodeChallenge'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOauthState
+     */
     'State'?: string | null;
 }
 /**
@@ -11667,6 +12098,12 @@ export interface PbxOauthState {
  * @interface PbxOauthStateParam
  */
 export interface PbxOauthStateParam {
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOauthStateParam
+     */
+    'PKCECodeVerifier'?: string | null;
     /**
      * 
      * @type {string}
@@ -11731,6 +12168,21 @@ export const PbxOfficeHoursBits = {
 } as const;
 
 export type PbxOfficeHoursBits = typeof PbxOfficeHoursBits[keyof typeof PbxOfficeHoursBits];
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const PbxOffloadDestination = {
+    None: 'None',
+    Postgre: 'Postgre',
+    BigQuery: 'BigQuery'
+} as const;
+
+export type PbxOffloadDestination = typeof PbxOffloadDestination[keyof typeof PbxOffloadDestination];
 
 
 /**
@@ -11971,16 +12423,16 @@ export interface PbxOnBoardMcuRow {
     'Ip'?: string;
     /**
      * 
-     * @type {PbxOnBoardMcuRowLatitude}
+     * @type {PbxCallCostSettingsRate}
      * @memberof PbxOnBoardMcuRow
      */
-    'Latitude'?: PbxOnBoardMcuRowLatitude;
+    'Latitude'?: PbxCallCostSettingsRate;
     /**
      * 
-     * @type {PbxOnBoardMcuRowLatitude}
+     * @type {PbxCallCostSettingsRate}
      * @memberof PbxOnBoardMcuRow
      */
-    'Longitude'?: PbxOnBoardMcuRowLatitude;
+    'Longitude'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {boolean}
@@ -12043,12 +12495,6 @@ export interface PbxOnBoardMcuRow {
     'Zone'?: string;
 }
 
-
-/**
- * @type PbxOnBoardMcuRowLatitude
- * @export
- */
-export type PbxOnBoardMcuRowLatitude = ReferenceNumeric | number | string;
 
 /**
  * 
@@ -12119,6 +12565,176 @@ export interface PbxOnBoardMeeting {
      * @memberof PbxOnBoardMeeting
      */
     'Start'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PbxOutboundCall
+ */
+export interface PbxOutboundCall {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxOutboundCall
+     */
+    'Answered'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxOutboundCall
+     */
+    'CallCost'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'CallDuration'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'CallHistoryId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'CdrId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'DestinationCalleeId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'DestinationDisplayName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'DestinationDn'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxOutboundCall
+     */
+    'QualityReport'?: boolean | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxOutboundCall
+     */
+    'RecordingId'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'RecordingUrl'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'RingingDuration'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'RuleName'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxOutboundCall
+     */
+    'SentimentScore'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'SourceCallerId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'SourceDisplayName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'SourceDn'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'StartTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'Status'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'Summary'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'TalkingDuration'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'Transcription'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'TrunkName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxOutboundCall
+     */
+    'TrunkNumber'?: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface PbxOutboundCallCollectionResponse
+ */
+export interface PbxOutboundCallCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxOutboundCallCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxOutboundCall>}
+     * @memberof PbxOutboundCallCollectionResponse
+     */
+    'value'?: Array<PbxOutboundCall>;
 }
 /**
  * 
@@ -13798,6 +14414,7 @@ export type PbxPromptSetType = typeof PbxPromptSetType[keyof typeof PbxPromptSet
 
 export const PbxPromptType = {
     File: 'File',
+    DepFile: 'DepFile',
     Playlist: 'Playlist'
 } as const;
 
@@ -13921,22 +14538,40 @@ export interface PbxQualityParty {
     'Duration'?: number | null;
     /**
      * 
+     * @type {number}
+     * @memberof PbxQualityParty
+     */
+    'GlobalPort'?: number | null;
+    /**
+     * 
      * @type {boolean}
      * @memberof PbxQualityParty
      */
     'Inbound'?: boolean | null;
     /**
      * 
-     * @type {PbxCallCostSettingsRate}
+     * @type {number}
      * @memberof PbxQualityParty
      */
-    'MOSFromPBX'?: PbxCallCostSettingsRate | null;
+    'LocalPort'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxQualityParty
+     */
+    'Location'?: string | null;
     /**
      * 
      * @type {PbxCallCostSettingsRate}
      * @memberof PbxQualityParty
      */
-    'MOSToPBX'?: PbxCallCostSettingsRate | null;
+    'MOSFromPBX'?: PbxCallCostSettingsRate;
+    /**
+     * 
+     * @type {PbxCallCostSettingsRate}
+     * @memberof PbxQualityParty
+     */
+    'MOSToPBX'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {string}
@@ -13948,19 +14583,19 @@ export interface PbxQualityParty {
      * @type {PbxCallCostSettingsRate}
      * @memberof PbxQualityParty
      */
-    'RTT'?: PbxCallCostSettingsRate | null;
+    'RTT'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {PbxCallCostSettingsRate}
      * @memberof PbxQualityParty
      */
-    'RxJitter'?: PbxCallCostSettingsRate | null;
+    'RxJitter'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {PbxCallCostSettingsRate}
      * @memberof PbxQualityParty
      */
-    'RxLost'?: PbxCallCostSettingsRate | null;
+    'RxLost'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {number}
@@ -13984,13 +14619,13 @@ export interface PbxQualityParty {
      * @type {PbxCallCostSettingsRate}
      * @memberof PbxQualityParty
      */
-    'TxJitter'?: PbxCallCostSettingsRate | null;
+    'TxJitter'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {PbxCallCostSettingsRate}
      * @memberof PbxQualityParty
      */
-    'TxLost'?: PbxCallCostSettingsRate | null;
+    'TxLost'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {number}
@@ -14015,7 +14650,7 @@ export interface PbxQualityReport {
      * @type {PbxCallCostSettingsRate}
      * @memberof PbxQualityReport
      */
-    'MOS'?: PbxCallCostSettingsRate | null;
+    'MOS'?: PbxCallCostSettingsRate;
     /**
      * 
      * @type {number}
@@ -14034,6 +14669,12 @@ export interface PbxQualityReport {
      * @memberof PbxQualityReport
      */
     'Party2'?: PbxQualityParty | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxQualityReport
+     */
+    'Reason'?: string | null;
     /**
      * 
      * @type {number}
@@ -14209,12 +14850,6 @@ export interface PbxQueue {
      * @memberof PbxQueue
      */
     'Number'?: string | null;
-    /**
-     * 
-     * @type {PbxRoute}
-     * @memberof PbxQueue
-     */
-    'OfficeRoute'?: PbxRoute | null;
     /**
      * 
      * @type {string}
@@ -15033,12 +15668,6 @@ export interface PbxReceptionist {
      * @type {PbxRoute}
      * @memberof PbxReceptionist
      */
-    'OfficeRoute'?: PbxRoute | null;
-    /**
-     * 
-     * @type {PbxRoute}
-     * @memberof PbxReceptionist
-     */
     'OutOfOfficeRoute'?: PbxRoute | null;
     /**
      * 
@@ -15460,6 +16089,12 @@ export interface PbxRefreshToken {
     'Id'?: number;
     /**
      * 
+     * @type {PbxLoginType}
+     * @memberof PbxRefreshToken
+     */
+    'LoginType'?: PbxLoginType;
+    /**
+     * 
      * @type {PbxRevokeReason}
      * @memberof PbxRefreshToken
      */
@@ -15624,6 +16259,21 @@ export interface PbxRegistrarFxsCollectionResponse {
 /**
  * 
  * @export
+ * @enum {string}
+ */
+
+export const PbxRemoteAccessStatus = {
+    None: 'None',
+    Requested: 'Requested',
+    Active: 'Active'
+} as const;
+
+export type PbxRemoteAccessStatus = typeof PbxRemoteAccessStatus[keyof typeof PbxRemoteAccessStatus];
+
+
+/**
+ * 
+ * @export
  * @interface PbxRemoteArchivingSettings
  */
 export interface PbxRemoteArchivingSettings {
@@ -15669,6 +16319,43 @@ export interface PbxRemoteArchivingSettings {
      * @memberof PbxRemoteArchivingSettings
      */
     'Voicemails'?: PbxArchiveSubsystem | null;
+}
+/**
+ * 
+ * @export
+ * @interface PbxRemotePostgreConfig
+ */
+export interface PbxRemotePostgreConfig {
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxRemotePostgreConfig
+     */
+    'Database'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxRemotePostgreConfig
+     */
+    'Host'?: string | null;
+    /**
+     * 
+     * @type {PbxConcealedPassword}
+     * @memberof PbxRemotePostgreConfig
+     */
+    'Password'?: PbxConcealedPassword;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxRemotePostgreConfig
+     */
+    'Port'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxRemotePostgreConfig
+     */
+    'Username'?: string | null;
 }
 /**
  * 
@@ -15974,6 +16661,12 @@ export interface PbxRetreivePeersRequest {
      * @memberof PbxRetreivePeersRequest
      */
     'DnNumbers'?: Array<string | null>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRetreivePeersRequest
+     */
+    'IsReportPeers'?: boolean;
 }
 /**
  * 
@@ -16234,12 +16927,6 @@ export interface PbxRingGroup {
      * @memberof PbxRingGroup
      */
     'Number'?: string | null;
-    /**
-     * 
-     * @type {PbxRoute}
-     * @memberof PbxRingGroup
-     */
-    'OfficeRoute'?: PbxRoute | null;
     /**
      * 
      * @type {PbxRoute}
@@ -16727,7 +17414,11 @@ export const PbxScheduledReportType = {
     QueueChatPerformance: 'QueueChatPerformance',
     QueueAgentsChat: 'QueueAgentsChat',
     AbandonedChats: 'AbandonedChats',
-    RingGroups: 'RingGroups'
+    RingGroups: 'RingGroups',
+    InboundCalls: 'InboundCalls',
+    OutBoundCalls: 'OutBoundCalls',
+    UserActivity: 'UserActivity',
+    CallDistribution: 'CallDistribution'
 } as const;
 
 export type PbxScheduledReportType = typeof PbxScheduledReportType[keyof typeof PbxScheduledReportType];
@@ -17199,7 +17890,7 @@ export interface PbxSystemDatabaseInformation {
      * @type {number}
      * @memberof PbxSystemDatabaseInformation
      */
-    'CallHistoryCount'?: number | null;
+    'CallsUsedSpace'?: number | null;
     /**
      * 
      * @type {number}
@@ -17211,19 +17902,19 @@ export interface PbxSystemDatabaseInformation {
      * @type {number}
      * @memberof PbxSystemDatabaseInformation
      */
-    'ChatMessagesCount'?: number | null;
+    'ChatsUsedSpace'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxSystemDatabaseInformation
+     */
+    'EventLogUsedSpace'?: number | null;
     /**
      * 
      * @type {number}
      * @memberof PbxSystemDatabaseInformation
      */
     'Id'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof PbxSystemDatabaseInformation
-     */
-    'TodayOutboundCallsCount'?: number | null;
 }
 /**
  * 
@@ -17444,6 +18135,12 @@ export interface PbxSystemParameters {
      * @memberof PbxSystemParameters
      */
     'License'?: PbxLicense | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxSystemParameters
+     */
+    'MaxDIDPerTrunk'?: number | null;
     /**
      * 
      * @type {string}
@@ -17891,6 +18588,19 @@ export type PbxTemplateType = typeof PbxTemplateType[keyof typeof PbxTemplateTyp
 /**
  * 
  * @export
+ * @interface PbxTestCallLog
+ */
+export interface PbxTestCallLog {
+    /**
+     * 
+     * @type {Array<PbxLogEntry>}
+     * @memberof PbxTestCallLog
+     */
+    'Entries'?: Array<PbxLogEntry>;
+}
+/**
+ * 
+ * @export
  * @interface PbxTestResult
  */
 export interface PbxTestResult {
@@ -18175,12 +18885,6 @@ export interface PbxTrunk {
     'IsOnline'?: boolean | null;
     /**
      * 
-     * @type {boolean}
-     * @memberof PbxTrunk
-     */
-    'IsWebmeetingBridge'?: boolean | null;
-    /**
-     * 
      * @type {PbxTrunkMessaging}
      * @memberof PbxTrunk
      */
@@ -18269,6 +18973,12 @@ export interface PbxTrunk {
      * @memberof PbxTrunk
      */
     'SimultaneousCalls'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxUserTag>}
+     * @memberof PbxTrunk
+     */
+    'Tags'?: Array<PbxUserTag>;
     /**
      * 
      * @type {PbxTranscriptionType}
@@ -19484,6 +20194,50 @@ export interface PbxUser {
 /**
  * 
  * @export
+ * @interface PbxUserActivity
+ */
+export interface PbxUserActivity {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxUserActivity
+     */
+    'AnsweredCount'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxUserActivity
+     */
+    'DateTimeInterval'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxUserActivity
+     */
+    'UnansweredCount'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface PbxUserActivityCollectionResponse
+ */
+export interface PbxUserActivityCollectionResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxUserActivityCollectionResponse
+     */
+    '@odata.count'?: number | null;
+    /**
+     * 
+     * @type {Array<PbxUserActivity>}
+     * @memberof PbxUserActivityCollectionResponse
+     */
+    'value'?: Array<PbxUserActivity>;
+}
+/**
+ * 
+ * @export
  * @interface PbxUserCollectionResponse
  */
 export interface PbxUserCollectionResponse {
@@ -19627,7 +20381,8 @@ export const PbxUserTag = {
     FaxServer: 'FaxServer',
     Principal: 'Principal',
     WeakId: 'WeakID',
-    WeakPass: 'WeakPass'
+    WeakPass: 'WeakPass',
+    Wm: 'WM'
 } as const;
 
 export type PbxUserTag = typeof PbxUserTag[keyof typeof PbxUserTag];
@@ -20059,6 +20814,12 @@ export interface PbxWeblink {
      * @memberof PbxWeblink
      */
     'DN'?: PbxPeer | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxWeblink
+     */
+    'EnableReCaptcha'?: boolean | null;
     /**
      * 
      * @type {PbxGeneralLiveChatSettings}
@@ -21018,6 +21779,18 @@ export interface UsersMakeCallRequestBody {
      * @type {string}
      * @memberof UsersMakeCallRequestBody
      */
+    'contact'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UsersMakeCallRequestBody
+     */
+    'testCall'?: boolean | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UsersMakeCallRequestBody
+     */
     'destination'?: string;
 }
 /**
@@ -21520,10 +22293,7 @@ export const ActivityLogApiAxiosParamCreator = function (configuration?: Configu
          * @param {string} endDate Usage: endDate&#x3D;{endDate}
          * @param {string | null} extension Usage: extension&#x3D;{extension}
          * @param {string | null} call Usage: call&#x3D;{call}
-         * @param {string | null} search Usage: search&#x3D;{search}
          * @param {string | null} severity Usage: severity&#x3D;{severity}
-         * @param {number} top Usage: top&#x3D;{top}
-         * @param {number} skip Usage: skip&#x3D;{skip}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -21535,7 +22305,7 @@ export const ActivityLogApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLogs: async (startDate: string, endDate: string, extension: string | null, call: string | null, search: string | null, severity: string | null, top: number, skip: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getLogs: async (startDate: string, endDate: string, extension: string | null, call: string | null, severity: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'startDate' is not null or undefined
             assertParamExists('getLogs', 'startDate', startDate)
             // verify required parameter 'endDate' is not null or undefined
@@ -21544,23 +22314,14 @@ export const ActivityLogApiAxiosParamCreator = function (configuration?: Configu
             assertParamExists('getLogs', 'extension', extension)
             // verify required parameter 'call' is not null or undefined
             assertParamExists('getLogs', 'call', call)
-            // verify required parameter 'search' is not null or undefined
-            assertParamExists('getLogs', 'search', search)
             // verify required parameter 'severity' is not null or undefined
             assertParamExists('getLogs', 'severity', severity)
-            // verify required parameter 'top' is not null or undefined
-            assertParamExists('getLogs', 'top', top)
-            // verify required parameter 'skip' is not null or undefined
-            assertParamExists('getLogs', 'skip', skip)
-            const localVarPath = `/ActivityLog/Pbx.GetLogs(startDate={startDate},endDate={endDate},extension={extension},call={call},search={search},severity={severity},top={top},skip={skip})`
+            const localVarPath = `/ActivityLog/Pbx.GetLogs(startDate={startDate},endDate={endDate},extension={extension},call={call},severity={severity})`
                 .replace(`{${"startDate"}}`, encodeURIComponent(String(startDate)))
                 .replace(`{${"endDate"}}`, encodeURIComponent(String(endDate)))
                 .replace(`{${"extension"}}`, encodeURIComponent(String(extension)))
                 .replace(`{${"call"}}`, encodeURIComponent(String(call)))
-                .replace(`{${"search"}}`, encodeURIComponent(String(search)))
-                .replace(`{${"severity"}}`, encodeURIComponent(String(severity)))
-                .replace(`{${"top"}}`, encodeURIComponent(String(top)))
-                .replace(`{${"skip"}}`, encodeURIComponent(String(skip)));
+                .replace(`{${"severity"}}`, encodeURIComponent(String(severity)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -21682,10 +22443,7 @@ export const ActivityLogApiFp = function(configuration?: Configuration) {
          * @param {string} endDate Usage: endDate&#x3D;{endDate}
          * @param {string | null} extension Usage: extension&#x3D;{extension}
          * @param {string | null} call Usage: call&#x3D;{call}
-         * @param {string | null} search Usage: search&#x3D;{search}
          * @param {string | null} severity Usage: severity&#x3D;{severity}
-         * @param {number} top Usage: top&#x3D;{top}
-         * @param {number} skip Usage: skip&#x3D;{skip}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -21697,8 +22455,8 @@ export const ActivityLogApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLogs(startDate: string, endDate: string, extension: string | null, call: string | null, search: string | null, severity: string | null, top: number, skip: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfActivityLogEvent>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getLogs(startDate, endDate, extension, call, search, severity, top, skip, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+        async getLogs(startDate: string, endDate: string, extension: string | null, call: string | null, severity: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfActivityLogEvent>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLogs(startDate, endDate, extension, call, severity, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ActivityLogApi.getLogs']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -21742,7 +22500,7 @@ export const ActivityLogApiFactory = function (configuration?: Configuration, ba
          * @throws {RequiredError}
          */
         getLogs(requestParameters: ActivityLogApiGetLogsRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfActivityLogEvent> {
-            return localVarFp.getLogs(requestParameters.startDate, requestParameters.endDate, requestParameters.extension, requestParameters.call, requestParameters.search, requestParameters.severity, requestParameters.top, requestParameters.skip, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+            return localVarFp.getLogs(requestParameters.startDate, requestParameters.endDate, requestParameters.extension, requestParameters.call, requestParameters.severity, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -21791,32 +22549,11 @@ export interface ActivityLogApiGetLogsRequest {
     readonly call: string | null
 
     /**
-     * Usage: search&#x3D;{search}
-     * @type {string}
-     * @memberof ActivityLogApiGetLogs
-     */
-    readonly search: string | null
-
-    /**
      * Usage: severity&#x3D;{severity}
      * @type {string}
      * @memberof ActivityLogApiGetLogs
      */
     readonly severity: string | null
-
-    /**
-     * Usage: top&#x3D;{top}
-     * @type {number}
-     * @memberof ActivityLogApiGetLogs
-     */
-    readonly top: number
-
-    /**
-     * Usage: skip&#x3D;{skip}
-     * @type {number}
-     * @memberof ActivityLogApiGetLogs
-     */
-    readonly skip: number
 
     /**
      * Show only the first n items
@@ -21902,7 +22639,7 @@ export class ActivityLogApi extends BaseAPI {
      * @memberof ActivityLogApi
      */
     public getLogs(requestParameters: ActivityLogApiGetLogsRequest, options?: RawAxiosRequestConfig) {
-        return ActivityLogApiFp(this.configuration).getLogs(requestParameters.startDate, requestParameters.endDate, requestParameters.extension, requestParameters.call, requestParameters.search, requestParameters.severity, requestParameters.top, requestParameters.skip, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+        return ActivityLogApiFp(this.configuration).getLogs(requestParameters.startDate, requestParameters.endDate, requestParameters.extension, requestParameters.call, requestParameters.severity, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -33989,6 +34726,367 @@ export class DNPropertiesApi extends BaseAPI {
 
 
 /**
+ * DataConnectorSettingsApi - axios parameter creator
+ * @export
+ */
+export const DataConnectorSettingsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get DataConnectorSettings
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDataConnectorSettings: async ($select?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/DataConnectorSettings`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action Synchronize
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        synchronize: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/DataConnectorSettings/Pbx.Synchronize`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action TestDataConnector
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testDataConnector: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/DataConnectorSettings/Pbx.TestDataConnector`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update DataConnectorSettings
+         * @param {PbxDataConnectorSettings} pbxDataConnectorSettings New property values
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateDataConnectorSettings: async (pbxDataConnectorSettings: PbxDataConnectorSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pbxDataConnectorSettings' is not null or undefined
+            assertParamExists('updateDataConnectorSettings', 'pbxDataConnectorSettings', pbxDataConnectorSettings)
+            const localVarPath = `/DataConnectorSettings`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(pbxDataConnectorSettings, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * DataConnectorSettingsApi - functional programming interface
+ * @export
+ */
+export const DataConnectorSettingsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DataConnectorSettingsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Get DataConnectorSettings
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getDataConnectorSettings($select?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxDataConnectorSettings>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDataConnectorSettings($select, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DataConnectorSettingsApi.getDataConnectorSettings']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action Synchronize
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async synchronize(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.synchronize(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DataConnectorSettingsApi.synchronize']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action TestDataConnector
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testDataConnector(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testDataConnector(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DataConnectorSettingsApi.testDataConnector']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Update DataConnectorSettings
+         * @param {PbxDataConnectorSettings} pbxDataConnectorSettings New property values
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateDataConnectorSettings(pbxDataConnectorSettings: PbxDataConnectorSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateDataConnectorSettings(pbxDataConnectorSettings, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DataConnectorSettingsApi.updateDataConnectorSettings']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * DataConnectorSettingsApi - factory interface
+ * @export
+ */
+export const DataConnectorSettingsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DataConnectorSettingsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Get DataConnectorSettings
+         * @param {DataConnectorSettingsApiGetDataConnectorSettingsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDataConnectorSettings(requestParameters: DataConnectorSettingsApiGetDataConnectorSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxDataConnectorSettings> {
+            return localVarFp.getDataConnectorSettings(requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action Synchronize
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        synchronize(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.synchronize(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action TestDataConnector
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testDataConnector(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.testDataConnector(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update DataConnectorSettings
+         * @param {DataConnectorSettingsApiUpdateDataConnectorSettingsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateDataConnectorSettings(requestParameters: DataConnectorSettingsApiUpdateDataConnectorSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.updateDataConnectorSettings(requestParameters.pbxDataConnectorSettings, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for getDataConnectorSettings operation in DataConnectorSettingsApi.
+ * @export
+ * @interface DataConnectorSettingsApiGetDataConnectorSettingsRequest
+ */
+export interface DataConnectorSettingsApiGetDataConnectorSettingsRequest {
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof DataConnectorSettingsApiGetDataConnectorSettings
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof DataConnectorSettingsApiGetDataConnectorSettings
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * Request parameters for updateDataConnectorSettings operation in DataConnectorSettingsApi.
+ * @export
+ * @interface DataConnectorSettingsApiUpdateDataConnectorSettingsRequest
+ */
+export interface DataConnectorSettingsApiUpdateDataConnectorSettingsRequest {
+    /**
+     * New property values
+     * @type {PbxDataConnectorSettings}
+     * @memberof DataConnectorSettingsApiUpdateDataConnectorSettings
+     */
+    readonly pbxDataConnectorSettings: PbxDataConnectorSettings
+}
+
+/**
+ * DataConnectorSettingsApi - object-oriented interface
+ * @export
+ * @class DataConnectorSettingsApi
+ * @extends {BaseAPI}
+ */
+export class DataConnectorSettingsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get DataConnectorSettings
+     * @param {DataConnectorSettingsApiGetDataConnectorSettingsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DataConnectorSettingsApi
+     */
+    public getDataConnectorSettings(requestParameters: DataConnectorSettingsApiGetDataConnectorSettingsRequest = {}, options?: RawAxiosRequestConfig) {
+        return DataConnectorSettingsApiFp(this.configuration).getDataConnectorSettings(requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action Synchronize
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DataConnectorSettingsApi
+     */
+    public synchronize(options?: RawAxiosRequestConfig) {
+        return DataConnectorSettingsApiFp(this.configuration).synchronize(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action TestDataConnector
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DataConnectorSettingsApi
+     */
+    public testDataConnector(options?: RawAxiosRequestConfig) {
+        return DataConnectorSettingsApiFp(this.configuration).testDataConnector(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update DataConnectorSettings
+     * @param {DataConnectorSettingsApiUpdateDataConnectorSettingsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DataConnectorSettingsApi
+     */
+    public updateDataConnectorSettings(requestParameters: DataConnectorSettingsApiUpdateDataConnectorSettingsRequest, options?: RawAxiosRequestConfig) {
+        return DataConnectorSettingsApiFp(this.configuration).updateDataConnectorSettings(requestParameters.pbxDataConnectorSettings, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * DefsApi - axios parameter creator
  * @export
  */
@@ -43511,6 +44609,537 @@ export class GroupsApi extends BaseAPI {
      */
     public updateGroup(requestParameters: GroupsApiUpdateGroupRequest, options?: RawAxiosRequestConfig) {
         return GroupsApiFp(this.configuration).updateGroup(requestParameters.id, requestParameters.pbxGroup, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * HolidaysApi - axios parameter creator
+ * @export
+ */
+export const HolidaysApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Delete entity from Holidays
+         * @param {number} id The unique identifier of Holiday
+         * @param {string} [ifMatch] ETag
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteHoliday: async (id: number, ifMatch?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteHoliday', 'id', id)
+            const localVarPath = `/Holidays({Id})`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get entity from Holidays by key
+         * @param {number} id The unique identifier of Holiday
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHoliday: async (id: number, $select?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getHoliday', 'id', id)
+            const localVarPath = `/Holidays({Id})`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get entities from Holidays
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listHoliday: async ($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $orderby?: Set<string>, $select?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Holidays`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
+            }
+
+            if ($orderby) {
+                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update entity in Holidays
+         * @param {number} id The unique identifier of Holiday
+         * @param {PbxHoliday} pbxHoliday New property values
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateHoliday: async (id: number, pbxHoliday: PbxHoliday, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updateHoliday', 'id', id)
+            // verify required parameter 'pbxHoliday' is not null or undefined
+            assertParamExists('updateHoliday', 'pbxHoliday', pbxHoliday)
+            const localVarPath = `/Holidays({Id})`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(pbxHoliday, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * HolidaysApi - functional programming interface
+ * @export
+ */
+export const HolidaysApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = HolidaysApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Delete entity from Holidays
+         * @param {number} id The unique identifier of Holiday
+         * @param {string} [ifMatch] ETag
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteHoliday(id: number, ifMatch?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteHoliday(id, ifMatch, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['HolidaysApi.deleteHoliday']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get entity from Holidays by key
+         * @param {number} id The unique identifier of Holiday
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getHoliday(id: number, $select?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxHoliday>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getHoliday(id, $select, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['HolidaysApi.getHoliday']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get entities from Holidays
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listHoliday($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $orderby?: Set<string>, $select?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxHolidayCollectionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listHoliday($top, $skip, $search, $filter, $count, $orderby, $select, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['HolidaysApi.listHoliday']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Update entity in Holidays
+         * @param {number} id The unique identifier of Holiday
+         * @param {PbxHoliday} pbxHoliday New property values
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateHoliday(id: number, pbxHoliday: PbxHoliday, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateHoliday(id, pbxHoliday, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['HolidaysApi.updateHoliday']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * HolidaysApi - factory interface
+ * @export
+ */
+export const HolidaysApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = HolidaysApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Delete entity from Holidays
+         * @param {HolidaysApiDeleteHolidayRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteHoliday(requestParameters: HolidaysApiDeleteHolidayRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteHoliday(requestParameters.id, requestParameters.ifMatch, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get entity from Holidays by key
+         * @param {HolidaysApiGetHolidayRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHoliday(requestParameters: HolidaysApiGetHolidayRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxHoliday> {
+            return localVarFp.getHoliday(requestParameters.id, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get entities from Holidays
+         * @param {HolidaysApiListHolidayRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listHoliday(requestParameters: HolidaysApiListHolidayRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxHolidayCollectionResponse> {
+            return localVarFp.listHoliday(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update entity in Holidays
+         * @param {HolidaysApiUpdateHolidayRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateHoliday(requestParameters: HolidaysApiUpdateHolidayRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.updateHoliday(requestParameters.id, requestParameters.pbxHoliday, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for deleteHoliday operation in HolidaysApi.
+ * @export
+ * @interface HolidaysApiDeleteHolidayRequest
+ */
+export interface HolidaysApiDeleteHolidayRequest {
+    /**
+     * The unique identifier of Holiday
+     * @type {number}
+     * @memberof HolidaysApiDeleteHoliday
+     */
+    readonly id: number
+
+    /**
+     * ETag
+     * @type {string}
+     * @memberof HolidaysApiDeleteHoliday
+     */
+    readonly ifMatch?: string
+}
+
+/**
+ * Request parameters for getHoliday operation in HolidaysApi.
+ * @export
+ * @interface HolidaysApiGetHolidayRequest
+ */
+export interface HolidaysApiGetHolidayRequest {
+    /**
+     * The unique identifier of Holiday
+     * @type {number}
+     * @memberof HolidaysApiGetHoliday
+     */
+    readonly id: number
+
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof HolidaysApiGetHoliday
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof HolidaysApiGetHoliday
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * Request parameters for listHoliday operation in HolidaysApi.
+ * @export
+ * @interface HolidaysApiListHolidayRequest
+ */
+export interface HolidaysApiListHolidayRequest {
+    /**
+     * Show only the first n items
+     * @type {number}
+     * @memberof HolidaysApiListHoliday
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     * @type {number}
+     * @memberof HolidaysApiListHoliday
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     * @type {string}
+     * @memberof HolidaysApiListHoliday
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     * @type {string}
+     * @memberof HolidaysApiListHoliday
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     * @type {boolean}
+     * @memberof HolidaysApiListHoliday
+     */
+    readonly $count?: boolean
+
+    /**
+     * Order items by property values
+     * @type {Set<string>}
+     * @memberof HolidaysApiListHoliday
+     */
+    readonly $orderby?: Set<string>
+
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof HolidaysApiListHoliday
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof HolidaysApiListHoliday
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * Request parameters for updateHoliday operation in HolidaysApi.
+ * @export
+ * @interface HolidaysApiUpdateHolidayRequest
+ */
+export interface HolidaysApiUpdateHolidayRequest {
+    /**
+     * The unique identifier of Holiday
+     * @type {number}
+     * @memberof HolidaysApiUpdateHoliday
+     */
+    readonly id: number
+
+    /**
+     * New property values
+     * @type {PbxHoliday}
+     * @memberof HolidaysApiUpdateHoliday
+     */
+    readonly pbxHoliday: PbxHoliday
+}
+
+/**
+ * HolidaysApi - object-oriented interface
+ * @export
+ * @class HolidaysApi
+ * @extends {BaseAPI}
+ */
+export class HolidaysApi extends BaseAPI {
+    /**
+     * 
+     * @summary Delete entity from Holidays
+     * @param {HolidaysApiDeleteHolidayRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof HolidaysApi
+     */
+    public deleteHoliday(requestParameters: HolidaysApiDeleteHolidayRequest, options?: RawAxiosRequestConfig) {
+        return HolidaysApiFp(this.configuration).deleteHoliday(requestParameters.id, requestParameters.ifMatch, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get entity from Holidays by key
+     * @param {HolidaysApiGetHolidayRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof HolidaysApi
+     */
+    public getHoliday(requestParameters: HolidaysApiGetHolidayRequest, options?: RawAxiosRequestConfig) {
+        return HolidaysApiFp(this.configuration).getHoliday(requestParameters.id, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get entities from Holidays
+     * @param {HolidaysApiListHolidayRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof HolidaysApi
+     */
+    public listHoliday(requestParameters: HolidaysApiListHolidayRequest = {}, options?: RawAxiosRequestConfig) {
+        return HolidaysApiFp(this.configuration).listHoliday(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update entity in Holidays
+     * @param {HolidaysApiUpdateHolidayRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof HolidaysApi
+     */
+    public updateHoliday(requestParameters: HolidaysApiUpdateHolidayRequest, options?: RawAxiosRequestConfig) {
+        return HolidaysApiFp(this.configuration).updateHoliday(requestParameters.id, requestParameters.pbxHoliday, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -64727,15 +66356,16 @@ export const ReportCallDistributionApiAxiosParamCreator = function (configuratio
     return {
         /**
          * 
-         * @summary Invoke function DownloadCallDistributionReport
-         * @param {string} chartDate Usage: chartDate&#x3D;{chartDate}
-         * @param {string | null} chartBy Usage: chartBy&#x3D;{chartBy}
-         * @param {boolean} includeInternalCalls Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-         * @param {string | null} queueDnStr Usage: queueDnStr&#x3D;{queueDnStr}
-         * @param {string | null} groupStr Usage: groupStr&#x3D;{groupStr}
+         * @summary Invoke function DownloadGetGetCallDistribution
          * @param {string | null} clientTimeZone Usage: clientTimeZone&#x3D;{clientTimeZone}
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} groupNumber Usage: groupNumber&#x3D;{groupNumber}
+         * @param {string | null} extensionDns Usage: extensionDns&#x3D;{extensionDns}
          * @param {string | null} waitInterval Usage: waitInterval&#x3D;{waitInterval}
+         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+         * @param {number} callArea Usage: callArea&#x3D;{callArea}
+         * @param {number} groupingType Usage: groupingType&#x3D;{groupingType}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -64747,32 +66377,35 @@ export const ReportCallDistributionApiAxiosParamCreator = function (configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        downloadCallDistributionReport: async (chartDate: string, chartBy: string | null, includeInternalCalls: boolean, includeQueueCalls: boolean, queueDnStr: string | null, groupStr: string | null, clientTimeZone: string | null, waitInterval: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'chartDate' is not null or undefined
-            assertParamExists('downloadCallDistributionReport', 'chartDate', chartDate)
-            // verify required parameter 'chartBy' is not null or undefined
-            assertParamExists('downloadCallDistributionReport', 'chartBy', chartBy)
-            // verify required parameter 'includeInternalCalls' is not null or undefined
-            assertParamExists('downloadCallDistributionReport', 'includeInternalCalls', includeInternalCalls)
-            // verify required parameter 'includeQueueCalls' is not null or undefined
-            assertParamExists('downloadCallDistributionReport', 'includeQueueCalls', includeQueueCalls)
-            // verify required parameter 'queueDnStr' is not null or undefined
-            assertParamExists('downloadCallDistributionReport', 'queueDnStr', queueDnStr)
-            // verify required parameter 'groupStr' is not null or undefined
-            assertParamExists('downloadCallDistributionReport', 'groupStr', groupStr)
+        downloadGetGetCallDistribution: async (clientTimeZone: string | null, periodFrom: string, periodTo: string, groupNumber: string | null, extensionDns: string | null, waitInterval: string | null, includeQueueCalls: boolean, callArea: number, groupingType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clientTimeZone' is not null or undefined
-            assertParamExists('downloadCallDistributionReport', 'clientTimeZone', clientTimeZone)
+            assertParamExists('downloadGetGetCallDistribution', 'clientTimeZone', clientTimeZone)
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('downloadGetGetCallDistribution', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('downloadGetGetCallDistribution', 'periodTo', periodTo)
+            // verify required parameter 'groupNumber' is not null or undefined
+            assertParamExists('downloadGetGetCallDistribution', 'groupNumber', groupNumber)
+            // verify required parameter 'extensionDns' is not null or undefined
+            assertParamExists('downloadGetGetCallDistribution', 'extensionDns', extensionDns)
             // verify required parameter 'waitInterval' is not null or undefined
-            assertParamExists('downloadCallDistributionReport', 'waitInterval', waitInterval)
-            const localVarPath = `/ReportCallDistribution/Pbx.DownloadCallDistributionReport(chartDate={chartDate},chartBy={chartBy},includeInternalCalls={includeInternalCalls},includeQueueCalls={includeQueueCalls},queueDnStr={queueDnStr},groupStr={groupStr},clientTimeZone={clientTimeZone},waitInterval={waitInterval})`
-                .replace(`{${"chartDate"}}`, encodeURIComponent(String(chartDate)))
-                .replace(`{${"chartBy"}}`, encodeURIComponent(String(chartBy)))
-                .replace(`{${"includeInternalCalls"}}`, encodeURIComponent(String(includeInternalCalls)))
-                .replace(`{${"includeQueueCalls"}}`, encodeURIComponent(String(includeQueueCalls)))
-                .replace(`{${"queueDnStr"}}`, encodeURIComponent(String(queueDnStr)))
-                .replace(`{${"groupStr"}}`, encodeURIComponent(String(groupStr)))
+            assertParamExists('downloadGetGetCallDistribution', 'waitInterval', waitInterval)
+            // verify required parameter 'includeQueueCalls' is not null or undefined
+            assertParamExists('downloadGetGetCallDistribution', 'includeQueueCalls', includeQueueCalls)
+            // verify required parameter 'callArea' is not null or undefined
+            assertParamExists('downloadGetGetCallDistribution', 'callArea', callArea)
+            // verify required parameter 'groupingType' is not null or undefined
+            assertParamExists('downloadGetGetCallDistribution', 'groupingType', groupingType)
+            const localVarPath = `/ReportCallDistribution/Pbx.DownloadGetGetCallDistribution(clientTimeZone={clientTimeZone},periodFrom={periodFrom},periodTo={periodTo},groupNumber={groupNumber},extensionDns={extensionDns},waitInterval={waitInterval},includeQueueCalls={includeQueueCalls},callArea={callArea},groupingType={groupingType})`
                 .replace(`{${"clientTimeZone"}}`, encodeURIComponent(String(clientTimeZone)))
-                .replace(`{${"waitInterval"}}`, encodeURIComponent(String(waitInterval)));
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"groupNumber"}}`, encodeURIComponent(String(groupNumber)))
+                .replace(`{${"extensionDns"}}`, encodeURIComponent(String(extensionDns)))
+                .replace(`{${"waitInterval"}}`, encodeURIComponent(String(waitInterval)))
+                .replace(`{${"includeQueueCalls"}}`, encodeURIComponent(String(includeQueueCalls)))
+                .replace(`{${"callArea"}}`, encodeURIComponent(String(callArea)))
+                .replace(`{${"groupingType"}}`, encodeURIComponent(String(groupingType)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -64833,15 +66466,16 @@ export const ReportCallDistributionApiAxiosParamCreator = function (configuratio
         },
         /**
          * 
-         * @summary Invoke function GetCallDistributionData
-         * @param {string} chartDate Usage: chartDate&#x3D;{chartDate}
-         * @param {string | null} chartBy Usage: chartBy&#x3D;{chartBy}
-         * @param {boolean} includeInternalCalls Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-         * @param {string | null} queueDnStr Usage: queueDnStr&#x3D;{queueDnStr}
-         * @param {string | null} groupStr Usage: groupStr&#x3D;{groupStr}
+         * @summary Invoke function GetCallDistribution
          * @param {string | null} clientTimeZone Usage: clientTimeZone&#x3D;{clientTimeZone}
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} groupNumber Usage: groupNumber&#x3D;{groupNumber}
+         * @param {string | null} extensionDns Usage: extensionDns&#x3D;{extensionDns}
          * @param {string | null} waitInterval Usage: waitInterval&#x3D;{waitInterval}
+         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+         * @param {number} callArea Usage: callArea&#x3D;{callArea}
+         * @param {number} groupingType Usage: groupingType&#x3D;{groupingType}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -64853,32 +66487,35 @@ export const ReportCallDistributionApiAxiosParamCreator = function (configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCallDistributionData: async (chartDate: string, chartBy: string | null, includeInternalCalls: boolean, includeQueueCalls: boolean, queueDnStr: string | null, groupStr: string | null, clientTimeZone: string | null, waitInterval: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'chartDate' is not null or undefined
-            assertParamExists('getCallDistributionData', 'chartDate', chartDate)
-            // verify required parameter 'chartBy' is not null or undefined
-            assertParamExists('getCallDistributionData', 'chartBy', chartBy)
-            // verify required parameter 'includeInternalCalls' is not null or undefined
-            assertParamExists('getCallDistributionData', 'includeInternalCalls', includeInternalCalls)
-            // verify required parameter 'includeQueueCalls' is not null or undefined
-            assertParamExists('getCallDistributionData', 'includeQueueCalls', includeQueueCalls)
-            // verify required parameter 'queueDnStr' is not null or undefined
-            assertParamExists('getCallDistributionData', 'queueDnStr', queueDnStr)
-            // verify required parameter 'groupStr' is not null or undefined
-            assertParamExists('getCallDistributionData', 'groupStr', groupStr)
+        getCallDistribution: async (clientTimeZone: string | null, periodFrom: string, periodTo: string, groupNumber: string | null, extensionDns: string | null, waitInterval: string | null, includeQueueCalls: boolean, callArea: number, groupingType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clientTimeZone' is not null or undefined
-            assertParamExists('getCallDistributionData', 'clientTimeZone', clientTimeZone)
+            assertParamExists('getCallDistribution', 'clientTimeZone', clientTimeZone)
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('getCallDistribution', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('getCallDistribution', 'periodTo', periodTo)
+            // verify required parameter 'groupNumber' is not null or undefined
+            assertParamExists('getCallDistribution', 'groupNumber', groupNumber)
+            // verify required parameter 'extensionDns' is not null or undefined
+            assertParamExists('getCallDistribution', 'extensionDns', extensionDns)
             // verify required parameter 'waitInterval' is not null or undefined
-            assertParamExists('getCallDistributionData', 'waitInterval', waitInterval)
-            const localVarPath = `/ReportCallDistribution/Pbx.GetCallDistributionData(chartDate={chartDate},chartBy={chartBy},includeInternalCalls={includeInternalCalls},includeQueueCalls={includeQueueCalls},queueDnStr={queueDnStr},groupStr={groupStr},clientTimeZone={clientTimeZone},waitInterval={waitInterval})`
-                .replace(`{${"chartDate"}}`, encodeURIComponent(String(chartDate)))
-                .replace(`{${"chartBy"}}`, encodeURIComponent(String(chartBy)))
-                .replace(`{${"includeInternalCalls"}}`, encodeURIComponent(String(includeInternalCalls)))
-                .replace(`{${"includeQueueCalls"}}`, encodeURIComponent(String(includeQueueCalls)))
-                .replace(`{${"queueDnStr"}}`, encodeURIComponent(String(queueDnStr)))
-                .replace(`{${"groupStr"}}`, encodeURIComponent(String(groupStr)))
+            assertParamExists('getCallDistribution', 'waitInterval', waitInterval)
+            // verify required parameter 'includeQueueCalls' is not null or undefined
+            assertParamExists('getCallDistribution', 'includeQueueCalls', includeQueueCalls)
+            // verify required parameter 'callArea' is not null or undefined
+            assertParamExists('getCallDistribution', 'callArea', callArea)
+            // verify required parameter 'groupingType' is not null or undefined
+            assertParamExists('getCallDistribution', 'groupingType', groupingType)
+            const localVarPath = `/ReportCallDistribution/Pbx.GetCallDistribution(clientTimeZone={clientTimeZone},periodFrom={periodFrom},periodTo={periodTo},groupNumber={groupNumber},extensionDns={extensionDns},waitInterval={waitInterval},includeQueueCalls={includeQueueCalls},callArea={callArea},groupingType={groupingType})`
                 .replace(`{${"clientTimeZone"}}`, encodeURIComponent(String(clientTimeZone)))
-                .replace(`{${"waitInterval"}}`, encodeURIComponent(String(waitInterval)));
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"groupNumber"}}`, encodeURIComponent(String(groupNumber)))
+                .replace(`{${"extensionDns"}}`, encodeURIComponent(String(extensionDns)))
+                .replace(`{${"waitInterval"}}`, encodeURIComponent(String(waitInterval)))
+                .replace(`{${"includeQueueCalls"}}`, encodeURIComponent(String(includeQueueCalls)))
+                .replace(`{${"callArea"}}`, encodeURIComponent(String(callArea)))
+                .replace(`{${"groupingType"}}`, encodeURIComponent(String(groupingType)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -64949,15 +66586,16 @@ export const ReportCallDistributionApiFp = function(configuration?: Configuratio
     return {
         /**
          * 
-         * @summary Invoke function DownloadCallDistributionReport
-         * @param {string} chartDate Usage: chartDate&#x3D;{chartDate}
-         * @param {string | null} chartBy Usage: chartBy&#x3D;{chartBy}
-         * @param {boolean} includeInternalCalls Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-         * @param {string | null} queueDnStr Usage: queueDnStr&#x3D;{queueDnStr}
-         * @param {string | null} groupStr Usage: groupStr&#x3D;{groupStr}
+         * @summary Invoke function DownloadGetGetCallDistribution
          * @param {string | null} clientTimeZone Usage: clientTimeZone&#x3D;{clientTimeZone}
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} groupNumber Usage: groupNumber&#x3D;{groupNumber}
+         * @param {string | null} extensionDns Usage: extensionDns&#x3D;{extensionDns}
          * @param {string | null} waitInterval Usage: waitInterval&#x3D;{waitInterval}
+         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+         * @param {number} callArea Usage: callArea&#x3D;{callArea}
+         * @param {number} groupingType Usage: groupingType&#x3D;{groupingType}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -64969,23 +66607,24 @@ export const ReportCallDistributionApiFp = function(configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async downloadCallDistributionReport(chartDate: string, chartBy: string | null, includeInternalCalls: boolean, includeQueueCalls: boolean, queueDnStr: string | null, groupStr: string | null, clientTimeZone: string | null, waitInterval: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfTimeReportData>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadCallDistributionReport(chartDate, chartBy, includeInternalCalls, includeQueueCalls, queueDnStr, groupStr, clientTimeZone, waitInterval, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+        async downloadGetGetCallDistribution(clientTimeZone: string | null, periodFrom: string, periodTo: string, groupNumber: string | null, extensionDns: string | null, waitInterval: string | null, includeQueueCalls: boolean, callArea: number, groupingType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfCallDistribution>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadGetGetCallDistribution(clientTimeZone, periodFrom, periodTo, groupNumber, extensionDns, waitInterval, includeQueueCalls, callArea, groupingType, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ReportCallDistributionApi.downloadCallDistributionReport']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ReportCallDistributionApi.downloadGetGetCallDistribution']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @summary Invoke function GetCallDistributionData
-         * @param {string} chartDate Usage: chartDate&#x3D;{chartDate}
-         * @param {string | null} chartBy Usage: chartBy&#x3D;{chartBy}
-         * @param {boolean} includeInternalCalls Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-         * @param {string | null} queueDnStr Usage: queueDnStr&#x3D;{queueDnStr}
-         * @param {string | null} groupStr Usage: groupStr&#x3D;{groupStr}
+         * @summary Invoke function GetCallDistribution
          * @param {string | null} clientTimeZone Usage: clientTimeZone&#x3D;{clientTimeZone}
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} groupNumber Usage: groupNumber&#x3D;{groupNumber}
+         * @param {string | null} extensionDns Usage: extensionDns&#x3D;{extensionDns}
          * @param {string | null} waitInterval Usage: waitInterval&#x3D;{waitInterval}
+         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+         * @param {number} callArea Usage: callArea&#x3D;{callArea}
+         * @param {number} groupingType Usage: groupingType&#x3D;{groupingType}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -64997,10 +66636,10 @@ export const ReportCallDistributionApiFp = function(configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCallDistributionData(chartDate: string, chartBy: string | null, includeInternalCalls: boolean, includeQueueCalls: boolean, queueDnStr: string | null, groupStr: string | null, clientTimeZone: string | null, waitInterval: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfTimeReportData>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getCallDistributionData(chartDate, chartBy, includeInternalCalls, includeQueueCalls, queueDnStr, groupStr, clientTimeZone, waitInterval, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+        async getCallDistribution(clientTimeZone: string | null, periodFrom: string, periodTo: string, groupNumber: string | null, extensionDns: string | null, waitInterval: string | null, includeQueueCalls: boolean, callArea: number, groupingType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfCallDistribution>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCallDistribution(clientTimeZone, periodFrom, periodTo, groupNumber, extensionDns, waitInterval, includeQueueCalls, callArea, groupingType, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ReportCallDistributionApi.getCallDistributionData']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ReportCallDistributionApi.getCallDistribution']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -65015,261 +66654,275 @@ export const ReportCallDistributionApiFactory = function (configuration?: Config
     return {
         /**
          * 
-         * @summary Invoke function DownloadCallDistributionReport
-         * @param {ReportCallDistributionApiDownloadCallDistributionReportRequest} requestParameters Request parameters.
+         * @summary Invoke function DownloadGetGetCallDistribution
+         * @param {ReportCallDistributionApiDownloadGetGetCallDistributionRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        downloadCallDistributionReport(requestParameters: ReportCallDistributionApiDownloadCallDistributionReportRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfTimeReportData> {
-            return localVarFp.downloadCallDistributionReport(requestParameters.chartDate, requestParameters.chartBy, requestParameters.includeInternalCalls, requestParameters.includeQueueCalls, requestParameters.queueDnStr, requestParameters.groupStr, requestParameters.clientTimeZone, requestParameters.waitInterval, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        downloadGetGetCallDistribution(requestParameters: ReportCallDistributionApiDownloadGetGetCallDistributionRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfCallDistribution> {
+            return localVarFp.downloadGetGetCallDistribution(requestParameters.clientTimeZone, requestParameters.periodFrom, requestParameters.periodTo, requestParameters.groupNumber, requestParameters.extensionDns, requestParameters.waitInterval, requestParameters.includeQueueCalls, requestParameters.callArea, requestParameters.groupingType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Invoke function GetCallDistributionData
-         * @param {ReportCallDistributionApiGetCallDistributionDataRequest} requestParameters Request parameters.
+         * @summary Invoke function GetCallDistribution
+         * @param {ReportCallDistributionApiGetCallDistributionRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCallDistributionData(requestParameters: ReportCallDistributionApiGetCallDistributionDataRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfTimeReportData> {
-            return localVarFp.getCallDistributionData(requestParameters.chartDate, requestParameters.chartBy, requestParameters.includeInternalCalls, requestParameters.includeQueueCalls, requestParameters.queueDnStr, requestParameters.groupStr, requestParameters.clientTimeZone, requestParameters.waitInterval, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        getCallDistribution(requestParameters: ReportCallDistributionApiGetCallDistributionRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfCallDistribution> {
+            return localVarFp.getCallDistribution(requestParameters.clientTimeZone, requestParameters.periodFrom, requestParameters.periodTo, requestParameters.groupNumber, requestParameters.extensionDns, requestParameters.waitInterval, requestParameters.includeQueueCalls, requestParameters.callArea, requestParameters.groupingType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * Request parameters for downloadCallDistributionReport operation in ReportCallDistributionApi.
+ * Request parameters for downloadGetGetCallDistribution operation in ReportCallDistributionApi.
  * @export
- * @interface ReportCallDistributionApiDownloadCallDistributionReportRequest
+ * @interface ReportCallDistributionApiDownloadGetGetCallDistributionRequest
  */
-export interface ReportCallDistributionApiDownloadCallDistributionReportRequest {
-    /**
-     * Usage: chartDate&#x3D;{chartDate}
-     * @type {string}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
-     */
-    readonly chartDate: string
-
-    /**
-     * Usage: chartBy&#x3D;{chartBy}
-     * @type {string}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
-     */
-    readonly chartBy: string | null
-
-    /**
-     * Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-     * @type {boolean}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
-     */
-    readonly includeInternalCalls: boolean
-
-    /**
-     * Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-     * @type {boolean}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
-     */
-    readonly includeQueueCalls: boolean
-
-    /**
-     * Usage: queueDnStr&#x3D;{queueDnStr}
-     * @type {string}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
-     */
-    readonly queueDnStr: string | null
-
-    /**
-     * Usage: groupStr&#x3D;{groupStr}
-     * @type {string}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
-     */
-    readonly groupStr: string | null
-
+export interface ReportCallDistributionApiDownloadGetGetCallDistributionRequest {
     /**
      * Usage: clientTimeZone&#x3D;{clientTimeZone}
      * @type {string}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly clientTimeZone: string | null
 
     /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: groupNumber&#x3D;{groupNumber}
+     * @type {string}
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
+     */
+    readonly groupNumber: string | null
+
+    /**
+     * Usage: extensionDns&#x3D;{extensionDns}
+     * @type {string}
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
+     */
+    readonly extensionDns: string | null
+
+    /**
      * Usage: waitInterval&#x3D;{waitInterval}
      * @type {string}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly waitInterval: string | null
 
     /**
+     * Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+     * @type {boolean}
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
+     */
+    readonly includeQueueCalls: boolean
+
+    /**
+     * Usage: callArea&#x3D;{callArea}
+     * @type {number}
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
+     */
+    readonly callArea: number
+
+    /**
+     * Usage: groupingType&#x3D;{groupingType}
+     * @type {number}
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
+     */
+    readonly groupingType: number
+
+    /**
      * Show only the first n items
      * @type {number}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly $top?: number
 
     /**
      * Skip the first n items
      * @type {number}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly $skip?: number
 
     /**
      * Search items by search phrases
      * @type {string}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly $search?: string
 
     /**
      * Filter items by property values
      * @type {string}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly $filter?: string
 
     /**
      * Include count of items
      * @type {boolean}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly $count?: boolean
 
     /**
      * Select properties to be returned
      * @type {Set<string>}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly $select?: Set<string>
 
     /**
      * Order items by property values
      * @type {Set<string>}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly $orderby?: Set<string>
 
     /**
      * Expand related entities
      * @type {Set<string>}
-     * @memberof ReportCallDistributionApiDownloadCallDistributionReport
+     * @memberof ReportCallDistributionApiDownloadGetGetCallDistribution
      */
     readonly $expand?: Set<string>
 }
 
 /**
- * Request parameters for getCallDistributionData operation in ReportCallDistributionApi.
+ * Request parameters for getCallDistribution operation in ReportCallDistributionApi.
  * @export
- * @interface ReportCallDistributionApiGetCallDistributionDataRequest
+ * @interface ReportCallDistributionApiGetCallDistributionRequest
  */
-export interface ReportCallDistributionApiGetCallDistributionDataRequest {
-    /**
-     * Usage: chartDate&#x3D;{chartDate}
-     * @type {string}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
-     */
-    readonly chartDate: string
-
-    /**
-     * Usage: chartBy&#x3D;{chartBy}
-     * @type {string}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
-     */
-    readonly chartBy: string | null
-
-    /**
-     * Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-     * @type {boolean}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
-     */
-    readonly includeInternalCalls: boolean
-
-    /**
-     * Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-     * @type {boolean}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
-     */
-    readonly includeQueueCalls: boolean
-
-    /**
-     * Usage: queueDnStr&#x3D;{queueDnStr}
-     * @type {string}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
-     */
-    readonly queueDnStr: string | null
-
-    /**
-     * Usage: groupStr&#x3D;{groupStr}
-     * @type {string}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
-     */
-    readonly groupStr: string | null
-
+export interface ReportCallDistributionApiGetCallDistributionRequest {
     /**
      * Usage: clientTimeZone&#x3D;{clientTimeZone}
      * @type {string}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly clientTimeZone: string | null
 
     /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportCallDistributionApiGetCallDistribution
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportCallDistributionApiGetCallDistribution
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: groupNumber&#x3D;{groupNumber}
+     * @type {string}
+     * @memberof ReportCallDistributionApiGetCallDistribution
+     */
+    readonly groupNumber: string | null
+
+    /**
+     * Usage: extensionDns&#x3D;{extensionDns}
+     * @type {string}
+     * @memberof ReportCallDistributionApiGetCallDistribution
+     */
+    readonly extensionDns: string | null
+
+    /**
      * Usage: waitInterval&#x3D;{waitInterval}
      * @type {string}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly waitInterval: string | null
 
     /**
+     * Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+     * @type {boolean}
+     * @memberof ReportCallDistributionApiGetCallDistribution
+     */
+    readonly includeQueueCalls: boolean
+
+    /**
+     * Usage: callArea&#x3D;{callArea}
+     * @type {number}
+     * @memberof ReportCallDistributionApiGetCallDistribution
+     */
+    readonly callArea: number
+
+    /**
+     * Usage: groupingType&#x3D;{groupingType}
+     * @type {number}
+     * @memberof ReportCallDistributionApiGetCallDistribution
+     */
+    readonly groupingType: number
+
+    /**
      * Show only the first n items
      * @type {number}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly $top?: number
 
     /**
      * Skip the first n items
      * @type {number}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly $skip?: number
 
     /**
      * Search items by search phrases
      * @type {string}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly $search?: string
 
     /**
      * Filter items by property values
      * @type {string}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly $filter?: string
 
     /**
      * Include count of items
      * @type {boolean}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly $count?: boolean
 
     /**
      * Select properties to be returned
      * @type {Set<string>}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly $select?: Set<string>
 
     /**
      * Order items by property values
      * @type {Set<string>}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly $orderby?: Set<string>
 
     /**
      * Expand related entities
      * @type {Set<string>}
-     * @memberof ReportCallDistributionApiGetCallDistributionData
+     * @memberof ReportCallDistributionApiGetCallDistribution
      */
     readonly $expand?: Set<string>
 }
@@ -65283,26 +66936,26 @@ export interface ReportCallDistributionApiGetCallDistributionDataRequest {
 export class ReportCallDistributionApi extends BaseAPI {
     /**
      * 
-     * @summary Invoke function DownloadCallDistributionReport
-     * @param {ReportCallDistributionApiDownloadCallDistributionReportRequest} requestParameters Request parameters.
+     * @summary Invoke function DownloadGetGetCallDistribution
+     * @param {ReportCallDistributionApiDownloadGetGetCallDistributionRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReportCallDistributionApi
      */
-    public downloadCallDistributionReport(requestParameters: ReportCallDistributionApiDownloadCallDistributionReportRequest, options?: RawAxiosRequestConfig) {
-        return ReportCallDistributionApiFp(this.configuration).downloadCallDistributionReport(requestParameters.chartDate, requestParameters.chartBy, requestParameters.includeInternalCalls, requestParameters.includeQueueCalls, requestParameters.queueDnStr, requestParameters.groupStr, requestParameters.clientTimeZone, requestParameters.waitInterval, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    public downloadGetGetCallDistribution(requestParameters: ReportCallDistributionApiDownloadGetGetCallDistributionRequest, options?: RawAxiosRequestConfig) {
+        return ReportCallDistributionApiFp(this.configuration).downloadGetGetCallDistribution(requestParameters.clientTimeZone, requestParameters.periodFrom, requestParameters.periodTo, requestParameters.groupNumber, requestParameters.extensionDns, requestParameters.waitInterval, requestParameters.includeQueueCalls, requestParameters.callArea, requestParameters.groupingType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Invoke function GetCallDistributionData
-     * @param {ReportCallDistributionApiGetCallDistributionDataRequest} requestParameters Request parameters.
+     * @summary Invoke function GetCallDistribution
+     * @param {ReportCallDistributionApiGetCallDistributionRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReportCallDistributionApi
      */
-    public getCallDistributionData(requestParameters: ReportCallDistributionApiGetCallDistributionDataRequest, options?: RawAxiosRequestConfig) {
-        return ReportCallDistributionApiFp(this.configuration).getCallDistributionData(requestParameters.chartDate, requestParameters.chartBy, requestParameters.includeInternalCalls, requestParameters.includeQueueCalls, requestParameters.queueDnStr, requestParameters.groupStr, requestParameters.clientTimeZone, requestParameters.waitInterval, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    public getCallDistribution(requestParameters: ReportCallDistributionApiGetCallDistributionRequest, options?: RawAxiosRequestConfig) {
+        return ReportCallDistributionApiFp(this.configuration).getCallDistribution(requestParameters.clientTimeZone, requestParameters.periodFrom, requestParameters.periodTo, requestParameters.groupNumber, requestParameters.extensionDns, requestParameters.waitInterval, requestParameters.includeQueueCalls, requestParameters.callArea, requestParameters.groupingType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -65557,7 +67210,7 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @summary Invoke function GetCallQualityReport
-         * @param {number} callId Usage: call_id&#x3D;{call_id}
+         * @param {string} cdrId Usage: cdrId&#x3D;{cdrId}
          * @param {string} srcNumber Usage: srcNumber&#x3D;{srcNumber}
          * @param {string} dstNumber Usage: dstNumber&#x3D;{dstNumber}
          * @param {string | null} srcCallerId Usage: srcCallerId&#x3D;{srcCallerId}
@@ -65565,9 +67218,9 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCallQualityReport: async (callId: number, srcNumber: string, dstNumber: string, srcCallerId: string | null, dstCallerId: string | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'callId' is not null or undefined
-            assertParamExists('getCallQualityReport', 'callId', callId)
+        getCallQualityReport: async (cdrId: string, srcNumber: string, dstNumber: string, srcCallerId: string | null, dstCallerId: string | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cdrId' is not null or undefined
+            assertParamExists('getCallQualityReport', 'cdrId', cdrId)
             // verify required parameter 'srcNumber' is not null or undefined
             assertParamExists('getCallQualityReport', 'srcNumber', srcNumber)
             // verify required parameter 'dstNumber' is not null or undefined
@@ -65576,8 +67229,8 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
             assertParamExists('getCallQualityReport', 'srcCallerId', srcCallerId)
             // verify required parameter 'dstCallerId' is not null or undefined
             assertParamExists('getCallQualityReport', 'dstCallerId', dstCallerId)
-            const localVarPath = `/ReportCallLogData/Pbx.GetCallQualityReport(call_id={call_id},srcNumber={srcNumber},dstNumber={dstNumber},srcCallerId={srcCallerId},dstCallerId={dstCallerId})`
-                .replace(`{${"call_id"}}`, encodeURIComponent(String(callId)))
+            const localVarPath = `/ReportCallLogData/Pbx.GetCallQualityReport(cdrId={cdrId},srcNumber={srcNumber},dstNumber={dstNumber},srcCallerId={srcCallerId},dstCallerId={dstCallerId})`
+                .replace(`{${"cdrId"}}`, encodeURIComponent(String(cdrId)))
                 .replace(`{${"srcNumber"}}`, encodeURIComponent(String(srcNumber)))
                 .replace(`{${"dstNumber"}}`, encodeURIComponent(String(dstNumber)))
                 .replace(`{${"srcCallerId"}}`, encodeURIComponent(String(srcCallerId)))
@@ -65596,6 +67249,124 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
             // authentication Application required
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke function GetOldCallLogData
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {number} sourceType Usage: sourceType&#x3D;{sourceType}
+         * @param {string | null} sourceFilter Usage: sourceFilter&#x3D;{sourceFilter}
+         * @param {number} destinationType Usage: destinationType&#x3D;{destinationType}
+         * @param {string | null} destinationFilter Usage: destinationFilter&#x3D;{destinationFilter}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} callTimeFilterType Usage: callTimeFilterType&#x3D;{callTimeFilterType}
+         * @param {string | null} callTimeFilterFrom Usage: callTimeFilterFrom&#x3D;{callTimeFilterFrom}
+         * @param {string | null} callTimeFilterTo Usage: callTimeFilterTo&#x3D;{callTimeFilterTo}
+         * @param {boolean} hidePcalls Usage: hidePcalls&#x3D;{hidePcalls}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOldCallLogData: async (periodFrom: string, periodTo: string, sourceType: number, sourceFilter: string | null, destinationType: number, destinationFilter: string | null, callsType: number, callTimeFilterType: number, callTimeFilterFrom: string | null, callTimeFilterTo: string | null, hidePcalls: boolean, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('getOldCallLogData', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('getOldCallLogData', 'periodTo', periodTo)
+            // verify required parameter 'sourceType' is not null or undefined
+            assertParamExists('getOldCallLogData', 'sourceType', sourceType)
+            // verify required parameter 'sourceFilter' is not null or undefined
+            assertParamExists('getOldCallLogData', 'sourceFilter', sourceFilter)
+            // verify required parameter 'destinationType' is not null or undefined
+            assertParamExists('getOldCallLogData', 'destinationType', destinationType)
+            // verify required parameter 'destinationFilter' is not null or undefined
+            assertParamExists('getOldCallLogData', 'destinationFilter', destinationFilter)
+            // verify required parameter 'callsType' is not null or undefined
+            assertParamExists('getOldCallLogData', 'callsType', callsType)
+            // verify required parameter 'callTimeFilterType' is not null or undefined
+            assertParamExists('getOldCallLogData', 'callTimeFilterType', callTimeFilterType)
+            // verify required parameter 'callTimeFilterFrom' is not null or undefined
+            assertParamExists('getOldCallLogData', 'callTimeFilterFrom', callTimeFilterFrom)
+            // verify required parameter 'callTimeFilterTo' is not null or undefined
+            assertParamExists('getOldCallLogData', 'callTimeFilterTo', callTimeFilterTo)
+            // verify required parameter 'hidePcalls' is not null or undefined
+            assertParamExists('getOldCallLogData', 'hidePcalls', hidePcalls)
+            const localVarPath = `/ReportCallLogData/Pbx.GetOldCallLogData(periodFrom={periodFrom},periodTo={periodTo},sourceType={sourceType},sourceFilter={sourceFilter},destinationType={destinationType},destinationFilter={destinationFilter},callsType={callsType},callTimeFilterType={callTimeFilterType},callTimeFilterFrom={callTimeFilterFrom},callTimeFilterTo={callTimeFilterTo},hidePcalls={hidePcalls})`
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"sourceType"}}`, encodeURIComponent(String(sourceType)))
+                .replace(`{${"sourceFilter"}}`, encodeURIComponent(String(sourceFilter)))
+                .replace(`{${"destinationType"}}`, encodeURIComponent(String(destinationType)))
+                .replace(`{${"destinationFilter"}}`, encodeURIComponent(String(destinationFilter)))
+                .replace(`{${"callsType"}}`, encodeURIComponent(String(callsType)))
+                .replace(`{${"callTimeFilterType"}}`, encodeURIComponent(String(callTimeFilterType)))
+                .replace(`{${"callTimeFilterFrom"}}`, encodeURIComponent(String(callTimeFilterFrom)))
+                .replace(`{${"callTimeFilterTo"}}`, encodeURIComponent(String(callTimeFilterTo)))
+                .replace(`{${"hidePcalls"}}`, encodeURIComponent(String(hidePcalls)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
+            }
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($orderby) {
+                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
 
 
     
@@ -65684,7 +67455,7 @@ export const ReportCallLogDataApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke function GetCallQualityReport
-         * @param {number} callId Usage: call_id&#x3D;{call_id}
+         * @param {string} cdrId Usage: cdrId&#x3D;{cdrId}
          * @param {string} srcNumber Usage: srcNumber&#x3D;{srcNumber}
          * @param {string} dstNumber Usage: dstNumber&#x3D;{dstNumber}
          * @param {string | null} srcCallerId Usage: srcCallerId&#x3D;{srcCallerId}
@@ -65692,10 +67463,41 @@ export const ReportCallLogDataApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCallQualityReport(callId: number, srcNumber: string, dstNumber: string, srcCallerId: string | null, dstCallerId: string | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCallQualityReport200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getCallQualityReport(callId, srcNumber, dstNumber, srcCallerId, dstCallerId, options);
+        async getCallQualityReport(cdrId: string, srcNumber: string, dstNumber: string, srcCallerId: string | null, dstCallerId: string | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCallQualityReport200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCallQualityReport(cdrId, srcNumber, dstNumber, srcCallerId, dstCallerId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ReportCallLogDataApi.getCallQualityReport']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke function GetOldCallLogData
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {number} sourceType Usage: sourceType&#x3D;{sourceType}
+         * @param {string | null} sourceFilter Usage: sourceFilter&#x3D;{sourceFilter}
+         * @param {number} destinationType Usage: destinationType&#x3D;{destinationType}
+         * @param {string | null} destinationFilter Usage: destinationFilter&#x3D;{destinationFilter}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} callTimeFilterType Usage: callTimeFilterType&#x3D;{callTimeFilterType}
+         * @param {string | null} callTimeFilterFrom Usage: callTimeFilterFrom&#x3D;{callTimeFilterFrom}
+         * @param {string | null} callTimeFilterTo Usage: callTimeFilterTo&#x3D;{callTimeFilterTo}
+         * @param {boolean} hidePcalls Usage: hidePcalls&#x3D;{hidePcalls}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOldCallLogData(periodFrom: string, periodTo: string, sourceType: number, sourceFilter: string | null, destinationType: number, destinationFilter: string | null, callsType: number, callTimeFilterType: number, callTimeFilterFrom: string | null, callTimeFilterTo: string | null, hidePcalls: boolean, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfCallLogData>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOldCallLogData(periodFrom, periodTo, sourceType, sourceFilter, destinationType, destinationFilter, callsType, callTimeFilterType, callTimeFilterFrom, callTimeFilterTo, hidePcalls, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReportCallLogDataApi.getOldCallLogData']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -65736,7 +67538,17 @@ export const ReportCallLogDataApiFactory = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         getCallQualityReport(requestParameters: ReportCallLogDataApiGetCallQualityReportRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetCallQualityReport200Response> {
-            return localVarFp.getCallQualityReport(requestParameters.callId, requestParameters.srcNumber, requestParameters.dstNumber, requestParameters.srcCallerId, requestParameters.dstCallerId, options).then((request) => request(axios, basePath));
+            return localVarFp.getCallQualityReport(requestParameters.cdrId, requestParameters.srcNumber, requestParameters.dstNumber, requestParameters.srcCallerId, requestParameters.dstCallerId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke function GetOldCallLogData
+         * @param {ReportCallLogDataApiGetOldCallLogDataRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOldCallLogData(requestParameters: ReportCallLogDataApiGetOldCallLogDataRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfCallLogData> {
+            return localVarFp.getOldCallLogData(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.sourceType, requestParameters.sourceFilter, requestParameters.destinationType, requestParameters.destinationFilter, requestParameters.callsType, requestParameters.callTimeFilterType, requestParameters.callTimeFilterFrom, requestParameters.callTimeFilterTo, requestParameters.hidePcalls, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -66035,11 +67847,11 @@ export interface ReportCallLogDataApiGetCallLogDataRequest {
  */
 export interface ReportCallLogDataApiGetCallQualityReportRequest {
     /**
-     * Usage: call_id&#x3D;{call_id}
-     * @type {number}
+     * Usage: cdrId&#x3D;{cdrId}
+     * @type {string}
      * @memberof ReportCallLogDataApiGetCallQualityReport
      */
-    readonly callId: number
+    readonly cdrId: string
 
     /**
      * Usage: srcNumber&#x3D;{srcNumber}
@@ -66068,6 +67880,146 @@ export interface ReportCallLogDataApiGetCallQualityReportRequest {
      * @memberof ReportCallLogDataApiGetCallQualityReport
      */
     readonly dstCallerId: string | null
+}
+
+/**
+ * Request parameters for getOldCallLogData operation in ReportCallLogDataApi.
+ * @export
+ * @interface ReportCallLogDataApiGetOldCallLogDataRequest
+ */
+export interface ReportCallLogDataApiGetOldCallLogDataRequest {
+    /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: sourceType&#x3D;{sourceType}
+     * @type {number}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly sourceType: number
+
+    /**
+     * Usage: sourceFilter&#x3D;{sourceFilter}
+     * @type {string}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly sourceFilter: string | null
+
+    /**
+     * Usage: destinationType&#x3D;{destinationType}
+     * @type {number}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly destinationType: number
+
+    /**
+     * Usage: destinationFilter&#x3D;{destinationFilter}
+     * @type {string}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly destinationFilter: string | null
+
+    /**
+     * Usage: callsType&#x3D;{callsType}
+     * @type {number}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly callsType: number
+
+    /**
+     * Usage: callTimeFilterType&#x3D;{callTimeFilterType}
+     * @type {number}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly callTimeFilterType: number
+
+    /**
+     * Usage: callTimeFilterFrom&#x3D;{callTimeFilterFrom}
+     * @type {string}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly callTimeFilterFrom: string | null
+
+    /**
+     * Usage: callTimeFilterTo&#x3D;{callTimeFilterTo}
+     * @type {string}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly callTimeFilterTo: string | null
+
+    /**
+     * Usage: hidePcalls&#x3D;{hidePcalls}
+     * @type {boolean}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly hidePcalls: boolean
+
+    /**
+     * Show only the first n items
+     * @type {number}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     * @type {number}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     * @type {string}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     * @type {string}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     * @type {boolean}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly $count?: boolean
+
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Order items by property values
+     * @type {Set<string>}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly $orderby?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof ReportCallLogDataApiGetOldCallLogData
+     */
+    readonly $expand?: Set<string>
 }
 
 /**
@@ -66110,7 +68062,19 @@ export class ReportCallLogDataApi extends BaseAPI {
      * @memberof ReportCallLogDataApi
      */
     public getCallQualityReport(requestParameters: ReportCallLogDataApiGetCallQualityReportRequest, options?: RawAxiosRequestConfig) {
-        return ReportCallLogDataApiFp(this.configuration).getCallQualityReport(requestParameters.callId, requestParameters.srcNumber, requestParameters.dstNumber, requestParameters.srcCallerId, requestParameters.dstCallerId, options).then((request) => request(this.axios, this.basePath));
+        return ReportCallLogDataApiFp(this.configuration).getCallQualityReport(requestParameters.cdrId, requestParameters.srcNumber, requestParameters.dstNumber, requestParameters.srcCallerId, requestParameters.dstCallerId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetOldCallLogData
+     * @param {ReportCallLogDataApiGetOldCallLogDataRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReportCallLogDataApi
+     */
+    public getOldCallLogData(requestParameters: ReportCallLogDataApiGetOldCallLogDataRequest, options?: RawAxiosRequestConfig) {
+        return ReportCallLogDataApiFp(this.configuration).getOldCallLogData(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.sourceType, requestParameters.sourceFilter, requestParameters.destinationType, requestParameters.destinationFilter, requestParameters.callsType, requestParameters.callTimeFilterType, requestParameters.callTimeFilterFrom, requestParameters.callTimeFilterTo, requestParameters.hidePcalls, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -68065,6 +70029,499 @@ export class ReportExtensionsStatisticsByRingGroupsApi extends BaseAPI {
 
 
 /**
+ * ReportInboundCallsApi - axios parameter creator
+ * @export
+ */
+export const ReportInboundCallsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Invoke function DownloadGetInboundCalls
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} trunkDns Usage: trunkDns&#x3D;{trunkDns}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadGetInboundCalls: async (periodFrom: string, periodTo: string, trunkDns: string | null, callsType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('downloadGetInboundCalls', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('downloadGetInboundCalls', 'periodTo', periodTo)
+            // verify required parameter 'trunkDns' is not null or undefined
+            assertParamExists('downloadGetInboundCalls', 'trunkDns', trunkDns)
+            // verify required parameter 'callsType' is not null or undefined
+            assertParamExists('downloadGetInboundCalls', 'callsType', callsType)
+            const localVarPath = `/ReportInboundCalls/Pbx.DownloadGetInboundCalls(periodFrom={periodFrom},periodTo={periodTo},trunkDns={trunkDns},callsType={callsType})`
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"trunkDns"}}`, encodeURIComponent(String(trunkDns)))
+                .replace(`{${"callsType"}}`, encodeURIComponent(String(callsType)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
+            }
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($orderby) {
+                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke function GetInboundCalls
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} trunkDns Usage: trunkDns&#x3D;{trunkDns}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInboundCalls: async (periodFrom: string, periodTo: string, trunkDns: string | null, callsType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('getInboundCalls', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('getInboundCalls', 'periodTo', periodTo)
+            // verify required parameter 'trunkDns' is not null or undefined
+            assertParamExists('getInboundCalls', 'trunkDns', trunkDns)
+            // verify required parameter 'callsType' is not null or undefined
+            assertParamExists('getInboundCalls', 'callsType', callsType)
+            const localVarPath = `/ReportInboundCalls/Pbx.GetInboundCalls(periodFrom={periodFrom},periodTo={periodTo},trunkDns={trunkDns},callsType={callsType})`
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"trunkDns"}}`, encodeURIComponent(String(trunkDns)))
+                .replace(`{${"callsType"}}`, encodeURIComponent(String(callsType)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
+            }
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($orderby) {
+                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ReportInboundCallsApi - functional programming interface
+ * @export
+ */
+export const ReportInboundCallsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ReportInboundCallsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke function DownloadGetInboundCalls
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} trunkDns Usage: trunkDns&#x3D;{trunkDns}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadGetInboundCalls(periodFrom: string, periodTo: string, trunkDns: string | null, callsType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfInboundCall>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadGetInboundCalls(periodFrom, periodTo, trunkDns, callsType, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReportInboundCallsApi.downloadGetInboundCalls']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke function GetInboundCalls
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} trunkDns Usage: trunkDns&#x3D;{trunkDns}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInboundCalls(periodFrom: string, periodTo: string, trunkDns: string | null, callsType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfInboundCall>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInboundCalls(periodFrom, periodTo, trunkDns, callsType, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReportInboundCallsApi.getInboundCalls']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ReportInboundCallsApi - factory interface
+ * @export
+ */
+export const ReportInboundCallsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ReportInboundCallsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke function DownloadGetInboundCalls
+         * @param {ReportInboundCallsApiDownloadGetInboundCallsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadGetInboundCalls(requestParameters: ReportInboundCallsApiDownloadGetInboundCallsRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfInboundCall> {
+            return localVarFp.downloadGetInboundCalls(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.trunkDns, requestParameters.callsType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke function GetInboundCalls
+         * @param {ReportInboundCallsApiGetInboundCallsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInboundCalls(requestParameters: ReportInboundCallsApiGetInboundCallsRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfInboundCall> {
+            return localVarFp.getInboundCalls(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.trunkDns, requestParameters.callsType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for downloadGetInboundCalls operation in ReportInboundCallsApi.
+ * @export
+ * @interface ReportInboundCallsApiDownloadGetInboundCallsRequest
+ */
+export interface ReportInboundCallsApiDownloadGetInboundCallsRequest {
+    /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: trunkDns&#x3D;{trunkDns}
+     * @type {string}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly trunkDns: string | null
+
+    /**
+     * Usage: callsType&#x3D;{callsType}
+     * @type {number}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly callsType: number
+
+    /**
+     * Show only the first n items
+     * @type {number}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     * @type {number}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     * @type {string}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     * @type {string}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     * @type {boolean}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly $count?: boolean
+
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Order items by property values
+     * @type {Set<string>}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly $orderby?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof ReportInboundCallsApiDownloadGetInboundCalls
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * Request parameters for getInboundCalls operation in ReportInboundCallsApi.
+ * @export
+ * @interface ReportInboundCallsApiGetInboundCallsRequest
+ */
+export interface ReportInboundCallsApiGetInboundCallsRequest {
+    /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: trunkDns&#x3D;{trunkDns}
+     * @type {string}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly trunkDns: string | null
+
+    /**
+     * Usage: callsType&#x3D;{callsType}
+     * @type {number}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly callsType: number
+
+    /**
+     * Show only the first n items
+     * @type {number}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     * @type {number}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     * @type {string}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     * @type {string}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     * @type {boolean}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly $count?: boolean
+
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Order items by property values
+     * @type {Set<string>}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly $orderby?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof ReportInboundCallsApiGetInboundCalls
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * ReportInboundCallsApi - object-oriented interface
+ * @export
+ * @class ReportInboundCallsApi
+ * @extends {BaseAPI}
+ */
+export class ReportInboundCallsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Invoke function DownloadGetInboundCalls
+     * @param {ReportInboundCallsApiDownloadGetInboundCallsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReportInboundCallsApi
+     */
+    public downloadGetInboundCalls(requestParameters: ReportInboundCallsApiDownloadGetInboundCallsRequest, options?: RawAxiosRequestConfig) {
+        return ReportInboundCallsApiFp(this.configuration).downloadGetInboundCalls(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.trunkDns, requestParameters.callsType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetInboundCalls
+     * @param {ReportInboundCallsApiGetInboundCallsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReportInboundCallsApi
+     */
+    public getInboundCalls(requestParameters: ReportInboundCallsApiGetInboundCallsRequest, options?: RawAxiosRequestConfig) {
+        return ReportInboundCallsApiFp(this.configuration).getInboundCalls(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.trunkDns, requestParameters.callsType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * ReportInboundRulesApi - axios parameter creator
  * @export
  */
@@ -68456,6 +70913,499 @@ export class ReportInboundRulesApi extends BaseAPI {
      */
     public getInboundRulesData(requestParameters: ReportInboundRulesApiGetInboundRulesDataRequest = {}, options?: RawAxiosRequestConfig) {
         return ReportInboundRulesApiFp(this.configuration).getInboundRulesData(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ReportOutboundCallsApi - axios parameter creator
+ * @export
+ */
+export const ReportOutboundCallsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Invoke function DownloadGetOutboundCalls
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} trunkDns Usage: trunkDns&#x3D;{trunkDns}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadGetOutboundCalls: async (periodFrom: string, periodTo: string, trunkDns: string | null, callsType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('downloadGetOutboundCalls', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('downloadGetOutboundCalls', 'periodTo', periodTo)
+            // verify required parameter 'trunkDns' is not null or undefined
+            assertParamExists('downloadGetOutboundCalls', 'trunkDns', trunkDns)
+            // verify required parameter 'callsType' is not null or undefined
+            assertParamExists('downloadGetOutboundCalls', 'callsType', callsType)
+            const localVarPath = `/ReportOutboundCalls/Pbx.DownloadGetOutboundCalls(periodFrom={periodFrom},periodTo={periodTo},trunkDns={trunkDns},callsType={callsType})`
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"trunkDns"}}`, encodeURIComponent(String(trunkDns)))
+                .replace(`{${"callsType"}}`, encodeURIComponent(String(callsType)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
+            }
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($orderby) {
+                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke function GetOutboundCalls
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} trunkDns Usage: trunkDns&#x3D;{trunkDns}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOutboundCalls: async (periodFrom: string, periodTo: string, trunkDns: string | null, callsType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('getOutboundCalls', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('getOutboundCalls', 'periodTo', periodTo)
+            // verify required parameter 'trunkDns' is not null or undefined
+            assertParamExists('getOutboundCalls', 'trunkDns', trunkDns)
+            // verify required parameter 'callsType' is not null or undefined
+            assertParamExists('getOutboundCalls', 'callsType', callsType)
+            const localVarPath = `/ReportOutboundCalls/Pbx.GetOutboundCalls(periodFrom={periodFrom},periodTo={periodTo},trunkDns={trunkDns},callsType={callsType})`
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"trunkDns"}}`, encodeURIComponent(String(trunkDns)))
+                .replace(`{${"callsType"}}`, encodeURIComponent(String(callsType)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
+            }
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($orderby) {
+                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ReportOutboundCallsApi - functional programming interface
+ * @export
+ */
+export const ReportOutboundCallsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ReportOutboundCallsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke function DownloadGetOutboundCalls
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} trunkDns Usage: trunkDns&#x3D;{trunkDns}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadGetOutboundCalls(periodFrom: string, periodTo: string, trunkDns: string | null, callsType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfOutboundCall>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadGetOutboundCalls(periodFrom, periodTo, trunkDns, callsType, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReportOutboundCallsApi.downloadGetOutboundCalls']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke function GetOutboundCalls
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} trunkDns Usage: trunkDns&#x3D;{trunkDns}
+         * @param {number} callsType Usage: callsType&#x3D;{callsType}
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOutboundCalls(periodFrom: string, periodTo: string, trunkDns: string | null, callsType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfOutboundCall>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOutboundCalls(periodFrom, periodTo, trunkDns, callsType, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ReportOutboundCallsApi.getOutboundCalls']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ReportOutboundCallsApi - factory interface
+ * @export
+ */
+export const ReportOutboundCallsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ReportOutboundCallsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke function DownloadGetOutboundCalls
+         * @param {ReportOutboundCallsApiDownloadGetOutboundCallsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadGetOutboundCalls(requestParameters: ReportOutboundCallsApiDownloadGetOutboundCallsRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfOutboundCall> {
+            return localVarFp.downloadGetOutboundCalls(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.trunkDns, requestParameters.callsType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke function GetOutboundCalls
+         * @param {ReportOutboundCallsApiGetOutboundCallsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOutboundCalls(requestParameters: ReportOutboundCallsApiGetOutboundCallsRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfOutboundCall> {
+            return localVarFp.getOutboundCalls(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.trunkDns, requestParameters.callsType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for downloadGetOutboundCalls operation in ReportOutboundCallsApi.
+ * @export
+ * @interface ReportOutboundCallsApiDownloadGetOutboundCallsRequest
+ */
+export interface ReportOutboundCallsApiDownloadGetOutboundCallsRequest {
+    /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: trunkDns&#x3D;{trunkDns}
+     * @type {string}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly trunkDns: string | null
+
+    /**
+     * Usage: callsType&#x3D;{callsType}
+     * @type {number}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly callsType: number
+
+    /**
+     * Show only the first n items
+     * @type {number}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     * @type {number}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     * @type {string}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     * @type {string}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     * @type {boolean}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly $count?: boolean
+
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Order items by property values
+     * @type {Set<string>}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly $orderby?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof ReportOutboundCallsApiDownloadGetOutboundCalls
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * Request parameters for getOutboundCalls operation in ReportOutboundCallsApi.
+ * @export
+ * @interface ReportOutboundCallsApiGetOutboundCallsRequest
+ */
+export interface ReportOutboundCallsApiGetOutboundCallsRequest {
+    /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: trunkDns&#x3D;{trunkDns}
+     * @type {string}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly trunkDns: string | null
+
+    /**
+     * Usage: callsType&#x3D;{callsType}
+     * @type {number}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly callsType: number
+
+    /**
+     * Show only the first n items
+     * @type {number}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     * @type {number}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     * @type {string}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     * @type {string}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     * @type {boolean}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly $count?: boolean
+
+    /**
+     * Select properties to be returned
+     * @type {Set<string>}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Order items by property values
+     * @type {Set<string>}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly $orderby?: Set<string>
+
+    /**
+     * Expand related entities
+     * @type {Set<string>}
+     * @memberof ReportOutboundCallsApiGetOutboundCalls
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * ReportOutboundCallsApi - object-oriented interface
+ * @export
+ * @class ReportOutboundCallsApi
+ * @extends {BaseAPI}
+ */
+export class ReportOutboundCallsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Invoke function DownloadGetOutboundCalls
+     * @param {ReportOutboundCallsApiDownloadGetOutboundCallsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReportOutboundCallsApi
+     */
+    public downloadGetOutboundCalls(requestParameters: ReportOutboundCallsApiDownloadGetOutboundCallsRequest, options?: RawAxiosRequestConfig) {
+        return ReportOutboundCallsApiFp(this.configuration).downloadGetOutboundCalls(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.trunkDns, requestParameters.callsType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetOutboundCalls
+     * @param {ReportOutboundCallsApiGetOutboundCallsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ReportOutboundCallsApi
+     */
+    public getOutboundCalls(requestParameters: ReportOutboundCallsApiGetOutboundCallsRequest, options?: RawAxiosRequestConfig) {
+        return ReportOutboundCallsApiFp(this.configuration).getOutboundCalls(requestParameters.periodFrom, requestParameters.periodTo, requestParameters.trunkDns, requestParameters.callsType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -74361,14 +77311,16 @@ export const ReportUserActivityApiAxiosParamCreator = function (configuration?: 
     return {
         /**
          * 
-         * @summary Invoke function DownloadUserActivityReport
-         * @param {string} chartDate Usage: chartDate&#x3D;{chartDate}
-         * @param {string | null} chartBy Usage: chartBy&#x3D;{chartBy}
-         * @param {boolean} includeInternalCalls Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-         * @param {string | null} queueDnStr Usage: queueDnStr&#x3D;{queueDnStr}
+         * @summary Invoke function DownloadGetUserActivity
          * @param {string | null} clientTimeZone Usage: clientTimeZone&#x3D;{clientTimeZone}
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} groupNumber Usage: groupNumber&#x3D;{groupNumber}
+         * @param {string | null} extensionDns Usage: extensionDns&#x3D;{extensionDns}
          * @param {string | null} waitInterval Usage: waitInterval&#x3D;{waitInterval}
+         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+         * @param {number} callArea Usage: callArea&#x3D;{callArea}
+         * @param {number} groupingType Usage: groupingType&#x3D;{groupingType}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -74380,29 +77332,35 @@ export const ReportUserActivityApiAxiosParamCreator = function (configuration?: 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        downloadUserActivityReport: async (chartDate: string, chartBy: string | null, includeInternalCalls: boolean, includeQueueCalls: boolean, queueDnStr: string | null, clientTimeZone: string | null, waitInterval: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'chartDate' is not null or undefined
-            assertParamExists('downloadUserActivityReport', 'chartDate', chartDate)
-            // verify required parameter 'chartBy' is not null or undefined
-            assertParamExists('downloadUserActivityReport', 'chartBy', chartBy)
-            // verify required parameter 'includeInternalCalls' is not null or undefined
-            assertParamExists('downloadUserActivityReport', 'includeInternalCalls', includeInternalCalls)
-            // verify required parameter 'includeQueueCalls' is not null or undefined
-            assertParamExists('downloadUserActivityReport', 'includeQueueCalls', includeQueueCalls)
-            // verify required parameter 'queueDnStr' is not null or undefined
-            assertParamExists('downloadUserActivityReport', 'queueDnStr', queueDnStr)
+        downloadGetUserActivity: async (clientTimeZone: string | null, periodFrom: string, periodTo: string, groupNumber: string | null, extensionDns: string | null, waitInterval: string | null, includeQueueCalls: boolean, callArea: number, groupingType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clientTimeZone' is not null or undefined
-            assertParamExists('downloadUserActivityReport', 'clientTimeZone', clientTimeZone)
+            assertParamExists('downloadGetUserActivity', 'clientTimeZone', clientTimeZone)
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('downloadGetUserActivity', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('downloadGetUserActivity', 'periodTo', periodTo)
+            // verify required parameter 'groupNumber' is not null or undefined
+            assertParamExists('downloadGetUserActivity', 'groupNumber', groupNumber)
+            // verify required parameter 'extensionDns' is not null or undefined
+            assertParamExists('downloadGetUserActivity', 'extensionDns', extensionDns)
             // verify required parameter 'waitInterval' is not null or undefined
-            assertParamExists('downloadUserActivityReport', 'waitInterval', waitInterval)
-            const localVarPath = `/ReportUserActivity/Pbx.DownloadUserActivityReport(chartDate={chartDate},chartBy={chartBy},includeInternalCalls={includeInternalCalls},includeQueueCalls={includeQueueCalls},queueDnStr={queueDnStr},clientTimeZone={clientTimeZone},waitInterval={waitInterval})`
-                .replace(`{${"chartDate"}}`, encodeURIComponent(String(chartDate)))
-                .replace(`{${"chartBy"}}`, encodeURIComponent(String(chartBy)))
-                .replace(`{${"includeInternalCalls"}}`, encodeURIComponent(String(includeInternalCalls)))
-                .replace(`{${"includeQueueCalls"}}`, encodeURIComponent(String(includeQueueCalls)))
-                .replace(`{${"queueDnStr"}}`, encodeURIComponent(String(queueDnStr)))
+            assertParamExists('downloadGetUserActivity', 'waitInterval', waitInterval)
+            // verify required parameter 'includeQueueCalls' is not null or undefined
+            assertParamExists('downloadGetUserActivity', 'includeQueueCalls', includeQueueCalls)
+            // verify required parameter 'callArea' is not null or undefined
+            assertParamExists('downloadGetUserActivity', 'callArea', callArea)
+            // verify required parameter 'groupingType' is not null or undefined
+            assertParamExists('downloadGetUserActivity', 'groupingType', groupingType)
+            const localVarPath = `/ReportUserActivity/Pbx.DownloadGetUserActivity(clientTimeZone={clientTimeZone},periodFrom={periodFrom},periodTo={periodTo},groupNumber={groupNumber},extensionDns={extensionDns},waitInterval={waitInterval},includeQueueCalls={includeQueueCalls},callArea={callArea},groupingType={groupingType})`
                 .replace(`{${"clientTimeZone"}}`, encodeURIComponent(String(clientTimeZone)))
-                .replace(`{${"waitInterval"}}`, encodeURIComponent(String(waitInterval)));
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"groupNumber"}}`, encodeURIComponent(String(groupNumber)))
+                .replace(`{${"extensionDns"}}`, encodeURIComponent(String(extensionDns)))
+                .replace(`{${"waitInterval"}}`, encodeURIComponent(String(waitInterval)))
+                .replace(`{${"includeQueueCalls"}}`, encodeURIComponent(String(includeQueueCalls)))
+                .replace(`{${"callArea"}}`, encodeURIComponent(String(callArea)))
+                .replace(`{${"groupingType"}}`, encodeURIComponent(String(groupingType)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -74463,14 +77421,16 @@ export const ReportUserActivityApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
-         * @summary Invoke function GetUserActivityData
-         * @param {string} chartDate Usage: chartDate&#x3D;{chartDate}
-         * @param {string | null} chartBy Usage: chartBy&#x3D;{chartBy}
-         * @param {boolean} includeInternalCalls Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-         * @param {string | null} queueDnStr Usage: queueDnStr&#x3D;{queueDnStr}
+         * @summary Invoke function GetUserActivity
          * @param {string | null} clientTimeZone Usage: clientTimeZone&#x3D;{clientTimeZone}
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} groupNumber Usage: groupNumber&#x3D;{groupNumber}
+         * @param {string | null} extensionDns Usage: extensionDns&#x3D;{extensionDns}
          * @param {string | null} waitInterval Usage: waitInterval&#x3D;{waitInterval}
+         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+         * @param {number} callArea Usage: callArea&#x3D;{callArea}
+         * @param {number} groupingType Usage: groupingType&#x3D;{groupingType}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -74482,29 +77442,35 @@ export const ReportUserActivityApiAxiosParamCreator = function (configuration?: 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserActivityData: async (chartDate: string, chartBy: string | null, includeInternalCalls: boolean, includeQueueCalls: boolean, queueDnStr: string | null, clientTimeZone: string | null, waitInterval: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'chartDate' is not null or undefined
-            assertParamExists('getUserActivityData', 'chartDate', chartDate)
-            // verify required parameter 'chartBy' is not null or undefined
-            assertParamExists('getUserActivityData', 'chartBy', chartBy)
-            // verify required parameter 'includeInternalCalls' is not null or undefined
-            assertParamExists('getUserActivityData', 'includeInternalCalls', includeInternalCalls)
-            // verify required parameter 'includeQueueCalls' is not null or undefined
-            assertParamExists('getUserActivityData', 'includeQueueCalls', includeQueueCalls)
-            // verify required parameter 'queueDnStr' is not null or undefined
-            assertParamExists('getUserActivityData', 'queueDnStr', queueDnStr)
+        getUserActivity: async (clientTimeZone: string | null, periodFrom: string, periodTo: string, groupNumber: string | null, extensionDns: string | null, waitInterval: string | null, includeQueueCalls: boolean, callArea: number, groupingType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'clientTimeZone' is not null or undefined
-            assertParamExists('getUserActivityData', 'clientTimeZone', clientTimeZone)
+            assertParamExists('getUserActivity', 'clientTimeZone', clientTimeZone)
+            // verify required parameter 'periodFrom' is not null or undefined
+            assertParamExists('getUserActivity', 'periodFrom', periodFrom)
+            // verify required parameter 'periodTo' is not null or undefined
+            assertParamExists('getUserActivity', 'periodTo', periodTo)
+            // verify required parameter 'groupNumber' is not null or undefined
+            assertParamExists('getUserActivity', 'groupNumber', groupNumber)
+            // verify required parameter 'extensionDns' is not null or undefined
+            assertParamExists('getUserActivity', 'extensionDns', extensionDns)
             // verify required parameter 'waitInterval' is not null or undefined
-            assertParamExists('getUserActivityData', 'waitInterval', waitInterval)
-            const localVarPath = `/ReportUserActivity/Pbx.GetUserActivityData(chartDate={chartDate},chartBy={chartBy},includeInternalCalls={includeInternalCalls},includeQueueCalls={includeQueueCalls},queueDnStr={queueDnStr},clientTimeZone={clientTimeZone},waitInterval={waitInterval})`
-                .replace(`{${"chartDate"}}`, encodeURIComponent(String(chartDate)))
-                .replace(`{${"chartBy"}}`, encodeURIComponent(String(chartBy)))
-                .replace(`{${"includeInternalCalls"}}`, encodeURIComponent(String(includeInternalCalls)))
-                .replace(`{${"includeQueueCalls"}}`, encodeURIComponent(String(includeQueueCalls)))
-                .replace(`{${"queueDnStr"}}`, encodeURIComponent(String(queueDnStr)))
+            assertParamExists('getUserActivity', 'waitInterval', waitInterval)
+            // verify required parameter 'includeQueueCalls' is not null or undefined
+            assertParamExists('getUserActivity', 'includeQueueCalls', includeQueueCalls)
+            // verify required parameter 'callArea' is not null or undefined
+            assertParamExists('getUserActivity', 'callArea', callArea)
+            // verify required parameter 'groupingType' is not null or undefined
+            assertParamExists('getUserActivity', 'groupingType', groupingType)
+            const localVarPath = `/ReportUserActivity/Pbx.GetUserActivity(clientTimeZone={clientTimeZone},periodFrom={periodFrom},periodTo={periodTo},groupNumber={groupNumber},extensionDns={extensionDns},waitInterval={waitInterval},includeQueueCalls={includeQueueCalls},callArea={callArea},groupingType={groupingType})`
                 .replace(`{${"clientTimeZone"}}`, encodeURIComponent(String(clientTimeZone)))
-                .replace(`{${"waitInterval"}}`, encodeURIComponent(String(waitInterval)));
+                .replace(`{${"periodFrom"}}`, encodeURIComponent(String(periodFrom)))
+                .replace(`{${"periodTo"}}`, encodeURIComponent(String(periodTo)))
+                .replace(`{${"groupNumber"}}`, encodeURIComponent(String(groupNumber)))
+                .replace(`{${"extensionDns"}}`, encodeURIComponent(String(extensionDns)))
+                .replace(`{${"waitInterval"}}`, encodeURIComponent(String(waitInterval)))
+                .replace(`{${"includeQueueCalls"}}`, encodeURIComponent(String(includeQueueCalls)))
+                .replace(`{${"callArea"}}`, encodeURIComponent(String(callArea)))
+                .replace(`{${"groupingType"}}`, encodeURIComponent(String(groupingType)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -74575,14 +77541,16 @@ export const ReportUserActivityApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Invoke function DownloadUserActivityReport
-         * @param {string} chartDate Usage: chartDate&#x3D;{chartDate}
-         * @param {string | null} chartBy Usage: chartBy&#x3D;{chartBy}
-         * @param {boolean} includeInternalCalls Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-         * @param {string | null} queueDnStr Usage: queueDnStr&#x3D;{queueDnStr}
+         * @summary Invoke function DownloadGetUserActivity
          * @param {string | null} clientTimeZone Usage: clientTimeZone&#x3D;{clientTimeZone}
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} groupNumber Usage: groupNumber&#x3D;{groupNumber}
+         * @param {string | null} extensionDns Usage: extensionDns&#x3D;{extensionDns}
          * @param {string | null} waitInterval Usage: waitInterval&#x3D;{waitInterval}
+         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+         * @param {number} callArea Usage: callArea&#x3D;{callArea}
+         * @param {number} groupingType Usage: groupingType&#x3D;{groupingType}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -74594,22 +77562,24 @@ export const ReportUserActivityApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async downloadUserActivityReport(chartDate: string, chartBy: string | null, includeInternalCalls: boolean, includeQueueCalls: boolean, queueDnStr: string | null, clientTimeZone: string | null, waitInterval: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfTimeReportData>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadUserActivityReport(chartDate, chartBy, includeInternalCalls, includeQueueCalls, queueDnStr, clientTimeZone, waitInterval, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+        async downloadGetUserActivity(clientTimeZone: string | null, periodFrom: string, periodTo: string, groupNumber: string | null, extensionDns: string | null, waitInterval: string | null, includeQueueCalls: boolean, callArea: number, groupingType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfUserActivity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadGetUserActivity(clientTimeZone, periodFrom, periodTo, groupNumber, extensionDns, waitInterval, includeQueueCalls, callArea, groupingType, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ReportUserActivityApi.downloadUserActivityReport']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ReportUserActivityApi.downloadGetUserActivity']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @summary Invoke function GetUserActivityData
-         * @param {string} chartDate Usage: chartDate&#x3D;{chartDate}
-         * @param {string | null} chartBy Usage: chartBy&#x3D;{chartBy}
-         * @param {boolean} includeInternalCalls Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-         * @param {string | null} queueDnStr Usage: queueDnStr&#x3D;{queueDnStr}
+         * @summary Invoke function GetUserActivity
          * @param {string | null} clientTimeZone Usage: clientTimeZone&#x3D;{clientTimeZone}
+         * @param {string} periodFrom Usage: periodFrom&#x3D;{periodFrom}
+         * @param {string} periodTo Usage: periodTo&#x3D;{periodTo}
+         * @param {string | null} groupNumber Usage: groupNumber&#x3D;{groupNumber}
+         * @param {string | null} extensionDns Usage: extensionDns&#x3D;{extensionDns}
          * @param {string | null} waitInterval Usage: waitInterval&#x3D;{waitInterval}
+         * @param {boolean} includeQueueCalls Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+         * @param {number} callArea Usage: callArea&#x3D;{callArea}
+         * @param {number} groupingType Usage: groupingType&#x3D;{groupingType}
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
          * @param {string} [$search] Search items by search phrases
@@ -74621,10 +77591,10 @@ export const ReportUserActivityApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserActivityData(chartDate: string, chartBy: string | null, includeInternalCalls: boolean, includeQueueCalls: boolean, queueDnStr: string | null, clientTimeZone: string | null, waitInterval: string | null, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfTimeReportData>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserActivityData(chartDate, chartBy, includeInternalCalls, includeQueueCalls, queueDnStr, clientTimeZone, waitInterval, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
+        async getUserActivity(clientTimeZone: string | null, periodFrom: string, periodTo: string, groupNumber: string | null, extensionDns: string | null, waitInterval: string | null, includeQueueCalls: boolean, callArea: number, groupingType: number, $top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $select?: Set<string>, $orderby?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionOfUserActivity>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserActivity(clientTimeZone, periodFrom, periodTo, groupNumber, extensionDns, waitInterval, includeQueueCalls, callArea, groupingType, $top, $skip, $search, $filter, $count, $select, $orderby, $expand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ReportUserActivityApi.getUserActivityData']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ReportUserActivityApi.getUserActivity']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -74639,247 +77609,275 @@ export const ReportUserActivityApiFactory = function (configuration?: Configurat
     return {
         /**
          * 
-         * @summary Invoke function DownloadUserActivityReport
-         * @param {ReportUserActivityApiDownloadUserActivityReportRequest} requestParameters Request parameters.
+         * @summary Invoke function DownloadGetUserActivity
+         * @param {ReportUserActivityApiDownloadGetUserActivityRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        downloadUserActivityReport(requestParameters: ReportUserActivityApiDownloadUserActivityReportRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfTimeReportData> {
-            return localVarFp.downloadUserActivityReport(requestParameters.chartDate, requestParameters.chartBy, requestParameters.includeInternalCalls, requestParameters.includeQueueCalls, requestParameters.queueDnStr, requestParameters.clientTimeZone, requestParameters.waitInterval, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        downloadGetUserActivity(requestParameters: ReportUserActivityApiDownloadGetUserActivityRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfUserActivity> {
+            return localVarFp.downloadGetUserActivity(requestParameters.clientTimeZone, requestParameters.periodFrom, requestParameters.periodTo, requestParameters.groupNumber, requestParameters.extensionDns, requestParameters.waitInterval, requestParameters.includeQueueCalls, requestParameters.callArea, requestParameters.groupingType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Invoke function GetUserActivityData
-         * @param {ReportUserActivityApiGetUserActivityDataRequest} requestParameters Request parameters.
+         * @summary Invoke function GetUserActivity
+         * @param {ReportUserActivityApiGetUserActivityRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserActivityData(requestParameters: ReportUserActivityApiGetUserActivityDataRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfTimeReportData> {
-            return localVarFp.getUserActivityData(requestParameters.chartDate, requestParameters.chartBy, requestParameters.includeInternalCalls, requestParameters.includeQueueCalls, requestParameters.queueDnStr, requestParameters.clientTimeZone, requestParameters.waitInterval, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        getUserActivity(requestParameters: ReportUserActivityApiGetUserActivityRequest, options?: RawAxiosRequestConfig): AxiosPromise<CollectionOfUserActivity> {
+            return localVarFp.getUserActivity(requestParameters.clientTimeZone, requestParameters.periodFrom, requestParameters.periodTo, requestParameters.groupNumber, requestParameters.extensionDns, requestParameters.waitInterval, requestParameters.includeQueueCalls, requestParameters.callArea, requestParameters.groupingType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * Request parameters for downloadUserActivityReport operation in ReportUserActivityApi.
+ * Request parameters for downloadGetUserActivity operation in ReportUserActivityApi.
  * @export
- * @interface ReportUserActivityApiDownloadUserActivityReportRequest
+ * @interface ReportUserActivityApiDownloadGetUserActivityRequest
  */
-export interface ReportUserActivityApiDownloadUserActivityReportRequest {
-    /**
-     * Usage: chartDate&#x3D;{chartDate}
-     * @type {string}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
-     */
-    readonly chartDate: string
-
-    /**
-     * Usage: chartBy&#x3D;{chartBy}
-     * @type {string}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
-     */
-    readonly chartBy: string | null
-
-    /**
-     * Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-     * @type {boolean}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
-     */
-    readonly includeInternalCalls: boolean
-
-    /**
-     * Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-     * @type {boolean}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
-     */
-    readonly includeQueueCalls: boolean
-
-    /**
-     * Usage: queueDnStr&#x3D;{queueDnStr}
-     * @type {string}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
-     */
-    readonly queueDnStr: string | null
-
+export interface ReportUserActivityApiDownloadGetUserActivityRequest {
     /**
      * Usage: clientTimeZone&#x3D;{clientTimeZone}
      * @type {string}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly clientTimeZone: string | null
 
     /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: groupNumber&#x3D;{groupNumber}
+     * @type {string}
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
+     */
+    readonly groupNumber: string | null
+
+    /**
+     * Usage: extensionDns&#x3D;{extensionDns}
+     * @type {string}
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
+     */
+    readonly extensionDns: string | null
+
+    /**
      * Usage: waitInterval&#x3D;{waitInterval}
      * @type {string}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly waitInterval: string | null
 
     /**
+     * Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+     * @type {boolean}
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
+     */
+    readonly includeQueueCalls: boolean
+
+    /**
+     * Usage: callArea&#x3D;{callArea}
+     * @type {number}
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
+     */
+    readonly callArea: number
+
+    /**
+     * Usage: groupingType&#x3D;{groupingType}
+     * @type {number}
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
+     */
+    readonly groupingType: number
+
+    /**
      * Show only the first n items
      * @type {number}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly $top?: number
 
     /**
      * Skip the first n items
      * @type {number}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly $skip?: number
 
     /**
      * Search items by search phrases
      * @type {string}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly $search?: string
 
     /**
      * Filter items by property values
      * @type {string}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly $filter?: string
 
     /**
      * Include count of items
      * @type {boolean}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly $count?: boolean
 
     /**
      * Select properties to be returned
      * @type {Set<string>}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly $select?: Set<string>
 
     /**
      * Order items by property values
      * @type {Set<string>}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly $orderby?: Set<string>
 
     /**
      * Expand related entities
      * @type {Set<string>}
-     * @memberof ReportUserActivityApiDownloadUserActivityReport
+     * @memberof ReportUserActivityApiDownloadGetUserActivity
      */
     readonly $expand?: Set<string>
 }
 
 /**
- * Request parameters for getUserActivityData operation in ReportUserActivityApi.
+ * Request parameters for getUserActivity operation in ReportUserActivityApi.
  * @export
- * @interface ReportUserActivityApiGetUserActivityDataRequest
+ * @interface ReportUserActivityApiGetUserActivityRequest
  */
-export interface ReportUserActivityApiGetUserActivityDataRequest {
-    /**
-     * Usage: chartDate&#x3D;{chartDate}
-     * @type {string}
-     * @memberof ReportUserActivityApiGetUserActivityData
-     */
-    readonly chartDate: string
-
-    /**
-     * Usage: chartBy&#x3D;{chartBy}
-     * @type {string}
-     * @memberof ReportUserActivityApiGetUserActivityData
-     */
-    readonly chartBy: string | null
-
-    /**
-     * Usage: includeInternalCalls&#x3D;{includeInternalCalls}
-     * @type {boolean}
-     * @memberof ReportUserActivityApiGetUserActivityData
-     */
-    readonly includeInternalCalls: boolean
-
-    /**
-     * Usage: includeQueueCalls&#x3D;{includeQueueCalls}
-     * @type {boolean}
-     * @memberof ReportUserActivityApiGetUserActivityData
-     */
-    readonly includeQueueCalls: boolean
-
-    /**
-     * Usage: queueDnStr&#x3D;{queueDnStr}
-     * @type {string}
-     * @memberof ReportUserActivityApiGetUserActivityData
-     */
-    readonly queueDnStr: string | null
-
+export interface ReportUserActivityApiGetUserActivityRequest {
     /**
      * Usage: clientTimeZone&#x3D;{clientTimeZone}
      * @type {string}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly clientTimeZone: string | null
 
     /**
+     * Usage: periodFrom&#x3D;{periodFrom}
+     * @type {string}
+     * @memberof ReportUserActivityApiGetUserActivity
+     */
+    readonly periodFrom: string
+
+    /**
+     * Usage: periodTo&#x3D;{periodTo}
+     * @type {string}
+     * @memberof ReportUserActivityApiGetUserActivity
+     */
+    readonly periodTo: string
+
+    /**
+     * Usage: groupNumber&#x3D;{groupNumber}
+     * @type {string}
+     * @memberof ReportUserActivityApiGetUserActivity
+     */
+    readonly groupNumber: string | null
+
+    /**
+     * Usage: extensionDns&#x3D;{extensionDns}
+     * @type {string}
+     * @memberof ReportUserActivityApiGetUserActivity
+     */
+    readonly extensionDns: string | null
+
+    /**
      * Usage: waitInterval&#x3D;{waitInterval}
      * @type {string}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly waitInterval: string | null
 
     /**
+     * Usage: includeQueueCalls&#x3D;{includeQueueCalls}
+     * @type {boolean}
+     * @memberof ReportUserActivityApiGetUserActivity
+     */
+    readonly includeQueueCalls: boolean
+
+    /**
+     * Usage: callArea&#x3D;{callArea}
+     * @type {number}
+     * @memberof ReportUserActivityApiGetUserActivity
+     */
+    readonly callArea: number
+
+    /**
+     * Usage: groupingType&#x3D;{groupingType}
+     * @type {number}
+     * @memberof ReportUserActivityApiGetUserActivity
+     */
+    readonly groupingType: number
+
+    /**
      * Show only the first n items
      * @type {number}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly $top?: number
 
     /**
      * Skip the first n items
      * @type {number}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly $skip?: number
 
     /**
      * Search items by search phrases
      * @type {string}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly $search?: string
 
     /**
      * Filter items by property values
      * @type {string}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly $filter?: string
 
     /**
      * Include count of items
      * @type {boolean}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly $count?: boolean
 
     /**
      * Select properties to be returned
      * @type {Set<string>}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly $select?: Set<string>
 
     /**
      * Order items by property values
      * @type {Set<string>}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly $orderby?: Set<string>
 
     /**
      * Expand related entities
      * @type {Set<string>}
-     * @memberof ReportUserActivityApiGetUserActivityData
+     * @memberof ReportUserActivityApiGetUserActivity
      */
     readonly $expand?: Set<string>
 }
@@ -74893,26 +77891,26 @@ export interface ReportUserActivityApiGetUserActivityDataRequest {
 export class ReportUserActivityApi extends BaseAPI {
     /**
      * 
-     * @summary Invoke function DownloadUserActivityReport
-     * @param {ReportUserActivityApiDownloadUserActivityReportRequest} requestParameters Request parameters.
+     * @summary Invoke function DownloadGetUserActivity
+     * @param {ReportUserActivityApiDownloadGetUserActivityRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReportUserActivityApi
      */
-    public downloadUserActivityReport(requestParameters: ReportUserActivityApiDownloadUserActivityReportRequest, options?: RawAxiosRequestConfig) {
-        return ReportUserActivityApiFp(this.configuration).downloadUserActivityReport(requestParameters.chartDate, requestParameters.chartBy, requestParameters.includeInternalCalls, requestParameters.includeQueueCalls, requestParameters.queueDnStr, requestParameters.clientTimeZone, requestParameters.waitInterval, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    public downloadGetUserActivity(requestParameters: ReportUserActivityApiDownloadGetUserActivityRequest, options?: RawAxiosRequestConfig) {
+        return ReportUserActivityApiFp(this.configuration).downloadGetUserActivity(requestParameters.clientTimeZone, requestParameters.periodFrom, requestParameters.periodTo, requestParameters.groupNumber, requestParameters.extensionDns, requestParameters.waitInterval, requestParameters.includeQueueCalls, requestParameters.callArea, requestParameters.groupingType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Invoke function GetUserActivityData
-     * @param {ReportUserActivityApiGetUserActivityDataRequest} requestParameters Request parameters.
+     * @summary Invoke function GetUserActivity
+     * @param {ReportUserActivityApiGetUserActivityRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReportUserActivityApi
      */
-    public getUserActivityData(requestParameters: ReportUserActivityApiGetUserActivityDataRequest, options?: RawAxiosRequestConfig) {
-        return ReportUserActivityApiFp(this.configuration).getUserActivityData(requestParameters.chartDate, requestParameters.chartBy, requestParameters.includeInternalCalls, requestParameters.includeQueueCalls, requestParameters.queueDnStr, requestParameters.clientTimeZone, requestParameters.waitInterval, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    public getUserActivity(requestParameters: ReportUserActivityApiGetUserActivityRequest, options?: RawAxiosRequestConfig) {
+        return ReportUserActivityApiFp(this.configuration).getUserActivity(requestParameters.clientTimeZone, requestParameters.periodFrom, requestParameters.periodTo, requestParameters.groupNumber, requestParameters.extensionDns, requestParameters.waitInterval, requestParameters.includeQueueCalls, requestParameters.callArea, requestParameters.groupingType, requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$select, requestParameters.$orderby, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -79608,6 +82606,40 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
         },
         /**
          * 
+         * @summary Invoke function GetRemoteAccessStatus
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRemoteAccessStatus: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/SystemStatus/Pbx.GetRemoteAccessStatus()`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke function GetRequestHelpLink
          * @param {number} grantPeriodDays Usage: grantPeriodDays&#x3D;{grantPeriodDays}
          * @param {*} [options] Override http request option.
@@ -79790,6 +82822,40 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(systemStatusRequestHelpRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action RevokeRemoteAccess
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        revokeRemoteAccess: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/SystemStatus/Pbx.RevokeRemoteAccess`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -80061,6 +83127,18 @@ export const SystemStatusApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke function GetRemoteAccessStatus
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRemoteAccessStatus(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxRemoteAccessStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRemoteAccessStatus(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemStatusApi.getRemoteAccessStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke function GetRequestHelpLink
          * @param {number} grantPeriodDays Usage: grantPeriodDays&#x3D;{grantPeriodDays}
          * @param {*} [options] Override http request option.
@@ -80121,6 +83199,18 @@ export const SystemStatusApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.requestHelp(systemStatusRequestHelpRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemStatusApi.requestHelp']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action RevokeRemoteAccess
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async revokeRemoteAccess(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.revokeRemoteAccess(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemStatusApi.revokeRemoteAccess']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -80223,6 +83313,15 @@ export const SystemStatusApiFactory = function (configuration?: Configuration, b
         },
         /**
          * 
+         * @summary Invoke function GetRemoteAccessStatus
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRemoteAccessStatus(options?: RawAxiosRequestConfig): AxiosPromise<PbxRemoteAccessStatus> {
+            return localVarFp.getRemoteAccessStatus(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Invoke function GetRequestHelpLink
          * @param {SystemStatusApiGetRequestHelpLinkRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -80268,6 +83367,15 @@ export const SystemStatusApiFactory = function (configuration?: Configuration, b
          */
         requestHelp(requestParameters: SystemStatusApiRequestHelpRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.requestHelp(requestParameters.systemStatusRequestHelpRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action RevokeRemoteAccess
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        revokeRemoteAccess(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.revokeRemoteAccess(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -80468,6 +83576,17 @@ export class SystemStatusApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke function GetRemoteAccessStatus
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SystemStatusApi
+     */
+    public getRemoteAccessStatus(options?: RawAxiosRequestConfig) {
+        return SystemStatusApiFp(this.configuration).getRemoteAccessStatus(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Invoke function GetRequestHelpLink
      * @param {SystemStatusApiGetRequestHelpLinkRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -80522,6 +83641,17 @@ export class SystemStatusApi extends BaseAPI {
      */
     public requestHelp(requestParameters: SystemStatusApiRequestHelpRequest, options?: RawAxiosRequestConfig) {
         return SystemStatusApiFp(this.configuration).requestHelp(requestParameters.systemStatusRequestHelpRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action RevokeRemoteAccess
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SystemStatusApi
+     */
+    public revokeRemoteAccess(options?: RawAxiosRequestConfig) {
+        return SystemStatusApiFp(this.configuration).revokeRemoteAccess(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -84340,6 +87470,48 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Invoke function GetCallLog
+         * @param {string | null} dn Usage: dn&#x3D;{dn}
+         * @param {string} requestId Usage: requestId&#x3D;{requestId}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCallLog: async (dn: string | null, requestId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'dn' is not null or undefined
+            assertParamExists('getCallLog', 'dn', dn)
+            // verify required parameter 'requestId' is not null or undefined
+            assertParamExists('getCallLog', 'requestId', requestId)
+            const localVarPath = `/Users/Pbx.GetCallLog(dn={dn},requestId={requestId})`
+                .replace(`{${"dn"}}`, encodeURIComponent(String(dn)))
+                .replace(`{${"requestId"}}`, encodeURIComponent(String(requestId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke action GetDuplicatedEmails
          * @param {UsersGetDuplicatedEmailsRequestBody} usersGetDuplicatedEmailsRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -85733,6 +88905,20 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke function GetCallLog
+         * @param {string | null} dn Usage: dn&#x3D;{dn}
+         * @param {string} requestId Usage: requestId&#x3D;{requestId}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCallLog(dn: string | null, requestId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxTestCallLog>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCallLog(dn, requestId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.getCallLog']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke action GetDuplicatedEmails
          * @param {UsersGetDuplicatedEmailsRequestBody} usersGetDuplicatedEmailsRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -86216,6 +89402,16 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary Invoke function GetCallLog
+         * @param {UsersApiGetCallLogRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCallLog(requestParameters: UsersApiGetCallLogRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxTestCallLog> {
+            return localVarFp.getCallLog(requestParameters.dn, requestParameters.requestId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Invoke action GetDuplicatedEmails
          * @param {UsersApiGetDuplicatedEmailsRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -86654,6 +89850,27 @@ export interface UsersApiGenerateProvLinkRequest {
      * @memberof UsersApiGenerateProvLink
      */
     readonly id: number
+}
+
+/**
+ * Request parameters for getCallLog operation in UsersApi.
+ * @export
+ * @interface UsersApiGetCallLogRequest
+ */
+export interface UsersApiGetCallLogRequest {
+    /**
+     * Usage: dn&#x3D;{dn}
+     * @type {string}
+     * @memberof UsersApiGetCallLog
+     */
+    readonly dn: string | null
+
+    /**
+     * Usage: requestId&#x3D;{requestId}
+     * @type {string}
+     * @memberof UsersApiGetCallLog
+     */
+    readonly requestId: string
 }
 
 /**
@@ -87396,6 +90613,18 @@ export class UsersApi extends BaseAPI {
      */
     public generateProvLink(requestParameters: UsersApiGenerateProvLinkRequest, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).generateProvLink(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetCallLog
+     * @param {UsersApiGetCallLogRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public getCallLog(requestParameters: UsersApiGetCallLogRequest, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).getCallLog(requestParameters.dn, requestParameters.requestId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
