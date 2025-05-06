@@ -72,7 +72,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: ActiveCall
       responses:
@@ -392,11 +392,11 @@ paths:
               title: BackupsBackupsRestoreRequestBody
               type: object
               properties:
+                footprint:
+                  type: integer
+                  format: int64
                 password:
                   type: string
-                footprint:
-                  type: number
-                  format: int64
         required: true
       responses:
         '204':
@@ -920,7 +920,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: BlocklistAddr
         - name: $select
@@ -966,7 +966,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: BlocklistAddr
       requestBody:
@@ -995,7 +995,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: BlocklistAddr
         - name: If-Match
@@ -1029,7 +1029,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -1144,7 +1144,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: CallFlowApp
         - name: $select
@@ -1190,7 +1190,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: CallFlowApp
       requestBody:
@@ -1219,7 +1219,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: CallFlowApp
         - name: If-Match
@@ -1318,7 +1318,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: CallFlowApp
         - $ref: '#/components/parameters/top'
@@ -1359,7 +1359,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: CallFlowApp
       requestBody:
@@ -1705,6 +1705,54 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  /ChatHistoryView:
+    description: Provides operations to manage the collection of ChatHistoryView entities.
+    get:
+      tags:
+        - ChatHistoryView
+      summary: Get entities from ChatHistoryView
+      operationId: ListChatHistoryView
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Pbx.ChatHistoryViewCollectionResponse'
+        default:
+          $ref: '#/components/responses/error'
   '/ChatHistoryView/Pbx.DownloadChatHistory(clientTimeZone={clientTimeZone})':
     description: Provides operations to call the DownloadChatHistory method.
     get:
@@ -1774,54 +1822,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
-  /ChatHistoryView:
-    description: Provides operations to manage the collection of ChatHistoryView entities.
-    get:
-      tags:
-        - ChatHistoryView
-      summary: Get entities from ChatHistoryView
-      operationId: ListChatHistoryView
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          $ref: '#/components/responses/Pbx.ChatHistoryViewCollectionResponse'
-        default:
-          $ref: '#/components/responses/error'
   /ChatLogSettings:
     description: Provides operations to manage the ChatLogSettings singleton.
     get:
@@ -1878,6 +1878,54 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  /ChatMessagesHistoryView:
+    description: Provides operations to manage the collection of ChatMessagesHistoryView entities.
+    get:
+      tags:
+        - ChatMessagesHistoryView
+      summary: Get entities from ChatMessagesHistoryView
+      operationId: ListChatMessagesHistoryView
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Pbx.ChatMessagesHistoryViewCollectionResponse'
+        default:
+          $ref: '#/components/responses/error'
   '/ChatMessagesHistoryView/Pbx.DownloadChatMessagesHistory(clientTimeZone={clientTimeZone})':
     description: Provides operations to call the DownloadChatMessagesHistory method.
     get:
@@ -1947,54 +1995,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
-  /ChatMessagesHistoryView:
-    description: Provides operations to manage the collection of ChatMessagesHistoryView entities.
-    get:
-      tags:
-        - ChatMessagesHistoryView
-      summary: Get entities from ChatMessagesHistoryView
-      operationId: ListChatMessagesHistoryView
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
-        - name: $orderby
-          in: query
-          description: Order items by property values
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $select
-          in: query
-          description: Select properties to be returned
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-        - name: $expand
-          in: query
-          description: Expand related entities
-          style: form
-          explode: false
-          schema:
-            uniqueItems: true
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          $ref: '#/components/responses/Pbx.ChatMessagesHistoryViewCollectionResponse'
-        default:
-          $ref: '#/components/responses/error'
   /CodecsSettings:
     description: Provides operations to manage the CodecsSettings singleton.
     get:
@@ -2516,7 +2516,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -2622,7 +2622,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Contact
         - name: $select
@@ -2668,7 +2668,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Contact
       requestBody:
@@ -2697,7 +2697,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Contact
         - name: If-Match
@@ -2960,10 +2960,10 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                title: Pbx.CrmChoice
+                allOf:
                   - $ref: '#/components/schemas/Pbx.CrmChoice'
-                  - type: object
-                    nullable: true
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
@@ -2987,10 +2987,10 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                title: Pbx.CrmTemplateSource
+                allOf:
                   - $ref: '#/components/schemas/Pbx.CrmTemplateSource'
-                  - type: object
-                    nullable: true
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
@@ -3599,7 +3599,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -3683,7 +3683,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: DeviceInfo
         - name: $select
@@ -3729,7 +3729,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: DeviceInfo
         - name: If-Match
@@ -3758,7 +3758,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: DeviceInfo
       requestBody:
@@ -3775,7 +3775,7 @@ paths:
                 userId:
                   maximum: 2147483647
                   minimum: -2147483648
-                  type: number
+                  type: integer
                   format: int32
         required: true
       responses:
@@ -4334,10 +4334,10 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                title: Pbx.IActionResult
+                allOf:
                   - $ref: '#/components/schemas/Pbx.IActionResult'
-                  - type: object
-                    nullable: true
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -4577,7 +4577,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Fax
         - name: $select
@@ -4623,7 +4623,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Fax
       requestBody:
@@ -4652,7 +4652,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Fax
         - name: If-Match
@@ -4686,7 +4686,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -4791,7 +4791,7 @@ paths:
                 type: object
                 properties:
                   value:
-                    type: number
+                    type: integer
                     format: int64
         default:
           $ref: '#/components/responses/error'
@@ -5209,10 +5209,10 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                title: Pbx.Fxs
+                allOf:
                   - $ref: '#/components/schemas/Pbx.Fxs'
-                  - type: object
-                    nullable: true
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -5565,10 +5565,10 @@ paths:
               type: object
               properties:
                 options:
-                  anyOf:
+                  title: Pbx.UsersRequestOptions
+                  allOf:
                     - $ref: '#/components/schemas/Pbx.UsersRequestOptions'
-                    - type: object
-                      nullable: true
+                  nullable: true
         required: true
       responses:
         '200':
@@ -5595,7 +5595,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Group
         - name: $select
@@ -5641,7 +5641,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Group
       requestBody:
@@ -5670,7 +5670,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Group
         - name: If-Match
@@ -5769,7 +5769,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Group
       responses:
@@ -5820,7 +5820,7 @@ paths:
                 id:
                   maximum: 2147483647
                   minimum: -2147483648
-                  type: number
+                  type: integer
                   format: int32
         required: true
       responses:
@@ -5844,7 +5844,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Group
         - $ref: '#/components/parameters/top'
@@ -5903,7 +5903,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Group
         - $ref: '#/components/parameters/top'
@@ -5962,9 +5962,9 @@ paths:
               title: GroupsReplaceGroupLicenseKeyRequestBody
               type: object
               properties:
-                licenseKey:
-                  type: string
                 groupId:
+                  type: string
+                licenseKey:
                   type: string
         required: true
       responses:
@@ -5988,9 +5988,9 @@ paths:
               title: GroupsLinkGroupPartnerRequestBody
               type: object
               properties:
-                resellerId:
-                  type: string
                 groupId:
+                  type: string
+                resellerId:
                   type: string
         required: true
       responses:
@@ -6075,7 +6075,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Holiday
         - name: $select
@@ -6121,7 +6121,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Holiday
       requestBody:
@@ -6150,7 +6150,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Holiday
         - name: If-Match
@@ -6305,7 +6305,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: InboundRule
         - name: $select
@@ -6351,7 +6351,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: InboundRule
       requestBody:
@@ -6380,7 +6380,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: InboundRule
         - name: If-Match
@@ -6414,7 +6414,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -6485,6 +6485,54 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
+  /LastCdrAndChatMessageTimestamp:
+    description: Provides operations to manage the collection of LastCdrAndChatMessageTimestamp entities.
+    get:
+      tags:
+        - LastCdrAndChatMessageTimestamp
+      summary: Get entities from LastCdrAndChatMessageTimestamp
+      operationId: ListLastCdrAndChatMessageTimestamp
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Pbx.LastCdrAndChatMessageTimestampCollectionResponse'
+        default:
+          $ref: '#/components/responses/error'
   /LicenseStatus/Pbx.RefreshLicenseStatus:
     description: Provides operations to call the RefreshLicenseStatus method.
     post:
@@ -6877,10 +6925,10 @@ paths:
               type: object
               properties:
                 options:
-                  anyOf:
+                  title: Pbx.UsersRequestOptions
+                  allOf:
                     - $ref: '#/components/schemas/Pbx.UsersRequestOptions'
-                    - type: object
-                      nullable: true
+                  nullable: true
         required: true
       responses:
         '200':
@@ -7424,7 +7472,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: RefreshToken
       responses:
@@ -7939,7 +7987,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: OutboundRule
         - name: $select
@@ -7985,7 +8033,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: OutboundRule
       requestBody:
@@ -8014,7 +8062,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: OutboundRule
         - name: If-Match
@@ -8176,10 +8224,10 @@ paths:
               type: object
               properties:
                 purgeObject:
-                  anyOf:
+                  title: Pbx.XOutboundRulePurge
+                  allOf:
                     - $ref: '#/components/schemas/Pbx.XOutboundRulePurge'
-                    - type: object
-                      nullable: true
+                  nullable: true
         required: true
       responses:
         '204':
@@ -8205,7 +8253,7 @@ paths:
                 id:
                   maximum: 2147483647
                   minimum: -2147483648
-                  type: number
+                  type: integer
                   format: int32
                 up:
                   type: boolean
@@ -8326,7 +8374,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Parameter
         - name: $select
@@ -8372,7 +8420,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Parameter
       requestBody:
@@ -8401,7 +8449,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Parameter
         - name: If-Match
@@ -8430,7 +8478,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Parking
         - $ref: '#/components/parameters/top'
@@ -8583,7 +8631,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Parking
         - name: $select
@@ -8629,7 +8677,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Parking
       requestBody:
@@ -8658,7 +8706,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Parking
         - name: If-Match
@@ -9374,9 +9422,9 @@ paths:
               title: PlaylistsDeletePlaylistFileRequestBody
               type: object
               properties:
-                playlistKey:
-                  type: string
                 fileName:
+                  type: string
+                playlistKey:
                   type: string
         required: true
       responses:
@@ -9482,7 +9530,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
         - name: $select
@@ -9528,7 +9576,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
       requestBody:
@@ -9557,7 +9605,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
         - name: If-Match
@@ -9584,10 +9632,10 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                title: Pbx.PromptSet
+                allOf:
                   - $ref: '#/components/schemas/Pbx.PromptSet'
-                  - type: object
-                    nullable: true
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
@@ -9606,7 +9654,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
         - $ref: '#/components/parameters/top'
@@ -9665,7 +9713,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
       responses:
@@ -9689,7 +9737,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
       requestBody:
@@ -9725,7 +9773,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
       requestBody:
@@ -9764,7 +9812,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
       requestBody:
@@ -9775,9 +9823,9 @@ paths:
               title: PromptSetsPromptSetPlayPromptRequestBody
               type: object
               properties:
-                promptId:
-                  type: string
                 extension:
+                  type: string
+                promptId:
                   type: string
         required: true
       responses:
@@ -9801,7 +9849,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: PromptSet
       requestBody:
@@ -9812,9 +9860,9 @@ paths:
               title: PromptSetsPromptSetRecordPromptRequestBody
               type: object
               properties:
-                promptId:
-                  type: string
                 extension:
+                  type: string
+                promptId:
                   type: string
         required: true
       responses:
@@ -9899,7 +9947,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Queue
         - name: $select
@@ -9945,7 +9993,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Queue
       requestBody:
@@ -9974,7 +10022,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Queue
         - name: If-Match
@@ -10073,7 +10121,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Queue
         - $ref: '#/components/parameters/top'
@@ -10132,7 +10180,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Queue
         - $ref: '#/components/parameters/top'
@@ -10191,7 +10239,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Queue
       responses:
@@ -10256,7 +10304,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Receptionist
         - $ref: '#/components/parameters/top'
@@ -10426,7 +10474,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Receptionist
         - name: $select
@@ -10472,7 +10520,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Receptionist
       requestBody:
@@ -10501,7 +10549,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Receptionist
         - name: If-Match
@@ -10578,7 +10626,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
       responses:
         '200':
@@ -10690,7 +10738,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -10719,7 +10767,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -10791,10 +10839,10 @@ paths:
               type: object
               properties:
                 description:
-                  anyOf:
+                  title: Pbx.RequestHelp
+                  allOf:
                     - $ref: '#/components/schemas/Pbx.RequestHelp'
-                    - type: object
-                      nullable: true
+                  nullable: true
         required: true
       responses:
         '204':
@@ -10817,7 +10865,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
       responses:
         '200':
@@ -11181,7 +11229,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -11275,7 +11323,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: clientTimeZone
           in: path
@@ -12467,7 +12515,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -12561,7 +12609,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: clientTimeZone
           in: path
@@ -12690,7 +12738,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: groupingType
           in: path
@@ -12699,7 +12747,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -12821,7 +12869,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: groupingType
           in: path
@@ -12830,7 +12878,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -12917,7 +12965,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: sourceFilter
           in: path
@@ -12933,7 +12981,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: destinationFilter
           in: path
@@ -12949,7 +12997,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: callTimeFilterType
           in: path
@@ -12958,7 +13006,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: callTimeFilterFrom
           in: path
@@ -13066,7 +13114,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: sourceFilter
           in: path
@@ -13082,7 +13130,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: destinationFilter
           in: path
@@ -13098,7 +13146,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: callTimeFilterType
           in: path
@@ -13107,7 +13155,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: callTimeFilterFrom
           in: path
@@ -13215,7 +13263,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: sourceFilter
           in: path
@@ -13231,7 +13279,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: destinationFilter
           in: path
@@ -13247,7 +13295,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: callTimeFilterType
           in: path
@@ -13256,7 +13304,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: callTimeFilterFrom
           in: path
@@ -13386,10 +13434,10 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                title: Pbx.QualityReport
+                allOf:
                   - $ref: '#/components/schemas/Pbx.QualityReport'
-                  - type: object
-                    nullable: true
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
@@ -13785,7 +13833,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -13879,7 +13927,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -13973,7 +14021,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -14067,7 +14115,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -14285,7 +14333,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -14379,7 +14427,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -14473,7 +14521,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -14567,7 +14615,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -15218,7 +15266,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -15312,7 +15360,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -16536,7 +16584,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: ScheduledReport
         - name: $select
@@ -16582,7 +16630,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: ScheduledReport
       requestBody:
@@ -16611,7 +16659,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: ScheduledReport
         - name: If-Match
@@ -16640,7 +16688,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: RingGroup
         - name: $select
@@ -16686,7 +16734,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: RingGroup
       requestBody:
@@ -16715,7 +16763,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: RingGroup
         - name: If-Match
@@ -16814,7 +16862,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: RingGroup
         - $ref: '#/components/parameters/top'
@@ -17186,7 +17234,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: RefreshToken
       responses:
@@ -17210,7 +17258,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: ServicePrincipal
         - name: $select
@@ -17256,7 +17304,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: ServicePrincipal
       requestBody:
@@ -17285,7 +17333,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: ServicePrincipal
         - name: If-Match
@@ -17384,7 +17432,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: ServicePrincipal
       responses:
@@ -17681,7 +17729,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: SipDevice
       requestBody:
@@ -17725,10 +17773,10 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                title: Pbx.SystemDirectory
+                allOf:
                   - $ref: '#/components/schemas/Pbx.SystemDirectory'
-                  - type: object
-                    nullable: true
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: actionImport
@@ -17929,7 +17977,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Trunk
         - name: $select
@@ -17975,7 +18023,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Trunk
       requestBody:
@@ -18004,7 +18052,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Trunk
         - name: If-Match
@@ -18091,7 +18139,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: Trunk
       responses:
@@ -18122,7 +18170,7 @@ paths:
                 id:
                   maximum: 2147483647
                   minimum: -2147483648
-                  type: number
+                  type: integer
                   format: int32
         required: true
       responses:
@@ -18669,7 +18717,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
       responses:
@@ -18765,7 +18813,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
       responses:
@@ -18789,7 +18837,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
         - $ref: '#/components/parameters/top'
@@ -18848,7 +18896,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
         - $ref: '#/components/parameters/top'
@@ -18907,7 +18955,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
       responses:
@@ -18931,7 +18979,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
       requestBody:
@@ -18960,15 +19008,15 @@ paths:
               title: UsersRegeneratePasswordsRequestBody
               type: object
               properties:
-                opts:
-                  $ref: '#/components/schemas/Pbx.RegenerateOptions'
                 Ids:
                   type: array
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
+                opts:
+                  $ref: '#/components/schemas/Pbx.RegenerateOptions'
         required: true
       responses:
         '204':
@@ -19077,15 +19125,15 @@ paths:
               title: UsersBulkUpdateRequestBody
               type: object
               properties:
-                user:
-                  $ref: '#/components/schemas/Pbx.User'
                 ids:
                   type: array
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
+                user:
+                  $ref: '#/components/schemas/Pbx.User'
         required: true
       responses:
         '204':
@@ -19196,9 +19244,9 @@ paths:
               properties:
                 mac:
                   type: string
-                version:
-                  type: string
                 useragent:
+                  type: string
+                version:
                   type: string
         required: true
       responses:
@@ -19222,7 +19270,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
       responses:
@@ -19246,7 +19294,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
         - name: $select
@@ -19292,7 +19340,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
       requestBody:
@@ -19321,7 +19369,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
         - name: If-Match
@@ -19350,7 +19398,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
         - $ref: '#/components/parameters/top'
@@ -19409,7 +19457,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
       requestBody:
@@ -19438,7 +19486,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: fileName
           in: path
@@ -19476,7 +19524,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -19543,18 +19591,18 @@ paths:
               title: UsersMakeCallRequestBody
               type: object
               properties:
-                dn:
+                contact:
                   type: string
                   nullable: true
-                contact:
+                destination:
+                  type: string
+                dn:
                   type: string
                   nullable: true
                 testCall:
                   type: boolean
                   default: false
                   nullable: true
-                destination:
-                  type: string
         required: true
       responses:
         '200':
@@ -19562,10 +19610,10 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                title: Pbx.CallControlResultResponse
+                allOf:
                   - $ref: '#/components/schemas/Pbx.CallControlResultResponse'
-                  - type: object
-                    nullable: true
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -19615,7 +19663,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
           x-ms-docs-key-type: User
       requestBody:
@@ -19649,7 +19697,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
                 user:
                   $ref: '#/components/schemas/Pbx.MultiEditUserData'
@@ -19680,7 +19728,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -19709,7 +19757,7 @@ paths:
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
         required: true
       responses:
@@ -19745,15 +19793,15 @@ paths:
               title: UsersMultiDeleteGreetingRequestBody
               type: object
               properties:
+                filename:
+                  type: string
                 ids:
                   type: array
                   items:
                     maximum: 2147483647
                     minimum: -2147483648
-                    type: number
+                    type: integer
                     format: int32
-                filename:
-                  type: string
         required: true
       responses:
         '204':
@@ -20208,7 +20256,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -20264,7 +20312,7 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
-  '/ReportInboundCalls/Pbx.DownloadGetInboundCalls(periodFrom={periodFrom},periodTo={periodTo},trunkDns={trunkDns},callsType={callsType})':
+  '/ReportInboundCalls/Pbx.DownloadGetInboundCalls(periodFrom={periodFrom},periodTo={periodTo},trunkDns={trunkDns},callsType={callsType},clientTimeZone={clientTimeZone})':
     description: Provides operations to call the DownloadGetInboundCalls method.
     get:
       tags:
@@ -20302,8 +20350,15 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
+        - name: clientTimeZone
+          in: path
+          description: 'Usage: clientTimeZone={clientTimeZone}'
+          required: true
+          schema:
+            type: string
+            nullable: true
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/search'
@@ -20396,7 +20451,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -20452,7 +20507,7 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
-  '/ReportOutboundCalls/Pbx.DownloadGetOutboundCalls(periodFrom={periodFrom},periodTo={periodTo},trunkDns={trunkDns},callsType={callsType})':
+  '/ReportOutboundCalls/Pbx.DownloadGetOutboundCalls(periodFrom={periodFrom},periodTo={periodTo},trunkDns={trunkDns},callsType={callsType},clientTimeZone={clientTimeZone})':
     description: Provides operations to call the DownloadGetOutboundCalls method.
     get:
       tags:
@@ -20490,8 +20545,15 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
+        - name: clientTimeZone
+          in: path
+          description: 'Usage: clientTimeZone={clientTimeZone}'
+          required: true
+          schema:
+            type: string
+            nullable: true
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/search'
@@ -20612,7 +20674,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: groupingType
           in: path
@@ -20621,7 +20683,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -20743,7 +20805,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - name: groupingType
           in: path
@@ -20752,7 +20814,7 @@ paths:
           schema:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
@@ -20857,7 +20919,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         InvalidKeyForwardDN:
           type: string
@@ -20890,7 +20952,7 @@ components:
         Timeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TimeoutForwardDN:
@@ -20957,7 +21019,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         IPAddrMask:
           type: string
@@ -21009,7 +21071,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         IsRegistered:
           type: boolean
@@ -21028,13 +21090,13 @@ components:
         MulticastPacketTime:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MulticastPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -21056,7 +21118,7 @@ components:
         RingTime:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TranscriptionMode:
@@ -21098,7 +21160,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         LastName:
           type: string
@@ -21167,7 +21229,7 @@ components:
         AnnouncementInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AnnounceQueuePosition:
@@ -21181,7 +21243,7 @@ components:
         CallbackEnableTime:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         CallbackPrefix:
@@ -21228,7 +21290,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         IntroFile:
           type: string
@@ -21244,13 +21306,13 @@ components:
         MasterTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MaxCallersInQueue:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -21301,13 +21363,13 @@ components:
         RingTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SLATime:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TranscriptionMode:
@@ -21323,7 +21385,7 @@ components:
         WrapUpTime:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.User:
@@ -21450,7 +21512,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Internal:
           type: boolean
@@ -21515,13 +21577,13 @@ components:
         PinProtectTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PrimaryGroupId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PromptSet:
@@ -21599,7 +21661,7 @@ components:
         DN:
           type: string
         Expiration:
-          type: number
+          type: integer
           format: int64
     Pbx.TestCallLog:
       title: TestCallLog
@@ -21653,7 +21715,7 @@ components:
         Capabilities:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FirmwareAvailable:
@@ -21796,7 +21858,7 @@ components:
         PinProtectTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PromptSet:
@@ -21904,7 +21966,7 @@ components:
         MaxQueueCustomRingtones:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Models:
@@ -21973,13 +22035,13 @@ components:
         DefaultProxyPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         DefaultRegistrarPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Description:
@@ -22043,19 +22105,19 @@ components:
         FromDnType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FromIdParticipant:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         IsArchived:
           type: boolean
@@ -22066,13 +22128,13 @@ components:
         RefParticipantId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StartTime:
@@ -22101,13 +22163,13 @@ components:
         ToDnType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ToIdParticipant:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Transcription:
@@ -22120,7 +22182,7 @@ components:
         AutoDeleteRecordingDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AutoDeleteRecordingEnabled:
@@ -22132,7 +22194,7 @@ components:
         RecordingDiskSpace:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RecordingPath:
@@ -22141,11 +22203,11 @@ components:
         RecordingsQuota:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RecordingUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.SystemDirectory:
@@ -22182,7 +22244,7 @@ components:
         AnswerAfter:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         BreakRoute:
@@ -22256,7 +22318,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         IsDefault:
           type: boolean
@@ -22341,7 +22403,7 @@ components:
         MaxPrompts:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Sbcs:
@@ -22380,7 +22442,7 @@ components:
           items:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
         GroupNames:
           type: array
@@ -22390,7 +22452,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -22404,7 +22466,7 @@ components:
         Priority:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Routes:
@@ -22420,7 +22482,7 @@ components:
           items:
             maximum: 2147483647
             minimum: -2147483648
-            type: number
+            type: integer
             format: int32
     Pbx.Parameter:
       title: Parameter
@@ -22432,7 +22494,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -22451,7 +22513,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -22469,7 +22531,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         MemberOf:
           type: array
@@ -22572,7 +22634,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         InCIDFormatting:
           type: array
@@ -22640,7 +22702,7 @@ components:
         SimultaneousCalls:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Tags:
@@ -22670,7 +22732,7 @@ components:
         TunnelRemotePort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         UseSeparateAuthId:
@@ -22683,7 +22745,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Routes:
           type: array
@@ -22769,7 +22831,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         OfficeHoursDestination:
           title: Pbx.Destination
@@ -22843,7 +22905,7 @@ components:
         FxsLineCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FxsLines:
@@ -22945,7 +23007,7 @@ components:
         MaxSimCalls:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProductCode:
@@ -22957,7 +23019,7 @@ components:
         SimMeetingParticipants:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Support:
@@ -23014,7 +23076,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         LanguageCode:
           type: string
@@ -23099,7 +23161,7 @@ components:
         NumberOfExtensions:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         RpsEnabled:
           type: boolean
@@ -23163,7 +23225,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Link:
@@ -23268,7 +23330,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Number:
           type: string
@@ -23292,7 +23354,7 @@ components:
         FileName:
           type: string
         Size:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.CreateBackup:
@@ -23311,7 +23373,7 @@ components:
       type: object
       properties:
         Footprint:
-          type: number
+          type: integer
           format: int64
           nullable: true
         IsEncrypted:
@@ -23331,7 +23393,7 @@ components:
         Rotation:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Schedule:
@@ -23366,7 +23428,7 @@ components:
         Interval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Mode:
@@ -23444,7 +23506,7 @@ components:
         PhoneUserId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProvisionLink:
@@ -23487,7 +23549,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         InvalidScript:
           type: boolean
@@ -23538,7 +23600,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         LastUsed:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
@@ -23595,7 +23657,7 @@ components:
         FirewallKeepAliveInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Id:
@@ -23615,7 +23677,7 @@ components:
         SipPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StunDisabled:
@@ -23627,13 +23689,13 @@ components:
         StunPrimaryPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StunQuery:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StunSecondaryHost:
@@ -23642,7 +23704,7 @@ components:
         StunSecondaryPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StunThirdHost:
@@ -23651,13 +23713,13 @@ components:
         StunThirdPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TunnelPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CDRSettings:
@@ -23674,7 +23736,7 @@ components:
         LogSize:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LogType:
@@ -23696,7 +23758,7 @@ components:
         SocketPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CallCostSettings:
@@ -23709,7 +23771,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Invalid:
           type: boolean
@@ -23755,7 +23817,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         LastChangeStatus:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
@@ -23777,7 +23839,7 @@ components:
         EventId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Group:
@@ -23789,7 +23851,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Message:
           type: string
@@ -23816,25 +23878,27 @@ components:
       title: ServiceInfo
       type: object
       properties:
-        CpuUsage:
-          type: number
-          format: int64
-          nullable: true
         DisplayName:
           type: string
-          nullable: true
         HandleCount:
-          type: number
-          format: int64
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
         MemoryUsed:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Name:
           type: string
         RestartEnabled:
           type: boolean
+          nullable: true
+        SampleTime:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
           nullable: true
         StartStopEnabled:
           type: boolean
@@ -23845,7 +23909,13 @@ components:
             - $ref: '#/components/schemas/Pbx.ServiceStatus'
           nullable: true
         ThreadCount:
-          type: number
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        TotalProcessorTime:
+          type: integer
           format: int64
           nullable: true
     Pbx.GarbageCollect:
@@ -23861,7 +23931,7 @@ components:
         Generation:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Mode:
@@ -23907,7 +23977,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         SharedMailboxesSync:
           title: Pbx.UsersSyncConfiguration
@@ -23970,7 +24040,7 @@ components:
         Count:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         NextPageToken:
           maxLength: 10240
@@ -23997,7 +24067,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         IsDynamicIP:
           type: boolean
@@ -24030,13 +24100,13 @@ components:
         TlsPortForNativeFQDN:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TlsPortForNonNativeFQDN:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.VoicemailSettings:
@@ -24046,7 +24116,7 @@ components:
         AutoDeleteDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AutoDeleteEnabled:
@@ -24058,12 +24128,12 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         MinDuration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         OperatorEnabled:
@@ -24072,7 +24142,7 @@ components:
         Quota:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RemoteStorageEnabled:
@@ -24084,7 +24154,7 @@ components:
         SendEmailQuotaPercentage:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TranscribeEngine:
@@ -24104,7 +24174,7 @@ components:
             - $ref: '#/components/schemas/Pbx.ConcealedPassword'
           nullable: true
         UsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.LanguageItem:
@@ -24139,7 +24209,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         LogoPath:
           type: string
@@ -24187,7 +24257,7 @@ components:
         BandCap:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         CityName:
           type: string
@@ -24228,12 +24298,12 @@ components:
         PartsCap:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Secret:
           type: string
@@ -24242,7 +24312,7 @@ components:
         ServerStatus:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         TsActivated:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
@@ -24263,56 +24333,56 @@ components:
         Attempts:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         AttendeeCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         ClockSkew:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Connected:
           type: boolean
         Cpu:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Delay:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Fqdn:
           type: string
         FreeDiskSpace:
-          type: number
+          type: integer
           format: int64
         Mcu:
           $ref: '#/components/schemas/Pbx.OnBoardMcuDataDetail'
         MeetingCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Memory:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         NetIn:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         NetOut:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         RestartTime:
           type: string
@@ -24325,7 +24395,7 @@ components:
         UpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.OnBoardMeeting:
       title: OnBoardMeeting
@@ -24445,13 +24515,13 @@ components:
         RecordingsQuotaPercentage:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         VoicemailQuotaPercentage:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.TestResult:
@@ -24524,13 +24594,13 @@ components:
         NoAnswerTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.Firmware:
@@ -24558,7 +24628,7 @@ components:
         Count:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FileNames:
@@ -24570,7 +24640,7 @@ components:
           type: string
           nullable: true
         TotalSize:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.SystemStatus:
@@ -24592,11 +24662,11 @@ components:
         CallsActive:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ChatUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         CurrentLocalIp:
@@ -24608,7 +24678,7 @@ components:
         DiskUsage:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ExpirationDate:
@@ -24619,20 +24689,20 @@ components:
         ExtensionsRegistered:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ExtensionsTotal:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FQDN:
           type: string
           nullable: true
         FreeDiskSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         HasNotRunningServices:
@@ -24644,7 +24714,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Ip:
           type: string
@@ -24689,7 +24759,7 @@ components:
           type: boolean
           nullable: true
         LogUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         MaintenanceExpiresAt:
@@ -24700,7 +24770,7 @@ components:
         MaxSimCalls:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         OS:
@@ -24711,14 +24781,14 @@ components:
         OutboundRules:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProductCode:
           type: string
           nullable: true
         RecordingQuota:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RecordingQuotaReached:
@@ -24728,7 +24798,7 @@ components:
           type: boolean
           nullable: true
         RecordingUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RemoteConfigurationRequired:
@@ -24744,19 +24814,19 @@ components:
           type: boolean
           nullable: true
         TotalDiskSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         TrunksRegistered:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TrunksTotal:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Version:
@@ -24804,25 +24874,25 @@ components:
       type: object
       properties:
         CallsUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ChatFilesCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ChatsUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         EventLogUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.VersionUpdateType:
@@ -24841,7 +24911,7 @@ components:
         CustomTemplatesCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Firewall:
@@ -24850,7 +24920,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Phones:
@@ -24862,7 +24932,7 @@ components:
         UnsupportedFirmwaresCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.RequestHelp:
@@ -24872,7 +24942,7 @@ components:
         GrantPeriodDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         IssueDescription:
@@ -24900,7 +24970,7 @@ components:
         MaxVolumePercent:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -24935,7 +25005,7 @@ components:
         FaxServerId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         G711ToT38Fallback:
@@ -24944,7 +25014,7 @@ components:
         MaxAge:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Number:
@@ -24973,7 +25043,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Number:
           type: string
@@ -25092,14 +25162,14 @@ components:
         TrunkId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.ActivityLogEvent:
       title: ActivityLogEvent
       type: object
       properties:
         Index:
-          type: number
+          type: integer
           format: int64
         Message:
           type: string
@@ -25139,7 +25209,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         LoginType:
           $ref: '#/components/schemas/Pbx.LoginType'
@@ -25175,10 +25245,10 @@ components:
       type: object
       properties:
         Day:
-          type: number
+          type: integer
           format: uint8
         DayEnd:
-          type: number
+          type: integer
           format: uint8
         HolidayPrompt:
           type: string
@@ -25186,16 +25256,16 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         IsRecurrent:
           type: boolean
           nullable: true
         Month:
-          type: number
+          type: integer
           format: uint8
         MonthEnd:
-          type: number
+          type: integer
           format: uint8
         Name:
           type: string
@@ -25210,12 +25280,12 @@ components:
         Year:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         YearEnd:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.RemoteArchivingSettings:
       title: RemoteArchivingSettings
@@ -25239,7 +25309,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Location:
           title: Pbx.LocationSettings
@@ -25325,7 +25395,7 @@ components:
         DstDnType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         DstExtendedDisplayName:
           type: string
@@ -25335,25 +25405,25 @@ components:
         DstId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         DstInternal:
           type: boolean
         DstParticipantId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         DstRecId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SegmentActionId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         SegmentEndTime:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
@@ -25362,7 +25432,7 @@ components:
         SegmentId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         SegmentStartTime:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
@@ -25371,7 +25441,7 @@ components:
         SegmentType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         SrcCallerNumber:
           type: string
@@ -25385,7 +25455,7 @@ components:
         SrcDnType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         SrcExtendedDisplayName:
           type: string
@@ -25395,19 +25465,19 @@ components:
         SrcId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         SrcInternal:
           type: boolean
         SrcParticipantId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         SrcRecId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ChatHistoryView:
@@ -25420,7 +25490,7 @@ components:
         ConversationId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         FromName:
           type: string
@@ -25472,7 +25542,7 @@ components:
         ConversationId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         IsExternal:
           type: boolean
@@ -25482,7 +25552,7 @@ components:
         MessageId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         ParticipantsGroupsArray:
           type: array
@@ -25517,12 +25587,24 @@ components:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
           type: string
           format: date-time
+    Pbx.LastCdrAndChatMessageTimestamp:
+      title: LastCdrAndChatMessageTimestamp
+      type: object
+      properties:
+        LastCdrStartedAt:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+        LastChatMessageTimeSent:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
     Pbx.RingGroupStatistics:
       title: RingGroupStatistics
       type: object
       properties:
         RingGroupAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RingGroupDisplayName:
@@ -25531,13 +25613,13 @@ components:
         RingGroupDn:
           type: string
         RingGroupReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RingGroupSentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ExtensionsStatisticsByRingGroups:
@@ -25545,7 +25627,7 @@ components:
       type: object
       properties:
         ExtensionAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ExtensionDisplayName:
@@ -25561,7 +25643,7 @@ components:
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CallLogData:
@@ -25580,20 +25662,20 @@ components:
         ActionDnType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ActionType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Answered:
           type: boolean
           nullable: true
         CallCost:
-          type: number
+          type: integer
           format: decimal
           nullable: true
         CallHistoryId:
@@ -25602,7 +25684,7 @@ components:
         CallId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         CallType:
           type: string
@@ -25621,7 +25703,7 @@ components:
         DestinationType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Direction:
@@ -25630,13 +25712,13 @@ components:
         DstRecId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Indent:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MainCallHistoryId:
@@ -25659,13 +25741,13 @@ components:
         SegmentId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SourceCallerId:
@@ -25680,13 +25762,13 @@ components:
         SourceType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SrcRecId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StartTime:
@@ -25700,7 +25782,7 @@ components:
         SubrowDescNumber:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Summary:
@@ -25729,7 +25811,7 @@ components:
         OverallScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Party1:
@@ -25748,7 +25830,7 @@ components:
         Summary:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Transcoding:
@@ -25764,7 +25846,7 @@ components:
         Dn:
           type: string
         InboundAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         InboundAnsweredTalkingDur:
@@ -25773,11 +25855,11 @@ components:
           format: duration
           nullable: true
         InboundUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         OutboundAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         OutboundAnsweredTalkingDur:
@@ -25786,7 +25868,7 @@ components:
           format: duration
           nullable: true
         OutboundUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.ReportExtensionStatisticsByGroup:
@@ -25799,7 +25881,7 @@ components:
         Dn:
           type: string
         InboundAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         InboundAnsweredTalkingDur:
@@ -25808,11 +25890,11 @@ components:
           format: duration
           nullable: true
         InboundUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         OutboundAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         OutboundAnsweredTalkingDur:
@@ -25821,13 +25903,13 @@ components:
           format: duration
           nullable: true
         OutboundUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CallCostByExtensionGroup:
@@ -25835,7 +25917,7 @@ components:
       type: object
       properties:
         BillingCost:
-          type: number
+          type: integer
           format: decimal
           nullable: true
         CallType:
@@ -25847,7 +25929,7 @@ components:
         DstDnClass:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         GroupName:
@@ -25884,7 +25966,7 @@ components:
       type: object
       properties:
         ExtensionAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ExtensionDisplayName:
@@ -25893,11 +25975,11 @@ components:
         ExtensionDn:
           type: string
         ExtensionDroppedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDisplayName:
@@ -25906,7 +25988,7 @@ components:
           type: string
           nullable: true
         QueueReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         TalkTime:
@@ -25919,11 +26001,11 @@ components:
       type: object
       properties:
         ExtensionAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ExtensionDroppedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDisplayName:
@@ -25932,7 +26014,7 @@ components:
         QueueDn:
           type: string
         QueueReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.TeamQueueGeneralStatistics:
@@ -25942,11 +26024,11 @@ components:
         AgentsInQueueCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AvgTalkTime:
@@ -25960,7 +26042,7 @@ components:
         QueueDnNumber:
           type: string
         ReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         TotalTalkTime:
@@ -25973,7 +26055,7 @@ components:
       type: object
       properties:
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AvgRingTime:
@@ -25987,11 +26069,11 @@ components:
           format: duration
           nullable: true
         CallbacksCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         CallsCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDn:
@@ -26039,7 +26121,7 @@ components:
           type: boolean
           nullable: true
         PollingAttempts:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDisplayName:
@@ -26079,7 +26161,7 @@ components:
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Source:
@@ -26089,20 +26171,20 @@ components:
       type: object
       properties:
         CallbacksCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Dn:
           type: string
           nullable: true
         FailCallbacksCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDnNumber:
           type: string
         ReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.AgentsInQueueStatistics:
@@ -26110,17 +26192,17 @@ components:
       type: object
       properties:
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AnsweredPercent:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AnsweredPerHourCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AvgRingTime:
@@ -26144,7 +26226,7 @@ components:
           format: duration
           nullable: true
         LostCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Queue:
@@ -26188,7 +26270,7 @@ components:
       type: object
       properties:
         BadSlaCallsCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Dn:
@@ -26197,7 +26279,7 @@ components:
         QueueDnNumber:
           type: string
         ReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.BreachesSla:
@@ -26225,19 +26307,19 @@ components:
       type: object
       properties:
         AbandonedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         IncomingCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QuantityAgents:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Queue:
@@ -26250,11 +26332,11 @@ components:
       type: object
       properties:
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         DealtWithCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Dn:
@@ -26272,11 +26354,11 @@ components:
       type: object
       properties:
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         DealtWithCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Queue:
@@ -26291,7 +26373,7 @@ components:
         ChatId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         DateOfRequest:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
@@ -26381,7 +26463,7 @@ components:
         AnsweredCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         DateTimeInterval:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
@@ -26390,7 +26472,7 @@ components:
         UnansweredCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.CallDistribution:
       title: CallDistribution
@@ -26403,12 +26485,12 @@ components:
         IncomingCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         OutgoingCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.OutboundCall:
       title: OutboundCall
@@ -26417,7 +26499,7 @@ components:
         Answered:
           type: boolean
         CallCost:
-          type: number
+          type: integer
           format: decimal
           nullable: true
         CallDuration:
@@ -26444,7 +26526,7 @@ components:
         RecordingId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RecordingUrl:
@@ -26460,7 +26542,7 @@ components:
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SourceCallerId:
@@ -26526,7 +26608,7 @@ components:
         RecordingId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RecordingUrl:
@@ -26542,7 +26624,7 @@ components:
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SourceCallerId:
@@ -26584,11 +26666,11 @@ components:
         Action:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Id:
-          type: number
+          type: integer
           format: int64
         Ip:
           type: string
@@ -26602,7 +26684,7 @@ components:
         ObjectType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PrevData:
@@ -26611,7 +26693,7 @@ components:
         Source:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Timestamp:
@@ -26632,7 +26714,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         InOfficeRouting:
           title: Pbx.Destination
@@ -26661,13 +26743,13 @@ components:
         YValue1:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         YValue2:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ScheduledReport:
@@ -26684,7 +26766,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -26722,7 +26804,7 @@ components:
         GroupId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         GroupRights:
@@ -26734,7 +26816,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MemberName:
@@ -26773,7 +26855,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -26818,7 +26900,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         TimeZones:
           type: array
@@ -26864,7 +26946,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         InboundParams:
@@ -26882,7 +26964,7 @@ components:
         Lines:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MatchingStrategy:
@@ -26903,7 +26985,7 @@ components:
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProxyHost:
@@ -26912,7 +26994,7 @@ components:
         ProxyPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RequireRegistrationFor:
@@ -26944,7 +27026,7 @@ components:
         TimeBetweenReg:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Type:
@@ -27001,19 +27083,19 @@ components:
         LocalRTPPortEnd:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LocalRTPPortStart:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LocalSipPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LogoDescription:
@@ -27050,7 +27132,7 @@ components:
         RemoteSpmPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RingTone:
@@ -27104,7 +27186,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         InterfaceLink:
           type: string
@@ -27152,7 +27234,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         PhoneWebPassword:
           type: string
@@ -27178,7 +27260,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         InboundPossibleValues:
           type: array
@@ -27208,7 +27290,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -27247,13 +27329,13 @@ components:
         ENL:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FirstExternalPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FQDN:
@@ -27268,13 +27350,13 @@ components:
         HttpPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HttpsPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         IpV6:
@@ -27312,11 +27394,17 @@ components:
         MaxDIDPerTrunk:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PbxExternalHost:
           type: string
+          nullable: true
+        ProcessorCount:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
         RpsEnabled:
           type: boolean
@@ -27324,13 +27412,13 @@ components:
         SipPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SipsPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StaticIp:
@@ -27342,7 +27430,7 @@ components:
         TunnnelPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Version:
@@ -27351,7 +27439,7 @@ components:
         WebrtcLastPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.GoogleSettings:
@@ -27409,7 +27497,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         MusicOnHold:
           type: string
@@ -27523,7 +27611,7 @@ components:
         BusyMonitorTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         DisableOutboundCallsOutOfficeHours:
@@ -27575,13 +27663,13 @@ components:
         AutoPickupTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MaximumParkedCalls:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MusicOnHold:
@@ -27700,13 +27788,13 @@ components:
         FanvilUpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         GrandstreamUpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PhoneAllowMultiFirmwares:
@@ -27715,7 +27803,7 @@ components:
         SnomUpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         UseProvisioningSecret:
@@ -27727,7 +27815,7 @@ components:
         YealinkUpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.OfficeHours:
@@ -27772,7 +27860,7 @@ components:
         ResolvingLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ResolvingType:
@@ -27835,13 +27923,13 @@ components:
         KeepLogsDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LoggingLevel:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ChatLogSettings:
@@ -27851,13 +27939,13 @@ components:
         AutoClearMonths:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AutoCloseDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RemoteStorageEnabled:
@@ -27870,43 +27958,43 @@ components:
         HackAuthRequests:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackBarrierAmber:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackBarrierGreen:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackBarrierRed:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackBlacklistDuration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackChallengeRequests:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MaxRequestPerPeriod:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SecurityDefenseProgram:
@@ -27915,7 +28003,7 @@ components:
         ThrottlePeriodLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ReceptionistForward:
@@ -27933,7 +28021,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Input:
           type: string
@@ -28040,7 +28128,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -28065,7 +28153,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -28083,7 +28171,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -28142,7 +28230,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -28150,7 +28238,7 @@ components:
         NoAnswerTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         OfficeHoursAutoQueueLogOut:
@@ -28242,7 +28330,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.Schedule:
       title: Schedule
@@ -28283,7 +28371,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Interface:
           type: string
@@ -28331,7 +28419,7 @@ components:
         Priority:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PriorityConfigurable:
@@ -28340,13 +28428,13 @@ components:
         PriorityMax:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PriorityMin:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Type:
@@ -28357,19 +28445,19 @@ components:
         VlanId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         VlanIdMax:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         VlanIdMin:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CustomQueueRingtone:
@@ -28399,7 +28487,7 @@ components:
         CallId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         DeviceId:
           type: string
@@ -28410,12 +28498,12 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         LegId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         PartyCallerId:
           type: string
@@ -28476,13 +28564,13 @@ components:
         MaxLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MinLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -28518,7 +28606,7 @@ components:
         DectMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Fqdn:
@@ -28527,25 +28615,25 @@ components:
         LiveChatMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         OutboundRulesMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PersonalContactsMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PromptsMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ResellerId:
@@ -28557,7 +28645,7 @@ components:
         SbcMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StartupLicense:
@@ -28594,7 +28682,7 @@ components:
         TrunksMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         UserNumberFrom:
@@ -28610,7 +28698,7 @@ components:
         Allowed:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Unlimited:
@@ -28619,7 +28707,7 @@ components:
         Used:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.OutboundRoute:
@@ -28636,13 +28724,13 @@ components:
           type: string
           nullable: true
         StripDigits:
-          type: number
+          type: integer
           format: uint8
           nullable: true
         TrunkId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TrunkName:
@@ -28665,7 +28753,7 @@ components:
         GroupID:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -28686,7 +28774,7 @@ components:
         NumberLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         NumberLengthEnabled:
@@ -28708,12 +28796,12 @@ components:
         ParamId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         ValueId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.Choice:
       title: Choice
@@ -28727,12 +28815,6 @@ components:
       title: CIDFormatting
       type: object
       properties:
-        Priority:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          format: int32
-          nullable: true
         ReplacePattern:
           type: string
           nullable: true
@@ -28759,7 +28841,7 @@ components:
         TrunkId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.TwilioPhoneNumber:
       title: TwilioPhoneNumber
@@ -28786,13 +28868,13 @@ components:
         LocalAudioPortEnd:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LocalAudioPortStart:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LocalInterface:
@@ -28801,7 +28883,7 @@ components:
         LocalSipPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Method:
@@ -28818,7 +28900,7 @@ components:
         RemotePort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SbcName:
@@ -28831,7 +28913,7 @@ components:
         Key:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -29017,7 +29099,7 @@ components:
         ChatDelay:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Height:
@@ -29069,7 +29151,7 @@ components:
         RepeatHours:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ScheduleType:
@@ -29126,7 +29208,7 @@ components:
         Count:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.BackupContents:
       title: BackupContents
@@ -29311,7 +29393,7 @@ components:
         Length:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -29447,7 +29529,7 @@ components:
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Version:
           type: string
@@ -29491,7 +29573,7 @@ components:
         moderator:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         name:
@@ -29506,35 +29588,35 @@ components:
         bitrate_data:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         bitrate_video:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         canchangemedia:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         clicktocall:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         forcemoderator:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         hideparticipants:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         mcu:
@@ -29542,20 +29624,20 @@ components:
         meetingduration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         meetingtitle:
           type: string
         moderateparticipants:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         needorganizer:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         note:
@@ -29569,13 +29651,13 @@ components:
         privaterooms:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         quickmeeting:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipant:
       title: KeyValuePair_2OfString_OnBoardConnectedParticipant
@@ -29587,7 +29669,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
         Name:
           type: string
@@ -29680,13 +29762,33 @@ components:
         ScheduleDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.RemotePostgreConfig:
       title: RemotePostgreConfig
       type: object
       properties:
+        AuthenticateMode:
+          title: Pbx.AuthenticateMode
+          allOf:
+            - $ref: '#/components/schemas/Pbx.AuthenticateMode'
+          nullable: true
+        CACertificate:
+          title: Pbx.ConcealedDataFile
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedDataFile'
+          nullable: true
+        ClientCertificate:
+          title: Pbx.ConcealedDataFile
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedDataFile'
+          nullable: true
+        ClientPrivateKey:
+          title: Pbx.ConcealedDataFile
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedDataFile'
+          nullable: true
         Database:
           type: string
           nullable: true
@@ -29694,12 +29796,20 @@ components:
           type: string
           nullable: true
         Password:
-          $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          title: Pbx.ConcealedPassword
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          nullable: true
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
+          nullable: true
+        ServerTrustMode:
+          title: Pbx.ServerTrustMode
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ServerTrustMode'
           nullable: true
         Username:
           type: string
@@ -29714,7 +29824,7 @@ components:
         Burst:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Codec:
@@ -29723,13 +29833,13 @@ components:
         Duration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         GlobalPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Inbound:
@@ -29738,7 +29848,7 @@ components:
         LocalPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Location:
@@ -29790,7 +29900,7 @@ components:
         RxPackets:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TunAddressStr:
@@ -29799,7 +29909,7 @@ components:
         TxBursts:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TxJitter:
@@ -29821,7 +29931,7 @@ components:
         TxPackets:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         UserAgent:
@@ -30613,6 +30723,19 @@ components:
         - Postgre
         - BigQuery
       type: string
+    Pbx.ServerTrustMode:
+      title: ServerTrustMode
+      enum:
+        - Prefer
+        - Require
+        - VerifyFull
+      type: string
+    Pbx.AuthenticateMode:
+      title: AuthenticateMode
+      enum:
+        - Password
+        - CertificateFile
+      type: string
     Pbx.ChatType:
       title: ChatType
       enum:
@@ -31290,6 +31413,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.ChatMessagesHistoryView'
+    Pbx.LastCdrAndChatMessageTimestampCollectionResponse:
+      title: Collection of LastCdrAndChatMessageTimestamp
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.LastCdrAndChatMessageTimestamp'
     Pbx.RingGroupStatisticsCollectionResponse:
       title: Collection of RingGroupStatistics
       type: object
@@ -32254,7 +32388,7 @@ components:
         days:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
     Pbx.Warnings:
       enum:
@@ -32662,6 +32796,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.ChatMessagesHistoryViewCollectionResponse'
+    Pbx.LastCdrAndChatMessageTimestampCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.LastCdrAndChatMessageTimestampCollectionResponse'
     Pbx.RingGroupStatisticsCollectionResponse:
       description: Retrieved collection
       content:
@@ -34302,16 +34442,17 @@ components:
           '@odata.type': Pbx.EventLogType
     Pbx.ServiceInfo:
       value:
-        CpuUsage: 0
         DisplayName: String
         HandleCount: 0
         MemoryUsed: 0
         Name: String (identifier)
         RestartEnabled: true
+        SampleTime: '0001-01-01T00:00:00.0000000+00:00'
         StartStopEnabled: true
         Status:
           '@odata.type': Pbx.ServiceStatus
         ThreadCount: 0
+        TotalProcessorTime: 0
     Pbx.GarbageCollect:
       value:
         Blocking: true
@@ -34873,6 +35014,10 @@ components:
         SenderParticipantPbx: String
         SenderParticipantPhone: String
         TimeSent: '0001-01-01T00:00:00.0000000+00:00'
+    Pbx.LastCdrAndChatMessageTimestamp:
+      value:
+        LastCdrStartedAt: '0001-01-01T00:00:00.0000000+00:00'
+        LastChatMessageTimeSent: '0001-01-01T00:00:00.0000000+00:00'
     Pbx.RingGroupStatistics:
       value:
         RingGroupAnsweredCount: 0
@@ -35439,6 +35584,7 @@ components:
           '@odata.type': Pbx.License
         MaxDIDPerTrunk: 0
         PbxExternalHost: String
+        ProcessorCount: 0
         RpsEnabled: true
         SipPort: 0
         SipsPort: 0
@@ -35910,7 +36056,6 @@ components:
         Value: String
     Pbx.CIDFormatting:
       value:
-        Priority: 0
         ReplacePattern: String
         SourcePattern: String
     Pbx.Variable:
@@ -36259,11 +36404,21 @@ components:
         ScheduleDays: 0
     Pbx.RemotePostgreConfig:
       value:
+        AuthenticateMode:
+          '@odata.type': Pbx.AuthenticateMode
+        CACertificate:
+          '@odata.type': Pbx.ConcealedDataFile
+        ClientCertificate:
+          '@odata.type': Pbx.ConcealedDataFile
+        ClientPrivateKey:
+          '@odata.type': Pbx.ConcealedDataFile
         Database: String
         Host: String
         Password:
           '@odata.type': Pbx.ConcealedPassword
         Port: 0
+        ServerTrustMode:
+          '@odata.type': Pbx.ServerTrustMode
         Username: String
     Pbx.QualityParty:
       value:
