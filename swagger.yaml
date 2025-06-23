@@ -214,6 +214,79 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
+  /AmazonIntegrationSettings:
+    description: Provides operations to manage the AmazonIntegrationSettings singleton.
+    get:
+      tags:
+        - AmazonIntegrationSettings
+      summary: Get AmazonIntegrationSettings
+      operationId: GetAmazonIntegrationSettings
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Retrieved entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.AmazonIntegrationSettings'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - AmazonIntegrationSettings
+      summary: Update AmazonIntegrationSettings
+      operationId: UpdateAmazonIntegrationSettings
+      requestBody:
+        description: New property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pbx.AmazonIntegrationSettings'
+        required: true
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /AmazonIntegrationSettings/Pbx.GenerateIamPolicyFile():
+    description: Provides operations to call the GenerateIamPolicyFile method.
+    get:
+      tags:
+        - AmazonIntegrationSettings
+      summary: Invoke function GenerateIamPolicyFile
+      operationId: GenerateIamPolicyFile
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.IActionResult'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
   /AntiHackingSettings:
     description: Provides operations to manage the AntiHackingSettings singleton.
     get:
@@ -6060,6 +6133,28 @@ paths:
           $ref: '#/components/responses/Pbx.HolidayCollectionResponse'
         default:
           $ref: '#/components/responses/error'
+    post:
+      tags:
+        - Holidays
+      summary: Add new entity to Holidays
+      operationId: CreateHoliday
+      requestBody:
+        description: New entity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pbx.Holiday'
+        required: true
+      responses:
+        '201':
+          description: Created entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.Holiday'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
   '/Holidays({Id})':
     description: Provides operations to manage the collection of Holiday entities.
     get:
@@ -6749,6 +6844,92 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  /MailSettings:
+    description: Provides operations to manage the MailSettings singleton.
+    get:
+      tags:
+        - MailSettings
+      summary: Get MailSettings
+      operationId: GetMailSettings
+      parameters:
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Retrieved entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.MailSettings'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    patch:
+      tags:
+        - MailSettings
+      summary: Update MailSettings
+      operationId: UpdateMailSettings
+      requestBody:
+        description: New property values
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pbx.MailSettings'
+        required: true
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  /MailSettings/Pbx.TestEmail:
+    description: Provides operations to call the TestEmail method.
+    post:
+      tags:
+        - MailSettings
+      summary: Invoke action TestEmail
+      operationId: TestEmail
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: MailSettingsTestEmailRequestBody
+              type: object
+              properties:
+                email:
+                  type: string
+                settings:
+                  $ref: '#/components/schemas/Pbx.MailSettings'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.TestResult'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /Microsoft365Integration/Pbx.TestSubscription():
     description: Provides operations to call the TestSubscription method.
     get:
@@ -7888,34 +8069,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
-  /NotificationSettings/Pbx.TestEmail:
-    description: Provides operations to call the TestEmail method.
-    post:
-      tags:
-        - NotificationSettings
-      summary: Invoke action TestEmail
-      operationId: TestEmail
-      requestBody:
-        description: Action parameters
-        content:
-          application/json:
-            schema:
-              title: NotificationSettingsTestEmailRequestBody
-              type: object
-              properties:
-                settings:
-                  $ref: '#/components/schemas/Pbx.NotificationSettings'
-        required: true
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pbx.TestResult'
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: action
   /OfficeHours:
     description: Provides operations to manage the OfficeHours singleton.
     get:
@@ -10638,6 +10791,30 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
+  '/Recordings/Pbx.DownloadRecordingByName(recName={recName})':
+    description: Provides operations to call the DownloadRecordingByName method.
+    get:
+      tags:
+        - Recordings
+      summary: Invoke function DownloadRecordingByName
+      operationId: DownloadRecordingByName
+      parameters:
+        - name: recName
+          in: path
+          description: 'Usage: recName={recName}'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.IActionResult'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
   /Recordings/Pbx.GetRecordingRepositorySettings():
     description: Provides operations to call the GetRecordingRepositorySettings method.
     get:
@@ -10760,6 +10937,35 @@ paths:
           application/json:
             schema:
               title: RecordingsBulkRecordingsArchiveRequestBody
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    maximum: 2147483647
+                    minimum: -2147483648
+                    type: integer
+                    format: int32
+        required: true
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /Recordings/Pbx.TranscribeRecordings:
+    description: Provides operations to call the TranscribeRecordings method.
+    post:
+      tags:
+        - Recordings
+      summary: Invoke action TranscribeRecordings
+      operationId: TranscribeRecordings
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: RecordingsTranscribeRecordingsRequestBody
               type: object
               properties:
                 ids:
@@ -11083,6 +11289,270 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
+  /SystemStatus/Pbx.SystemTelemetry():
+    description: Provides operations to call the SystemTelemetry method.
+    get:
+      tags:
+        - SystemStatus
+      summary: Invoke function SystemTelemetry
+      operationId: SystemTelemetry
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of SystemTelemetry
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pbx.SystemTelemetry'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+  /SystemStatus/Pbx.ServiceTelemetry():
+    description: Provides operations to call the ServiceTelemetry method.
+    get:
+      tags:
+        - SystemStatus
+      summary: Invoke function ServiceTelemetry
+      operationId: ServiceTelemetry
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of ProcessTelemetry
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pbx.ProcessTelemetry'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+  /SystemStatus/Pbx.NetworkTelemetry():
+    description: Provides operations to call the NetworkTelemetry method.
+    get:
+      tags:
+        - SystemStatus
+      summary: Invoke function NetworkTelemetry
+      operationId: NetworkTelemetry
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of NetworkTelemetry
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pbx.NetworkTelemetry'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+  '/SystemStatus/Pbx.MyPhoneRequestIdTelemetry(startDate={startDate},endDate={endDate})':
+    description: Provides operations to call the MyPhoneRequestIdTelemetry method.
+    get:
+      tags:
+        - SystemStatus
+      summary: Invoke function MyPhoneRequestIdTelemetry
+      operationId: MyPhoneRequestIdTelemetry
+      parameters:
+        - name: startDate
+          in: path
+          description: 'Usage: startDate={startDate}'
+          required: true
+          schema:
+            pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+            type: string
+            format: date-time
+        - name: endDate
+          in: path
+          description: 'Usage: endDate={endDate}'
+          required: true
+          schema:
+            pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+            type: string
+            format: date-time
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          style: form
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Collection of MyPhoneRequestStats
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pbx.MyPhoneRequestStats'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
   /RemoteArchivingSettings:
     description: Provides operations to manage the RemoteArchivingSettings singleton.
     get:
@@ -18227,6 +18697,111 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
+  '/Trunks({Id})/Pbx.RunAnalysis':
+    description: Provides operations to call the RunAnalysis method.
+    post:
+      tags:
+        - Trunks
+      summary: Invoke action RunAnalysis
+      operationId: RunAnalysis
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of Trunk
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: Trunk
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pbx.TrunkReport'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/Trunks({Id})/Pbx.TestInboundCall':
+    description: Provides operations to call the TestInboundCall method.
+    post:
+      tags:
+        - Trunks
+      summary: Invoke action TestInboundCall
+      operationId: TestInboundCall
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of Trunk
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: Trunk
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.OutboundCallTestResult'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/Trunks({Id})/Pbx.TestOutboundCall':
+    description: Provides operations to call the TestOutboundCall method.
+    post:
+      tags:
+        - Trunks
+      summary: Invoke action TestOutboundCall
+      operationId: TestOutboundCall
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of Trunk
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: Trunk
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: TrunksTrunkTestOutboundCallRequestBody
+              type: object
+              properties:
+                contact:
+                  type: string
+                destination:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.OutboundCallTestResult'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /Trunks:
     description: Provides operations to manage the collection of Trunk entities.
     get:
@@ -19545,37 +20120,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
-  '/Users/Pbx.GetCallLog(dn={dn},requestId={requestId})':
-    description: Provides operations to call the GetCallLog method.
-    get:
-      tags:
-        - Users
-      summary: Invoke function GetCallLog
-      operationId: GetCallLog
-      parameters:
-        - name: dn
-          in: path
-          description: 'Usage: dn={dn}'
-          required: true
-          schema:
-            type: string
-            nullable: true
-        - name: requestId
-          in: path
-          description: 'Usage: requestId={requestId}'
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pbx.TestCallLog'
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: function
   /Users/Pbx.MakeCall:
     description: Provides operations to call the MakeCall method.
     post:
@@ -21442,6 +21986,9 @@ components:
         CurrentProfileName:
           type: string
           nullable: true
+        DatevEnabled:
+          type: boolean
+          nullable: true
         DeskphonePassword:
           type: string
           nullable: true
@@ -21663,14 +22210,6 @@ components:
         Expiration:
           type: integer
           format: int64
-    Pbx.TestCallLog:
-      title: TestCallLog
-      type: object
-      properties:
-        Entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/Pbx.LogEntry'
     Pbx.CallControlResultResponse:
       title: CallControlResultResponse
       type: object
@@ -21770,6 +22309,9 @@ components:
           type: boolean
           nullable: true
         CanMoveForwardingExceptions:
+          type: boolean
+          nullable: true
+        DatevEnabled:
           type: boolean
           nullable: true
         DisplayNumbers:
@@ -22122,6 +22664,9 @@ components:
         IsArchived:
           type: boolean
           nullable: true
+        IsTranscribed:
+          type: boolean
+          nullable: true
         RecordingUrl:
           type: string
           nullable: true
@@ -22174,6 +22719,12 @@ components:
           nullable: true
         Transcription:
           type: string
+          nullable: true
+        TranscriptionResult:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
     Pbx.RecordingRepositorySettings:
       title: RecordingRepositorySettings
@@ -22641,9 +23192,9 @@ components:
           items:
             $ref: '#/components/schemas/Pbx.CIDFormatting'
         IPRestriction:
-          title: Pbx.TypeOfIPDestriction
+          title: Pbx.TypeOfIPRestriction
           allOf:
-            - $ref: '#/components/schemas/Pbx.TypeOfIPDestriction'
+            - $ref: '#/components/schemas/Pbx.TypeOfIPRestriction'
           nullable: true
         IsOnline:
           type: boolean
@@ -22738,6 +23289,39 @@ components:
         UseSeparateAuthId:
           type: boolean
           nullable: true
+    Pbx.TrunkReport:
+      title: TrunkReport
+      type: object
+      properties:
+        Code:
+          title: Pbx.AnalysisCode
+          allOf:
+            - $ref: '#/components/schemas/Pbx.AnalysisCode'
+          nullable: true
+        Level:
+          title: Pbx.InfoLevel
+          allOf:
+            - $ref: '#/components/schemas/Pbx.InfoLevel'
+          nullable: true
+        Params:
+          type: array
+          items:
+            type: string
+            nullable: true
+        Template:
+          type: string
+    Pbx.OutboundCallTestResult:
+      title: OutboundCallTestResult
+      type: object
+      properties:
+        Log:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.LogEntry'
+        Reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.TrunkReport'
     Pbx.SetRouteRequest:
       title: SetRouteRequest
       type: object
@@ -24165,6 +24749,11 @@ components:
         TranscribeLanguage:
           type: string
           nullable: true
+        TranscribeModelOpenAI:
+          title: Pbx.OpenAIModel
+          allOf:
+            - $ref: '#/components/schemas/Pbx.OpenAIModel'
+          nullable: true
         TranscribeRegion:
           type: string
           nullable: true
@@ -24425,17 +25014,45 @@ components:
       title: NotificationSettings
       type: object
       properties:
-        CanEditEmailAddresses:
+        AutoRestartFailedServices:
           type: boolean
           nullable: true
-        CanEditMailServerType:
+        CanEditEmailAddresses:
           type: boolean
           nullable: true
         EmailAddresses:
           type: string
           nullable: true
-        FakeId:
-          type: string
+        NotifyCodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.NotifyCodes'
+        NotifyExtensionAdded:
+          type: boolean
+          nullable: true
+        NotifyServiceStopped:
+          type: boolean
+          nullable: true
+        NotifySuccessScheduledBackups:
+          type: boolean
+          nullable: true
+        NotifySystemOwners:
+          type: boolean
+          nullable: true
+        NotifyUpdatesAvailable:
+          type: boolean
+          nullable: true
+        Setpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.Setpoint'
+    Pbx.MailSettings:
+      title: MailSettings
+      type: object
+      properties:
+        CanEditMailServerType:
+          type: boolean
+          nullable: true
         MailAddress:
           type: string
           nullable: true
@@ -24457,72 +25074,6 @@ components:
           nullable: true
         MailUser:
           type: string
-          nullable: true
-        NotifyCallDenied:
-          type: boolean
-          nullable: true
-        NotifyEmergencyNumberDialed:
-          type: boolean
-          nullable: true
-        NotifyExtensionAdded:
-          type: boolean
-          nullable: true
-        NotifyIPBlocked:
-          type: boolean
-          nullable: true
-        NotifyLicenseLimit:
-          type: boolean
-          nullable: true
-        NotifyNetworkError:
-          type: boolean
-          nullable: true
-        NotifyRequestAntiHacked:
-          type: boolean
-          nullable: true
-        NotifyServiceStopped:
-          type: boolean
-          nullable: true
-        NotifyStorageLimit:
-          type: boolean
-          nullable: true
-        NotifySTUNError:
-          type: boolean
-          nullable: true
-        NotifySuccessScheduledBackups:
-          type: boolean
-          nullable: true
-        NotifySystemOwners:
-          type: boolean
-          nullable: true
-        NotifyTrunkError:
-          type: boolean
-          nullable: true
-        NotifyTrunkFailover:
-          type: boolean
-          nullable: true
-        NotifyTrunkStatusChanged:
-          type: boolean
-          nullable: true
-        NotifyUpdatesAvailable:
-          type: boolean
-          nullable: true
-        NotifyWhenRecordingsQuotaReached:
-          type: boolean
-          nullable: true
-        NotifyWhenVoicemailQuotaReached:
-          type: boolean
-          nullable: true
-        RecordingsQuotaPercentage:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
-          nullable: true
-        VoicemailQuotaPercentage:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
           nullable: true
     Pbx.TestResult:
       title: TestResult
@@ -24837,6 +25388,140 @@ components:
           nullable: true
         VoicemailStopped:
           type: boolean
+          nullable: true
+    Pbx.SystemTelemetry:
+      title: SystemTelemetry
+      type: object
+      properties:
+        CpuUsage:
+          oneOf:
+            - type: number
+              format: double
+              nullable: true
+            - type: string
+              nullable: true
+            - $ref: '#/components/schemas/ReferenceNumeric'
+        FreeDiskSpace:
+          type: integer
+          format: int64
+          nullable: true
+        FreePhysicalMemory:
+          type: integer
+          format: int64
+          nullable: true
+        FreeVirtualMemory:
+          type: integer
+          format: int64
+          nullable: true
+        TickCount:
+          type: integer
+          format: int64
+          nullable: true
+        Time:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+          nullable: true
+        TotalDiskSpace:
+          type: integer
+          format: int64
+          nullable: true
+        TotalPhysicalMemory:
+          type: integer
+          format: int64
+          nullable: true
+        TotalVirtualMemory:
+          type: integer
+          format: int64
+          nullable: true
+    Pbx.ProcessTelemetry:
+      title: ProcessTelemetry
+      type: object
+      properties:
+        HandleCount:
+          type: integer
+          format: int64
+          nullable: true
+        PrivateMemory:
+          type: integer
+          format: int64
+          nullable: true
+        ProcessCount:
+          type: integer
+          format: int64
+          nullable: true
+        Service:
+          title: Pbx.PhoneSystemService
+          allOf:
+            - $ref: '#/components/schemas/Pbx.PhoneSystemService'
+          nullable: true
+        ThreadCount:
+          type: integer
+          format: int64
+          nullable: true
+        Time:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+          nullable: true
+    Pbx.NetworkTelemetry:
+      title: NetworkTelemetry
+      type: object
+      properties:
+        Id:
+          type: string
+        KbpsReceived:
+          oneOf:
+            - type: number
+              format: double
+              nullable: true
+            - type: string
+              nullable: true
+            - $ref: '#/components/schemas/ReferenceNumeric'
+        KbpsSent:
+          oneOf:
+            - type: number
+              format: double
+              nullable: true
+            - type: string
+              nullable: true
+            - $ref: '#/components/schemas/ReferenceNumeric'
+        Time:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+          nullable: true
+    Pbx.MyPhoneRequestStats:
+      title: MyPhoneRequestStats
+      type: object
+      properties:
+        AvgDuration:
+          oneOf:
+            - type: number
+              format: double
+              nullable: true
+            - type: string
+              nullable: true
+            - $ref: '#/components/schemas/ReferenceNumeric'
+        Count:
+          type: integer
+          format: int64
+          nullable: true
+        MaxDuration:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        RequestId:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        SumDuration:
+          type: integer
+          format: int64
           nullable: true
     Pbx.SystemExtensionStatus:
       title: SystemExtensionStatus
@@ -25250,6 +25935,9 @@ components:
         DayEnd:
           type: integer
           format: uint8
+        Group:
+          type: string
+          nullable: true
         HolidayPrompt:
           type: string
           nullable: true
@@ -25351,6 +26039,11 @@ components:
       title: DataConnectorSettings
       type: object
       properties:
+        DataTypesToOffload:
+          title: Pbx.DataTypesToOffload
+          allOf:
+            - $ref: '#/components/schemas/Pbx.DataTypesToOffload'
+          nullable: true
         IsBigQueryEnabled:
           type: boolean
           nullable: true
@@ -25362,6 +26055,11 @@ components:
         PurgeAfterSync:
           type: boolean
           nullable: true
+        RemoteMySqlConfig:
+          title: Pbx.RemoteMySqlConfig
+          allOf:
+            - $ref: '#/components/schemas/Pbx.RemoteMySqlConfig'
+          nullable: true
         RemotePostgreConfig:
           title: Pbx.RemotePostgreConfig
           allOf:
@@ -25371,6 +26069,20 @@ components:
           title: Pbx.BackupSchedule
           allOf:
             - $ref: '#/components/schemas/Pbx.BackupSchedule'
+          nullable: true
+    Pbx.AmazonIntegrationSettings:
+      title: AmazonIntegrationSettings
+      type: object
+      properties:
+        S3Config:
+          title: Pbx.S3Config
+          allOf:
+            - $ref: '#/components/schemas/Pbx.S3Config'
+          nullable: true
+        ServiceAccountCredentials:
+          title: Pbx.AmazonCredentials
+          allOf:
+            - $ref: '#/components/schemas/Pbx.AmazonCredentials'
           nullable: true
     Pbx.CallHistoryView:
       title: CallHistoryView
@@ -25640,7 +26352,21 @@ components:
           nullable: true
         RingGroupDn:
           type: string
+        RingGroupReceivedCount:
+          type: integer
+          format: int64
+          nullable: true
+        RingGroupUnansweredCount:
+          type: integer
+          format: int64
+          nullable: true
         SentimentScore:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        SortOrder:
           maximum: 2147483647
           minimum: -2147483648
           type: integer
@@ -25990,6 +26716,12 @@ components:
         QueueReceivedCount:
           type: integer
           format: int64
+          nullable: true
+        SortOrder:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
         TalkTime:
           pattern: '^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$'
@@ -26348,6 +27080,12 @@ components:
           type: string
         QueueDisplayName:
           type: string
+          nullable: true
+        SortOrder:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
     Pbx.QueueAgentsChatStatisticsTotals:
       title: QueueAgentsChatStatisticsTotals
@@ -27106,9 +27844,6 @@ components:
           items:
             type: string
             nullable: true
-        OwnBlfs:
-          type: boolean
-          nullable: true
         PhoneLanguage:
           type: string
           nullable: true
@@ -28470,16 +29205,6 @@ components:
         Ringtone:
           type: string
           nullable: true
-    Pbx.LogEntry:
-      title: LogEntry
-      type: object
-      properties:
-        Text:
-          type: string
-        TimeStamp:
-          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
-          type: string
-          format: date-time
     Pbx.CallParticipant:
       title: CallParticipant
       type: object
@@ -28829,6 +29554,16 @@ components:
           type: string
         Value:
           type: string
+    Pbx.LogEntry:
+      title: LogEntry
+      type: object
+      properties:
+        Text:
+          type: string
+        TimeStamp:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
     Pbx.SetRoute:
       title: SetRoute
       type: object
@@ -29294,6 +30029,9 @@ components:
         NsUser:
           type: string
           nullable: true
+        S3Path:
+          type: string
+          nullable: true
         SftpPassword:
           title: Pbx.ConcealedPassword
           allOf:
@@ -29662,6 +30400,20 @@ components:
     Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipant:
       title: KeyValuePair_2OfString_OnBoardConnectedParticipant
       type: object
+    Pbx.Setpoint:
+      title: Setpoint
+      type: object
+      properties:
+        Enabled:
+          type: boolean
+        Type:
+          $ref: '#/components/schemas/Pbx.SetpointType'
+        Value:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
     Pbx.CrmSelectableValue:
       title: CrmSelectableValue
       type: object
@@ -29814,6 +30566,69 @@ components:
         Username:
           type: string
           nullable: true
+    Pbx.RemoteMySqlConfig:
+      title: RemoteMySqlConfig
+      type: object
+      properties:
+        Database:
+          type: string
+          nullable: true
+        Password:
+          title: Pbx.ConcealedPassword
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          nullable: true
+        Port:
+          type: integer
+          format: int64
+          nullable: true
+        Server:
+          type: string
+          nullable: true
+        UserId:
+          type: string
+          nullable: true
+    Pbx.DataTypesToOffload:
+      title: DataTypesToOffload
+      type: object
+      properties:
+        AudioMetrics:
+          type: boolean
+          nullable: true
+        CallHistory:
+          type: boolean
+          nullable: true
+        Recordings:
+          type: boolean
+          nullable: true
+        SystemMetrics:
+          type: boolean
+          nullable: true
+    Pbx.S3Config:
+      title: S3Config
+      type: object
+      properties:
+        ApplyBucket:
+          type: boolean
+          nullable: true
+        BucketName:
+          type: string
+          nullable: true
+        Region:
+          type: string
+          nullable: true
+    Pbx.AmazonCredentials:
+      title: AmazonCredentials
+      type: object
+      properties:
+        AccessKey:
+          type: string
+          nullable: true
+        SecretKey:
+          title: Pbx.ConcealedPassword
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          nullable: true
     Pbx.QualityParty:
       title: QualityParty
       type: object
@@ -29946,6 +30761,12 @@ components:
           nullable: true
         IsMaintainceExpired:
           type: boolean
+          nullable: true
+        MaxSimCalls:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
         ProductCode:
           type: string
@@ -30302,6 +31123,7 @@ components:
         - Sftp
         - GoogleBucket
         - SharePoint
+        - AmazonS3
       type: string
     Pbx.CallHandlingFlags:
       title: CallHandlingFlags
@@ -30390,8 +31212,8 @@ components:
         - BasedOnCallerID
         - BasedOnDID
       type: string
-    Pbx.TypeOfIPDestriction:
-      title: TypeOfIPDestriction
+    Pbx.TypeOfIPRestriction:
+      title: TypeOfIPRestriction
       enum:
         - Any
         - IPV4
@@ -30404,6 +31226,100 @@ components:
         - UDP
         - TCP
         - TLS
+      type: string
+    Pbx.InfoLevel:
+      title: InfoLevel
+      enum:
+        - Critical
+        - Error
+        - Warning
+        - Info
+      type: string
+    Pbx.AnalysisCode:
+      title: AnalysisCode
+      enum:
+        - TrunkIsDisabled
+        - RegistrarIsNotSet
+        - SIPCallFailed
+        - CallMonitoringFailed
+        - ErrNoAuthID
+        - OutboundCallFailed
+        - InboundCallFailed
+        - RouteSkipped
+        - RouteFailed
+        - RTPMismatchDetected
+        - CodecMismatch
+        - NumberFormatsMismatch
+        - ResponseCodeFail
+        - ResponseTextFail
+        - ErrNoAuthPwd
+        - ErrNoAuth3way
+        - ErrNoTransport
+        - ErrNoReply
+        - TransportMismatch
+        - TransportError
+        - RegistrationFailed
+        - RegistrationIsBlocked
+        - WarnOutboundDuration
+        - TrunkIsInboundOnly
+        - TrunkIsOutboundOnly
+        - NotSupportedRinstance
+        - NotSupportedRFC2833
+        - ProxyFqdnHasNoNAPTRorSRV
+        - ProxyZeroPortIP
+        - RegistrarFqdnHasNoNAPTRorSRV
+        - RegistrarZeroPortIP
+        - AltProxyFqdnHasNoNAPTRorSRV
+        - AltProxyZeroPortIP
+        - MainTrunkNumber
+        - ProxyFQDNIsNotResolved
+        - RegistrarFQDNIsNotResolved
+        - AltProxyFQDNIsNotResolved
+        - NotSupportedSessionTimers
+        - OutboundDialed
+        - NumberFormatsMatch
+        - OutboundCallerReady
+        - LocalCodec
+        - RemoteCodec
+        - DestinationMediaIP
+        - SourceMediaIP
+        - OutboundRuleFound
+        - OutboundCallSuccessful
+        - SIPMessageResponse
+        - IPMode
+        - ServerAddress
+        - TransportType
+        - TargetDomain
+        - RegisteredOK
+        - RegistrationIsNotRequired
+        - ProxyIsIpAddress
+        - ProxyIsFQDN
+        - ProxyResolvesToNAPTR
+        - ProxyResolvesToSRV
+        - ProxyResolvesToHOST
+        - ProxyResolvesToAAAA
+        - RegistrarIsIPaddress
+        - RegistrarIsFQDN
+        - RegistrarResolvesToNAPTR
+        - RegistrarResolvesToSRV
+        - RegistrarResolvesToHOST
+        - RegistrarResolvesToAAAA
+        - InboundCallSource
+        - InboundCallTransport
+        - InboundSIPMessage
+        - SupportedRinstance
+        - SupportedRFC2833
+        - SupportedVideo
+        - SupportedPRACK
+        - SupportedFax
+        - SupportedCryptos
+        - SupportedSessionTimers
+        - AltProxyIsIPAddress
+        - AltProxyIsFQDN
+        - AltProxyResolvesToNAPTR
+        - AltProxyResolvesToSRV
+        - AltProxyResolvesToHOST
+        - AltProxyResolvesToAAAA
       type: string
     Pbx.TrunkType:
       title: TrunkType
@@ -30638,6 +31554,14 @@ components:
         - Whisper
         - Engine3CX
       type: string
+    Pbx.OpenAIModel:
+      title: OpenAIModel
+      enum:
+        - Default
+        - Custom
+        - GPT_4o
+        - GPT_4o_mini
+      type: string
     Pbx.McuOperation:
       title: McuOperation
       enum:
@@ -30657,6 +31581,35 @@ components:
         - Debian10
         - Debian11
         - Debian12
+      type: string
+    Pbx.NotifyCodes:
+      title: NotifyCodes
+      enum:
+        - StorageLimit
+        - EmergencyNumberDialed
+        - TrunkStatusChanged
+        - ExtensionRegChanged
+        - LicenseLimit
+        - TrunkFailover
+        - IPBlocked
+        - RequestAntiHacked
+        - NetworkError
+        - TrunkError
+        - STUNError
+        - CallDenied
+      type: string
+    Pbx.SetpointType:
+      title: SetpointType
+      enum:
+        - VoicemailQuota
+        - RecordingQuota
+        - CpuUsage
+        - InboundNetworkUsage
+        - OutboundNetworkUsage
+        - PhysicalMemoryUsage
+        - VirtualMemoryUsage
+        - DiskUsage
+        - TimeShift
       type: string
     Pbx.MailServerType:
       title: MailServerType
@@ -30678,6 +31631,25 @@ components:
         - Other
         - Linux
         - Windows
+      type: string
+    Pbx.PhoneSystemService:
+      title: PhoneSystemService
+      enum:
+        - Database
+        - Configuration
+        - AudioProvider
+        - SIPService
+        - SystemService
+        - IVR
+        - CallFlow
+        - QueueMananger
+        - Tunnel
+        - ManagementConsole
+        - MediaServer
+        - HotelModule
+        - EventNotiificationManager
+        - Nginx
+        - Gateway
       type: string
     Pbx.CreateTicketStatus:
       title: CreateTicketStatus
@@ -30722,6 +31694,7 @@ components:
         - None
         - Postgre
         - BigQuery
+        - MySql
       type: string
     Pbx.ServerTrustMode:
       title: ServerTrustMode
@@ -31985,17 +32958,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.GatewayParameterValue'
-    Pbx.LogEntryCollectionResponse:
-      title: Collection of Pbx.LogEntry
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-        - type: object
-          properties:
-            value:
-              type: array
-              items:
-                $ref: '#/components/schemas/Pbx.LogEntry'
     Pbx.PhoneModelCollectionResponse:
       title: Collection of Pbx.PhoneModel
       type: object
@@ -32051,6 +33013,28 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.Variable'
+    Pbx.TrunkReportCollectionResponse:
+      title: Collection of Pbx.TrunkReport
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.TrunkReport'
+    Pbx.LogEntryCollectionResponse:
+      title: Collection of Pbx.LogEntry
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.LogEntry'
     Pbx.SetRouteCollectionResponse:
       title: Collection of Pbx.SetRoute
       type: object
@@ -32172,6 +33156,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipant'
+    Pbx.SetpointCollectionResponse:
+      title: Collection of Pbx.Setpoint
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.Setpoint'
     Pbx.CrmChoiceCollectionResponse:
       title: Collection of Pbx.CrmChoice
       type: object
@@ -32440,6 +33435,7 @@ components:
         - WARNINGS.XAPI.CANNOT_CONNECT_SMB
         - WARNINGS.XAPI.CANNOT_CONNECT_SFTP
         - WARNINGS.XAPI.CANNOT_CONNECT_GOOGLE_BUCKET
+        - WARNINGS.XAPI.CANNOT_CONNECT_AMAZON_S3_BUCKET
         - WARNINGS.XAPI.PLAYLIST_NO_SOURCE
         - WARNINGS.XAPI.NO_USERS_IN_TEAMS
         - WARNINGS.XAPI.FILE_FORMAT_IS_INCORRECT
@@ -33108,12 +34104,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.GatewayParameterValueCollectionResponse'
-    Pbx.LogEntryCollectionResponse:
-      description: Retrieved collection
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pbx.LogEntryCollectionResponse'
     Pbx.PhoneModelCollectionResponse:
       description: Retrieved collection
       content:
@@ -33144,6 +34134,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.VariableCollectionResponse'
+    Pbx.TrunkReportCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.TrunkReportCollectionResponse'
+    Pbx.LogEntryCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.LogEntryCollectionResponse'
     Pbx.SetRouteCollectionResponse:
       description: Retrieved collection
       content:
@@ -33210,6 +34212,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipantCollectionResponse'
+    Pbx.SetpointCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.SetpointCollectionResponse'
     Pbx.CrmChoiceCollectionResponse:
       description: Retrieved collection
       content:
@@ -33575,6 +34583,7 @@ components:
         ClickToCallId: String
         ContactImage: String
         CurrentProfileName: String
+        DatevEnabled: true
         DeskphonePassword: String
         DisplayName: String
         EmailAddress: String
@@ -33652,10 +34661,6 @@ components:
       value:
         DN: String
         Expiration: 0
-    Pbx.TestCallLog:
-      value:
-        Entries:
-          - '@odata.type': Pbx.LogEntry
     Pbx.CallControlResultResponse:
       value:
         FinalStatus: String
@@ -33695,6 +34700,7 @@ components:
         Blfs: String
         CallScreening: true
         CanMoveForwardingExceptions: true
+        DatevEnabled: true
         DisplayNumbers: String
         EmergencyAdditionalInfo: String
         EmergencyLocationId: String
@@ -33819,6 +34825,7 @@ components:
         FromIdParticipant: 0
         Id: 0
         IsArchived: true
+        IsTranscribed: true
         RecordingUrl: String
         RefParticipantId: 0
         SentimentScore: 0
@@ -33832,6 +34839,7 @@ components:
         ToDnType: 0
         ToIdParticipant: 0
         Transcription: String
+        TranscriptionResult: 0
     Pbx.RecordingRepositorySettings:
       value:
         AutoDeleteRecordingDays: 0
@@ -33999,7 +35007,7 @@ components:
         InCIDFormatting:
           - '@odata.type': Pbx.CIDFormatting
         IPRestriction:
-          '@odata.type': Pbx.TypeOfIPDestriction
+          '@odata.type': Pbx.TypeOfIPRestriction
         IsOnline: true
         Messaging:
           '@odata.type': Pbx.TrunkMessaging
@@ -34033,6 +35041,21 @@ components:
         TunnelRemoteAddr: String
         TunnelRemotePort: 0
         UseSeparateAuthId: true
+    Pbx.TrunkReport:
+      value:
+        Code:
+          '@odata.type': Pbx.AnalysisCode
+        Level:
+          '@odata.type': Pbx.InfoLevel
+        Params:
+          - String
+        Template: String
+    Pbx.OutboundCallTestResult:
+      value:
+        Log:
+          - '@odata.type': Pbx.LogEntry
+        Reports:
+          - '@odata.type': Pbx.TrunkReport
     Pbx.SetRouteRequest:
       value:
         Id: 0
@@ -34539,6 +35562,8 @@ components:
         TranscribeEngine:
           '@odata.type': Pbx.TranscribeEngine
         TranscribeLanguage: String
+        TranscribeModelOpenAI:
+          '@odata.type': Pbx.OpenAIModel
         TranscribeRegion: String
         TranscribeSecretKey:
           '@odata.type': Pbx.ConcealedPassword
@@ -34628,10 +35653,21 @@ components:
         Start: '0001-01-01T00:00:00.0000000+00:00'
     Pbx.NotificationSettings:
       value:
+        AutoRestartFailedServices: true
         CanEditEmailAddresses: true
-        CanEditMailServerType: true
         EmailAddresses: String
-        FakeId: String (identifier)
+        NotifyCodes:
+          - '@odata.type': Pbx.NotifyCodes
+        NotifyExtensionAdded: true
+        NotifyServiceStopped: true
+        NotifySuccessScheduledBackups: true
+        NotifySystemOwners: true
+        NotifyUpdatesAvailable: true
+        Setpoints:
+          - '@odata.type': Pbx.Setpoint
+    Pbx.MailSettings:
+      value:
+        CanEditMailServerType: true
         MailAddress: String
         MailPassword:
           '@odata.type': Pbx.ConcealedPassword
@@ -34640,26 +35676,6 @@ components:
           '@odata.type': Pbx.MailServerType
         MailSslEnabled: true
         MailUser: String
-        NotifyCallDenied: true
-        NotifyEmergencyNumberDialed: true
-        NotifyExtensionAdded: true
-        NotifyIPBlocked: true
-        NotifyLicenseLimit: true
-        NotifyNetworkError: true
-        NotifyRequestAntiHacked: true
-        NotifyServiceStopped: true
-        NotifyStorageLimit: true
-        NotifySTUNError: true
-        NotifySuccessScheduledBackups: true
-        NotifySystemOwners: true
-        NotifyTrunkError: true
-        NotifyTrunkFailover: true
-        NotifyTrunkStatusChanged: true
-        NotifyUpdatesAvailable: true
-        NotifyWhenRecordingsQuotaReached: true
-        NotifyWhenVoicemailQuotaReached: true
-        RecordingsQuotaPercentage: 0
-        VoicemailQuotaPercentage: 0
     Pbx.TestResult:
       value:
         Error: String
@@ -34754,6 +35770,39 @@ components:
         Version: String
         VoicemailQuotaReached: true
         VoicemailStopped: true
+    Pbx.SystemTelemetry:
+      value:
+        CpuUsage: 0
+        FreeDiskSpace: 0
+        FreePhysicalMemory: 0
+        FreeVirtualMemory: 0
+        TickCount: 0
+        Time: '0001-01-01T00:00:00.0000000+00:00'
+        TotalDiskSpace: 0
+        TotalPhysicalMemory: 0
+        TotalVirtualMemory: 0
+    Pbx.ProcessTelemetry:
+      value:
+        HandleCount: 0
+        PrivateMemory: 0
+        ProcessCount: 0
+        Service:
+          '@odata.type': Pbx.PhoneSystemService
+        ThreadCount: 0
+        Time: '0001-01-01T00:00:00.0000000+00:00'
+    Pbx.NetworkTelemetry:
+      value:
+        Id: String (identifier)
+        KbpsReceived: 0
+        KbpsSent: 0
+        Time: '0001-01-01T00:00:00.0000000+00:00'
+    Pbx.MyPhoneRequestStats:
+      value:
+        AvgDuration: 0
+        Count: 0
+        MaxDuration: 0
+        RequestId: 0
+        SumDuration: 0
     Pbx.SystemExtensionStatus:
       value:
         IsRegistered: true
@@ -34903,6 +35952,7 @@ components:
       value:
         Day: AA==
         DayEnd: AA==
+        Group: String
         HolidayPrompt: String
         Id: 0
         IsRecurrent: true
@@ -34941,14 +35991,24 @@ components:
         TrunkDn: String
     Pbx.DataConnectorSettings:
       value:
+        DataTypesToOffload:
+          '@odata.type': Pbx.DataTypesToOffload
         IsBigQueryEnabled: true
         OffloadDestination:
           '@odata.type': Pbx.OffloadDestination
         PurgeAfterSync: true
+        RemoteMySqlConfig:
+          '@odata.type': Pbx.RemoteMySqlConfig
         RemotePostgreConfig:
           '@odata.type': Pbx.RemotePostgreConfig
         Schedule:
           '@odata.type': Pbx.BackupSchedule
+    Pbx.AmazonIntegrationSettings:
+      value:
+        S3Config:
+          '@odata.type': Pbx.S3Config
+        ServiceAccountCredentials:
+          '@odata.type': Pbx.AmazonCredentials
     Pbx.CallHistoryView:
       value:
         CallAnswered: true
@@ -35032,7 +36092,10 @@ components:
         ExtensionDn: String (identifier)
         RingGroupDisplayName: String
         RingGroupDn: String (identifier)
+        RingGroupReceivedCount: 0
+        RingGroupUnansweredCount: 0
         SentimentScore: 0
+        SortOrder: 0
     Pbx.CallLogData:
       value:
         ActionDnCallerId: String
@@ -35127,6 +36190,7 @@ components:
         QueueDisplayName: String (identifier)
         QueueDn: String
         QueueReceivedCount: 0
+        SortOrder: 0
         TalkTime: Duration
     Pbx.QueuePerformanceTotals:
       value:
@@ -35236,6 +36300,7 @@ components:
         DnDisplayName: String
         Queue: String (identifier)
         QueueDisplayName: String
+        SortOrder: 0
     Pbx.QueueAgentsChatStatisticsTotals:
       value:
         AnsweredCount: 0
@@ -35486,7 +36551,6 @@ components:
         LogoDescription: String
         LogoFileExtensionAllowed:
           - String
-        OwnBlfs: true
         PhoneLanguage: String
         PowerLed: String
         ProvisionExtendedData: String
@@ -35945,10 +37009,6 @@ components:
       value:
         Queue: String
         Ringtone: String
-    Pbx.LogEntry:
-      value:
-        Text: String
-        TimeStamp: '0001-01-01T00:00:00.0000000+00:00'
     Pbx.CallParticipant:
       value:
         CallId: 0
@@ -36062,6 +37122,10 @@ components:
       value:
         Name: String
         Value: String
+    Pbx.LogEntry:
+      value:
+        Text: String
+        TimeStamp: '0001-01-01T00:00:00.0000000+00:00'
     Pbx.SetRoute:
       value:
         DID: String
@@ -36231,6 +37295,7 @@ components:
           '@odata.type': Pbx.ConcealedPassword
         NsPath: String
         NsUser: String
+        S3Path: String
         SftpPassword:
           '@odata.type': Pbx.ConcealedPassword
         SftpPath: String
@@ -36366,6 +37431,12 @@ components:
         privaterooms: 0
         quickmeeting: 0
     Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipant: { }
+    Pbx.Setpoint:
+      value:
+        Enabled: true
+        Type:
+          '@odata.type': Pbx.SetpointType
+        Value: 0
     Pbx.CrmSelectableValue:
       value:
         Id: 0
@@ -36420,6 +37491,30 @@ components:
         ServerTrustMode:
           '@odata.type': Pbx.ServerTrustMode
         Username: String
+    Pbx.RemoteMySqlConfig:
+      value:
+        Database: String
+        Password:
+          '@odata.type': Pbx.ConcealedPassword
+        Port: 0
+        Server: String
+        UserId: String
+    Pbx.DataTypesToOffload:
+      value:
+        AudioMetrics: true
+        CallHistory: true
+        Recordings: true
+        SystemMetrics: true
+    Pbx.S3Config:
+      value:
+        ApplyBucket: true
+        BucketName: String
+        Region: String
+    Pbx.AmazonCredentials:
+      value:
+        AccessKey: String
+        SecretKey:
+          '@odata.type': Pbx.ConcealedPassword
     Pbx.QualityParty:
       value:
         AddressStr: String
@@ -36447,6 +37542,7 @@ components:
       value:
         CountryCode: String
         IsMaintainceExpired: true
+        MaxSimCalls: 0
         ProductCode: String
     Pbx.GoogleUserSync:
       value:
