@@ -717,6 +717,27 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
+  /Backups/Pbx.GetLocalBackupSize():
+    description: Provides operations to call the GetLocalBackupSize method.
+    get:
+      tags:
+        - Backups
+      summary: Invoke function GetLocalBackupSize
+      operationId: GetLocalBackupSize
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: integer
+                    format: int64
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
   /BlackListNumbers:
     description: Provides operations to manage the collection of BlackListNumber entities.
     get:
@@ -10085,6 +10106,19 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: actionImport
+  /PurgeLocalBackups:
+    description: Provides operations to call the PurgeLocalBackups method.
+    post:
+      tags:
+        - PurgeSettings
+      summary: Invoke actionImport PurgeLocalBackups
+      operationId: PurgeLocalBackups
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: actionImport
   '/Queues({Id})':
     description: Provides operations to manage the collection of Queue entities.
     get:
@@ -13911,6 +13945,62 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
+  '/ReportCallLogData/Pbx.GetOldCallQualityReport(call_id={call_id},srcNumber={srcNumber},dstNumber={dstNumber},srcCallerId={srcCallerId},dstCallerId={dstCallerId})':
+    description: Provides operations to call the GetOldCallQualityReport method.
+    get:
+      tags:
+        - ReportCallLogData
+      summary: Invoke function GetOldCallQualityReport
+      operationId: GetOldCallQualityReport
+      parameters:
+        - name: call_id
+          in: path
+          description: 'Usage: call_id={call_id}'
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+        - name: srcNumber
+          in: path
+          description: 'Usage: srcNumber={srcNumber}'
+          required: true
+          schema:
+            type: string
+        - name: dstNumber
+          in: path
+          description: 'Usage: dstNumber={dstNumber}'
+          required: true
+          schema:
+            type: string
+        - name: srcCallerId
+          in: path
+          description: 'Usage: srcCallerId={srcCallerId}'
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: dstCallerId
+          in: path
+          description: 'Usage: dstCallerId={dstCallerId}'
+          required: true
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: Pbx.QualityReport
+                allOf:
+                  - $ref: '#/components/schemas/Pbx.QualityReport'
+                nullable: true
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
   '/ReportDetailedQueueStatistics/Pbx.GetDetailedQueueStatisticsData(queueDnStr={queueDnStr},startDt={startDt},endDt={endDt},waitInterval={waitInterval})':
     description: Provides operations to call the GetDetailedQueueStatisticsData method.
     get:
@@ -17585,6 +17675,28 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  '/Sbcs({Name})/Pbx.PushConfig':
+    description: Provides operations to call the PushConfig method.
+    post:
+      tags:
+        - Sbcs
+      summary: Invoke action PushConfig
+      operationId: PushConfig
+      parameters:
+        - name: Name
+          in: path
+          description: The unique identifier of Sbc
+          required: true
+          schema:
+            maxLength: 12
+            type: string
+          x-ms-docs-key-type: Sbc
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /SecureSipSettings:
     description: Provides operations to manage the SecureSipSettings singleton.
     get:
@@ -18757,7 +18869,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pbx.OutboundCallTestResult'
+                $ref: '#/components/schemas/Pbx.TrunkTestResult'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -18798,7 +18910,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pbx.OutboundCallTestResult'
+                $ref: '#/components/schemas/Pbx.TrunkTestResult'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -23310,8 +23422,8 @@ components:
             nullable: true
         Template:
           type: string
-    Pbx.OutboundCallTestResult:
-      title: OutboundCallTestResult
+    Pbx.TrunkTestResult:
+      title: TrunkTestResult
       type: object
       properties:
         Log:
@@ -24068,6 +24180,12 @@ components:
       title: Sbc
       type: object
       properties:
+        AudioPort:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
         DisplayName:
           type: string
         Group:
@@ -24079,9 +24197,26 @@ components:
         LocalIPv4:
           type: string
           nullable: true
+        LogLevel:
+          title: Pbx.SbcLogLevel
+          allOf:
+            - $ref: '#/components/schemas/Pbx.SbcLogLevel'
+          nullable: true
+        LogSize:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
         Name:
           maxLength: 12
           type: string
+        PassiveServer:
+          type: string
+          nullable: true
+        PassiveServerIsEnabled:
+          type: boolean
+          nullable: true
         Password:
           type: string
         PhoneMAC:
@@ -24098,6 +24233,11 @@ components:
           nullable: true
         PublicIP:
           type: string
+          nullable: true
+        Security:
+          title: Pbx.Security
+          allOf:
+            - $ref: '#/components/schemas/Pbx.Security'
           nullable: true
         Version:
           type: string
@@ -25358,6 +25498,11 @@ components:
         RemoteStorageEnabled:
           type: boolean
           nullable: true
+        RemoteStorageStatus:
+          title: Pbx.RemoteStorageStatus
+          allOf:
+            - $ref: '#/components/schemas/Pbx.RemoteStorageStatus'
+          nullable: true
         ResellerName:
           type: string
           nullable: true
@@ -26064,6 +26209,11 @@ components:
           title: Pbx.RemotePostgreConfig
           allOf:
             - $ref: '#/components/schemas/Pbx.RemotePostgreConfig'
+          nullable: true
+        RemoteSqlServerConfig:
+          title: Pbx.RemoteSqlServerConfig
+          allOf:
+            - $ref: '#/components/schemas/Pbx.RemoteSqlServerConfig'
           nullable: true
         Schedule:
           title: Pbx.BackupSchedule
@@ -28140,6 +28290,11 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+          nullable: true
+        RemoteStorageStatus:
+          title: Pbx.RemoteStorageStatus
+          allOf:
+            - $ref: '#/components/schemas/Pbx.RemoteStorageStatus'
           nullable: true
         RpsEnabled:
           type: boolean
@@ -30573,6 +30728,9 @@ components:
         Database:
           type: string
           nullable: true
+        Host:
+          type: string
+          nullable: true
         Password:
           title: Pbx.ConcealedPassword
           allOf:
@@ -30582,8 +30740,27 @@ components:
           type: integer
           format: int64
           nullable: true
-        Server:
+        UserId:
           type: string
+          nullable: true
+    Pbx.RemoteSqlServerConfig:
+      title: RemoteSqlServerConfig
+      type: object
+      properties:
+        Database:
+          type: string
+          nullable: true
+        Host:
+          type: string
+          nullable: true
+        Password:
+          title: Pbx.ConcealedPassword
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          nullable: true
+        Port:
+          type: integer
+          format: int64
           nullable: true
         UserId:
           type: string
@@ -31445,6 +31622,20 @@ components:
         - AllService
         - AnyService
       type: string
+    Pbx.SbcLogLevel:
+      title: SbcLogLevel
+      enum:
+        - None
+        - Low
+        - Medium
+        - Verbose
+      type: string
+    Pbx.Security:
+      title: Security
+      enum:
+        - TCP
+        - TLS
+      type: string
     Pbx.CfaRoutingType:
       title: CfaRoutingType
       enum:
@@ -31597,6 +31788,8 @@ components:
         - TrunkError
         - STUNError
         - CallDenied
+        - NumberBlocked
+        - NumberUnblocked
       type: string
     Pbx.SetpointType:
       title: SetpointType
@@ -31631,6 +31824,13 @@ components:
         - Other
         - Linux
         - Windows
+      type: string
+    Pbx.RemoteStorageStatus:
+      title: RemoteStorageStatus
+      enum:
+        - NotConfigured
+        - PartiallyConfigured
+        - Configured
       type: string
     Pbx.PhoneSystemService:
       title: PhoneSystemService
@@ -31695,6 +31895,7 @@ components:
         - Postgre
         - BigQuery
         - MySql
+        - SqlServer
       type: string
     Pbx.ServerTrustMode:
       title: ServerTrustMode
@@ -33421,6 +33622,7 @@ components:
         - WARNINGS.XAPI.TOO_MANY_TRUNKS
         - WARNINGS.XAPI.TOO_MANY_SBC
         - WARNINGS.XAPI.TOO_MANY_PROMPTS
+        - WARNINGS.XAPI.AWS_STORAGE_UNDER_USAGE
         - WARNINGS.XAPI.OUTBOUND_RULES_LIMIT_REACHED
         - WARNINGS.XAPI.FORBIDDEN_CHANGE
         - WARNINGS.FAX_SERVER_CANNOT_BE_DELETED
@@ -35050,7 +35252,7 @@ components:
         Params:
           - String
         Template: String
-    Pbx.OutboundCallTestResult:
+    Pbx.TrunkTestResult:
       value:
         Log:
           - '@odata.type': Pbx.LogEntry
@@ -35339,16 +35541,24 @@ components:
         ScheduleEnabled: true
     Pbx.Sbc:
       value:
+        AudioPort: 0
         DisplayName: String
         Group: String
         HasConnection: true
         LocalIPv4: String
+        LogLevel:
+          '@odata.type': Pbx.SbcLogLevel
+        LogSize: 0
         Name: String (identifier)
+        PassiveServer: String
+        PassiveServerIsEnabled: true
         Password: String
         PhoneMAC: String
         PhoneUserId: 0
         ProvisionLink: String
         PublicIP: String
+        Security:
+          '@odata.type': Pbx.Security
         Version: String
     Pbx.RegistrarFxs:
       value:
@@ -35762,6 +35972,8 @@ components:
         RecordingUsedSpace: 0
         RemoteConfigurationRequired: true
         RemoteStorageEnabled: true
+        RemoteStorageStatus:
+          '@odata.type': Pbx.RemoteStorageStatus
         ResellerName: String
         Support: true
         TotalDiskSpace: 0
@@ -36001,6 +36213,8 @@ components:
           '@odata.type': Pbx.RemoteMySqlConfig
         RemotePostgreConfig:
           '@odata.type': Pbx.RemotePostgreConfig
+        RemoteSqlServerConfig:
+          '@odata.type': Pbx.RemoteSqlServerConfig
         Schedule:
           '@odata.type': Pbx.BackupSchedule
     Pbx.AmazonIntegrationSettings:
@@ -36649,6 +36863,8 @@ components:
         MaxDIDPerTrunk: 0
         PbxExternalHost: String
         ProcessorCount: 0
+        RemoteStorageStatus:
+          '@odata.type': Pbx.RemoteStorageStatus
         RpsEnabled: true
         SipPort: 0
         SipsPort: 0
@@ -37494,10 +37710,18 @@ components:
     Pbx.RemoteMySqlConfig:
       value:
         Database: String
+        Host: String
         Password:
           '@odata.type': Pbx.ConcealedPassword
         Port: 0
-        Server: String
+        UserId: String
+    Pbx.RemoteSqlServerConfig:
+      value:
+        Database: String
+        Host: String
+        Password:
+          '@odata.type': Pbx.ConcealedPassword
+        Port: 0
         UserId: String
     Pbx.DataTypesToOffload:
       value:
