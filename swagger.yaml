@@ -738,6 +738,19 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
+  /Backups/Pbx.PurgeLocalBackups:
+    description: Provides operations to call the PurgeLocalBackups method.
+    post:
+      tags:
+        - Backups
+      summary: Invoke action PurgeLocalBackups
+      operationId: PurgeLocalBackups
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /BlackListNumbers:
     description: Provides operations to manage the collection of BlackListNumber entities.
     get:
@@ -3649,6 +3662,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pbx.SystemParameters'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+  /Defs/Pbx.GetLicenseParameters():
+    description: Provides operations to call the GetLicenseParameters method.
+    get:
+      tags:
+        - Defs
+      summary: Invoke function GetLicenseParameters
+      operationId: GetLicenseParameters
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.License'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
@@ -10208,19 +10238,6 @@ paths:
         - PurgeSettings
       summary: Invoke actionImport PurgeAllLogs
       operationId: PurgeAllLogs
-      responses:
-        '204':
-          description: Success
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: actionImport
-  /PurgeLocalBackups:
-    description: Provides operations to call the PurgeLocalBackups method.
-    post:
-      tags:
-        - PurgeSettings
-      summary: Invoke actionImport PurgeLocalBackups
-      operationId: PurgeLocalBackups
       responses:
         '204':
           description: Success
@@ -18393,19 +18410,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
-  /Services/Pbx.RestartAll:
-    description: Provides operations to call the RestartAll method.
-    post:
-      tags:
-        - Services
-      summary: Invoke action RestartAll
-      operationId: RestartAll
-      responses:
-        '204':
-          description: Success
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: action
   /Services/Pbx.RestartOperatingSystem:
     description: Provides operations to call the RestartOperatingSystem method.
     post:
@@ -21971,6 +21975,9 @@ components:
               allOf:
                 - $ref: '#/components/schemas/Pbx.IVRForwardType'
               nullable: true
+            TransferEnable:
+              type: boolean
+              nullable: true
             UseMSExchange:
               type: boolean
               nullable: true
@@ -22987,6 +22994,9 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.RecordingCallType'
           nullable: true
+        CanBeTranscribed:
+          type: boolean
+          nullable: true
         EndTime:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
           type: string
@@ -23457,6 +23467,9 @@ components:
                 - $ref: '#/components/schemas/Pbx.ConcealedPassword'
               nullable: true
             Certificate:
+              type: string
+              nullable: true
+            CertificateExpirationDate:
               type: string
               nullable: true
             CertificateName:
@@ -24357,6 +24370,11 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+          nullable: true
+        Connection:
+          title: Pbx.XSBCConnection
+          allOf:
+            - $ref: '#/components/schemas/Pbx.XSBCConnection'
           nullable: true
         DisplayName:
           type: string
@@ -27671,6 +27689,7 @@ components:
           pattern: '^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$'
           type: string
           format: duration
+          nullable: true
         CallHistoryId:
           type: string
           nullable: true
@@ -27701,6 +27720,7 @@ components:
           pattern: '^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$'
           type: string
           format: duration
+          nullable: true
         RuleName:
           type: string
           nullable: true
@@ -27733,6 +27753,7 @@ components:
           pattern: '^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$'
           type: string
           format: duration
+          nullable: true
         Transcription:
           type: string
           nullable: true
@@ -27750,6 +27771,7 @@ components:
           pattern: '^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$'
           type: string
           format: duration
+          nullable: true
         CallHistoryId:
           type: string
           nullable: true
@@ -27783,6 +27805,7 @@ components:
           pattern: '^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$'
           type: string
           format: duration
+          nullable: true
         RuleName:
           type: string
           nullable: true
@@ -27815,6 +27838,7 @@ components:
           pattern: '^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$'
           type: string
           format: duration
+          nullable: true
         Transcription:
           type: string
           nullable: true
@@ -28602,6 +28626,25 @@ components:
           type: integer
           format: int32
           nullable: true
+    Pbx.License:
+      title: License
+      type: object
+      properties:
+        CountryCode:
+          type: string
+          nullable: true
+        IsMaintainceExpired:
+          type: boolean
+          nullable: true
+        MaxSimCalls:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        ProductCode:
+          type: string
+          nullable: true
     Pbx.GoogleSettings:
       title: GoogleSettings
       type: object
@@ -28710,6 +28753,9 @@ components:
       title: GeneralSettingsForApps
       type: object
       properties:
+        AllowBlockCalls:
+          type: boolean
+          nullable: true
         AllowChangePassword:
           type: boolean
           nullable: true
@@ -30491,6 +30537,42 @@ components:
         Name:
           type: string
           nullable: true
+    Pbx.XSBCConnection:
+      title: XSBCConnection
+      type: object
+      properties:
+        Calls:
+          type: integer
+          format: int64
+          nullable: true
+        Cpu:
+          type: string
+          nullable: true
+        Disk:
+          type: string
+          nullable: true
+        ElapsedTime:
+          pattern: '^-?P([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+([.][0-9]+)?S)?)?$'
+          type: string
+          format: duration
+          nullable: true
+        Latency:
+          type: integer
+          format: int64
+          nullable: true
+        Memory:
+          type: string
+          nullable: true
+        RegisteredPhones:
+          type: integer
+          format: int64
+          nullable: true
+        UdpActive:
+          type: boolean
+          nullable: true
+        Up:
+          type: boolean
+          nullable: true
     Pbx.CrmParameter:
       title: CrmParameter
       type: object
@@ -31196,25 +31278,6 @@ components:
         UserAgent:
           type: string
           nullable: true
-    Pbx.License:
-      title: License
-      type: object
-      properties:
-        CountryCode:
-          type: string
-          nullable: true
-        IsMaintainceExpired:
-          type: boolean
-          nullable: true
-        MaxSimCalls:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
-          nullable: true
-        ProductCode:
-          type: string
-          nullable: true
     Pbx.GoogleUserSync:
       title: GoogleUserSync
       type: object
@@ -31764,6 +31827,7 @@ components:
         - InboundCallSource
         - InboundCallTransport
         - InboundSIPMessage
+        - SupportedPrivacy
         - SupportedRinstance
         - SupportedRFC2833
         - SupportedVideo
@@ -33940,6 +34004,7 @@ components:
         - WARNINGS.XAPI.SBC_CERT_FQDN_MISMATCH
         - WARNINGS.XAPI.SBC_CERT_EXPIRED
         - WARNINGS.XAPI.SBC_KEY_CERT_MISMATCH
+        - WARNINGS.XAPI.CERTIFICATE_EXPIRED
         - WARNINGS.XAPI.NON_EXISTENT_EXT_NUMBER
         - WARNINGS.XAPI.MCM_MODE_REQUIRED
         - WARNINGS.INTERNATIONALPREFIX_IS_MISSING
@@ -34046,6 +34111,7 @@ components:
         - XapiSbcCertFqdnMismatch
         - XapiSbcCertExpired
         - XapiSbcKeyCertMismatch
+        - XapiCertificateExpired
         - XapiNonExistentExtNumber
         - XapiMcmModeRequired
         - InternationalprefixIsMissing
@@ -35033,6 +35099,7 @@ components:
           '@odata.type': Pbx.PeerType
         TimeoutForwardType:
           '@odata.type': Pbx.IVRForwardType
+        TransferEnable: true
         UseMSExchange: true
     Pbx.FirstAvailableNumber:
       value:
@@ -35396,6 +35463,7 @@ components:
         ArchivedUrl: String
         CallType:
           '@odata.type': Pbx.RecordingCallType
+        CanBeTranscribed: true
         EndTime: '0001-01-01T00:00:00.0000000+00:00'
         FromCallerNumber: String
         FromCrmContact: String
@@ -35553,6 +35621,7 @@ components:
         AuthPassword:
           '@odata.type': Pbx.ConcealedPassword
         Certificate: String
+        CertificateExpirationDate: String
         CertificateName: String
         ConfigurationIssue: String
         DidNumbers:
@@ -35896,6 +35965,8 @@ components:
     Pbx.Sbc:
       value:
         AudioPort: 0
+        Connection:
+          '@odata.type': Pbx.XSBCConnection
         DisplayName: String
         Group: String
         HasConnection: true
@@ -37268,6 +37339,12 @@ components:
         TunnnelPort: 0
         Version: String
         WebrtcLastPort: 0
+    Pbx.License:
+      value:
+        CountryCode: String
+        IsMaintainceExpired: true
+        MaxSimCalls: 0
+        ProductCode: String
     Pbx.GoogleSettings:
       value:
         ClientId: String
@@ -37310,6 +37387,7 @@ components:
           - String
     Pbx.GeneralSettingsForApps:
       value:
+        AllowBlockCalls: true
         AllowChangePassword: true
         AutoSchedulerSettings:
           '@odata.type': Pbx.AutoSchedulerSettings
@@ -37920,6 +37998,17 @@ components:
         Concealed: true
         Contents: String
         Name: String
+    Pbx.XSBCConnection:
+      value:
+        Calls: 0
+        Cpu: String
+        Disk: String
+        ElapsedTime: Duration
+        Latency: 0
+        Memory: String
+        RegisteredPhones: 0
+        UdpActive: true
+        Up: true
     Pbx.CrmParameter:
       value:
         Default: String
@@ -38158,12 +38247,6 @@ components:
         TxLost: 0
         TxPackets: 0
         UserAgent: String
-    Pbx.License:
-      value:
-        CountryCode: String
-        IsMaintainceExpired: true
-        MaxSimCalls: 0
-        ProductCode: String
     Pbx.GoogleUserSync:
       value:
         IsEnabled: true

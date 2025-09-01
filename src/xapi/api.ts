@@ -2570,6 +2570,7 @@ export const PbxAnalysisCode = {
     InboundCallSource: 'InboundCallSource',
     InboundCallTransport: 'InboundCallTransport',
     InboundSipMessage: 'InboundSIPMessage',
+    SupportedPrivacy: 'SupportedPrivacy',
     SupportedRinstance: 'SupportedRinstance',
     SupportedRfc2833: 'SupportedRFC2833',
     SupportedVideo: 'SupportedVideo',
@@ -9087,6 +9088,12 @@ export interface PbxGeneralSettingsForApps {
      * @type {boolean}
      * @memberof PbxGeneralSettingsForApps
      */
+    'AllowBlockCalls'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxGeneralSettingsForApps
+     */
     'AllowChangePassword'?: boolean | null;
     /**
      * 
@@ -10030,7 +10037,7 @@ export interface PbxInboundCall {
      * @type {string}
      * @memberof PbxInboundCall
      */
-    'CallDuration'?: string;
+    'CallDuration'?: string | null;
     /**
      * 
      * @type {string}
@@ -10090,7 +10097,7 @@ export interface PbxInboundCall {
      * @type {string}
      * @memberof PbxInboundCall
      */
-    'RingingDuration'?: string;
+    'RingingDuration'?: string | null;
     /**
      * 
      * @type {string}
@@ -10144,7 +10151,7 @@ export interface PbxInboundCall {
      * @type {string}
      * @memberof PbxInboundCall
      */
-    'TalkingDuration'?: string;
+    'TalkingDuration'?: string | null;
     /**
      * 
      * @type {string}
@@ -13240,7 +13247,7 @@ export interface PbxOutboundCall {
      * @type {string}
      * @memberof PbxOutboundCall
      */
-    'CallDuration'?: string;
+    'CallDuration'?: string | null;
     /**
      * 
      * @type {string}
@@ -13294,7 +13301,7 @@ export interface PbxOutboundCall {
      * @type {string}
      * @memberof PbxOutboundCall
      */
-    'RingingDuration'?: string;
+    'RingingDuration'?: string | null;
     /**
      * 
      * @type {string}
@@ -13348,7 +13355,7 @@ export interface PbxOutboundCall {
      * @type {string}
      * @memberof PbxOutboundCall
      */
-    'TalkingDuration'?: string;
+    'TalkingDuration'?: string | null;
     /**
      * 
      * @type {string}
@@ -16445,6 +16452,12 @@ export interface PbxReceptionist {
      * @type {boolean}
      * @memberof PbxReceptionist
      */
+    'TransferEnable'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxReceptionist
+     */
     'UseMSExchange'?: boolean | null;
 }
 
@@ -16550,6 +16563,12 @@ export interface PbxRecording {
      * @memberof PbxRecording
      */
     'CallType'?: PbxRecordingCallType | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxRecording
+     */
+    'CanBeTranscribed'?: boolean | null;
     /**
      * 
      * @type {string}
@@ -18066,6 +18085,12 @@ export interface PbxSbc {
      * @memberof PbxSbc
      */
     'AudioPort'?: number | null;
+    /**
+     * 
+     * @type {PbxXSBCConnection}
+     * @memberof PbxSbc
+     */
+    'Connection'?: PbxXSBCConnection | null;
     /**
      * 
      * @type {string}
@@ -19924,6 +19949,12 @@ export interface PbxTrunk {
      * @memberof PbxTrunk
      */
     'Certificate'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxTrunk
+     */
+    'CertificateExpirationDate'?: string | null;
     /**
      * 
      * @type {string}
@@ -21943,6 +21974,7 @@ export const PbxWarnings = {
     XapiSbcCertFqdnMismatch: 'WARNINGS.XAPI.SBC_CERT_FQDN_MISMATCH',
     XapiSbcCertExpired: 'WARNINGS.XAPI.SBC_CERT_EXPIRED',
     XapiSbcKeyCertMismatch: 'WARNINGS.XAPI.SBC_KEY_CERT_MISMATCH',
+    XapiCertificateExpired: 'WARNINGS.XAPI.CERTIFICATE_EXPIRED',
     XapiNonExistentExtNumber: 'WARNINGS.XAPI.NON_EXISTENT_EXT_NUMBER',
     XapiMcmModeRequired: 'WARNINGS.XAPI.MCM_MODE_REQUIRED',
     InternationalprefixIsMissing: 'WARNINGS.INTERNATIONALPREFIX_IS_MISSING',
@@ -22283,6 +22315,67 @@ export interface PbxXOutboundRulePurge {
      * @memberof PbxXOutboundRulePurge
      */
     'Ids'?: Array<number>;
+}
+/**
+ * 
+ * @export
+ * @interface PbxXSBCConnection
+ */
+export interface PbxXSBCConnection {
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxXSBCConnection
+     */
+    'Calls'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxXSBCConnection
+     */
+    'Cpu'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxXSBCConnection
+     */
+    'Disk'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxXSBCConnection
+     */
+    'ElapsedTime'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxXSBCConnection
+     */
+    'Latency'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PbxXSBCConnection
+     */
+    'Memory'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PbxXSBCConnection
+     */
+    'RegisteredPhones'?: number | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxXSBCConnection
+     */
+    'UdpActive'?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PbxXSBCConnection
+     */
+    'Up'?: boolean | null;
 }
 /**
  * 
@@ -24772,6 +24865,40 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Invoke action PurgeLocalBackups
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        purgeLocalBackups: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Backups/Pbx.PurgeLocalBackups`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke action Restore
          * @param {string} fileName The unique identifier of Backups
          * @param {BackupsBackupsRestoreRequestBody} backupsBackupsRestoreRequestBody Action parameters
@@ -25135,6 +25262,18 @@ export const BackupsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke action PurgeLocalBackups
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async purgeLocalBackups(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.purgeLocalBackups(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BackupsApi.purgeLocalBackups']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke action Restore
          * @param {string} fileName The unique identifier of Backups
          * @param {BackupsBackupsRestoreRequestBody} backupsBackupsRestoreRequestBody Action parameters
@@ -25312,6 +25451,15 @@ export const BackupsApiFactory = function (configuration?: Configuration, basePa
          */
         listBackups(requestParameters: BackupsApiListBackupsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxBackupsCollectionResponse> {
             return localVarFp.listBackups(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action PurgeLocalBackups
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        purgeLocalBackups(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.purgeLocalBackups(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -25728,6 +25876,17 @@ export class BackupsApi extends BaseAPI {
      */
     public listBackups(requestParameters: BackupsApiListBackupsRequest = {}, options?: RawAxiosRequestConfig) {
         return BackupsApiFp(this.configuration).listBackups(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action PurgeLocalBackups
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BackupsApi
+     */
+    public purgeLocalBackups(options?: RawAxiosRequestConfig) {
+        return BackupsApiFp(this.configuration).purgeLocalBackups(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -36626,6 +36785,40 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @summary Invoke function GetLicenseParameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLicenseParameters: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Defs/Pbx.GetLicenseParameters()`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke action GetRoutes
          * @param {DefsGetRoutesRequestBody} defsGetRoutesRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -37054,6 +37247,18 @@ export const DefsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke function GetLicenseParameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getLicenseParameters(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxLicense>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLicenseParameters(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefsApi.getLicenseParameters']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke action GetRoutes
          * @param {DefsGetRoutesRequestBody} defsGetRoutesRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -37188,6 +37393,15 @@ export const DefsApiFactory = function (configuration?: Configuration, basePath?
          */
         getDefs(requestParameters: DefsApiGetDefsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxDefs> {
             return localVarFp.getDefs(requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke function GetLicenseParameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLicenseParameters(options?: RawAxiosRequestConfig): AxiosPromise<PbxLicense> {
+            return localVarFp.getLicenseParameters(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -37564,6 +37778,17 @@ export class DefsApi extends BaseAPI {
      */
     public getDefs(requestParameters: DefsApiGetDefsRequest = {}, options?: RawAxiosRequestConfig) {
         return DefsApiFp(this.configuration).getDefs(requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetLicenseParameters
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefsApi
+     */
+    public getLicenseParameters(options?: RawAxiosRequestConfig) {
+        return DefsApiFp(this.configuration).getLicenseParameters(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -60909,40 +61134,6 @@ export const PurgeSettingsApiAxiosParamCreator = function (configuration?: Confi
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @summary Invoke actionImport PurgeLocalBackups
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        purgeLocalBackups: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/PurgeLocalBackups`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -60991,18 +61182,6 @@ export const PurgeSettingsApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['PurgeSettingsApi.purgeChats']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
-        /**
-         * 
-         * @summary Invoke actionImport PurgeLocalBackups
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async purgeLocalBackups(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.purgeLocalBackups(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PurgeSettingsApi.purgeLocalBackups']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
     }
 };
 
@@ -61041,15 +61220,6 @@ export const PurgeSettingsApiFactory = function (configuration?: Configuration, 
          */
         purgeChats(requestParameters: PurgeSettingsApiPurgeChatsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.purgeChats(requestParameters.actionImportPurgeChatsRequestBody, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Invoke actionImport PurgeLocalBackups
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        purgeLocalBackups(options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.purgeLocalBackups(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -61122,17 +61292,6 @@ export class PurgeSettingsApi extends BaseAPI {
      */
     public purgeChats(requestParameters: PurgeSettingsApiPurgeChatsRequest, options?: RawAxiosRequestConfig) {
         return PurgeSettingsApiFp(this.configuration).purgeChats(requestParameters.actionImportPurgeChatsRequestBody, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Invoke actionImport PurgeLocalBackups
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PurgeSettingsApi
-     */
-    public purgeLocalBackups(options?: RawAxiosRequestConfig) {
-        return PurgeSettingsApiFp(this.configuration).purgeLocalBackups(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -84384,40 +84543,6 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @summary Invoke action RestartAll
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        restartAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Services/Pbx.RestartAll`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Invoke action RestartOperatingSystem
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -84614,18 +84739,6 @@ export const ServicesApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Invoke action RestartAll
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async restartAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.restartAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ServicesApi.restartAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary Invoke action RestartOperatingSystem
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -84721,15 +84834,6 @@ export const ServicesApiFactory = function (configuration?: Configuration, baseP
          */
         restart(requestParameters: ServicesApiRestartRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.restart(requestParameters.servicesRestartRequestBody, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Invoke action RestartAll
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        restartAll(options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.restartAll(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -84975,17 +85079,6 @@ export class ServicesApi extends BaseAPI {
      */
     public restart(requestParameters: ServicesApiRestartRequest, options?: RawAxiosRequestConfig) {
         return ServicesApiFp(this.configuration).restart(requestParameters.servicesRestartRequestBody, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Invoke action RestartAll
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ServicesApi
-     */
-    public restartAll(options?: RawAxiosRequestConfig) {
-        return ServicesApiFp(this.configuration).restartAll(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
