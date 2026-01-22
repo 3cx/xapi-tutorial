@@ -1,9 +1,17 @@
 .gitignore
 .npmignore
+.openapi-generator-ignore
 api.ts
 base.ts
 common.ts
 configuration.ts
+docs/AISettingsAddVectorStoreFilesRequestBody.md
+docs/AISettingsApi.md
+docs/AISettingsCreateVectorStoreRequestBody.md
+docs/AISettingsDeleteOpenAiFileRequestBody.md
+docs/AISettingsDeleteVectorStoreFileRequestBody.md
+docs/AISettingsDeleteVectorStoreRequestBody.md
+docs/AISettingsUpdateVectorStoreRequestBody.md
 docs/ActionImportGetDirectoryInfoRequestBody.md
 docs/ActionImportInstallUpdatesRequestBody.md
 docs/ActionImportPurgeCallsRequestBody.md
@@ -52,6 +60,7 @@ docs/CollectionOfCallHistoryView.md
 docs/CollectionOfCallLogData.md
 docs/CollectionOfChatHistoryView.md
 docs/CollectionOfChatMessagesHistoryView.md
+docs/CollectionOfContact.md
 docs/CollectionOfCrmTemplate.md
 docs/CollectionOfDNProperty.md
 docs/CollectionOfDetailedQueueStatistics.md
@@ -87,7 +96,11 @@ docs/ConferenceSettingsApi.md
 docs/ConferenceSettingsUpdateMCURequestStatusRequestBody.md
 docs/ConsoleRestrictionsApi.md
 docs/ContactsApi.md
-docs/ContactsBatchContactsDeleteRequestBody.md
+docs/ContactsCreateContactByNumberRequestBody.md
+docs/ContactsDeleteContactsByIdRequestBody.md
+docs/ContactsDeleteContactsByTypeRequestBody.md
+docs/ContactsDeleteDepartmentContactsByTypeRequestBody.md
+docs/ContactsDeletePersonalContactsByTypeRequestBody.md
 docs/ContactsSetDirSearchSettingsRequestBody.md
 docs/CountriesApi.md
 docs/CountryCodesApi.md
@@ -104,6 +117,7 @@ docs/DNPropertiesUpdateDNPropertyRequestBody.md
 docs/DataConnectorSettingsApi.md
 docs/DefsApi.md
 docs/DefsGetRoutesRequestBody.md
+docs/DefsSendEmailRequestBody.md
 docs/DeviceInfosApi.md
 docs/DeviceInfosDeviceInfoProvisionRequestBody.md
 docs/DialCodeSettingsApi.md
@@ -124,7 +138,7 @@ docs/FxsApi.md
 docs/FxsTemplatesApi.md
 docs/GeneralSettingsForAppsApi.md
 docs/GeneralSettingsForPbxApi.md
-docs/GenerateApiKey200Response.md
+docs/GetAITemplateContents200Response.md
 docs/GetCanCreateBackup200Response.md
 docs/GetConfiguredConverters200Response.md
 docs/GetConnectedConvertersData200Response.md
@@ -132,7 +146,6 @@ docs/GetFailoverScripts200Response.md
 docs/GetFiles200Response.md
 docs/GetLocalBackupSize200Response.md
 docs/GetMCURows200Response.md
-docs/GetMonitorStatus200Response.md
 docs/GetMultiEditGreetings200Response.md
 docs/GetOnboardMcuData200Response.md
 docs/GetOnboardMeetings200Response.md
@@ -163,6 +176,7 @@ docs/MailSettingsTestEmailRequestBody.md
 docs/MakeCallUserRecordGreetingRequestBody.md
 docs/Microsoft365IntegrationApi.md
 docs/Microsoft365IntegrationAuthorizePresenceRequestBody.md
+docs/Microsoft365IntegrationGetM365GroupsRequestBody.md
 docs/Microsoft365IntegrationGetM365UsersRequestBody.md
 docs/Microsoft365IntegrationGetUsersByPrincipalNamesRequestBody.md
 docs/Microsoft365TeamsIntegrationApi.md
@@ -180,6 +194,14 @@ docs/OutboundRulesPurgeRequestBody.md
 docs/ParametersApi.md
 docs/ParkingsApi.md
 docs/PbxADUsersSyncConfiguration.md
+docs/PbxAIAgentTemplate.md
+docs/PbxAIAgentTemplateCollectionResponse.md
+docs/PbxAIModel.md
+docs/PbxAIModelCollectionResponse.md
+docs/PbxAIResources.md
+docs/PbxAISettings.md
+docs/PbxAIVoice.md
+docs/PbxAIVoiceCollectionResponse.md
 docs/PbxAbandonedChatsStatistics.md
 docs/PbxAbandonedChatsStatisticsCollectionResponse.md
 docs/PbxAbandonedQueueCalls.md
@@ -189,9 +211,14 @@ docs/PbxActiveCallCollectionResponse.md
 docs/PbxActivityLogEvent.md
 docs/PbxActivityLogEventCollectionResponse.md
 docs/PbxActivityLogsFilter.md
+docs/PbxAddVectorStoreFiles.md
 docs/PbxAddedBy.md
 docs/PbxAgentLoginHistory.md
 docs/PbxAgentLoginHistoryCollectionResponse.md
+docs/PbxAgentRoutingAction.md
+docs/PbxAgentRoutingDirectory.md
+docs/PbxAgentRoutingDirectoryCollectionResponse.md
+docs/PbxAgentSettings.md
 docs/PbxAgentsInQueueStatistics.md
 docs/PbxAgentsInQueueStatisticsCollectionResponse.md
 docs/PbxAmazonCredentials.md
@@ -205,7 +232,6 @@ docs/PbxAuditLogCollectionResponse.md
 docs/PbxAuthenticateMode.md
 docs/PbxAuthentication.md
 docs/PbxAuthenticationType.md
-docs/PbxAutoProvisionTrunk.md
 docs/PbxAutoSchedulerSettings.md
 docs/PbxAvailableRouting.md
 docs/PbxAvatarStyle.md
@@ -250,6 +276,9 @@ docs/PbxCallLogData.md
 docs/PbxCallLogDataCollectionResponse.md
 docs/PbxCallParkingSettings.md
 docs/PbxCallParticipant.md
+docs/PbxCallPriority.md
+docs/PbxCallPrioritySettings.md
+docs/PbxCallTokenBudget.md
 docs/PbxCallTypeInfo.md
 docs/PbxCallTypesSettings.md
 docs/PbxCategoryUpdate.md
@@ -275,6 +304,7 @@ docs/PbxConferenceSettings.md
 docs/PbxConsoleRestrictions.md
 docs/PbxContact.md
 docs/PbxContactCollectionResponse.md
+docs/PbxContactSource.md
 docs/PbxContactType.md
 docs/PbxContactsDirSearchSettings.md
 docs/PbxCountry.md
@@ -325,10 +355,14 @@ docs/PbxDidNumber.md
 docs/PbxDidNumberCollectionResponse.md
 docs/PbxDirectionType.md
 docs/PbxDirectoryParameters.md
+docs/PbxDtmfMode.md
 docs/PbxE164Settings.md
+docs/PbxENL.md
 docs/PbxEditorType.md
 docs/PbxEmailTemplate.md
 docs/PbxEmailTemplateCollectionResponse.md
+docs/PbxEmailVariable.md
+docs/PbxEmailVariableCollectionResponse.md
 docs/PbxEmergencyGeoLocation.md
 docs/PbxEmergencyGeoLocationCollectionResponse.md
 docs/PbxEmergencyGeoTrunkLocation.md
@@ -349,6 +383,9 @@ docs/PbxExtensionsStatisticsByRingGroupsCollectionResponse.md
 docs/PbxExternalAccount.md
 docs/PbxExternalAccountCollectionResponse.md
 docs/PbxExternalAccountsPage.md
+docs/PbxExternalGroup.md
+docs/PbxExternalGroupCollectionResponse.md
+docs/PbxExternalGroupsPage.md
 docs/PbxFailoverCondition.md
 docs/PbxFailoverMode.md
 docs/PbxFailoverScriptFile.md
@@ -387,6 +424,7 @@ docs/PbxGatewayType.md
 docs/PbxGeneralLiveChatSettings.md
 docs/PbxGeneralSettingsForApps.md
 docs/PbxGeneralSettingsForPbx.md
+docs/PbxGetProviderPhones.md
 docs/PbxGoogleSettings.md
 docs/PbxGoogleUserSync.md
 docs/PbxGreeting.md
@@ -396,8 +434,10 @@ docs/PbxGroup.md
 docs/PbxGroupCollectionResponse.md
 docs/PbxGroupHoursMode.md
 docs/PbxGroupProps.md
+docs/PbxGroupsRequestOptions.md
 docs/PbxHoliday.md
 docs/PbxHolidayCollectionResponse.md
+docs/PbxHolidayMode.md
 docs/PbxHotelServices.md
 docs/PbxIPInRegistrationContactType.md
 docs/PbxIVRForwardType.md
@@ -409,6 +449,7 @@ docs/PbxInboundRuleCollectionResponse.md
 docs/PbxInboundRuleReport.md
 docs/PbxInboundRuleReportCollectionResponse.md
 docs/PbxInfoLevel.md
+docs/PbxInstallFirmware.md
 docs/PbxInstallUpdates.md
 docs/PbxIntegrationSyncType.md
 docs/PbxKeyValuePair2OfStringOnBoardConnectedParticipantCollectionResponse.md
@@ -445,7 +486,6 @@ docs/PbxMicrosoft365Integration.md
 docs/PbxMicrosoft365Status.md
 docs/PbxMicrosoft365SubscriptionTestResult.md
 docs/PbxMicrosoft365TeamsIntegration.md
-docs/PbxMonitoringState.md
 docs/PbxMultiEditUserData.md
 docs/PbxMusicOnHoldSettings.md
 docs/PbxMyPhoneRequestStats.md
@@ -530,6 +570,9 @@ docs/PbxPromptType.md
 docs/PbxProperty.md
 docs/PbxPropertyCollectionResponse.md
 docs/PbxProvType.md
+docs/PbxProviderPhone.md
+docs/PbxProviderPhoneCollectionResponse.md
+docs/PbxProviderPhones.md
 docs/PbxPurgeSettings.md
 docs/PbxQualityParty.md
 docs/PbxQualityReport.md
@@ -613,6 +656,7 @@ docs/PbxScheduledReportCollectionResponse.md
 docs/PbxScheduledReportType.md
 docs/PbxSecureSipSettings.md
 docs/PbxSecurity.md
+docs/PbxSendEmail.md
 docs/PbxServerTrustMode.md
 docs/PbxServiceInfo.md
 docs/PbxServiceInfoCollectionResponse.md
@@ -634,6 +678,14 @@ docs/PbxStatusSyncConfiguration.md
 docs/PbxStrategyType.md
 docs/PbxSynchronizedM365Profile.md
 docs/PbxSynchronizedPbxProfile.md
+docs/PbxSyslogCategoryConfig.md
+docs/PbxSyslogCustomRelayConfig.md
+docs/PbxSyslogDatadogConfig.md
+docs/PbxSyslogElkConfig.md
+docs/PbxSyslogIntegrationType.md
+docs/PbxSyslogProtocol.md
+docs/PbxSyslogSettings.md
+docs/PbxSyslogSplunkConfig.md
 docs/PbxSystemDatabaseInformation.md
 docs/PbxSystemDirectory.md
 docs/PbxSystemExtensionStatus.md
@@ -666,8 +718,6 @@ docs/PbxTrunkType.md
 docs/PbxTrunkVariable.md
 docs/PbxTrunkVariableCollectionResponse.md
 docs/PbxTrunkVariableType.md
-docs/PbxTwilioPhoneNumber.md
-docs/PbxTwilioPhoneNumberCollectionResponse.md
 docs/PbxTypeOfAutoPickupForward.md
 docs/PbxTypeOfCDRLog.md
 docs/PbxTypeOfChatOwnershipType.md
@@ -697,6 +747,13 @@ docs/PbxVMEmailOptionsType.md
 docs/PbxVMPlayMsgDateTimeType.md
 docs/PbxVariable.md
 docs/PbxVariableCollectionResponse.md
+docs/PbxVectorStore.md
+docs/PbxVectorStoreCollectionResponse.md
+docs/PbxVectorStoreExpiration.md
+docs/PbxVectorStoreFile.md
+docs/PbxVectorStoreFileCollectionResponse.md
+docs/PbxVectorStoreFiles.md
+docs/PbxVectorStores.md
 docs/PbxVersionUpdateType.md
 docs/PbxVoicemailSettings.md
 docs/PbxVoipProvider.md
@@ -747,6 +804,7 @@ docs/ReportBreachesSlaApi.md
 docs/ReportCallCostByExtensionGroupApi.md
 docs/ReportCallDistributionApi.md
 docs/ReportCallLogDataApi.md
+docs/ReportChatLogApi.md
 docs/ReportDetailedQueueStatisticsApi.md
 docs/ReportExtensionStatisticsApi.md
 docs/ReportExtensionStatisticsByGroupApi.md
@@ -785,6 +843,8 @@ docs/SetMonitorStatusRequestBody.md
 docs/SipDevicesApi.md
 docs/SipDevicesSipDevicePushFirmwareRequestBody.md
 docs/StringCollectionResponse.md
+docs/SyslogSettingsApi.md
+docs/SyslogSettingsTestConnectionRequestBody.md
 docs/SystemExtensions200Response.md
 docs/SystemStatusApi.md
 docs/SystemStatusRequestHelpRequestBody.md
@@ -794,7 +854,7 @@ docs/TenantPropertiesApi.md
 docs/TrunkTemplatesApi.md
 docs/TrunksApi.md
 docs/TrunksFinalizeTrunkProvisioningRequestBody.md
-docs/TrunksGetProviderAvailablePhoneNumbersRequestBody.md
+docs/TrunksGetProviderPhonesRequestBody.md
 docs/TrunksRefreshRegistrationRequestBody.md
 docs/TrunksSetRoutesRequestBody.md
 docs/TrunksTrunkTestOutboundCallRequestBody.md
@@ -805,6 +865,7 @@ docs/UsersBulkUpdateRequestBody.md
 docs/UsersGetDuplicatedEmailsRequestBody.md
 docs/UsersGetMultiEditGreetingsRequestBody.md
 docs/UsersGetPhoneRegistrarsRequestBody.md
+docs/UsersInstallFirmwareRequestBody.md
 docs/UsersMakeCallRequestBody.md
 docs/UsersMultiDeleteGreetingRequestBody.md
 docs/UsersMultiUserUpdateRequestBody.md
