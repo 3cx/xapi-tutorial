@@ -1,3 +1,10 @@
 import { createXAPIConfiguration } from './auth';
+import { config } from 'dotenv';
 
-export const xapiConfig = createXAPIConfiguration('http://127.0.0.1:5004', 'client1', 'R9nqJzjXwb1JKGjmhrFrIH18Zm3U3Bi8');
+config();
+
+export const xapiConfig = createXAPIConfiguration(
+  process.env.XAPI_URL!,
+  process.env.XAPI_CLIENT_ID!,
+  process.env.XAPI_CLIENT_SECRET!,
+);

@@ -2,7 +2,7 @@
     "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
     "spaces": 4,
     "generator-cli": {
-        "version": "7.18.0",
+        "version": "7.21.0",
         "generators": {
             "fetch": {
                 "enablePostProcessFile": true,

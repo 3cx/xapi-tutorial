@@ -18,13 +18,16 @@ import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction, replaceWithSerializableTypeIfNeeded } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 export interface AISettingsAddVectorStoreFilesRequestBody {
     'model'?: PbxAddVectorStoreFiles;
+}
+export interface AISettingsBatchDeleteFilesRequestBody {
+    'model'?: PbxRemoveVectorStoreFiles;
 }
 export interface AISettingsCreateVectorStoreRequestBody {
     'model'?: PbxVectorStore;
@@ -64,6 +67,9 @@ export interface BackupsBackupsRestoreRequestBody {
     'footprint'?: number;
     'password'?: string;
 }
+export interface BackupsGetSftpHostKeyRequestBody {
+    'sftpPath'?: string;
+}
 export interface BackupsSetBackupFailoverSettingsRequestBody {
     'settings'?: PbxBackupFailoverSettings;
 }
@@ -82,6 +88,10 @@ export interface BaseCollectionPaginationCountResponse {
 export interface BatchDelete200Response {
     '@odata.count'?: number | null;
     'value'?: Array<PbxUserDeleteError>;
+}
+export interface BatchDeleteFiles200Response {
+    '@odata.count'?: number | null;
+    'value'?: Array<PbxVectorFileResult>;
 }
 export interface BlackListNumbersBulkNumbersDeleteRequestBody {
     'ids'?: Array<string>;
@@ -308,8 +318,11 @@ export interface CrmIntegrationSetOAuthStateRequestBody {
     'state'?: PbxOauthStateParam;
 }
 export interface CrmIntegrationTestRequestBody {
-    'number'?: string;
+    'mode'?: PbxCrmTestMode;
+    'query'?: string;
 }
+
+
 export interface CustomPromptsMakeCallRecordCustomPromptRequestBody {
     'dn'?: string;
     'filename'?: string;
@@ -329,6 +342,9 @@ export interface DNPropertiesUpdateDNPropertyRequestBody {
 export interface DefsGetRoutesRequestBody {
     'ids'?: Array<number>;
 }
+export interface DefsReportLogEventRequestBody {
+    'request'?: PbxReportLogEvent;
+}
 export interface DefsSendEmailRequestBody {
     'sendEmail'?: PbxSendEmail;
 }
@@ -347,14 +363,6 @@ export interface GetAITemplateContents200Response {
 }
 export interface GetCanCreateBackup200Response {
     'value'?: boolean;
-}
-export interface GetConfiguredConverters200Response {
-    '@odata.count'?: number | null;
-    'value'?: Array<PbxOnBoardConverterRow>;
-}
-export interface GetConnectedConvertersData200Response {
-    '@odata.count'?: number | null;
-    'value'?: Array<PbxOnBoardConverterData>;
 }
 export interface GetFailoverScripts200Response {
     '@odata.count'?: number | null;
@@ -390,6 +398,9 @@ export interface GetPhoneRegistrars200Response {
 export interface GetRoutes200Response {
     '@odata.count'?: number | null;
     'value'?: Array<PbxSetRouteRequest>;
+}
+export interface GetSftpHostKey200Response {
+    'value'?: string | null;
 }
 export interface GetTranscribeLanguages200Response {
     '@odata.count'?: number | null;
@@ -438,6 +449,16 @@ export interface MailSettingsTestEmailRequestBody {
 export interface MakeCallUserRecordGreetingRequestBody {
     'dn'?: string;
     'filename'?: string;
+}
+export interface McpServersExchangeRequestBody {
+    'code'?: string;
+    'scope'?: string;
+    'tokenEndpoint'?: string;
+    'verifier'?: string;
+}
+export interface McpServersRegisterRequestBody {
+    'registrationEndpoint'?: string;
+    'scope'?: string;
 }
 export interface Microsoft365IntegrationAuthorizePresenceRequestBody {
     'accessToken'?: string;
@@ -489,6 +510,8 @@ export interface PbxAIAgentTemplateCollectionResponse {
     'value'?: Array<PbxAIAgentTemplate>;
 }
 export interface PbxAIModel {
+    'Description'?: string | null;
+    'Example'?: string | null;
     'Id'?: string;
     'Name'?: string;
     'Preview'?: boolean;
@@ -509,6 +532,8 @@ export interface PbxAISettings {
     'CompanyDescription'?: string | null;
     'CompanyName'?: string | null;
     'CompletionModel'?: string | null;
+    'ManagementAPIKey'?: PbxConcealedPassword | null;
+    'Provider'?: string | null;
     'RealtimeModel'?: string | null;
 }
 export interface PbxAIVoice {
@@ -589,7 +614,7 @@ export const PbxAddedBy = {
     Mcu: 'Mcu',
     Webmeeting: 'Webmeeting',
     AutoBlacklist: 'AutoBlacklist',
-    Whitelist: 'Whitelist'
+    Whitelist: 'Whitelist',
 } as const;
 
 export type PbxAddedBy = typeof PbxAddedBy[keyof typeof PbxAddedBy];
@@ -637,26 +662,25 @@ export interface PbxAgentRoutingDirectoryCollectionResponse {
 }
 export interface PbxAgentSettings {
     'AbusiveCallerAction'?: PbxAgentRoutingAction | null;
+    'AgentFallback'?: PbxAgentRoutingAction | null;
     'AgentType'?: string | null;
     'AllowedExtensions'?: string | null;
+    'AllowWebsearch'?: boolean | null;
+    'BossInterruptionSettings'?: PbxBossInterruptionSettings | null;
     'CallerDoesNotRespondAction'?: PbxAgentRoutingAction | null;
-    'CallPrioritySettings'?: PbxCallPrioritySettings | null;
     'CheckStatusBeforeTransfer'?: boolean | null;
-    'ConfidentialModeEnabled'?: boolean | null;
     'EnableNameMatching'?: boolean | null;
-    'EnableSpamProtection'?: boolean | null;
     'FirstMessage'?: string | null;
+    'HumanHandoff'?: PbxAgentRoutingDirectory | null;
     'Knowledgebase'?: Array<string>;
     'Language'?: string | null;
     'MaxCallDuration'?: number | null;
-    'PhoneBookMatching'?: boolean | null;
     'PhonebookOverride'?: PbxPeer | null;
     'RoutingDirectory'?: Array<PbxAgentRoutingDirectory>;
     'SpamAction'?: PbxAgentRoutingAction | null;
     'SpamInstructions'?: string | null;
     'SwitchLanguage'?: boolean | null;
     'SystemPrompt'?: string | null;
-    'TokenBudget'?: PbxCallTokenBudget | null;
     'Voice'?: string | null;
 }
 export interface PbxAgentsInQueueStatistics {
@@ -780,7 +804,7 @@ export const PbxAnalysisCode = {
     AltProxyResolvesToSrv: 'AltProxyResolvesToSRV',
     AltProxyResolvesToHost: 'AltProxyResolvesToHOST',
     AltProxyResolvesToAaaa: 'AltProxyResolvesToAAAA',
-    ForwardingInfo: 'ForwardingInfo'
+    ForwardingInfo: 'ForwardingInfo',
 } as const;
 
 export type PbxAnalysisCode = typeof PbxAnalysisCode[keyof typeof PbxAnalysisCode];
@@ -791,7 +815,7 @@ export const PbxAnimationStyle = {
     SlideUp: 'SlideUp',
     SlideFromSide: 'SlideFromSide',
     FadeIn: 'FadeIn',
-    NoAnimation: 'NoAnimation'
+    NoAnimation: 'NoAnimation',
 } as const;
 
 export type PbxAnimationStyle = typeof PbxAnimationStyle[keyof typeof PbxAnimationStyle];
@@ -833,7 +857,7 @@ export interface PbxAuditLogCollectionResponse {
 
 export const PbxAuthenticateMode = {
     Password: 'Password',
-    CertificateFile: 'CertificateFile'
+    CertificateFile: 'CertificateFile',
 } as const;
 
 export type PbxAuthenticateMode = typeof PbxAuthenticateMode[keyof typeof PbxAuthenticateMode];
@@ -844,7 +868,7 @@ export const PbxAuthentication = {
     Both: 'Both',
     Name: 'Name',
     Email: 'Email',
-    None: 'None'
+    None: 'None',
 } as const;
 
 export type PbxAuthentication = typeof PbxAuthentication[keyof typeof PbxAuthentication];
@@ -854,7 +878,7 @@ export type PbxAuthentication = typeof PbxAuthentication[keyof typeof PbxAuthent
 export const PbxAuthenticationType = {
     False: 'false',
     Basic: 'Basic',
-    Scenario: 'Scenario'
+    Scenario: 'Scenario',
 } as const;
 
 export type PbxAuthenticationType = typeof PbxAuthenticationType[keyof typeof PbxAuthenticationType];
@@ -880,7 +904,7 @@ export interface PbxAvailableRouting {
 
 export const PbxAvatarStyle = {
     Square: 'Square',
-    Circle: 'Circle'
+    Circle: 'Circle',
 } as const;
 
 export type PbxAvatarStyle = typeof PbxAvatarStyle[keyof typeof PbxAvatarStyle];
@@ -963,7 +987,7 @@ export interface PbxBlackListNumberCollectionResponse {
 
 export const PbxBlockType = {
     Block: 'Block',
-    Allow: 'Allow'
+    Allow: 'Allow',
 } as const;
 
 export type PbxBlockType = typeof PbxBlockType[keyof typeof PbxBlockType];
@@ -983,6 +1007,11 @@ export interface PbxBlocklistAddrCollectionResponse {
     '@odata.count'?: number | null;
     'value'?: Array<PbxBlocklistAddr>;
 }
+export interface PbxBossInterruptionSettings {
+    'Block'?: PbxInterruptionDecision | null;
+    'Interrupt'?: PbxInterruptionDecision | null;
+    'Notify'?: PbxInterruptionDecision | null;
+}
 export interface PbxBreachesSla {
     'CallerId'?: string;
     'CallTime'?: string;
@@ -999,7 +1028,7 @@ export const PbxButtonIconType = {
     Url: 'Url',
     Default: 'Default',
     Bubble: 'Bubble',
-    DoubleBubble: 'DoubleBubble'
+    DoubleBubble: 'DoubleBubble',
 } as const;
 
 export type PbxButtonIconType = typeof PbxButtonIconType[keyof typeof PbxButtonIconType];
@@ -1119,7 +1148,7 @@ export interface PbxCallFlowScriptCollectionResponse {
 
 export const PbxCallHandlingFlags = {
     WelcomeMessageForIncomingCalls: 'WelcomeMessageForIncomingCalls',
-    HoldCall: 'HoldCall'
+    HoldCall: 'HoldCall',
 } as const;
 
 export type PbxCallHandlingFlags = typeof PbxCallHandlingFlags[keyof typeof PbxCallHandlingFlags];
@@ -1180,6 +1209,7 @@ export interface PbxCallLogData {
     'MainCallHistoryId'?: string | null;
     'QualityReport'?: boolean | null;
     'Reason'?: string | null;
+    'Recordings'?: Array<PbxXReportRecording>;
     'RecordingUrl'?: string | null;
     'RingingDuration'?: string | null;
     'SegmentId'?: number | null;
@@ -1224,23 +1254,6 @@ export interface PbxCallParticipant {
     'PartyDnType'?: string;
     'Status'?: string;
 }
-export interface PbxCallPriority {
-    'Action'?: string | null;
-    'Instructions'?: string | null;
-}
-export interface PbxCallPrioritySettings {
-    'IsEnabled'?: boolean | null;
-    'PriorityHigh'?: PbxCallPriority | null;
-    'PriorityLow'?: PbxCallPriority | null;
-    'PriorityMedium'?: PbxCallPriority | null;
-}
-export interface PbxCallTokenBudget {
-    'Enabled'?: boolean | null;
-    'MaxInputTokens'?: number | null;
-    'MinInputTokens'?: number | null;
-    'NormalSpeechTpm'?: number | null;
-    'Tolerance'?: PbxCallCostSettingsRate;
-}
 export interface PbxCallTypeInfo {
     'DigitsLength'?: string | null;
     'Prefix'?: string | null;
@@ -1263,7 +1276,7 @@ export interface PbxCategoryUpdateCollectionResponse {
 export const PbxCfaRoutingType = {
     DialCode: 'DialCode',
     Forward: 'Forward',
-    Trunk: 'Trunk'
+    Trunk: 'Trunk',
 } as const;
 
 export type PbxCfaRoutingType = typeof PbxCfaRoutingType[keyof typeof PbxCfaRoutingType];
@@ -1326,7 +1339,7 @@ export const PbxChatRecipientsType = {
     None: 'None',
     MyGroupManagers: 'MyGroupManagers',
     MyGroupAllMembers: 'MyGroupAllMembers',
-    AllGroupsManagers: 'AllGroupsManagers'
+    AllGroupsManagers: 'AllGroupsManagers',
 } as const;
 
 export type PbxChatRecipientsType = typeof PbxChatRecipientsType[keyof typeof PbxChatRecipientsType];
@@ -1338,7 +1351,7 @@ export const PbxChatType = {
     LiveChat: 'LiveChat',
     Facebook: 'Facebook',
     Internal: 'Internal',
-    Rcs: 'RCS'
+    Rcs: 'RCS',
 } as const;
 
 export type PbxChatType = typeof PbxChatType[keyof typeof PbxChatType];
@@ -1365,6 +1378,20 @@ export interface PbxClickToCall {
 }
 
 
+export interface PbxClientIdMetadataDocument {
+    'ClientId'?: string | null;
+    'ClientName'?: string | null;
+    'ClientUri'?: string | null;
+    'GrantTypes'?: Array<string>;
+    'JwksUri'?: string | null;
+    'LogoUri'?: string | null;
+    'PolicyUri'?: string | null;
+    'RedirectUris'?: Array<string>;
+    'ResponseTypes'?: Array<string>;
+    'Scope'?: string | null;
+    'TokenEndpointAuthMethod'?: string | null;
+    'TosUri'?: string | null;
+}
 export interface PbxCodec {
     'Id'?: number;
     'Name'?: string | null;
@@ -1390,7 +1417,6 @@ export interface PbxConcealedPassword {
 export interface PbxConferenceSettings {
     'AutoCallParticipants'?: boolean | null;
     'DtmfMode'?: PbxDtmfMode | null;
-    'EnableLocalMCU'?: boolean | null;
     'EnablePin'?: boolean | null;
     'Extension'?: string | null;
     'ExternalNumbers'?: string | null;
@@ -1398,10 +1424,21 @@ export interface PbxConferenceSettings {
     'LogoPath'?: string | null;
     'MusicOnHold'?: string | null;
     'PinNumber'?: string | null;
+    'VideoConferenceMode'?: PbxVideoConferenceMode | null;
     'Zone'?: string | null;
 }
 
 
+export interface PbxConfiguredAiServers {
+    'ConfiguredServers'?: Array<PbxOnBoardConverterRow>;
+    'ReleaseChannel'?: PbxOnBoardConverterReleaseChannel;
+}
+
+
+export interface PbxConnectedAiServers {
+    'ConnectedServers'?: Array<PbxOnBoardConverterData>;
+    'TranscriptionQueue'?: number;
+}
 export interface PbxConsoleRestrictions {
     'AccessRestricted'?: boolean | null;
     'Id'?: string;
@@ -1438,7 +1475,7 @@ export const PbxContactSource = {
     _3Cx: '3CX',
     Crm: 'CRM',
     Google: 'Google',
-    M365: 'M365'
+    M365: 'M365',
 } as const;
 
 export type PbxContactSource = typeof PbxContactSource[keyof typeof PbxContactSource];
@@ -1447,7 +1484,7 @@ export type PbxContactSource = typeof PbxContactSource[keyof typeof PbxContactSo
 
 export const PbxContactType = {
     Company: 'Company',
-    Personal: 'Personal'
+    Personal: 'Personal',
 } as const;
 
 export type PbxContactType = typeof PbxContactType[keyof typeof PbxContactType];
@@ -1499,7 +1536,7 @@ export const PbxCreateTicketStatus = {
     KeyNotAssignedToUser: 'KeyNotAssignedToUser',
     KeyAssignedToPartner: 'KeyAssignedToPartner',
     KeyIsNotCommercial: 'KeyIsNotCommercial',
-    KeyHasNoSupportTickets: 'KeyHasNoSupportTickets'
+    KeyHasNoSupportTickets: 'KeyHasNoSupportTickets',
 } as const;
 
 export type PbxCreateTicketStatus = typeof PbxCreateTicketStatus[keyof typeof PbxCreateTicketStatus];
@@ -1609,6 +1646,16 @@ export interface PbxCrmTemplateCollectionResponse {
 export interface PbxCrmTemplateSource {
     'Value'?: string | null;
 }
+
+export const PbxCrmTestMode = {
+    PhoneExact: 'PhoneExact',
+    Search: 'Search',
+    Email: 'Email',
+} as const;
+
+export type PbxCrmTestMode = typeof PbxCrmTestMode[keyof typeof PbxCrmTestMode];
+
+
 export interface PbxCrmTestResult {
     'IsError'?: boolean | null;
     'Log'?: string | null;
@@ -1688,12 +1735,25 @@ export const PbxDayOfWeek = {
     Wednesday: 'Wednesday',
     Thursday: 'Thursday',
     Friday: 'Friday',
-    Saturday: 'Saturday'
+    Saturday: 'Saturday',
 } as const;
 
 export type PbxDayOfWeek = typeof PbxDayOfWeek[keyof typeof PbxDayOfWeek];
 
 
+export interface PbxDebianGpuInfo {
+    'GpuId'?: string;
+    'GpuName'?: string;
+    'GpuUsagePercent'?: number;
+    'MemoryFree'?: number;
+    'MemoryTotal'?: number;
+    'MemoryUsagePercent'?: number;
+    'MemoryUsed'?: number;
+}
+export interface PbxDebianGpuInfoCollectionResponse {
+    '@odata.count'?: number | null;
+    'value'?: Array<PbxDebianGpuInfo>;
+}
 export interface PbxDefs {
     'Codecs'?: Array<PbxCodec>;
     'GatewayParameters'?: Array<PbxGatewayParameter>;
@@ -1726,7 +1786,7 @@ export const PbxDestinationType = {
     VoiceMailOfDestination: 'VoiceMailOfDestination',
     Callback: 'Callback',
     RoutePoint: 'RoutePoint',
-    ProceedWithNoExceptions: 'ProceedWithNoExceptions'
+    ProceedWithNoExceptions: 'ProceedWithNoExceptions',
 } as const;
 
 export type PbxDestinationType = typeof PbxDestinationType[keyof typeof PbxDestinationType];
@@ -1781,7 +1841,7 @@ export interface PbxDeviceLineCollectionResponse {
 
 export const PbxDeviceType = {
     Fxs: 'Fxs',
-    Dect: 'Dect'
+    Dect: 'Dect',
 } as const;
 
 export type PbxDeviceType = typeof PbxDeviceType[keyof typeof PbxDeviceType];
@@ -1817,7 +1877,7 @@ export const PbxDirectionType = {
     None: 'None',
     Inbound: 'Inbound',
     Outbound: 'Outbound',
-    Both: 'Both'
+    Both: 'Both',
 } as const;
 
 export type PbxDirectionType = typeof PbxDirectionType[keyof typeof PbxDirectionType];
@@ -1835,7 +1895,7 @@ export const PbxDtmfMode = {
     None: 'None',
     SipInfo: 'SipInfo',
     Rfc2833: 'Rfc2833',
-    SipAndRfc: 'SipAndRfc'
+    SipAndRfc: 'SipAndRfc',
 } as const;
 
 export type PbxDtmfMode = typeof PbxDtmfMode[keyof typeof PbxDtmfMode];
@@ -1859,7 +1919,7 @@ export interface PbxENL {
 
 export const PbxEditorType = {
     String: 'String',
-    Sql: 'Sql'
+    Sql: 'Sql',
 } as const;
 
 export type PbxEditorType = typeof PbxEditorType[keyof typeof PbxEditorType];
@@ -1939,7 +1999,7 @@ export interface PbxEventLogCollectionResponse {
 export const PbxEventLogType = {
     Error: 'Error',
     Warning: 'Warning',
-    Info: 'Info'
+    Info: 'Info',
 } as const;
 
 export type PbxEventLogType = typeof PbxEventLogType[keyof typeof PbxEventLogType];
@@ -2026,7 +2086,7 @@ export interface PbxExternalGroupsPage {
 
 export const PbxFailoverCondition = {
     AllService: 'AllService',
-    AnyService: 'AnyService'
+    AnyService: 'AnyService',
 } as const;
 
 export type PbxFailoverCondition = typeof PbxFailoverCondition[keyof typeof PbxFailoverCondition];
@@ -2035,7 +2095,7 @@ export type PbxFailoverCondition = typeof PbxFailoverCondition[keyof typeof PbxF
 
 export const PbxFailoverMode = {
     Active: 'Active',
-    Passive: 'Passive'
+    Passive: 'Passive',
 } as const;
 
 export type PbxFailoverMode = typeof PbxFailoverMode[keyof typeof PbxFailoverMode];
@@ -2081,7 +2141,7 @@ export const PbxFileSystemType = {
     Sftp: 'Sftp',
     GoogleBucket: 'GoogleBucket',
     SharePoint: 'SharePoint',
-    AmazonS3: 'AmazonS3'
+    AmazonS3: 'AmazonS3',
 } as const;
 
 export type PbxFileSystemType = typeof PbxFileSystemType[keyof typeof PbxFileSystemType];
@@ -2222,7 +2282,7 @@ export const PbxGCCollectionMode = {
     Default: 'Default',
     Forced: 'Forced',
     Optimized: 'Optimized',
-    Aggressive: 'Aggressive'
+    Aggressive: 'Aggressive',
 } as const;
 
 export type PbxGCCollectionMode = typeof PbxGCCollectionMode[keyof typeof PbxGCCollectionMode];
@@ -2247,6 +2307,7 @@ export interface PbxGateway {
     'InboundParams'?: Array<PbxGatewayParameterBinding>;
     'Internal'?: boolean | null;
     'IPInRegistrationContact'?: PbxIPInRegistrationContactType | null;
+    'IsCustom'?: boolean | null;
     'Lines'?: number | null;
     'MatchingStrategy'?: PbxMatchingStrategyType | null;
     'Name'?: string | null;
@@ -2263,7 +2324,7 @@ export interface PbxGateway {
     'SupportReplaces'?: boolean | null;
     'TemplateFilename'?: string | null;
     'TimeBetweenReg'?: number | null;
-    'Type'?: PbxGatewayType;
+    'Type'?: PbxGatewayType | null;
     'UseIPInContact'?: boolean | null;
     'VariableChoices'?: Array<PbxChoice>;
 }
@@ -2310,7 +2371,7 @@ export const PbxGatewayType = {
     BridgeSlaveOverTunnel: 'BridgeSlaveOverTunnel',
     Bri: 'BRI',
     T1: 'T1',
-    E1: 'E1'
+    E1: 'E1',
 } as const;
 
 export type PbxGatewayType = typeof PbxGatewayType[keyof typeof PbxGatewayType];
@@ -2336,6 +2397,7 @@ export interface PbxGeneralSettingsForApps {
     'BrandMainImage'?: string | null;
     'BrandUrl'?: string | null;
     'EnableChat'?: boolean | null;
+    'EnableSelectorCallerId'?: boolean | null;
     'HideAbandonedQueueCalls'?: boolean | null;
     'HideCRMContacts'?: boolean | null;
     'HideInteractionHistory'?: boolean | null;
@@ -2347,6 +2409,7 @@ export interface PbxGeneralSettingsForApps {
 
 export interface PbxGeneralSettingsForPbx {
     'AllowFwdToExternal'?: boolean | null;
+    'AllRolesCanApproveApps'?: boolean | null;
     'BusyMonitor'?: boolean | null;
     'BusyMonitorTimeout'?: number | null;
     'DisableOutboundCallsOutOfficeHours'?: boolean | null;
@@ -2354,6 +2417,9 @@ export interface PbxGeneralSettingsForPbx {
     'HDAutoLogoutEnabled'?: boolean | null;
     'HDAutoLogoutTime'?: string | null;
     'LimitCallPickup'?: boolean | null;
+    'OAuthCimdEnabled'?: boolean | null;
+    'OAuthDcrEnabled'?: boolean | null;
+    'OAuthOpenIdConnectEnabled'?: boolean | null;
     'OperatorExtension'?: string | null;
     'PlayBusy'?: boolean | null;
     'ScheduledReportGenerationTime'?: string | null;
@@ -2387,6 +2453,19 @@ export interface PbxGoogleUserSync {
     'SyncType'?: PbxIntegrationSyncType | null;
     'UseCalendarEventsAsPresence'?: boolean | null;
 }
+
+
+
+export const PbxGrantType = {
+    Password: 'Password',
+    Support: 'Support',
+    Sso: 'Sso',
+    OAuthClient: 'OAuthClient',
+    ClientCredentials: 'ClientCredentials',
+    Provisioning: 'Provisioning',
+} as const;
+
+export type PbxGrantType = typeof PbxGrantType[keyof typeof PbxGrantType];
 
 
 export interface PbxGreeting {
@@ -2431,6 +2510,7 @@ export interface PbxGroup {
     'Language'?: string | null;
     'LastLoginTime'?: string | null;
     'Members'?: Array<PbxUserGroup>;
+    'MusicOnHold'?: string | null;
     'Name'?: string | null;
     'OfficeHolidays'?: Array<PbxHoliday>;
     'OfficeRoute'?: PbxRoute | null;
@@ -2456,7 +2536,7 @@ export const PbxGroupHoursMode = {
     ForceBreak: 'ForceBreak',
     ForceCustomOperator: 'ForceCustomOperator',
     ForceHoliday: 'ForceHoliday',
-    HasForcedMask: 'HasForcedMask'
+    HasForcedMask: 'HasForcedMask',
 } as const;
 
 export type PbxGroupHoursMode = typeof PbxGroupHoursMode[keyof typeof PbxGroupHoursMode];
@@ -2512,16 +2592,6 @@ export interface PbxHolidayCollectionResponse {
     '@odata.count'?: number | null;
     'value'?: Array<PbxHoliday>;
 }
-
-export const PbxHolidayMode = {
-    Disabled: 'Disabled',
-    PlayAndDrop: 'PlayAndDrop',
-    PlayAndContinue: 'PlayAndContinue'
-} as const;
-
-export type PbxHolidayMode = typeof PbxHolidayMode[keyof typeof PbxHolidayMode];
-
-
 export interface PbxHotelServices {
     'Enabled'?: boolean | null;
     'HotelGroups'?: Array<string>;
@@ -2538,7 +2608,7 @@ export const PbxIPInRegistrationContactType = {
     External: 'External',
     Internal: 'Internal',
     Both: 'Both',
-    Specified: 'Specified'
+    Specified: 'Specified',
 } as const;
 
 export type PbxIPInRegistrationContactType = typeof PbxIPInRegistrationContactType[keyof typeof PbxIPInRegistrationContactType];
@@ -2554,7 +2624,7 @@ export const PbxIVRForwardType = {
     VoiceMail: 'VoiceMail',
     CallByName: 'CallByName',
     RepeatPrompt: 'RepeatPrompt',
-    CustomInput: 'CustomInput'
+    CustomInput: 'CustomInput',
 } as const;
 
 export type PbxIVRForwardType = typeof PbxIVRForwardType[keyof typeof PbxIVRForwardType];
@@ -2565,7 +2635,7 @@ export const PbxIVRType = {
     Default: 'Default',
     CodeBased: 'CodeBased',
     ScriptBased: 'ScriptBased',
-    Wakeup: 'Wakeup'
+    Wakeup: 'Wakeup',
 } as const;
 
 export type PbxIVRType = typeof PbxIVRType[keyof typeof PbxIVRType];
@@ -2581,6 +2651,7 @@ export interface PbxInboundCall {
     'Did'?: string | null;
     'QualityReport'?: boolean | null;
     'RecordingId'?: number | null;
+    'Recordings'?: Array<PbxXReportRecording>;
     'RecordingUrl'?: string | null;
     'RingingDuration'?: string | null;
     'RuleName'?: string | null;
@@ -2638,7 +2709,7 @@ export const PbxInfoLevel = {
     Critical: 'Critical',
     Error: 'Error',
     Warning: 'Warning',
-    Info: 'Info'
+    Info: 'Info',
 } as const;
 
 export type PbxInfoLevel = typeof PbxInfoLevel[keyof typeof PbxInfoLevel];
@@ -2657,12 +2728,16 @@ export const PbxIntegrationSyncType = {
     SyncAllUsers: 'SyncAllUsers',
     SyncAllUsersExceptSelected: 'SyncAllUsersExceptSelected',
     SyncSelected: 'SyncSelected',
-    SyncSelectedGroups: 'SyncSelectedGroups'
+    SyncSelectedGroups: 'SyncSelectedGroups',
 } as const;
 
 export type PbxIntegrationSyncType = typeof PbxIntegrationSyncType[keyof typeof PbxIntegrationSyncType];
 
 
+export interface PbxInterruptionDecision {
+    'Action'?: string | null;
+    'Instructions'?: string | null;
+}
 export interface PbxKeyValuePair2OfStringOnBoardConnectedParticipantCollectionResponse {
     '@odata.count'?: number | null;
     'value'?: Array<object>;
@@ -2681,7 +2756,11 @@ export interface PbxLastCdrAndChatMessageTimestampCollectionResponse {
 }
 export interface PbxLicense {
     'CountryCode'?: string | null;
+    'IsBrandingEnabled'?: boolean | null;
+    'IsCfdEnabled'?: boolean | null;
+    'IsEnterprise'?: boolean | null;
     'IsMaintainceExpired'?: boolean | null;
+    'IsProfessional'?: boolean | null;
     'MaxSimCalls'?: number | null;
     'ProductCode'?: string | null;
 }
@@ -2735,7 +2814,7 @@ export const PbxLiveChatCommunication = {
     ChatOnly: 'ChatOnly',
     PhoneAndChat: 'PhoneAndChat',
     PhoneOnly: 'PhoneOnly',
-    VideoPhoneAndChat: 'VideoPhoneAndChat'
+    VideoPhoneAndChat: 'VideoPhoneAndChat',
 } as const;
 
 export type PbxLiveChatCommunication = typeof PbxLiveChatCommunication[keyof typeof PbxLiveChatCommunication];
@@ -2746,7 +2825,7 @@ export const PbxLiveChatGreeting = {
     Disabled: 'Disabled',
     OnlyOnDesktop: 'OnlyOnDesktop',
     OnlyOnMobile: 'OnlyOnMobile',
-    DesktopAndMobile: 'DesktopAndMobile'
+    DesktopAndMobile: 'DesktopAndMobile',
 } as const;
 
 export type PbxLiveChatGreeting = typeof PbxLiveChatGreeting[keyof typeof PbxLiveChatGreeting];
@@ -2763,7 +2842,7 @@ export const PbxLiveChatLanguage = {
     Pl: 'pl',
     Ru: 'ru',
     Pt: 'pt',
-    Zh: 'zh'
+    Zh: 'zh',
 } as const;
 
 export type PbxLiveChatLanguage = typeof PbxLiveChatLanguage[keyof typeof PbxLiveChatLanguage];
@@ -2773,7 +2852,7 @@ export type PbxLiveChatLanguage = typeof PbxLiveChatLanguage[keyof typeof PbxLiv
 export const PbxLiveChatMessageDateformat = {
     Date: 'Date',
     Time: 'Time',
-    Both: 'Both'
+    Both: 'Both',
 } as const;
 
 export type PbxLiveChatMessageDateformat = typeof PbxLiveChatMessageDateformat[keyof typeof PbxLiveChatMessageDateformat];
@@ -2784,7 +2863,7 @@ export const PbxLiveChatMinimizedStyle = {
     BubbleLeft: 'BubbleLeft',
     BubbleRight: 'BubbleRight',
     BottomLeft: 'BottomLeft',
-    BottomRight: 'BottomRight'
+    BottomRight: 'BottomRight',
 } as const;
 
 export type PbxLiveChatMinimizedStyle = typeof PbxLiveChatMinimizedStyle[keyof typeof PbxLiveChatMinimizedStyle];
@@ -2803,7 +2882,7 @@ export const PbxLiveMessageUserinfoFormat = {
     Avatar: 'Avatar',
     Name: 'Name',
     Both: 'Both',
-    None: 'None'
+    None: 'None',
 } as const;
 
 export type PbxLiveMessageUserinfoFormat = typeof PbxLiveMessageUserinfoFormat[keyof typeof PbxLiveMessageUserinfoFormat];
@@ -2823,6 +2902,7 @@ export interface PbxLocationSettings {
     'NsPath'?: string | null;
     'NsUser'?: string | null;
     'S3Path'?: string | null;
+    'SftpHostKeyFingerprint'?: string | null;
     'SftpPassword'?: PbxConcealedPassword | null;
     'SftpPath'?: string | null;
     'SftpPrivateKey'?: PbxConcealedDataFile | null;
@@ -2844,15 +2924,6 @@ export interface PbxLoggingSettings {
     'KeepLogsDays'?: number | null;
     'LoggingLevel'?: number | null;
 }
-
-export const PbxLoginType = {
-    Local: 'Local',
-    Guest: 'Guest'
-} as const;
-
-export type PbxLoginType = typeof PbxLoginType[keyof typeof PbxLoginType];
-
-
 export interface PbxM365ToPbxBinding {
     'From'?: PbxSynchronizedM365Profile | null;
     'To'?: PbxSynchronizedPbxProfile | null;
@@ -2872,12 +2943,17 @@ export interface PbxMCURequestStatus {
 }
 
 
+export interface PbxMacCpuInfo {
+    'Ane'?: number;
+    'Cpu'?: number;
+    'Gpu'?: number;
+}
 
 export const PbxMailServerType = {
     Tcx: 'Tcx',
     Ms365: 'MS365',
     Custom: 'Custom',
-    GoogleWorkspace: 'GoogleWorkspace'
+    GoogleWorkspace: 'GoogleWorkspace',
 } as const;
 
 export type PbxMailServerType = typeof PbxMailServerType[keyof typeof PbxMailServerType];
@@ -2897,16 +2973,25 @@ export interface PbxMailSettings {
 
 export const PbxMatchingStrategyType = {
     MatchAnyFields: 'MatchAnyFields',
-    MatchAllFields: 'MatchAllFields'
+    MatchAllFields: 'MatchAllFields',
 } as const;
 
 export type PbxMatchingStrategyType = typeof PbxMatchingStrategyType[keyof typeof PbxMatchingStrategyType];
 
 
+export interface PbxMcpServer {
+    'ClientId'?: string;
+    'Id'?: string;
+    'Issuer'?: string;
+}
+export interface PbxMcpServerCollectionResponse {
+    '@odata.count'?: number | null;
+    'value'?: Array<PbxMcpServer>;
+}
 
 export const PbxMcuOperation = {
     Create: 'Create',
-    Delete: 'Delete'
+    Delete: 'Delete',
 } as const;
 
 export type PbxMcuOperation = typeof PbxMcuOperation[keyof typeof PbxMcuOperation];
@@ -2916,7 +3001,7 @@ export type PbxMcuOperation = typeof PbxMcuOperation[keyof typeof PbxMcuOperatio
 export const PbxMcuReqState = {
     Pending: 'Pending',
     Success: 'Success',
-    Failure: 'Failure'
+    Failure: 'Failure',
 } as const;
 
 export type PbxMcuReqState = typeof PbxMcuReqState[keyof typeof PbxMcuReqState];
@@ -2986,6 +3071,7 @@ export interface PbxMicrosoft365TeamsIntegration {
     'TlsPortForNonNativeFQDN'?: number | null;
 }
 export interface PbxMultiEditUserData {
+    'AgentSettings'?: PbxAgentSettings | null;
     'AllowLanOnly'?: boolean | null;
     'AllowOwnRecordings'?: boolean | null;
     'Blfs'?: string | null;
@@ -2998,6 +3084,7 @@ export interface PbxMultiEditUserData {
     'EmergencyLocationId'?: string | null;
     'Enabled'?: boolean | null;
     'EnableHotdesking'?: boolean | null;
+    'ForbidRecording'?: boolean | null;
     'ForwardingExceptions'?: Array<PbxExtensionRule>;
     'ForwardingProfiles'?: Array<PbxForwardingProfile>;
     'GoogleCalendarEnabled'?: boolean | null;
@@ -3118,12 +3205,48 @@ export const PbxNotifyCodes = {
     StunError: 'STUNError',
     CallDenied: 'CallDenied',
     NumberBlocked: 'NumberBlocked',
-    NumberUnblocked: 'NumberUnblocked'
+    NumberUnblocked: 'NumberUnblocked',
 } as const;
 
 export type PbxNotifyCodes = typeof PbxNotifyCodes[keyof typeof PbxNotifyCodes];
 
 
+export interface PbxOAuthClient {
+    'ClientId'?: string;
+    'CreatedAt'?: string;
+    'CreatedBy'?: string;
+    'Id'?: string;
+    'Metadata'?: PbxClientIdMetadataDocument;
+    'OverrideConsoleRestrictions'?: boolean;
+    'Persistent'?: boolean;
+    'ProvisioningType'?: PbxOAuthProvisioningType;
+    'RefreshTokens'?: Array<PbxRefreshToken>;
+    'Scopes'?: Array<string>;
+    'UsedAt'?: string | null;
+}
+
+
+export interface PbxOAuthClientCollectionResponse {
+    '@odata.count'?: number | null;
+    'value'?: Array<PbxOAuthClient>;
+}
+
+export const PbxOAuthProvisioningType = {
+    Manual: 'Manual',
+    Dcr: 'Dcr',
+    Cimd: 'Cimd',
+    System: 'System',
+} as const;
+
+export type PbxOAuthProvisioningType = typeof PbxOAuthProvisioningType[keyof typeof PbxOAuthProvisioningType];
+
+
+export interface PbxOAuthServerMetadata {
+    'AuthorizationEndpoint'?: string;
+    'ClientIdMetadataDocumentSupported'?: boolean | null;
+    'RegistrationEndpoint'?: string | null;
+    'TokenEndpoint'?: string;
+}
 export interface PbxODataErrorsErrorDetails {
     'code': string;
     'message': string;
@@ -3163,7 +3286,7 @@ export const PbxOfficeHoursBits = {
     GlobalSchedule: 'GlobalSchedule',
     AutoSwitchProfiles: 'AutoSwitchProfiles',
     AutoQueueLogOut: 'AutoQueueLogOut',
-    BlockOutboundCalls: 'BlockOutboundCalls'
+    BlockOutboundCalls: 'BlockOutboundCalls',
 } as const;
 
 export type PbxOfficeHoursBits = typeof PbxOfficeHoursBits[keyof typeof PbxOfficeHoursBits];
@@ -3175,7 +3298,7 @@ export const PbxOffloadDestination = {
     Postgre: 'Postgre',
     BigQuery: 'BigQuery',
     MySql: 'MySql',
-    SqlServer: 'SqlServer'
+    SqlServer: 'SqlServer',
 } as const;
 
 export type PbxOffloadDestination = typeof PbxOffloadDestination[keyof typeof PbxOffloadDestination];
@@ -3184,15 +3307,26 @@ export type PbxOffloadDestination = typeof PbxOffloadDestination[keyof typeof Pb
 export interface PbxOnBoardConverterData {
     'Available'?: boolean;
     'ClockSkew'?: number;
+    'Connected'?: boolean;
     'Converter'?: PbxOnBoardConverterDataDetail;
     'Cpu'?: number;
+    'CpuMac'?: PbxMacCpuInfo;
     'Delay'?: number;
+    'DiskSpaceFree'?: number;
     'DiskSpacePerc'?: number;
+    'DiskSpaceTotal'?: number;
+    'Gpu'?: Array<PbxDebianGpuInfo>;
     'Instances'?: number;
     'MemoryPerc'?: number;
-    'Sessions'?: Array<PbxOnBoardConverterSession>;
-    'TranscriptionQueue'?: number | null;
+    'MemoryTotal'?: number;
+    'MemoryUsed'?: number;
+    'SessionsList'?: Array<PbxOnBoardConverterSession>;
+    'StartTime'?: string;
     'Ts'?: string;
+}
+export interface PbxOnBoardConverterDataCollectionResponse {
+    '@odata.count'?: number | null;
+    'value'?: Array<PbxOnBoardConverterData>;
 }
 export interface PbxOnBoardConverterDataDetail {
     'Active'?: boolean;
@@ -3204,6 +3338,16 @@ export interface PbxOnBoardConverterDataDetail {
     'Port'?: number;
     'Version'?: string;
 }
+
+export const PbxOnBoardConverterReleaseChannel = {
+    Beta: 'Beta',
+    ReleaseCandidate: 'ReleaseCandidate',
+    Release: 'Release',
+} as const;
+
+export type PbxOnBoardConverterReleaseChannel = typeof PbxOnBoardConverterReleaseChannel[keyof typeof PbxOnBoardConverterReleaseChannel];
+
+
 export interface PbxOnBoardConverterRow {
     'Active'?: boolean;
     'Cloud'?: boolean;
@@ -3214,14 +3358,17 @@ export interface PbxOnBoardConverterRow {
     'Ip'?: string;
     'Port'?: number;
     'Secret'?: string;
-    'ServerOS'?: PbxOnBoardMcuServerOS;
+    'ServerOS'?: string;
+    'ServerOSVersion'?: string;
     'ServerStatus'?: number;
     'TsActivated'?: string;
     'TsCreated'?: string;
     'Version'?: string;
 }
-
-
+export interface PbxOnBoardConverterRowCollectionResponse {
+    '@odata.count'?: number | null;
+    'value'?: Array<PbxOnBoardConverterRow>;
+}
 export interface PbxOnBoardConverterSession {
     'Attempts'?: number;
     'CallId'?: string;
@@ -3238,6 +3385,7 @@ export interface PbxOnBoardConverterSessionCollectionResponse {
 export interface PbxOnBoardMcuData {
     'Attempts'?: number;
     'AttendeeCount'?: number;
+    'Available'?: boolean;
     'ClockSkew'?: number;
     'Connected'?: boolean;
     'Cpu'?: number;
@@ -3249,6 +3397,7 @@ export interface PbxOnBoardMcuData {
     'Memory'?: number;
     'NetIn'?: number;
     'NetOut'?: number;
+    'Online'?: boolean;
     'RestartTime'?: string;
     'StartTime'?: string;
     'Ts'?: string;
@@ -3282,25 +3431,13 @@ export interface PbxOnBoardMcuRow {
     'PartsCap'?: number;
     'Port'?: number;
     'Secret'?: string;
-    'ServerOS'?: PbxOnBoardMcuServerOS;
+    'ServerOS'?: string;
     'ServerStatus'?: number;
     'TsActivated'?: string;
     'TsCreated'?: string;
     'Version'?: string;
     'Zone'?: string;
 }
-
-
-
-export const PbxOnBoardMcuServerOS = {
-    Debian10: 'Debian10',
-    Debian11: 'Debian11',
-    Debian12: 'Debian12'
-} as const;
-
-export type PbxOnBoardMcuServerOS = typeof PbxOnBoardMcuServerOS[keyof typeof PbxOnBoardMcuServerOS];
-
-
 export interface PbxOnBoardMeeting {
     'McuFqdn'?: string;
     'Meeting'?: PbxMeetingObj;
@@ -3318,17 +3455,10 @@ export interface PbxOnBoardUICommand {
     'RequestExpiration'?: string;
     'State'?: string;
 }
-
-export const PbxOpenAIModel = {
-    Default: 'Default',
-    Custom: 'Custom',
-    Gpt4o: 'GPT_4o',
-    Gpt4oMini: 'GPT_4o_mini'
-} as const;
-
-export type PbxOpenAIModel = typeof PbxOpenAIModel[keyof typeof PbxOpenAIModel];
-
-
+export interface PbxOneTimeTicket {
+    'ExpiresInSeconds'?: number | null;
+    'Ticket'?: string;
+}
 export interface PbxOutboundCall {
     'Answered'?: boolean;
     'CallCost'?: number | null;
@@ -3340,6 +3470,7 @@ export interface PbxOutboundCall {
     'DestinationDn'?: string | null;
     'QualityReport'?: boolean | null;
     'RecordingId'?: number | null;
+    'Recordings'?: Array<PbxXReportRecording>;
     'RecordingUrl'?: string | null;
     'RingingDuration'?: string | null;
     'RuleName'?: string | null;
@@ -3406,7 +3537,7 @@ export const PbxParameterType = {
     DateTime: 'DateTime',
     Password: 'Password',
     OAuth: 'OAuth',
-    List: 'List'
+    List: 'List',
 } as const;
 
 export type PbxParameterType = typeof PbxParameterType[keyof typeof PbxParameterType];
@@ -3484,7 +3615,7 @@ export const PbxPeerType = {
     Parking: 'Parking',
     ExternalLine: 'ExternalLine',
     Group: 'Group',
-    RoutePoint: 'RoutePoint'
+    RoutePoint: 'RoutePoint',
 } as const;
 
 export type PbxPeerType = typeof PbxPeerType[keyof typeof PbxPeerType];
@@ -3544,7 +3675,7 @@ export interface PbxPhoneDeviceVlanInfoCollectionResponse {
 
 export const PbxPhoneDeviceVlanType = {
     Wan: 'Wan',
-    Pc: 'Pc'
+    Pc: 'Pc',
 } as const;
 
 export type PbxPhoneDeviceVlanType = typeof PbxPhoneDeviceVlanType[keyof typeof PbxPhoneDeviceVlanType];
@@ -3637,7 +3768,7 @@ export const PbxPhoneSystemService = {
     EventNotiificationManager: 'EventNotiificationManager',
     Nginx: 'Nginx',
     Gateway: 'Gateway',
-    AiBridge: 'AiBridge'
+    AiBridge: 'AiBridge',
 } as const;
 
 export type PbxPhoneSystemService = typeof PbxPhoneSystemService[keyof typeof PbxPhoneSystemService];
@@ -3678,7 +3809,7 @@ export interface PbxPhoneTemplateCollectionResponse {
 
 export const PbxPhonebookPriorityOptions = {
     NotQueryIfInPhonebookFound: 'NotQueryIfInPhonebookFound',
-    AlwaysQuery: 'AlwaysQuery'
+    AlwaysQuery: 'AlwaysQuery',
 } as const;
 
 export type PbxPhonebookPriorityOptions = typeof PbxPhonebookPriorityOptions[keyof typeof PbxPhonebookPriorityOptions];
@@ -3713,7 +3844,7 @@ export interface PbxPlaylistCollectionResponse {
 
 export const PbxPmsIntegrationType = {
     Tcxpms: 'tcxpms',
-    Fidelio: 'fidelio'
+    Fidelio: 'fidelio',
 } as const;
 
 export type PbxPmsIntegrationType = typeof PbxPmsIntegrationType[keyof typeof PbxPmsIntegrationType];
@@ -3733,7 +3864,7 @@ export const PbxPollingStrategyType = {
     SkillBasedRoutingRingAll: 'SkillBasedRouting_RingAll',
     SkillBasedRoutingHuntRandomStart: 'SkillBasedRouting_HuntRandomStart',
     SkillBasedRoutingRoundRobin: 'SkillBasedRouting_RoundRobin',
-    SkillBasedRoutingFewestAnswered: 'SkillBasedRouting_FewestAnswered'
+    SkillBasedRoutingFewestAnswered: 'SkillBasedRouting_FewestAnswered',
 } as const;
 
 export type PbxPollingStrategyType = typeof PbxPollingStrategyType[keyof typeof PbxPollingStrategyType];
@@ -3756,7 +3887,7 @@ export const PbxProfileType = {
     Away: 'Away',
     OutOfOffice: 'OutOfOffice',
     Available2: 'Available2',
-    OutOfOffice2: 'OutOfOffice2'
+    OutOfOffice2: 'OutOfOffice2',
 } as const;
 
 export type PbxProfileType = typeof PbxProfileType[keyof typeof PbxProfileType];
@@ -3792,7 +3923,7 @@ export interface PbxPromptSetCollectionResponse {
 
 export const PbxPromptSetType = {
     System: 'System',
-    Custom: 'Custom'
+    Custom: 'Custom',
 } as const;
 
 export type PbxPromptSetType = typeof PbxPromptSetType[keyof typeof PbxPromptSetType];
@@ -3802,7 +3933,7 @@ export type PbxPromptSetType = typeof PbxPromptSetType[keyof typeof PbxPromptSet
 export const PbxPromptType = {
     File: 'File',
     DepFile: 'DepFile',
-    Playlist: 'Playlist'
+    Playlist: 'Playlist',
 } as const;
 
 export type PbxPromptType = typeof PbxPromptType[keyof typeof PbxPromptType];
@@ -3822,7 +3953,7 @@ export const PbxProvType = {
     LocalLan: 'LocalLan',
     RemoteExt: 'RemoteExt',
     RemoteExtSipProxyMgr: 'RemoteExtSipProxyMgr',
-    Sbc: 'SBC'
+    Sbc: 'SBC',
 } as const;
 
 export type PbxProvType = typeof PbxProvType[keyof typeof PbxProvType];
@@ -3892,11 +4023,20 @@ export interface PbxQueue {
     'ClickToCallId'?: string | null;
     'AgentAvailabilityMode'?: boolean | null;
     'Agents'?: Array<PbxQueueAgent>;
+    'AnnounceEstimatedWaitTime'?: boolean | null;
+    'AnnounceEstimatedWaitTimeInterval'?: number | null;
     'AnnouncementInterval'?: number | null;
     'AnnounceQueuePosition'?: boolean | null;
+    'AutoLogoutMissedCalls'?: number | null;
     'BreakRoute'?: PbxRoute | null;
     'CallbackEnableTime'?: number | null;
+    'CallbackOfferOnly'?: boolean | null;
+    'CallbackOfferPrompt'?: string | null;
     'CallbackPrefix'?: string | null;
+    'ComfortPrompts'?: Array<string>;
+    'ComfortPromptsEnabled'?: boolean | null;
+    'ComfortPromptsInterval'?: number | null;
+    'DestinationNoAnswerPrompt'?: string | null;
     'EnableIntro'?: boolean | null;
     'ForwardNoAnswer'?: PbxDestination | null;
     'GreetingFile'?: string | null;
@@ -3906,6 +4046,8 @@ export interface PbxQueue {
     'Managers'?: Array<PbxQueueManager>;
     'MasterTimeout'?: number | null;
     'MaxCallersInQueue'?: number | null;
+    'MaxWaitStrategyEnabled'?: boolean | null;
+    'MaxWaitTimeSkillGroupValues'?: Array<number>;
     'Name'?: string | null;
     'NotifyCodes'?: Array<PbxQueueNotifyCode>;
     'OnHoldFile'?: string | null;
@@ -3918,7 +4060,9 @@ export interface PbxQueue {
     'ResetQueueStatisticsSchedule'?: PbxResetQueueStatisticsSchedule | null;
     'ResetStatisticsScheduleEnabled'?: boolean | null;
     'RingTimeout'?: number | null;
+    'SkillBasedRingAllCumulativePollingEnabled'?: boolean | null;
     'SLATime'?: number | null;
+    'StopBackgroundWhenPrompt'?: boolean | null;
     'TypeOfChatOwnershipType'?: PbxTypeOfChatOwnershipType | null;
     'VMEmailList'?: string | null;
     'VMEmailOptions'?: PbxVMEmailOptionsType | null;
@@ -4027,7 +4171,8 @@ export const PbxQueueNotifyCode = {
     Callback: 'Callback',
     CallbackFail: 'CallbackFail',
     SlaTimeBreached: 'SLATimeBreached',
-    CallLost: 'CallLost'
+    CallLost: 'CallLost',
+    AgentAutoLogout: 'AgentAutoLogout',
 } as const;
 
 export type PbxQueueNotifyCode = typeof PbxQueueNotifyCode[keyof typeof PbxQueueNotifyCode];
@@ -4064,7 +4209,7 @@ export interface PbxQueuePerformanceTotalsCollectionResponse {
 export const PbxQueueRecording = {
     Disabled: 'Disabled',
     AllowToOptOut: 'AllowToOptOut',
-    AskToOptIn: 'AskToOptIn'
+    AskToOptIn: 'AskToOptIn',
 } as const;
 
 export type PbxQueueRecording = typeof PbxQueueRecording[keyof typeof PbxQueueRecording];
@@ -4073,7 +4218,7 @@ export type PbxQueueRecording = typeof PbxQueueRecording[keyof typeof PbxQueueRe
 
 export const PbxQueueStatusType = {
     LoggedOut: 'LoggedOut',
-    LoggedIn: 'LoggedIn'
+    LoggedIn: 'LoggedIn',
 } as const;
 
 export type PbxQueueStatusType = typeof PbxQueueStatusType[keyof typeof PbxQueueStatusType];
@@ -4158,7 +4303,7 @@ export interface PbxRecording {
 export const PbxRecordingCallType = {
     Local: 'Local',
     InboundExternal: 'InboundExternal',
-    OutboundExternal: 'OutboundExternal'
+    OutboundExternal: 'OutboundExternal',
 } as const;
 
 export type PbxRecordingCallType = typeof PbxRecordingCallType[keyof typeof PbxRecordingCallType];
@@ -4178,16 +4323,21 @@ export interface PbxRecordingRepositorySettings {
     'RecordingUsedSpace'?: number | null;
 }
 export interface PbxRefreshToken {
+    'Client'?: PbxOAuthClient | null;
+    'ClientId'?: string | null;
     'Created'?: string;
     'CreatedByIp'?: string;
     'CreatedByUserAgent'?: string;
     'DisplayName'?: string | null;
     'Expires'?: string;
     'Id'?: number;
-    'LoginType'?: PbxLoginType;
+    'LoginType'?: PbxGrantType;
+    'OverrideConsoleRestrictions'?: boolean;
     'ReasonRevoked'?: PbxRevokeReason | null;
     'Revoked'?: string | null;
     'RevokedByIp'?: string | null;
+    'RotateOnRefresh'?: boolean;
+    'Scopes'?: Array<string>;
     'SlidingExpiration'?: boolean;
     'Token'?: string;
     'Used'?: string;
@@ -4222,7 +4372,7 @@ export interface PbxRegistrarFxsCollectionResponse {
 export const PbxRemoteAccessStatus = {
     None: 'None',
     Requested: 'Requested',
-    Active: 'Active'
+    Active: 'Active',
 } as const;
 
 export type PbxRemoteAccessStatus = typeof PbxRemoteAccessStatus[keyof typeof PbxRemoteAccessStatus];
@@ -4269,12 +4419,16 @@ export interface PbxRemoteSqlServerConfig {
 export const PbxRemoteStorageStatus = {
     NotConfigured: 'NotConfigured',
     PartiallyConfigured: 'PartiallyConfigured',
-    Configured: 'Configured'
+    Configured: 'Configured',
 } as const;
 
 export type PbxRemoteStorageStatus = typeof PbxRemoteStorageStatus[keyof typeof PbxRemoteStorageStatus];
 
 
+export interface PbxRemoveVectorStoreFiles {
+    'FileIds'?: Array<string>;
+    'VectorId'?: string;
+}
 export interface PbxReportExtensionStatisticsByGroup {
     'DisplayName'?: string | null;
     'Dn'?: string;
@@ -4290,13 +4444,21 @@ export interface PbxReportExtensionStatisticsByGroupCollectionResponse {
     '@odata.count'?: number | null;
     'value'?: Array<PbxReportExtensionStatisticsByGroup>;
 }
+export interface PbxReportLogEvent {
+    'EventId'?: number;
+    'Params'?: Array<string>;
+    'Source'?: string;
+    'Type'?: PbxEventLogType;
+}
+
+
 
 export const PbxReportScheduleType = {
     Daily: 'Daily',
     Weekly: 'Weekly',
     Monthly: 'Monthly',
     Hourly: 'Hourly',
-    NotScheduled: 'NotScheduled'
+    NotScheduled: 'NotScheduled',
 } as const;
 
 export type PbxReportScheduleType = typeof PbxReportScheduleType[keyof typeof PbxReportScheduleType];
@@ -4314,7 +4476,7 @@ export const PbxRequireRegistrationForType = {
     Nothing: 'Nothing',
     IncomingCalls: 'IncomingCalls',
     OutgoingCalls: 'OutgoingCalls',
-    InOutCalls: 'InOutCalls'
+    InOutCalls: 'InOutCalls',
 } as const;
 
 export type PbxRequireRegistrationForType = typeof PbxRequireRegistrationForType[keyof typeof PbxRequireRegistrationForType];
@@ -4329,7 +4491,7 @@ export const PbxResetQueueStatisticsFrequency = {
     Disabled: 'Disabled',
     Daily: 'Daily',
     Weekly: 'Weekly',
-    Monthly: 'Monthly'
+    Monthly: 'Monthly',
 } as const;
 
 export type PbxResetQueueStatisticsFrequency = typeof PbxResetQueueStatisticsFrequency[keyof typeof PbxResetQueueStatisticsFrequency];
@@ -4367,7 +4529,7 @@ export const PbxRevokeReason = {
     SetPassword: 'SetPassword',
     InvalidatePassword: 'InvalidatePassword',
     Logout: 'Logout',
-    Manual: 'Manual'
+    Manual: 'Manual',
 } as const;
 
 export type PbxRevokeReason = typeof PbxRevokeReason[keyof typeof PbxRevokeReason];
@@ -4458,7 +4620,7 @@ export interface PbxRoute {
 export const PbxRuleCallTypeType = {
     AllCalls: 'AllCalls',
     InternalCallsOnly: 'InternalCallsOnly',
-    ExternalCallsOnly: 'ExternalCallsOnly'
+    ExternalCallsOnly: 'ExternalCallsOnly',
 } as const;
 
 export type PbxRuleCallTypeType = typeof PbxRuleCallTypeType[keyof typeof PbxRuleCallTypeType];
@@ -4471,7 +4633,7 @@ export const PbxRuleConditionType = {
     PhoneNotRegistered: 'PhoneNotRegistered',
     ForwardAll: 'ForwardAll',
     BasedOnCallerId: 'BasedOnCallerID',
-    BasedOnDid: 'BasedOnDID'
+    BasedOnDid: 'BasedOnDID',
 } as const;
 
 export type PbxRuleConditionType = typeof PbxRuleConditionType[keyof typeof PbxRuleConditionType];
@@ -4487,7 +4649,7 @@ export const PbxRuleHoursType = {
     OutOfSpecificHours: 'OutOfSpecificHours',
     OutOfSpecificHoursIncludingHolidays: 'OutOfSpecificHoursIncludingHolidays',
     Never: 'Never',
-    BreakTime: 'BreakTime'
+    BreakTime: 'BreakTime',
 } as const;
 
 export type PbxRuleHoursType = typeof PbxRuleHoursType[keyof typeof PbxRuleHoursType];
@@ -4502,7 +4664,7 @@ export interface PbxS3Config {
 export const PbxSRTPModeType = {
     SrtpDisabled: 'SRTPDisabled',
     SrtpEnabled: 'SRTPEnabled',
-    SrtpEnforced: 'SRTPEnforced'
+    SrtpEnforced: 'SRTPEnforced',
 } as const;
 
 export type PbxSRTPModeType = typeof PbxSRTPModeType[keyof typeof PbxSRTPModeType];
@@ -4539,7 +4701,7 @@ export const PbxSbcLogLevel = {
     None: 'None',
     Low: 'Low',
     Medium: 'Medium',
-    Verbose: 'Verbose'
+    Verbose: 'Verbose',
 } as const;
 
 export type PbxSbcLogLevel = typeof PbxSbcLogLevel[keyof typeof PbxSbcLogLevel];
@@ -4559,7 +4721,7 @@ export const PbxScheduleType = {
     Monthly: 'Monthly',
     Hourly: 'Hourly',
     Minutely: 'Minutely',
-    Immediate: 'Immediate'
+    Immediate: 'Immediate',
 } as const;
 
 export type PbxScheduleType = typeof PbxScheduleType[keyof typeof PbxScheduleType];
@@ -4610,7 +4772,7 @@ export const PbxScheduledReportType = {
     InboundCalls: 'InboundCalls',
     OutBoundCalls: 'OutBoundCalls',
     UserActivity: 'UserActivity',
-    CallDistribution: 'CallDistribution'
+    CallDistribution: 'CallDistribution',
 } as const;
 
 export type PbxScheduledReportType = typeof PbxScheduledReportType[keyof typeof PbxScheduledReportType];
@@ -4623,7 +4785,7 @@ export interface PbxSecureSipSettings {
 
 export const PbxSecurity = {
     Tcp: 'TCP',
-    Tls: 'TLS'
+    Tls: 'TLS',
 } as const;
 
 export type PbxSecurity = typeof PbxSecurity[keyof typeof PbxSecurity];
@@ -4639,7 +4801,7 @@ export interface PbxSendEmail {
 export const PbxServerTrustMode = {
     Prefer: 'Prefer',
     Require: 'Require',
-    VerifyFull: 'VerifyFull'
+    VerifyFull: 'VerifyFull',
 } as const;
 
 export type PbxServerTrustMode = typeof PbxServerTrustMode[keyof typeof PbxServerTrustMode];
@@ -4689,7 +4851,7 @@ export const PbxServiceStatus = {
     Running: 'Running',
     ContinuePending: 'ContinuePending',
     PausePending: 'PausePending',
-    Paused: 'Paused'
+    Paused: 'Paused',
 } as const;
 
 export type PbxServiceStatus = typeof PbxServiceStatus[keyof typeof PbxServiceStatus];
@@ -4729,7 +4891,7 @@ export const PbxSetpointType = {
     PhysicalMemoryUsage: 'PhysicalMemoryUsage',
     VirtualMemoryUsage: 'VirtualMemoryUsage',
     DiskUsage: 'DiskUsage',
-    TimeShift: 'TimeShift'
+    TimeShift: 'TimeShift',
 } as const;
 
 export type PbxSetpointType = typeof PbxSetpointType[keyof typeof PbxSetpointType];
@@ -4749,7 +4911,7 @@ export interface PbxSipDeviceCollectionResponse {
 
 export const PbxStartupLicense = {
     Free: 'Free',
-    Pro: 'Pro'
+    Pro: 'Pro',
 } as const;
 
 export type PbxStartupLicense = typeof PbxStartupLicense[keyof typeof PbxStartupLicense];
@@ -4774,7 +4936,7 @@ export interface PbxStatusSyncConfiguration {
 export const PbxStrategyType = {
     Hunt: 'Hunt',
     RingAll: 'RingAll',
-    Paging: 'Paging'
+    Paging: 'Paging',
 } as const;
 
 export type PbxStrategyType = typeof PbxStrategyType[keyof typeof PbxStrategyType];
@@ -4790,7 +4952,7 @@ export const PbxSynchronizedM365Profile = {
     DoNotDisturb: 'DoNotDisturb',
     BeRightBack: 'BeRightBack',
     InMeeting: 'InMeeting',
-    InCall: 'InCall'
+    InCall: 'InCall',
 } as const;
 
 export type PbxSynchronizedM365Profile = typeof PbxSynchronizedM365Profile[keyof typeof PbxSynchronizedM365Profile];
@@ -4800,7 +4962,7 @@ export type PbxSynchronizedM365Profile = typeof PbxSynchronizedM365Profile[keyof
 export const PbxSynchronizedPbxProfile = {
     Available: 'Available',
     OutOfOffice: 'OutOfOffice',
-    Away: 'Away'
+    Away: 'Away',
 } as const;
 
 export type PbxSynchronizedPbxProfile = typeof PbxSynchronizedPbxProfile[keyof typeof PbxSynchronizedPbxProfile];
@@ -4820,21 +4982,10 @@ export interface PbxSyslogCustomRelayConfig {
 }
 
 
-export interface PbxSyslogDatadogConfig {
-    'ApiKey'?: string | null;
-    'Url'?: string | null;
-}
-export interface PbxSyslogElkConfig {
-    'ApiKey'?: string | null;
-    'IndexName'?: string | null;
-    'Url'?: string | null;
-}
 
 export const PbxSyslogIntegrationType = {
+    None: 'None',
     Custom: 'Custom',
-    Splunk: 'Splunk',
-    Elastic: 'Elastic',
-    Datadog: 'Datadog'
 } as const;
 
 export type PbxSyslogIntegrationType = typeof PbxSyslogIntegrationType[keyof typeof PbxSyslogIntegrationType];
@@ -4844,7 +4995,7 @@ export type PbxSyslogIntegrationType = typeof PbxSyslogIntegrationType[keyof typ
 export const PbxSyslogProtocol = {
     Udp: 'Udp',
     Tcp: 'Tcp',
-    Tls: 'Tls'
+    Tls: 'Tls',
 } as const;
 
 export type PbxSyslogProtocol = typeof PbxSyslogProtocol[keyof typeof PbxSyslogProtocol];
@@ -4853,18 +5004,10 @@ export type PbxSyslogProtocol = typeof PbxSyslogProtocol[keyof typeof PbxSyslogP
 export interface PbxSyslogSettings {
     'CategoryConfig'?: PbxSyslogCategoryConfig | null;
     'CustomRelayConfig'?: PbxSyslogCustomRelayConfig | null;
-    'DatadogConfig'?: PbxSyslogDatadogConfig | null;
-    'ElasticConfig'?: PbxSyslogElkConfig | null;
     'IntegrationType'?: PbxSyslogIntegrationType | null;
-    'IsEnabled'?: boolean | null;
-    'SplunkConfig'?: PbxSyslogSplunkConfig | null;
 }
 
 
-export interface PbxSyslogSplunkConfig {
-    'Token'?: string | null;
-    'Url'?: string | null;
-}
 export interface PbxSystemDatabaseInformation {
     'CallsUsedSpace'?: number | null;
     'ChatFilesCount'?: number | null;
@@ -4891,6 +5034,7 @@ export interface PbxSystemHealthStatus {
     'UnsupportedFirmwaresCount'?: number | null;
 }
 export interface PbxSystemParameters {
+    'AIVersion'?: string | null;
     'Custom1Name'?: string | null;
     'Custom2Name'?: string | null;
     'EmRuleCreationAllowed'?: boolean | null;
@@ -5019,7 +5163,7 @@ export const PbxTemplateType = {
     Dedicated: 'Dedicated',
     ThirdParty: 'ThirdParty',
     Deleted: 'Deleted',
-    Unknown: 'Unknown'
+    Unknown: 'Unknown',
 } as const;
 
 export type PbxTemplateType = typeof PbxTemplateType[keyof typeof PbxTemplateType];
@@ -5056,7 +5200,8 @@ export const PbxTranscribeEngine = {
     OpenAi: 'OpenAI',
     Whisper: 'Whisper',
     Engine3Cx: 'Engine3CX',
-    Engine3CxLocal: 'Engine3CXLocal'
+    Engine3CxLocal: 'Engine3CXLocal',
+    Grok: 'Grok',
 } as const;
 
 export type PbxTranscribeEngine = typeof PbxTranscribeEngine[keyof typeof PbxTranscribeEngine];
@@ -5068,7 +5213,7 @@ export const PbxTranscriptionType = {
     Voicemail: 'Voicemail',
     Recordings: 'Recordings',
     Both: 'Both',
-    Inherit: 'Inherit'
+    Inherit: 'Inherit',
 } as const;
 
 export type PbxTranscriptionType = typeof PbxTranscriptionType[keyof typeof PbxTranscriptionType];
@@ -5081,13 +5226,13 @@ export interface PbxTrunk {
     'TranscriptionMode'?: PbxTranscriptionType | null;
     'AuthID'?: string | null;
     'AuthPassword'?: PbxConcealedPassword | null;
-    'AutoHolidayMode'?: PbxHolidayMode | null;
     'Certificate'?: string | null;
     'CertificateExpirationDate'?: string | null;
     'CertificateName'?: string | null;
     'ConfigurationIssue'?: string | null;
     'DidNumbers'?: Array<string>;
     'Direction'?: PbxDirectionType | null;
+    'DisableCallTransfer'?: boolean | null;
     'DisableVideo'?: boolean | null;
     'DiversionHeader'?: boolean | null;
     'E164CountryCode'?: string | null;
@@ -5111,6 +5256,7 @@ export interface PbxTrunk {
     'RemoteMyPhoneUriHost'?: string | null;
     'RemotePBXPreffix'?: string | null;
     'RoutingRules'?: Array<PbxInboundRule>;
+    'ScriptName'?: string | null;
     'SecondaryRegistrar'?: string | null;
     'SeparateAuthId'?: string | null;
     'SimultaneousCalls'?: number | null;
@@ -5131,7 +5277,7 @@ export interface PbxTrunkCollectionResponse {
 
 export const PbxTrunkEditorType = {
     Messaging: 'Messaging',
-    Voip: 'Voip'
+    Voip: 'Voip',
 } as const;
 
 export type PbxTrunkEditorType = typeof PbxTrunkEditorType[keyof typeof PbxTrunkEditorType];
@@ -5172,6 +5318,7 @@ export interface PbxTrunkTemplate {
     'Description'?: string | null;
     'Editors'?: Array<PbxTrunkEditorType>;
     'Id'?: string;
+    'IsCustom'?: boolean | null;
     'MessagingTemplate'?: PbxTrunkMessagingTemplate | null;
     'Name'?: string;
     'Tags'?: Array<string>;
@@ -5191,7 +5338,7 @@ export interface PbxTrunkTestResult {
 
 export const PbxTrunkType = {
     Voxtelesys: 'Voxtelesys',
-    Twilio: 'Twilio'
+    Twilio: 'Twilio',
 } as const;
 
 export type PbxTrunkType = typeof PbxTrunkType[keyof typeof PbxTrunkType];
@@ -5219,7 +5366,7 @@ export interface PbxTrunkVariableCollectionResponse {
 
 export const PbxTrunkVariableType = {
     Text: 'Text',
-    Password: 'Password'
+    Password: 'Password',
 } as const;
 
 export type PbxTrunkVariableType = typeof PbxTrunkVariableType[keyof typeof PbxTrunkVariableType];
@@ -5231,7 +5378,7 @@ export const PbxTypeOfAutoPickupForward = {
     Dn: 'DN',
     ExtensionVoiceMail: 'ExtensionVoiceMail',
     ExternalNumber: 'ExternalNumber',
-    RoutePoint: 'RoutePoint'
+    RoutePoint: 'RoutePoint',
 } as const;
 
 export type PbxTypeOfAutoPickupForward = typeof PbxTypeOfAutoPickupForward[keyof typeof PbxTypeOfAutoPickupForward];
@@ -5242,7 +5389,7 @@ export const PbxTypeOfCDRLog = {
     SingleFileForAllCalls: 'SingleFileForAllCalls',
     SingleFileForEachCall: 'SingleFileForEachCall',
     PassiveSocket: 'PassiveSocket',
-    ActiveSocket: 'ActiveSocket'
+    ActiveSocket: 'ActiveSocket',
 } as const;
 
 export type PbxTypeOfCDRLog = typeof PbxTypeOfCDRLog[keyof typeof PbxTypeOfCDRLog];
@@ -5251,7 +5398,7 @@ export type PbxTypeOfCDRLog = typeof PbxTypeOfCDRLog[keyof typeof PbxTypeOfCDRLo
 
 export const PbxTypeOfChatOwnershipType = {
     TakeManually: 'TakeManually',
-    AutoAssign: 'AutoAssign'
+    AutoAssign: 'AutoAssign',
 } as const;
 
 export type PbxTypeOfChatOwnershipType = typeof PbxTypeOfChatOwnershipType[keyof typeof PbxTypeOfChatOwnershipType];
@@ -5261,7 +5408,7 @@ export type PbxTypeOfChatOwnershipType = typeof PbxTypeOfChatOwnershipType[keyof
 export const PbxTypeOfIPRestriction = {
     Any: 'Any',
     Ipv4: 'IPV4',
-    Ipv6: 'IPV6'
+    Ipv6: 'IPV6',
 } as const;
 
 export type PbxTypeOfIPRestriction = typeof PbxTypeOfIPRestriction[keyof typeof PbxTypeOfIPRestriction];
@@ -5271,7 +5418,7 @@ export type PbxTypeOfIPRestriction = typeof PbxTypeOfIPRestriction[keyof typeof 
 export const PbxTypeOfPhoneBookAddQueueName = {
     NotAdd: 'NotAdd',
     Append: 'Append',
-    Prepend: 'Prepend'
+    Prepend: 'Prepend',
 } as const;
 
 export type PbxTypeOfPhoneBookAddQueueName = typeof PbxTypeOfPhoneBookAddQueueName[keyof typeof PbxTypeOfPhoneBookAddQueueName];
@@ -5280,7 +5427,7 @@ export type PbxTypeOfPhoneBookAddQueueName = typeof PbxTypeOfPhoneBookAddQueueNa
 
 export const PbxTypeOfPhoneBookDisplay = {
     FirstNameLastName: 'FirstNameLastName',
-    LastNameFirstName: 'LastNameFirstName'
+    LastNameFirstName: 'LastNameFirstName',
 } as const;
 
 export type PbxTypeOfPhoneBookDisplay = typeof PbxTypeOfPhoneBookDisplay[keyof typeof PbxTypeOfPhoneBookDisplay];
@@ -5290,7 +5437,7 @@ export type PbxTypeOfPhoneBookDisplay = typeof PbxTypeOfPhoneBookDisplay[keyof t
 export const PbxTypeOfPhoneBookResolving = {
     NotResolve: 'NotResolve',
     MatchExact: 'MatchExact',
-    MatchLength: 'MatchLength'
+    MatchLength: 'MatchLength',
 } as const;
 
 export type PbxTypeOfPhoneBookResolving = typeof PbxTypeOfPhoneBookResolving[keyof typeof PbxTypeOfPhoneBookResolving];
@@ -5301,7 +5448,7 @@ export const PbxTypeOfTransportRestriction = {
     Any: 'Any',
     Udp: 'UDP',
     Tcp: 'TCP',
-    Tls: 'TLS'
+    Tls: 'TLS',
 } as const;
 
 export type PbxTypeOfTransportRestriction = typeof PbxTypeOfTransportRestriction[keyof typeof PbxTypeOfTransportRestriction];
@@ -5311,7 +5458,7 @@ export type PbxTypeOfTransportRestriction = typeof PbxTypeOfTransportRestriction
 export const PbxTypeOfUser = {
     Users: 'Users',
     SharedMailboxes: 'SharedMailboxes',
-    LicensedUsers: 'LicensedUsers'
+    LicensedUsers: 'LicensedUsers',
 } as const;
 
 export type PbxTypeOfUser = typeof PbxTypeOfUser[keyof typeof PbxTypeOfUser];
@@ -5322,6 +5469,7 @@ export interface PbxUpdateItem {
     'Description'?: string;
     'DescriptionLink'?: string;
     'Guid'?: string | null;
+    'HasExtraDetails'?: boolean | null;
     'Ignore'?: boolean | null;
     'Image'?: string;
     'LocalVersion'?: string;
@@ -5352,7 +5500,7 @@ export const PbxUpdateType = {
     Beta: 'Beta',
     MajorRelease: 'MajorRelease',
     Alpha: 'Alpha',
-    Hotfix: 'Hotfix'
+    Hotfix: 'Hotfix',
 } as const;
 
 export type PbxUpdateType = typeof PbxUpdateType[keyof typeof PbxUpdateType];
@@ -5395,6 +5543,7 @@ export interface PbxUser {
     'Enabled'?: boolean | null;
     'EnableHotdesking'?: boolean | null;
     'FirstName'?: string | null;
+    'ForbidRecording'?: boolean | null;
     'ForwardingExceptions'?: Array<PbxExtensionRule>;
     'ForwardingProfiles'?: Array<PbxForwardingProfile>;
     'GoogleCalendarEnabled'?: boolean | null;
@@ -5492,7 +5641,7 @@ export const PbxUserTag = {
     WeakId: 'WeakID',
     WeakPass: 'WeakPass',
     Wm: 'WM',
-    Ai: 'AI'
+    Ai: 'AI',
 } as const;
 
 export type PbxUserTag = typeof PbxUserTag[keyof typeof PbxUserTag];
@@ -5520,7 +5669,7 @@ export const PbxVMEmailOptionsType = {
     Attachment: 'Attachment',
     AttachmentAndDelete: 'AttachmentAndDelete',
     VmailToMembers: 'VmailToMembers',
-    EmailToExtrasOnly: 'EmailToExtrasOnly'
+    EmailToExtrasOnly: 'EmailToExtrasOnly',
 } as const;
 
 export type PbxVMEmailOptionsType = typeof PbxVMEmailOptionsType[keyof typeof PbxVMEmailOptionsType];
@@ -5530,7 +5679,7 @@ export type PbxVMEmailOptionsType = typeof PbxVMEmailOptionsType[keyof typeof Pb
 export const PbxVMPlayMsgDateTimeType = {
     None: 'None',
     Play12Hr: 'Play12Hr',
-    Play24Hr: 'Play24Hr'
+    Play24Hr: 'Play24Hr',
 } as const;
 
 export type PbxVMPlayMsgDateTimeType = typeof PbxVMPlayMsgDateTimeType[keyof typeof PbxVMPlayMsgDateTimeType];
@@ -5543,6 +5692,12 @@ export interface PbxVariable {
 export interface PbxVariableCollectionResponse {
     '@odata.count'?: number | null;
     'value'?: Array<PbxVariable>;
+}
+export interface PbxVectorFileResult {
+    'Error'?: string | null;
+    'ExternalFileId'?: string | null;
+    'FileName'?: string;
+    'Status'?: string;
 }
 export interface PbxVectorStore {
     'Bytes'?: number | null;
@@ -5594,7 +5749,19 @@ export interface PbxVersionUpdateType {
 }
 
 
+
+export const PbxVideoConferenceMode = {
+    Disabled: 'Disabled',
+    Cloud: 'Cloud',
+    Private: 'Private',
+} as const;
+
+export type PbxVideoConferenceMode = typeof PbxVideoConferenceMode[keyof typeof PbxVideoConferenceMode];
+
+
 export interface PbxVoicemailSettings {
+    'AnalyzeModelGrok'?: string | null;
+    'AnalyzeModelOpenAI'?: string | null;
     'AutoDeleteDays'?: number | null;
     'AutoDeleteEnabled'?: boolean | null;
     'CallRecordingStereo'?: boolean | null;
@@ -5607,8 +5774,9 @@ export interface PbxVoicemailSettings {
     'SendEmailQuotaEnabled'?: boolean | null;
     'SendEmailQuotaPercentage'?: number | null;
     'TranscribeEngine'?: PbxTranscribeEngine | null;
+    'TranscribeKeyGrok'?: PbxConcealedPassword | null;
     'TranscribeLanguage'?: string | null;
-    'TranscribeModelOpenAI'?: PbxOpenAIModel | null;
+    'TranscribeModelOpenAI'?: string | null;
     'TranscribeRegion'?: string | null;
     'TranscribeSecretKey'?: PbxConcealedPassword | null;
     'UsedSpace'?: number | null;
@@ -5677,6 +5845,7 @@ export const PbxWarnings = {
     XapiCannotConnectFtp: 'WARNINGS.XAPI.CANNOT_CONNECT_FTP',
     XapiCannotConnectSmb: 'WARNINGS.XAPI.CANNOT_CONNECT_SMB',
     XapiCannotConnectSftp: 'WARNINGS.XAPI.CANNOT_CONNECT_SFTP',
+    XapiSftpInvalidHostKey: 'WARNINGS.XAPI.SFTP_INVALID_HOST_KEY',
     XapiCannotConnectGoogleBucket: 'WARNINGS.XAPI.CANNOT_CONNECT_GOOGLE_BUCKET',
     XapiCannotConnectAmazonS3Bucket: 'WARNINGS.XAPI.CANNOT_CONNECT_AMAZON_S3_BUCKET',
     XapiPlaylistNoSource: 'WARNINGS.XAPI.PLAYLIST_NO_SOURCE',
@@ -5729,7 +5898,7 @@ export const PbxWarnings = {
     UnableReachUpdatesServer: 'WARNINGS.UNABLE_REACH_UPDATES_SERVER',
     ErrorDownloadingFromUpdatesServer: 'WARNINGS.ERROR_DOWNLOADING_FROM_UPDATES_SERVER',
     CaptureLocalhostNotAllowed: 'WARNINGS.CAPTURE_LOCALHOST_NOT_ALLOWED',
-    CaptureOngoing: 'WARNINGS.CAPTURE_ONGOING'
+    CaptureOngoing: 'WARNINGS.CAPTURE_ONGOING',
 } as const;
 
 export type PbxWarnings = typeof PbxWarnings[keyof typeof PbxWarnings];
@@ -5787,7 +5956,7 @@ export interface PbxXLicenseParams {
 export const PbxXOperatingSystemType = {
     Other: 'Other',
     Linux: 'Linux',
-    Windows: 'Windows'
+    Windows: 'Windows',
 } as const;
 
 export type PbxXOperatingSystemType = typeof PbxXOperatingSystemType[keyof typeof PbxXOperatingSystemType];
@@ -5795,6 +5964,16 @@ export type PbxXOperatingSystemType = typeof PbxXOperatingSystemType[keyof typeo
 
 export interface PbxXOutboundRulePurge {
     'Ids'?: Array<number>;
+}
+export interface PbxXReportRecording {
+    'Id'?: number;
+    'SentimentScore'?: number | null;
+    'Summary'?: string | null;
+    'Transcription'?: string | null;
+}
+export interface PbxXReportRecordingCollectionResponse {
+    '@odata.count'?: number | null;
+    'value'?: Array<PbxXReportRecording>;
 }
 export interface PbxXSBCConnection {
     'Calls'?: number | null;
@@ -5813,7 +5992,7 @@ export interface PbxXServiceManageOptions {
 
 export const PbxXferTypeEnum = {
     BXfer: 'BXfer',
-    AttXfer: 'AttXfer'
+    AttXfer: 'AttXfer',
 } as const;
 
 export type PbxXferTypeEnum = typeof PbxXferTypeEnum[keyof typeof PbxXferTypeEnum];
@@ -5861,7 +6040,7 @@ export interface ReferenceCreate {
 export const ReferenceNumeric = {
     NEGATIVE_INFINITY: '-INF',
     INFINITY: 'INF',
-    NAN: 'NaN'
+    NAN: 'NaN',
 } as const;
 
 export type ReferenceNumeric = typeof ReferenceNumeric[keyof typeof ReferenceNumeric];
@@ -6033,6 +6212,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6040,6 +6223,49 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(aISettingsAddVectorStoreFilesRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action BatchDeleteFiles
+         * @param {AISettingsBatchDeleteFilesRequestBody} aISettingsBatchDeleteFilesRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        batchDeleteFiles: async (aISettingsBatchDeleteFilesRequestBody: AISettingsBatchDeleteFilesRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'aISettingsBatchDeleteFilesRequestBody' is not null or undefined
+            assertParamExists('batchDeleteFiles', 'aISettingsBatchDeleteFilesRequestBody', aISettingsBatchDeleteFilesRequestBody)
+            const localVarPath = `/AISettings/Pbx.BatchDeleteFiles`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(aISettingsBatchDeleteFilesRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -6072,6 +6298,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6088,13 +6318,11 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Invoke action DeleteOpenAiFile
-         * @param {AISettingsDeleteOpenAiFileRequestBody} aISettingsDeleteOpenAiFileRequestBody Action parameters
+         * @param {AISettingsDeleteOpenAiFileRequestBody} [aISettingsDeleteOpenAiFileRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteOpenAiFile: async (aISettingsDeleteOpenAiFileRequestBody: AISettingsDeleteOpenAiFileRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'aISettingsDeleteOpenAiFileRequestBody' is not null or undefined
-            assertParamExists('deleteOpenAiFile', 'aISettingsDeleteOpenAiFileRequestBody', aISettingsDeleteOpenAiFileRequestBody)
+        deleteOpenAiFile: async (aISettingsDeleteOpenAiFileRequestBody?: AISettingsDeleteOpenAiFileRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/AISettings/Pbx.DeleteOpenAiFile`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6106,6 +6334,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -6127,13 +6359,11 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Invoke action DeleteVectorStore
-         * @param {AISettingsDeleteVectorStoreRequestBody} aISettingsDeleteVectorStoreRequestBody Action parameters
+         * @param {AISettingsDeleteVectorStoreRequestBody} [aISettingsDeleteVectorStoreRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteVectorStore: async (aISettingsDeleteVectorStoreRequestBody: AISettingsDeleteVectorStoreRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'aISettingsDeleteVectorStoreRequestBody' is not null or undefined
-            assertParamExists('deleteVectorStore', 'aISettingsDeleteVectorStoreRequestBody', aISettingsDeleteVectorStoreRequestBody)
+        deleteVectorStore: async (aISettingsDeleteVectorStoreRequestBody?: AISettingsDeleteVectorStoreRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/AISettings/Pbx.DeleteVectorStore`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6145,6 +6375,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -6166,13 +6400,11 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Invoke action DeleteVectorStoreFile
-         * @param {AISettingsDeleteVectorStoreFileRequestBody} aISettingsDeleteVectorStoreFileRequestBody Action parameters
+         * @param {AISettingsDeleteVectorStoreFileRequestBody} [aISettingsDeleteVectorStoreFileRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteVectorStoreFile: async (aISettingsDeleteVectorStoreFileRequestBody: AISettingsDeleteVectorStoreFileRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'aISettingsDeleteVectorStoreFileRequestBody' is not null or undefined
-            assertParamExists('deleteVectorStoreFile', 'aISettingsDeleteVectorStoreFileRequestBody', aISettingsDeleteVectorStoreFileRequestBody)
+        deleteVectorStoreFile: async (aISettingsDeleteVectorStoreFileRequestBody?: AISettingsDeleteVectorStoreFileRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/AISettings/Pbx.DeleteVectorStoreFile`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6184,6 +6416,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -6205,11 +6441,15 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Invoke function GetAIResources
+         * @param {string | null} provider Usage: provider&#x3D;{provider}
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAIResources: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/AISettings/Pbx.GetAIResources()`;
+        getAIResources: async (provider: string | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'provider' is not null or undefined
+            assertParamExists('getAIResources', 'provider', provider)
+            const localVarPath = `/AISettings/Pbx.GetAIResources(provider={provider})`
+                .replace(`{${"provider"}}`, encodeURIComponent(String(provider)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -6220,6 +6460,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -6256,6 +6500,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -6307,6 +6555,48 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke function GetCurrentAIResources
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCurrentAIResources: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/AISettings/Pbx.GetCurrentAIResources()`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6340,6 +6630,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -6391,6 +6685,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6433,6 +6731,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6447,13 +6749,11 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Update AISettings
-         * @param {PbxAISettings} pbxAISettings New property values
+         * @param {PbxAISettings} [pbxAISettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAISettings: async (pbxAISettings: PbxAISettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxAISettings' is not null or undefined
-            assertParamExists('updateAISettings', 'pbxAISettings', pbxAISettings)
+        updateAISettings: async (pbxAISettings?: PbxAISettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/AISettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6465,6 +6765,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -6509,6 +6813,10 @@ export const AISettingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6546,6 +6854,19 @@ export const AISettingsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke action BatchDeleteFiles
+         * @param {AISettingsBatchDeleteFilesRequestBody} aISettingsBatchDeleteFilesRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async batchDeleteFiles(aISettingsBatchDeleteFilesRequestBody: AISettingsBatchDeleteFilesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BatchDeleteFiles200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.batchDeleteFiles(aISettingsBatchDeleteFilesRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AISettingsApi.batchDeleteFiles']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke action CreateVectorStore
          * @param {AISettingsCreateVectorStoreRequestBody} aISettingsCreateVectorStoreRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -6560,11 +6881,11 @@ export const AISettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action DeleteOpenAiFile
-         * @param {AISettingsDeleteOpenAiFileRequestBody} aISettingsDeleteOpenAiFileRequestBody Action parameters
+         * @param {AISettingsDeleteOpenAiFileRequestBody} [aISettingsDeleteOpenAiFileRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteOpenAiFile(aISettingsDeleteOpenAiFileRequestBody: AISettingsDeleteOpenAiFileRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async deleteOpenAiFile(aISettingsDeleteOpenAiFileRequestBody?: AISettingsDeleteOpenAiFileRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteOpenAiFile(aISettingsDeleteOpenAiFileRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AISettingsApi.deleteOpenAiFile']?.[localVarOperationServerIndex]?.url;
@@ -6573,11 +6894,11 @@ export const AISettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action DeleteVectorStore
-         * @param {AISettingsDeleteVectorStoreRequestBody} aISettingsDeleteVectorStoreRequestBody Action parameters
+         * @param {AISettingsDeleteVectorStoreRequestBody} [aISettingsDeleteVectorStoreRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteVectorStore(aISettingsDeleteVectorStoreRequestBody: AISettingsDeleteVectorStoreRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async deleteVectorStore(aISettingsDeleteVectorStoreRequestBody?: AISettingsDeleteVectorStoreRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteVectorStore(aISettingsDeleteVectorStoreRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AISettingsApi.deleteVectorStore']?.[localVarOperationServerIndex]?.url;
@@ -6586,11 +6907,11 @@ export const AISettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action DeleteVectorStoreFile
-         * @param {AISettingsDeleteVectorStoreFileRequestBody} aISettingsDeleteVectorStoreFileRequestBody Action parameters
+         * @param {AISettingsDeleteVectorStoreFileRequestBody} [aISettingsDeleteVectorStoreFileRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteVectorStoreFile(aISettingsDeleteVectorStoreFileRequestBody: AISettingsDeleteVectorStoreFileRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async deleteVectorStoreFile(aISettingsDeleteVectorStoreFileRequestBody?: AISettingsDeleteVectorStoreFileRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteVectorStoreFile(aISettingsDeleteVectorStoreFileRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AISettingsApi.deleteVectorStoreFile']?.[localVarOperationServerIndex]?.url;
@@ -6599,11 +6920,12 @@ export const AISettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke function GetAIResources
+         * @param {string | null} provider Usage: provider&#x3D;{provider}
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAIResources(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxAIResources>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAIResources(options);
+        async getAIResources(provider: string | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxAIResources>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAIResources(provider, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AISettingsApi.getAIResources']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -6633,6 +6955,18 @@ export const AISettingsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAITemplateContents(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AISettingsApi.getAITemplateContents']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke function GetCurrentAIResources
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCurrentAIResources(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxAIResources>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCurrentAIResources(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AISettingsApi.getCurrentAIResources']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6680,11 +7014,11 @@ export const AISettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update AISettings
-         * @param {PbxAISettings} pbxAISettings New property values
+         * @param {PbxAISettings} [pbxAISettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAISettings(pbxAISettings: PbxAISettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateAISettings(pbxAISettings?: PbxAISettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAISettings(pbxAISettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AISettingsApi.updateAISettings']?.[localVarOperationServerIndex]?.url;
@@ -6724,6 +7058,16 @@ export const AISettingsApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * 
+         * @summary Invoke action BatchDeleteFiles
+         * @param {AISettingsApiBatchDeleteFilesRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        batchDeleteFiles(requestParameters: AISettingsApiBatchDeleteFilesRequest, options?: RawAxiosRequestConfig): AxiosPromise<BatchDeleteFiles200Response> {
+            return localVarFp.batchDeleteFiles(requestParameters.aISettingsBatchDeleteFilesRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Invoke action CreateVectorStore
          * @param {AISettingsApiCreateVectorStoreRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -6739,7 +7083,7 @@ export const AISettingsApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteOpenAiFile(requestParameters: AISettingsApiDeleteOpenAiFileRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        deleteOpenAiFile(requestParameters: AISettingsApiDeleteOpenAiFileRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deleteOpenAiFile(requestParameters.aISettingsDeleteOpenAiFileRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -6749,7 +7093,7 @@ export const AISettingsApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteVectorStore(requestParameters: AISettingsApiDeleteVectorStoreRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        deleteVectorStore(requestParameters: AISettingsApiDeleteVectorStoreRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deleteVectorStore(requestParameters.aISettingsDeleteVectorStoreRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -6759,17 +7103,18 @@ export const AISettingsApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteVectorStoreFile(requestParameters: AISettingsApiDeleteVectorStoreFileRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        deleteVectorStoreFile(requestParameters: AISettingsApiDeleteVectorStoreFileRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deleteVectorStoreFile(requestParameters.aISettingsDeleteVectorStoreFileRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Invoke function GetAIResources
+         * @param {AISettingsApiGetAIResourcesRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAIResources(options?: RawAxiosRequestConfig): AxiosPromise<PbxAIResources> {
-            return localVarFp.getAIResources(options).then((request) => request(axios, basePath));
+        getAIResources(requestParameters: AISettingsApiGetAIResourcesRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxAIResources> {
+            return localVarFp.getAIResources(requestParameters.provider, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6790,6 +7135,15 @@ export const AISettingsApiFactory = function (configuration?: Configuration, bas
          */
         getAITemplateContents(requestParameters: AISettingsApiGetAITemplateContentsRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetAITemplateContents200Response> {
             return localVarFp.getAITemplateContents(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke function GetCurrentAIResources
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCurrentAIResources(options?: RawAxiosRequestConfig): AxiosPromise<PbxAIResources> {
+            return localVarFp.getCurrentAIResources(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6828,7 +7182,7 @@ export const AISettingsApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAISettings(requestParameters: AISettingsApiUpdateAISettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateAISettings(requestParameters: AISettingsApiUpdateAISettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateAISettings(requestParameters.pbxAISettings, options).then((request) => request(axios, basePath));
         },
         /**
@@ -6855,6 +7209,16 @@ export interface AISettingsApiAddVectorStoreFilesRequest {
 }
 
 /**
+ * Request parameters for batchDeleteFiles operation in AISettingsApi.
+ */
+export interface AISettingsApiBatchDeleteFilesRequest {
+    /**
+     * Action parameters
+     */
+    readonly aISettingsBatchDeleteFilesRequestBody: AISettingsBatchDeleteFilesRequestBody
+}
+
+/**
  * Request parameters for createVectorStore operation in AISettingsApi.
  */
 export interface AISettingsApiCreateVectorStoreRequest {
@@ -6871,7 +7235,7 @@ export interface AISettingsApiDeleteOpenAiFileRequest {
     /**
      * Action parameters
      */
-    readonly aISettingsDeleteOpenAiFileRequestBody: AISettingsDeleteOpenAiFileRequestBody
+    readonly aISettingsDeleteOpenAiFileRequestBody?: AISettingsDeleteOpenAiFileRequestBody
 }
 
 /**
@@ -6881,7 +7245,7 @@ export interface AISettingsApiDeleteVectorStoreRequest {
     /**
      * Action parameters
      */
-    readonly aISettingsDeleteVectorStoreRequestBody: AISettingsDeleteVectorStoreRequestBody
+    readonly aISettingsDeleteVectorStoreRequestBody?: AISettingsDeleteVectorStoreRequestBody
 }
 
 /**
@@ -6891,7 +7255,17 @@ export interface AISettingsApiDeleteVectorStoreFileRequest {
     /**
      * Action parameters
      */
-    readonly aISettingsDeleteVectorStoreFileRequestBody: AISettingsDeleteVectorStoreFileRequestBody
+    readonly aISettingsDeleteVectorStoreFileRequestBody?: AISettingsDeleteVectorStoreFileRequestBody
+}
+
+/**
+ * Request parameters for getAIResources operation in AISettingsApi.
+ */
+export interface AISettingsApiGetAIResourcesRequest {
+    /**
+     * Usage: provider&#x3D;{provider}
+     */
+    readonly provider: string | null
 }
 
 /**
@@ -6971,7 +7345,7 @@ export interface AISettingsApiUpdateAISettingsRequest {
     /**
      * New property values
      */
-    readonly pbxAISettings: PbxAISettings
+    readonly pbxAISettings?: PbxAISettings
 }
 
 /**
@@ -7001,6 +7375,17 @@ export class AISettingsApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke action BatchDeleteFiles
+     * @param {AISettingsApiBatchDeleteFilesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public batchDeleteFiles(requestParameters: AISettingsApiBatchDeleteFilesRequest, options?: RawAxiosRequestConfig) {
+        return AISettingsApiFp(this.configuration).batchDeleteFiles(requestParameters.aISettingsBatchDeleteFilesRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Invoke action CreateVectorStore
      * @param {AISettingsApiCreateVectorStoreRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -7017,7 +7402,7 @@ export class AISettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public deleteOpenAiFile(requestParameters: AISettingsApiDeleteOpenAiFileRequest, options?: RawAxiosRequestConfig) {
+    public deleteOpenAiFile(requestParameters: AISettingsApiDeleteOpenAiFileRequest = {}, options?: RawAxiosRequestConfig) {
         return AISettingsApiFp(this.configuration).deleteOpenAiFile(requestParameters.aISettingsDeleteOpenAiFileRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -7028,7 +7413,7 @@ export class AISettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public deleteVectorStore(requestParameters: AISettingsApiDeleteVectorStoreRequest, options?: RawAxiosRequestConfig) {
+    public deleteVectorStore(requestParameters: AISettingsApiDeleteVectorStoreRequest = {}, options?: RawAxiosRequestConfig) {
         return AISettingsApiFp(this.configuration).deleteVectorStore(requestParameters.aISettingsDeleteVectorStoreRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -7039,18 +7424,19 @@ export class AISettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public deleteVectorStoreFile(requestParameters: AISettingsApiDeleteVectorStoreFileRequest, options?: RawAxiosRequestConfig) {
+    public deleteVectorStoreFile(requestParameters: AISettingsApiDeleteVectorStoreFileRequest = {}, options?: RawAxiosRequestConfig) {
         return AISettingsApiFp(this.configuration).deleteVectorStoreFile(requestParameters.aISettingsDeleteVectorStoreFileRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Invoke function GetAIResources
+     * @param {AISettingsApiGetAIResourcesRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getAIResources(options?: RawAxiosRequestConfig) {
-        return AISettingsApiFp(this.configuration).getAIResources(options).then((request) => request(this.axios, this.basePath));
+    public getAIResources(requestParameters: AISettingsApiGetAIResourcesRequest, options?: RawAxiosRequestConfig) {
+        return AISettingsApiFp(this.configuration).getAIResources(requestParameters.provider, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7073,6 +7459,16 @@ export class AISettingsApi extends BaseAPI {
      */
     public getAITemplateContents(requestParameters: AISettingsApiGetAITemplateContentsRequest, options?: RawAxiosRequestConfig) {
         return AISettingsApiFp(this.configuration).getAITemplateContents(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetCurrentAIResources
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getCurrentAIResources(options?: RawAxiosRequestConfig) {
+        return AISettingsApiFp(this.configuration).getCurrentAIResources(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7115,7 +7511,7 @@ export class AISettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateAISettings(requestParameters: AISettingsApiUpdateAISettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateAISettings(requestParameters: AISettingsApiUpdateAISettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return AISettingsApiFp(this.configuration).updateAISettings(requestParameters.pbxAISettings, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -7165,6 +7561,10 @@ export const ActiveCallsApiAxiosParamCreator = function (configuration?: Configu
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7202,6 +7602,10 @@ export const ActiveCallsApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -7436,6 +7840,10 @@ export const ActivityLogApiAxiosParamCreator = function (configuration?: Configu
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7493,6 +7901,10 @@ export const ActivityLogApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -7559,6 +7971,10 @@ export const ActivityLogApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -7809,6 +8225,10 @@ export const AmazonIntegrationSettingsApiAxiosParamCreator = function (configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7845,6 +8265,10 @@ export const AmazonIntegrationSettingsApiAxiosParamCreator = function (configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -7867,13 +8291,11 @@ export const AmazonIntegrationSettingsApiAxiosParamCreator = function (configura
         /**
          * 
          * @summary Update AmazonIntegrationSettings
-         * @param {PbxAmazonIntegrationSettings} pbxAmazonIntegrationSettings New property values
+         * @param {PbxAmazonIntegrationSettings} [pbxAmazonIntegrationSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAmazonIntegrationSettings: async (pbxAmazonIntegrationSettings: PbxAmazonIntegrationSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxAmazonIntegrationSettings' is not null or undefined
-            assertParamExists('updateAmazonIntegrationSettings', 'pbxAmazonIntegrationSettings', pbxAmazonIntegrationSettings)
+        updateAmazonIntegrationSettings: async (pbxAmazonIntegrationSettings?: PbxAmazonIntegrationSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/AmazonIntegrationSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7885,6 +8307,10 @@ export const AmazonIntegrationSettingsApiAxiosParamCreator = function (configura
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -7941,11 +8367,11 @@ export const AmazonIntegrationSettingsApiFp = function(configuration?: Configura
         /**
          * 
          * @summary Update AmazonIntegrationSettings
-         * @param {PbxAmazonIntegrationSettings} pbxAmazonIntegrationSettings New property values
+         * @param {PbxAmazonIntegrationSettings} [pbxAmazonIntegrationSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAmazonIntegrationSettings(pbxAmazonIntegrationSettings: PbxAmazonIntegrationSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateAmazonIntegrationSettings(pbxAmazonIntegrationSettings?: PbxAmazonIntegrationSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAmazonIntegrationSettings(pbxAmazonIntegrationSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AmazonIntegrationSettingsApi.updateAmazonIntegrationSettings']?.[localVarOperationServerIndex]?.url;
@@ -7986,7 +8412,7 @@ export const AmazonIntegrationSettingsApiFactory = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAmazonIntegrationSettings(requestParameters: AmazonIntegrationSettingsApiUpdateAmazonIntegrationSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateAmazonIntegrationSettings(requestParameters: AmazonIntegrationSettingsApiUpdateAmazonIntegrationSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateAmazonIntegrationSettings(requestParameters.pbxAmazonIntegrationSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -8014,7 +8440,7 @@ export interface AmazonIntegrationSettingsApiUpdateAmazonIntegrationSettingsRequ
     /**
      * New property values
      */
-    readonly pbxAmazonIntegrationSettings: PbxAmazonIntegrationSettings
+    readonly pbxAmazonIntegrationSettings?: PbxAmazonIntegrationSettings
 }
 
 /**
@@ -8049,7 +8475,7 @@ export class AmazonIntegrationSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateAmazonIntegrationSettings(requestParameters: AmazonIntegrationSettingsApiUpdateAmazonIntegrationSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateAmazonIntegrationSettings(requestParameters: AmazonIntegrationSettingsApiUpdateAmazonIntegrationSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return AmazonIntegrationSettingsApiFp(this.configuration).updateAmazonIntegrationSettings(requestParameters.pbxAmazonIntegrationSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -8086,6 +8512,10 @@ export const AntiHackingSettingsApiAxiosParamCreator = function (configuration?:
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -8108,13 +8538,11 @@ export const AntiHackingSettingsApiAxiosParamCreator = function (configuration?:
         /**
          * 
          * @summary Update AntiHackingSettings
-         * @param {PbxAntiHackingSettings} pbxAntiHackingSettings New property values
+         * @param {PbxAntiHackingSettings} [pbxAntiHackingSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAntiHackingSettings: async (pbxAntiHackingSettings: PbxAntiHackingSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxAntiHackingSettings' is not null or undefined
-            assertParamExists('updateAntiHackingSettings', 'pbxAntiHackingSettings', pbxAntiHackingSettings)
+        updateAntiHackingSettings: async (pbxAntiHackingSettings?: PbxAntiHackingSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/AntiHackingSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8126,6 +8554,10 @@ export const AntiHackingSettingsApiAxiosParamCreator = function (configuration?:
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -8170,11 +8602,11 @@ export const AntiHackingSettingsApiFp = function(configuration?: Configuration) 
         /**
          * 
          * @summary Update AntiHackingSettings
-         * @param {PbxAntiHackingSettings} pbxAntiHackingSettings New property values
+         * @param {PbxAntiHackingSettings} [pbxAntiHackingSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAntiHackingSettings(pbxAntiHackingSettings: PbxAntiHackingSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateAntiHackingSettings(pbxAntiHackingSettings?: PbxAntiHackingSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateAntiHackingSettings(pbxAntiHackingSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AntiHackingSettingsApi.updateAntiHackingSettings']?.[localVarOperationServerIndex]?.url;
@@ -8206,7 +8638,7 @@ export const AntiHackingSettingsApiFactory = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAntiHackingSettings(requestParameters: AntiHackingSettingsApiUpdateAntiHackingSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateAntiHackingSettings(requestParameters: AntiHackingSettingsApiUpdateAntiHackingSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateAntiHackingSettings(requestParameters.pbxAntiHackingSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -8234,7 +8666,7 @@ export interface AntiHackingSettingsApiUpdateAntiHackingSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxAntiHackingSettings: PbxAntiHackingSettings
+    readonly pbxAntiHackingSettings?: PbxAntiHackingSettings
 }
 
 /**
@@ -8259,7 +8691,7 @@ export class AntiHackingSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateAntiHackingSettings(requestParameters: AntiHackingSettingsApiUpdateAntiHackingSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateAntiHackingSettings(requestParameters: AntiHackingSettingsApiUpdateAntiHackingSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return AntiHackingSettingsApiFp(this.configuration).updateAntiHackingSettings(requestParameters.pbxAntiHackingSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -8292,6 +8724,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -8338,6 +8774,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -8379,6 +8819,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8408,6 +8852,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -8447,6 +8895,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8476,6 +8928,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -8515,6 +8971,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8549,6 +9009,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -8608,6 +9072,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8642,11 +9110,58 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action GetSftpHostKey
+         * @param {BackupsGetSftpHostKeyRequestBody} backupsGetSftpHostKeyRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSftpHostKey: async (backupsGetSftpHostKeyRequestBody: BackupsGetSftpHostKeyRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'backupsGetSftpHostKeyRequestBody' is not null or undefined
+            assertParamExists('getSftpHostKey', 'backupsGetSftpHostKeyRequestBody', backupsGetSftpHostKeyRequestBody)
+            const localVarPath = `/Backups/Pbx.GetSftpHostKey`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(backupsGetSftpHostKeyRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -8679,6 +9194,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -8750,6 +9269,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8786,6 +9309,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -8830,6 +9357,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8864,6 +9395,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -8908,6 +9443,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8942,6 +9481,10 @@ export const BackupsApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -9096,6 +9639,19 @@ export const BackupsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getRestoreSettings(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['BackupsApi.getRestoreSettings']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action GetSftpHostKey
+         * @param {BackupsGetSftpHostKeyRequestBody} backupsGetSftpHostKeyRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSftpHostKey(backupsGetSftpHostKeyRequestBody: BackupsGetSftpHostKeyRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSftpHostKey200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSftpHostKey(backupsGetSftpHostKeyRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BackupsApi.getSftpHostKey']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -9301,6 +9857,16 @@ export const BackupsApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Invoke action GetSftpHostKey
+         * @param {BackupsApiGetSftpHostKeyRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSftpHostKey(requestParameters: BackupsApiGetSftpHostKeyRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetSftpHostKey200Response> {
+            return localVarFp.getSftpHostKey(requestParameters.backupsGetSftpHostKeyRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get entities from Backups
          * @param {BackupsApiListBackupsRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -9434,6 +10000,16 @@ export interface BackupsApiGetFailoverScriptsRequest {
      * Include count of items
      */
     readonly $count?: boolean
+}
+
+/**
+ * Request parameters for getSftpHostKey operation in BackupsApi.
+ */
+export interface BackupsApiGetSftpHostKeyRequest {
+    /**
+     * Action parameters
+     */
+    readonly backupsGetSftpHostKeyRequestBody: BackupsGetSftpHostKeyRequestBody
 }
 
 /**
@@ -9646,6 +10222,17 @@ export class BackupsApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke action GetSftpHostKey
+     * @param {BackupsApiGetSftpHostKeyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getSftpHostKey(requestParameters: BackupsApiGetSftpHostKeyRequest, options?: RawAxiosRequestConfig) {
+        return BackupsApiFp(this.configuration).getSftpHostKey(requestParameters.backupsGetSftpHostKeyRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Get entities from Backups
      * @param {BackupsApiListBackupsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -9754,6 +10341,10 @@ export const BlackListNumbersApiAxiosParamCreator = function (configuration?: Co
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9788,6 +10379,10 @@ export const BlackListNumbersApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -9834,6 +10429,10 @@ export const BlackListNumbersApiAxiosParamCreator = function (configuration?: Co
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -9872,6 +10471,10 @@ export const BlackListNumbersApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -9922,6 +10525,10 @@ export const BlackListNumbersApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -9995,6 +10602,10 @@ export const BlackListNumbersApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -10402,6 +11013,10 @@ export const BlocklistApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10436,6 +11051,10 @@ export const BlocklistApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -10482,6 +11101,10 @@ export const BlocklistApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -10520,6 +11143,10 @@ export const BlocklistApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -10575,6 +11202,10 @@ export const BlocklistApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -10622,15 +11253,13 @@ export const BlocklistApiAxiosParamCreator = function (configuration?: Configura
          * 
          * @summary Update entity in Blocklist
          * @param {number} id The unique identifier of BlocklistAddr
-         * @param {PbxBlocklistAddr} pbxBlocklistAddr New property values
+         * @param {PbxBlocklistAddr} [pbxBlocklistAddr] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateBlocklistAddr: async (id: number, pbxBlocklistAddr: PbxBlocklistAddr, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateBlocklistAddr: async (id: number, pbxBlocklistAddr?: PbxBlocklistAddr, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateBlocklistAddr', 'id', id)
-            // verify required parameter 'pbxBlocklistAddr' is not null or undefined
-            assertParamExists('updateBlocklistAddr', 'pbxBlocklistAddr', pbxBlocklistAddr)
             const localVarPath = `/Blocklist({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -10643,6 +11272,10 @@ export const BlocklistApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -10749,11 +11382,11 @@ export const BlocklistApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in Blocklist
          * @param {number} id The unique identifier of BlocklistAddr
-         * @param {PbxBlocklistAddr} pbxBlocklistAddr New property values
+         * @param {PbxBlocklistAddr} [pbxBlocklistAddr] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateBlocklistAddr(id: number, pbxBlocklistAddr: PbxBlocklistAddr, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateBlocklistAddr(id: number, pbxBlocklistAddr?: PbxBlocklistAddr, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateBlocklistAddr(id, pbxBlocklistAddr, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['BlocklistApi.updateBlocklistAddr']?.[localVarOperationServerIndex]?.url;
@@ -10943,7 +11576,7 @@ export interface BlocklistApiUpdateBlocklistAddrRequest {
     /**
      * New property values
      */
-    readonly pbxBlocklistAddr: PbxBlocklistAddr
+    readonly pbxBlocklistAddr?: PbxBlocklistAddr
 }
 
 /**
@@ -11049,6 +11682,10 @@ export const CDRSettingsApiAxiosParamCreator = function (configuration?: Configu
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -11071,13 +11708,11 @@ export const CDRSettingsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Update CDRSettings
-         * @param {PbxCDRSettings} pbxCDRSettings New property values
+         * @param {PbxCDRSettings} [pbxCDRSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCDRSettings: async (pbxCDRSettings: PbxCDRSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxCDRSettings' is not null or undefined
-            assertParamExists('updateCDRSettings', 'pbxCDRSettings', pbxCDRSettings)
+        updateCDRSettings: async (pbxCDRSettings?: PbxCDRSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/CDRSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11089,6 +11724,10 @@ export const CDRSettingsApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -11133,11 +11772,11 @@ export const CDRSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update CDRSettings
-         * @param {PbxCDRSettings} pbxCDRSettings New property values
+         * @param {PbxCDRSettings} [pbxCDRSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCDRSettings(pbxCDRSettings: PbxCDRSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateCDRSettings(pbxCDRSettings?: PbxCDRSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateCDRSettings(pbxCDRSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CDRSettingsApi.updateCDRSettings']?.[localVarOperationServerIndex]?.url;
@@ -11169,7 +11808,7 @@ export const CDRSettingsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCDRSettings(requestParameters: CDRSettingsApiUpdateCDRSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateCDRSettings(requestParameters: CDRSettingsApiUpdateCDRSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateCDRSettings(requestParameters.pbxCDRSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -11197,7 +11836,7 @@ export interface CDRSettingsApiUpdateCDRSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxCDRSettings: PbxCDRSettings
+    readonly pbxCDRSettings?: PbxCDRSettings
 }
 
 /**
@@ -11222,7 +11861,7 @@ export class CDRSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateCDRSettings(requestParameters: CDRSettingsApiUpdateCDRSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateCDRSettings(requestParameters: CDRSettingsApiUpdateCDRSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return CDRSettingsApiFp(this.configuration).updateCDRSettings(requestParameters.pbxCDRSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -11252,6 +11891,10 @@ export const CallCostSettingsApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -11294,6 +11937,10 @@ export const CallCostSettingsApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -11345,13 +11992,11 @@ export const CallCostSettingsApiAxiosParamCreator = function (configuration?: Co
         /**
          * 
          * @summary Invoke action UpdateCost
-         * @param {CallCostSettingsUpdateCostRequestBody} callCostSettingsUpdateCostRequestBody Action parameters
+         * @param {CallCostSettingsUpdateCostRequestBody} [callCostSettingsUpdateCostRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCost: async (callCostSettingsUpdateCostRequestBody: CallCostSettingsUpdateCostRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'callCostSettingsUpdateCostRequestBody' is not null or undefined
-            assertParamExists('updateCost', 'callCostSettingsUpdateCostRequestBody', callCostSettingsUpdateCostRequestBody)
+        updateCost: async (callCostSettingsUpdateCostRequestBody?: CallCostSettingsUpdateCostRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/CallCostSettings/Pbx.UpdateCost`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11363,6 +12008,10 @@ export const CallCostSettingsApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -11425,11 +12074,11 @@ export const CallCostSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action UpdateCost
-         * @param {CallCostSettingsUpdateCostRequestBody} callCostSettingsUpdateCostRequestBody Action parameters
+         * @param {CallCostSettingsUpdateCostRequestBody} [callCostSettingsUpdateCostRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCost(callCostSettingsUpdateCostRequestBody: CallCostSettingsUpdateCostRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateCost(callCostSettingsUpdateCostRequestBody?: CallCostSettingsUpdateCostRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateCost(callCostSettingsUpdateCostRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CallCostSettingsApi.updateCost']?.[localVarOperationServerIndex]?.url;
@@ -11470,7 +12119,7 @@ export const CallCostSettingsApiFactory = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCost(requestParameters: CallCostSettingsApiUpdateCostRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateCost(requestParameters: CallCostSettingsApiUpdateCostRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateCost(requestParameters.callCostSettingsUpdateCostRequestBody, options).then((request) => request(axios, basePath));
         },
     };
@@ -11528,7 +12177,7 @@ export interface CallCostSettingsApiUpdateCostRequest {
     /**
      * Action parameters
      */
-    readonly callCostSettingsUpdateCostRequestBody: CallCostSettingsUpdateCostRequestBody
+    readonly callCostSettingsUpdateCostRequestBody?: CallCostSettingsUpdateCostRequestBody
 }
 
 /**
@@ -11563,7 +12212,7 @@ export class CallCostSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateCost(requestParameters: CallCostSettingsApiUpdateCostRequest, options?: RawAxiosRequestConfig) {
+    public updateCost(requestParameters: CallCostSettingsApiUpdateCostRequest = {}, options?: RawAxiosRequestConfig) {
         return CallCostSettingsApiFp(this.configuration).updateCost(requestParameters.callCostSettingsUpdateCostRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -11596,6 +12245,10 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -11637,6 +12290,10 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -11686,6 +12343,10 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -11723,6 +12384,10 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -11774,6 +12439,10 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -11841,6 +12510,10 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -11888,15 +12561,13 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
          * 
          * @summary Update entity in CallFlowApps
          * @param {number} id The unique identifier of CallFlowApp
-         * @param {PbxCallFlowApp} pbxCallFlowApp New property values
+         * @param {PbxCallFlowApp} [pbxCallFlowApp] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCallFlowApp: async (id: number, pbxCallFlowApp: PbxCallFlowApp, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateCallFlowApp: async (id: number, pbxCallFlowApp?: PbxCallFlowApp, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateCallFlowApp', 'id', id)
-            // verify required parameter 'pbxCallFlowApp' is not null or undefined
-            assertParamExists('updateCallFlowApp', 'pbxCallFlowApp', pbxCallFlowApp)
             const localVarPath = `/CallFlowApps({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -11909,6 +12580,10 @@ export const CallFlowAppsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -12034,11 +12709,11 @@ export const CallFlowAppsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in CallFlowApps
          * @param {number} id The unique identifier of CallFlowApp
-         * @param {PbxCallFlowApp} pbxCallFlowApp New property values
+         * @param {PbxCallFlowApp} [pbxCallFlowApp] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCallFlowApp(id: number, pbxCallFlowApp: PbxCallFlowApp, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateCallFlowApp(id: number, pbxCallFlowApp?: PbxCallFlowApp, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateCallFlowApp(id, pbxCallFlowApp, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CallFlowAppsApi.updateCallFlowApp']?.[localVarOperationServerIndex]?.url;
@@ -12278,7 +12953,7 @@ export interface CallFlowAppsApiUpdateCallFlowAppRequest {
     /**
      * New property values
      */
-    readonly pbxCallFlowApp: PbxCallFlowApp
+    readonly pbxCallFlowApp?: PbxCallFlowApp
 }
 
 /**
@@ -12396,6 +13071,10 @@ export const CallFlowScriptsApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -12594,6 +13273,10 @@ export const CallHistoryViewApiAxiosParamCreator = function (configuration?: Con
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -12663,6 +13346,10 @@ export const CallHistoryViewApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -12941,6 +13628,10 @@ export const CallParkingSettingsApiAxiosParamCreator = function (configuration?:
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -12963,13 +13654,11 @@ export const CallParkingSettingsApiAxiosParamCreator = function (configuration?:
         /**
          * 
          * @summary Update CallParkingSettings
-         * @param {PbxCallParkingSettings} pbxCallParkingSettings New property values
+         * @param {PbxCallParkingSettings} [pbxCallParkingSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCallParkingSettings: async (pbxCallParkingSettings: PbxCallParkingSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxCallParkingSettings' is not null or undefined
-            assertParamExists('updateCallParkingSettings', 'pbxCallParkingSettings', pbxCallParkingSettings)
+        updateCallParkingSettings: async (pbxCallParkingSettings?: PbxCallParkingSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/CallParkingSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12981,6 +13670,10 @@ export const CallParkingSettingsApiAxiosParamCreator = function (configuration?:
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -13025,11 +13718,11 @@ export const CallParkingSettingsApiFp = function(configuration?: Configuration) 
         /**
          * 
          * @summary Update CallParkingSettings
-         * @param {PbxCallParkingSettings} pbxCallParkingSettings New property values
+         * @param {PbxCallParkingSettings} [pbxCallParkingSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCallParkingSettings(pbxCallParkingSettings: PbxCallParkingSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateCallParkingSettings(pbxCallParkingSettings?: PbxCallParkingSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateCallParkingSettings(pbxCallParkingSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CallParkingSettingsApi.updateCallParkingSettings']?.[localVarOperationServerIndex]?.url;
@@ -13061,7 +13754,7 @@ export const CallParkingSettingsApiFactory = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCallParkingSettings(requestParameters: CallParkingSettingsApiUpdateCallParkingSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateCallParkingSettings(requestParameters: CallParkingSettingsApiUpdateCallParkingSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateCallParkingSettings(requestParameters.pbxCallParkingSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -13089,7 +13782,7 @@ export interface CallParkingSettingsApiUpdateCallParkingSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxCallParkingSettings: PbxCallParkingSettings
+    readonly pbxCallParkingSettings?: PbxCallParkingSettings
 }
 
 /**
@@ -13114,7 +13807,7 @@ export class CallParkingSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateCallParkingSettings(requestParameters: CallParkingSettingsApiUpdateCallParkingSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateCallParkingSettings(requestParameters: CallParkingSettingsApiUpdateCallParkingSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return CallParkingSettingsApiFp(this.configuration).updateCallParkingSettings(requestParameters.pbxCallParkingSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -13151,6 +13844,10 @@ export const CallTypesSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -13173,13 +13870,11 @@ export const CallTypesSettingsApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @summary Update CallTypesSettings
-         * @param {PbxCallTypesSettings} pbxCallTypesSettings New property values
+         * @param {PbxCallTypesSettings} [pbxCallTypesSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCallTypesSettings: async (pbxCallTypesSettings: PbxCallTypesSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxCallTypesSettings' is not null or undefined
-            assertParamExists('updateCallTypesSettings', 'pbxCallTypesSettings', pbxCallTypesSettings)
+        updateCallTypesSettings: async (pbxCallTypesSettings?: PbxCallTypesSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/CallTypesSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13191,6 +13886,10 @@ export const CallTypesSettingsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -13235,11 +13934,11 @@ export const CallTypesSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update CallTypesSettings
-         * @param {PbxCallTypesSettings} pbxCallTypesSettings New property values
+         * @param {PbxCallTypesSettings} [pbxCallTypesSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCallTypesSettings(pbxCallTypesSettings: PbxCallTypesSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateCallTypesSettings(pbxCallTypesSettings?: PbxCallTypesSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateCallTypesSettings(pbxCallTypesSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CallTypesSettingsApi.updateCallTypesSettings']?.[localVarOperationServerIndex]?.url;
@@ -13271,7 +13970,7 @@ export const CallTypesSettingsApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCallTypesSettings(requestParameters: CallTypesSettingsApiUpdateCallTypesSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateCallTypesSettings(requestParameters: CallTypesSettingsApiUpdateCallTypesSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateCallTypesSettings(requestParameters.pbxCallTypesSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -13299,7 +13998,7 @@ export interface CallTypesSettingsApiUpdateCallTypesSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxCallTypesSettings: PbxCallTypesSettings
+    readonly pbxCallTypesSettings?: PbxCallTypesSettings
 }
 
 /**
@@ -13324,7 +14023,7 @@ export class CallTypesSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateCallTypesSettings(requestParameters: CallTypesSettingsApiUpdateCallTypesSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateCallTypesSettings(requestParameters: CallTypesSettingsApiUpdateCallTypesSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return CallTypesSettingsApiFp(this.configuration).updateCallTypesSettings(requestParameters.pbxCallTypesSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -13366,6 +14065,10 @@ export const ChatHistoryViewApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -13440,6 +14143,10 @@ export const ChatHistoryViewApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -13724,6 +14431,10 @@ export const ChatLogSettingsApiAxiosParamCreator = function (configuration?: Con
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -13746,13 +14457,11 @@ export const ChatLogSettingsApiAxiosParamCreator = function (configuration?: Con
         /**
          * 
          * @summary Update ChatLogSettings
-         * @param {PbxChatLogSettings} pbxChatLogSettings New property values
+         * @param {PbxChatLogSettings} [pbxChatLogSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateChatLogSettings: async (pbxChatLogSettings: PbxChatLogSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxChatLogSettings' is not null or undefined
-            assertParamExists('updateChatLogSettings', 'pbxChatLogSettings', pbxChatLogSettings)
+        updateChatLogSettings: async (pbxChatLogSettings?: PbxChatLogSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/ChatLogSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13764,6 +14473,10 @@ export const ChatLogSettingsApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -13808,11 +14521,11 @@ export const ChatLogSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update ChatLogSettings
-         * @param {PbxChatLogSettings} pbxChatLogSettings New property values
+         * @param {PbxChatLogSettings} [pbxChatLogSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateChatLogSettings(pbxChatLogSettings: PbxChatLogSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateChatLogSettings(pbxChatLogSettings?: PbxChatLogSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateChatLogSettings(pbxChatLogSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ChatLogSettingsApi.updateChatLogSettings']?.[localVarOperationServerIndex]?.url;
@@ -13844,7 +14557,7 @@ export const ChatLogSettingsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateChatLogSettings(requestParameters: ChatLogSettingsApiUpdateChatLogSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateChatLogSettings(requestParameters: ChatLogSettingsApiUpdateChatLogSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateChatLogSettings(requestParameters.pbxChatLogSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -13872,7 +14585,7 @@ export interface ChatLogSettingsApiUpdateChatLogSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxChatLogSettings: PbxChatLogSettings
+    readonly pbxChatLogSettings?: PbxChatLogSettings
 }
 
 /**
@@ -13897,7 +14610,7 @@ export class ChatLogSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateChatLogSettings(requestParameters: ChatLogSettingsApiUpdateChatLogSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateChatLogSettings(requestParameters: ChatLogSettingsApiUpdateChatLogSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return ChatLogSettingsApiFp(this.configuration).updateChatLogSettings(requestParameters.pbxChatLogSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -13939,6 +14652,10 @@ export const ChatMessagesHistoryViewApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14013,6 +14730,10 @@ export const ChatMessagesHistoryViewApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14297,6 +15018,10 @@ export const CodecsSettingsApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -14319,13 +15044,11 @@ export const CodecsSettingsApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @summary Update CodecsSettings
-         * @param {PbxCodecsSettings} pbxCodecsSettings New property values
+         * @param {PbxCodecsSettings} [pbxCodecsSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCodecsSettings: async (pbxCodecsSettings: PbxCodecsSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxCodecsSettings' is not null or undefined
-            assertParamExists('updateCodecsSettings', 'pbxCodecsSettings', pbxCodecsSettings)
+        updateCodecsSettings: async (pbxCodecsSettings?: PbxCodecsSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/CodecsSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14337,6 +15060,10 @@ export const CodecsSettingsApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14381,11 +15108,11 @@ export const CodecsSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update CodecsSettings
-         * @param {PbxCodecsSettings} pbxCodecsSettings New property values
+         * @param {PbxCodecsSettings} [pbxCodecsSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCodecsSettings(pbxCodecsSettings: PbxCodecsSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateCodecsSettings(pbxCodecsSettings?: PbxCodecsSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateCodecsSettings(pbxCodecsSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CodecsSettingsApi.updateCodecsSettings']?.[localVarOperationServerIndex]?.url;
@@ -14417,7 +15144,7 @@ export const CodecsSettingsApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCodecsSettings(requestParameters: CodecsSettingsApiUpdateCodecsSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateCodecsSettings(requestParameters: CodecsSettingsApiUpdateCodecsSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateCodecsSettings(requestParameters.pbxCodecsSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -14445,7 +15172,7 @@ export interface CodecsSettingsApiUpdateCodecsSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxCodecsSettings: PbxCodecsSettings
+    readonly pbxCodecsSettings?: PbxCodecsSettings
 }
 
 /**
@@ -14470,7 +15197,7 @@ export class CodecsSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateCodecsSettings(requestParameters: CodecsSettingsApiUpdateCodecsSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateCodecsSettings(requestParameters: CodecsSettingsApiUpdateCodecsSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return CodecsSettingsApiFp(this.configuration).updateCodecsSettings(requestParameters.pbxCodecsSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -14500,6 +15227,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14539,6 +15270,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14570,6 +15305,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14617,6 +15356,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14650,6 +15393,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14689,6 +15436,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14753,6 +15504,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -14807,6 +15562,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14871,6 +15630,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -14905,13 +15668,11 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
         /**
          * 
          * @summary Update ConferenceSettings
-         * @param {PbxConferenceSettings} pbxConferenceSettings New property values
+         * @param {PbxConferenceSettings} [pbxConferenceSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateConferenceSettings: async (pbxConferenceSettings: PbxConferenceSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxConferenceSettings' is not null or undefined
-            assertParamExists('updateConferenceSettings', 'pbxConferenceSettings', pbxConferenceSettings)
+        updateConferenceSettings: async (pbxConferenceSettings?: PbxConferenceSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/ConferenceSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14923,6 +15684,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -14962,6 +15727,10 @@ export const ConferenceSettingsApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -15123,11 +15892,11 @@ export const ConferenceSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update ConferenceSettings
-         * @param {PbxConferenceSettings} pbxConferenceSettings New property values
+         * @param {PbxConferenceSettings} [pbxConferenceSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateConferenceSettings(pbxConferenceSettings: PbxConferenceSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateConferenceSettings(pbxConferenceSettings?: PbxConferenceSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateConferenceSettings(pbxConferenceSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ConferenceSettingsApi.updateConferenceSettings']?.[localVarOperationServerIndex]?.url;
@@ -15249,7 +16018,7 @@ export const ConferenceSettingsApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateConferenceSettings(requestParameters: ConferenceSettingsApiUpdateConferenceSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateConferenceSettings(requestParameters: ConferenceSettingsApiUpdateConferenceSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateConferenceSettings(requestParameters.pbxConferenceSettings, options).then((request) => request(axios, basePath));
         },
         /**
@@ -15417,7 +16186,7 @@ export interface ConferenceSettingsApiUpdateConferenceSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxConferenceSettings: PbxConferenceSettings
+    readonly pbxConferenceSettings?: PbxConferenceSettings
 }
 
 /**
@@ -15537,7 +16306,7 @@ export class ConferenceSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateConferenceSettings(requestParameters: ConferenceSettingsApiUpdateConferenceSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateConferenceSettings(requestParameters: ConferenceSettingsApiUpdateConferenceSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return ConferenceSettingsApiFp(this.configuration).updateConferenceSettings(requestParameters.pbxConferenceSettings, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15585,6 +16354,10 @@ export const ConsoleRestrictionsApiAxiosParamCreator = function (configuration?:
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -15607,13 +16380,11 @@ export const ConsoleRestrictionsApiAxiosParamCreator = function (configuration?:
         /**
          * 
          * @summary Update ConsoleRestrictions
-         * @param {PbxConsoleRestrictions} pbxConsoleRestrictions New property values
+         * @param {PbxConsoleRestrictions} [pbxConsoleRestrictions] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateConsoleRestrictions: async (pbxConsoleRestrictions: PbxConsoleRestrictions, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxConsoleRestrictions' is not null or undefined
-            assertParamExists('updateConsoleRestrictions', 'pbxConsoleRestrictions', pbxConsoleRestrictions)
+        updateConsoleRestrictions: async (pbxConsoleRestrictions?: PbxConsoleRestrictions, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/ConsoleRestrictions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15625,6 +16396,10 @@ export const ConsoleRestrictionsApiAxiosParamCreator = function (configuration?:
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -15669,11 +16444,11 @@ export const ConsoleRestrictionsApiFp = function(configuration?: Configuration) 
         /**
          * 
          * @summary Update ConsoleRestrictions
-         * @param {PbxConsoleRestrictions} pbxConsoleRestrictions New property values
+         * @param {PbxConsoleRestrictions} [pbxConsoleRestrictions] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateConsoleRestrictions(pbxConsoleRestrictions: PbxConsoleRestrictions, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateConsoleRestrictions(pbxConsoleRestrictions?: PbxConsoleRestrictions, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateConsoleRestrictions(pbxConsoleRestrictions, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ConsoleRestrictionsApi.updateConsoleRestrictions']?.[localVarOperationServerIndex]?.url;
@@ -15705,7 +16480,7 @@ export const ConsoleRestrictionsApiFactory = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateConsoleRestrictions(requestParameters: ConsoleRestrictionsApiUpdateConsoleRestrictionsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateConsoleRestrictions(requestParameters: ConsoleRestrictionsApiUpdateConsoleRestrictionsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateConsoleRestrictions(requestParameters.pbxConsoleRestrictions, options).then((request) => request(axios, basePath));
         },
     };
@@ -15733,7 +16508,7 @@ export interface ConsoleRestrictionsApiUpdateConsoleRestrictionsRequest {
     /**
      * New property values
      */
-    readonly pbxConsoleRestrictions: PbxConsoleRestrictions
+    readonly pbxConsoleRestrictions?: PbxConsoleRestrictions
 }
 
 /**
@@ -15758,7 +16533,7 @@ export class ConsoleRestrictionsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateConsoleRestrictions(requestParameters: ConsoleRestrictionsApiUpdateConsoleRestrictionsRequest, options?: RawAxiosRequestConfig) {
+    public updateConsoleRestrictions(requestParameters: ConsoleRestrictionsApiUpdateConsoleRestrictionsRequest = {}, options?: RawAxiosRequestConfig) {
         return ConsoleRestrictionsApiFp(this.configuration).updateConsoleRestrictions(requestParameters.pbxConsoleRestrictions, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -15791,6 +16566,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -15830,6 +16609,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -15876,6 +16659,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -15916,6 +16703,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15932,13 +16723,11 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Invoke action DeleteContactsByType
-         * @param {ContactsDeleteContactsByTypeRequestBody} contactsDeleteContactsByTypeRequestBody Action parameters
+         * @param {ContactsDeleteContactsByTypeRequestBody} [contactsDeleteContactsByTypeRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteContactsByType: async (contactsDeleteContactsByTypeRequestBody: ContactsDeleteContactsByTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'contactsDeleteContactsByTypeRequestBody' is not null or undefined
-            assertParamExists('deleteContactsByType', 'contactsDeleteContactsByTypeRequestBody', contactsDeleteContactsByTypeRequestBody)
+        deleteContactsByType: async (contactsDeleteContactsByTypeRequestBody?: ContactsDeleteContactsByTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Contacts/Pbx.DeleteContactsByType`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15950,6 +16739,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -15971,13 +16764,11 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Invoke action DeleteDepartmentContactsByType
-         * @param {ContactsDeleteDepartmentContactsByTypeRequestBody} contactsDeleteDepartmentContactsByTypeRequestBody Action parameters
+         * @param {ContactsDeleteDepartmentContactsByTypeRequestBody} [contactsDeleteDepartmentContactsByTypeRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteDepartmentContactsByType: async (contactsDeleteDepartmentContactsByTypeRequestBody: ContactsDeleteDepartmentContactsByTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'contactsDeleteDepartmentContactsByTypeRequestBody' is not null or undefined
-            assertParamExists('deleteDepartmentContactsByType', 'contactsDeleteDepartmentContactsByTypeRequestBody', contactsDeleteDepartmentContactsByTypeRequestBody)
+        deleteDepartmentContactsByType: async (contactsDeleteDepartmentContactsByTypeRequestBody?: ContactsDeleteDepartmentContactsByTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Contacts/Pbx.DeleteDepartmentContactsByType`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15989,6 +16780,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -16010,13 +16805,11 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Invoke action DeletePersonalContactsByType
-         * @param {ContactsDeletePersonalContactsByTypeRequestBody} contactsDeletePersonalContactsByTypeRequestBody Action parameters
+         * @param {ContactsDeletePersonalContactsByTypeRequestBody} [contactsDeletePersonalContactsByTypeRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePersonalContactsByType: async (contactsDeletePersonalContactsByTypeRequestBody: ContactsDeletePersonalContactsByTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'contactsDeletePersonalContactsByTypeRequestBody' is not null or undefined
-            assertParamExists('deletePersonalContactsByType', 'contactsDeletePersonalContactsByTypeRequestBody', contactsDeletePersonalContactsByTypeRequestBody)
+        deletePersonalContactsByType: async (contactsDeletePersonalContactsByTypeRequestBody?: ContactsDeletePersonalContactsByTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Contacts/Pbx.DeletePersonalContactsByType`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16028,6 +16821,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -16070,6 +16867,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -16124,6 +16925,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -16195,6 +17000,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -16232,6 +17041,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -16306,6 +17119,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16323,15 +17140,13 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
          * 
          * @summary Update entity in Contacts
          * @param {number} id The unique identifier of Contact
-         * @param {PbxContact} pbxContact New property values
+         * @param {PbxContact} [pbxContact] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateContact: async (id: number, pbxContact: PbxContact, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateContact: async (id: number, pbxContact?: PbxContact, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateContact', 'id', id)
-            // verify required parameter 'pbxContact' is not null or undefined
-            assertParamExists('updateContact', 'pbxContact', pbxContact)
             const localVarPath = `/Contacts({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -16344,6 +17159,10 @@ export const ContactsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -16427,11 +17246,11 @@ export const ContactsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action DeleteContactsByType
-         * @param {ContactsDeleteContactsByTypeRequestBody} contactsDeleteContactsByTypeRequestBody Action parameters
+         * @param {ContactsDeleteContactsByTypeRequestBody} [contactsDeleteContactsByTypeRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteContactsByType(contactsDeleteContactsByTypeRequestBody: ContactsDeleteContactsByTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async deleteContactsByType(contactsDeleteContactsByTypeRequestBody?: ContactsDeleteContactsByTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteContactsByType(contactsDeleteContactsByTypeRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ContactsApi.deleteContactsByType']?.[localVarOperationServerIndex]?.url;
@@ -16440,11 +17259,11 @@ export const ContactsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action DeleteDepartmentContactsByType
-         * @param {ContactsDeleteDepartmentContactsByTypeRequestBody} contactsDeleteDepartmentContactsByTypeRequestBody Action parameters
+         * @param {ContactsDeleteDepartmentContactsByTypeRequestBody} [contactsDeleteDepartmentContactsByTypeRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteDepartmentContactsByType(contactsDeleteDepartmentContactsByTypeRequestBody: ContactsDeleteDepartmentContactsByTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async deleteDepartmentContactsByType(contactsDeleteDepartmentContactsByTypeRequestBody?: ContactsDeleteDepartmentContactsByTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteDepartmentContactsByType(contactsDeleteDepartmentContactsByTypeRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ContactsApi.deleteDepartmentContactsByType']?.[localVarOperationServerIndex]?.url;
@@ -16453,11 +17272,11 @@ export const ContactsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action DeletePersonalContactsByType
-         * @param {ContactsDeletePersonalContactsByTypeRequestBody} contactsDeletePersonalContactsByTypeRequestBody Action parameters
+         * @param {ContactsDeletePersonalContactsByTypeRequestBody} [contactsDeletePersonalContactsByTypeRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deletePersonalContactsByType(contactsDeletePersonalContactsByTypeRequestBody: ContactsDeletePersonalContactsByTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async deletePersonalContactsByType(contactsDeletePersonalContactsByTypeRequestBody?: ContactsDeletePersonalContactsByTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deletePersonalContactsByType(contactsDeletePersonalContactsByTypeRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ContactsApi.deletePersonalContactsByType']?.[localVarOperationServerIndex]?.url;
@@ -16548,11 +17367,11 @@ export const ContactsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in Contacts
          * @param {number} id The unique identifier of Contact
-         * @param {PbxContact} pbxContact New property values
+         * @param {PbxContact} [pbxContact] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateContact(id: number, pbxContact: PbxContact, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateContact(id: number, pbxContact?: PbxContact, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateContact(id, pbxContact, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ContactsApi.updateContact']?.[localVarOperationServerIndex]?.url;
@@ -16614,7 +17433,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteContactsByType(requestParameters: ContactsApiDeleteContactsByTypeRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        deleteContactsByType(requestParameters: ContactsApiDeleteContactsByTypeRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deleteContactsByType(requestParameters.contactsDeleteContactsByTypeRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -16624,7 +17443,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteDepartmentContactsByType(requestParameters: ContactsApiDeleteDepartmentContactsByTypeRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        deleteDepartmentContactsByType(requestParameters: ContactsApiDeleteDepartmentContactsByTypeRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deleteDepartmentContactsByType(requestParameters.contactsDeleteDepartmentContactsByTypeRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -16634,7 +17453,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePersonalContactsByType(requestParameters: ContactsApiDeletePersonalContactsByTypeRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        deletePersonalContactsByType(requestParameters: ContactsApiDeletePersonalContactsByTypeRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deletePersonalContactsByType(requestParameters.contactsDeletePersonalContactsByTypeRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -16751,7 +17570,7 @@ export interface ContactsApiDeleteContactsByTypeRequest {
     /**
      * Action parameters
      */
-    readonly contactsDeleteContactsByTypeRequestBody: ContactsDeleteContactsByTypeRequestBody
+    readonly contactsDeleteContactsByTypeRequestBody?: ContactsDeleteContactsByTypeRequestBody
 }
 
 /**
@@ -16761,7 +17580,7 @@ export interface ContactsApiDeleteDepartmentContactsByTypeRequest {
     /**
      * Action parameters
      */
-    readonly contactsDeleteDepartmentContactsByTypeRequestBody: ContactsDeleteDepartmentContactsByTypeRequestBody
+    readonly contactsDeleteDepartmentContactsByTypeRequestBody?: ContactsDeleteDepartmentContactsByTypeRequestBody
 }
 
 /**
@@ -16771,7 +17590,7 @@ export interface ContactsApiDeletePersonalContactsByTypeRequest {
     /**
      * Action parameters
      */
-    readonly contactsDeletePersonalContactsByTypeRequestBody: ContactsDeletePersonalContactsByTypeRequestBody
+    readonly contactsDeletePersonalContactsByTypeRequestBody?: ContactsDeletePersonalContactsByTypeRequestBody
 }
 
 /**
@@ -16911,7 +17730,7 @@ export interface ContactsApiUpdateContactRequest {
     /**
      * New property values
      */
-    readonly pbxContact: PbxContact
+    readonly pbxContact?: PbxContact
 }
 
 /**
@@ -16969,7 +17788,7 @@ export class ContactsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public deleteContactsByType(requestParameters: ContactsApiDeleteContactsByTypeRequest, options?: RawAxiosRequestConfig) {
+    public deleteContactsByType(requestParameters: ContactsApiDeleteContactsByTypeRequest = {}, options?: RawAxiosRequestConfig) {
         return ContactsApiFp(this.configuration).deleteContactsByType(requestParameters.contactsDeleteContactsByTypeRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -16980,7 +17799,7 @@ export class ContactsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public deleteDepartmentContactsByType(requestParameters: ContactsApiDeleteDepartmentContactsByTypeRequest, options?: RawAxiosRequestConfig) {
+    public deleteDepartmentContactsByType(requestParameters: ContactsApiDeleteDepartmentContactsByTypeRequest = {}, options?: RawAxiosRequestConfig) {
         return ContactsApiFp(this.configuration).deleteDepartmentContactsByType(requestParameters.contactsDeleteDepartmentContactsByTypeRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -16991,7 +17810,7 @@ export class ContactsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public deletePersonalContactsByType(requestParameters: ContactsApiDeletePersonalContactsByTypeRequest, options?: RawAxiosRequestConfig) {
+    public deletePersonalContactsByType(requestParameters: ContactsApiDeletePersonalContactsByTypeRequest = {}, options?: RawAxiosRequestConfig) {
         return ContactsApiFp(this.configuration).deletePersonalContactsByType(requestParameters.contactsDeletePersonalContactsByTypeRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -17094,6 +17913,10 @@ export const CountriesApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -17286,6 +18109,10 @@ export const CountryCodesApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -17308,13 +18135,11 @@ export const CountryCodesApiAxiosParamCreator = function (configuration?: Config
         /**
          * 
          * @summary Update CountryCodes
-         * @param {PbxCountryCodes} pbxCountryCodes New property values
+         * @param {PbxCountryCodes} [pbxCountryCodes] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCountryCodes: async (pbxCountryCodes: PbxCountryCodes, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxCountryCodes' is not null or undefined
-            assertParamExists('updateCountryCodes', 'pbxCountryCodes', pbxCountryCodes)
+        updateCountryCodes: async (pbxCountryCodes?: PbxCountryCodes, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/CountryCodes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -17326,6 +18151,10 @@ export const CountryCodesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -17370,11 +18199,11 @@ export const CountryCodesApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update CountryCodes
-         * @param {PbxCountryCodes} pbxCountryCodes New property values
+         * @param {PbxCountryCodes} [pbxCountryCodes] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCountryCodes(pbxCountryCodes: PbxCountryCodes, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateCountryCodes(pbxCountryCodes?: PbxCountryCodes, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateCountryCodes(pbxCountryCodes, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CountryCodesApi.updateCountryCodes']?.[localVarOperationServerIndex]?.url;
@@ -17406,7 +18235,7 @@ export const CountryCodesApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCountryCodes(requestParameters: CountryCodesApiUpdateCountryCodesRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateCountryCodes(requestParameters: CountryCodesApiUpdateCountryCodesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateCountryCodes(requestParameters.pbxCountryCodes, options).then((request) => request(axios, basePath));
         },
     };
@@ -17434,7 +18263,7 @@ export interface CountryCodesApiUpdateCountryCodesRequest {
     /**
      * New property values
      */
-    readonly pbxCountryCodes: PbxCountryCodes
+    readonly pbxCountryCodes?: PbxCountryCodes
 }
 
 /**
@@ -17459,7 +18288,7 @@ export class CountryCodesApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateCountryCodes(requestParameters: CountryCodesApiUpdateCountryCodesRequest, options?: RawAxiosRequestConfig) {
+    public updateCountryCodes(requestParameters: CountryCodesApiUpdateCountryCodesRequest = {}, options?: RawAxiosRequestConfig) {
         return CountryCodesApiFp(this.configuration).updateCountryCodes(requestParameters.pbxCountryCodes, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -17489,6 +18318,10 @@ export const CrmIntegrationApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -17525,6 +18358,10 @@ export const CrmIntegrationApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -17576,6 +18413,10 @@ export const CrmIntegrationApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -17614,6 +18455,10 @@ export const CrmIntegrationApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -17646,6 +18491,10 @@ export const CrmIntegrationApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -17690,6 +18539,10 @@ export const CrmIntegrationApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17724,6 +18577,10 @@ export const CrmIntegrationApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -18104,6 +18961,10 @@ export const CrmTemplatesApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -18144,6 +19005,10 @@ export const CrmTemplatesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -18216,6 +19081,10 @@ export const CrmTemplatesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -18493,6 +19362,10 @@ export const CustomPromptsApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -18533,6 +19406,10 @@ export const CustomPromptsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -18602,6 +19479,10 @@ export const CustomPromptsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -18859,6 +19740,10 @@ export const DNPropertiesApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -18893,6 +19778,10 @@ export const DNPropertiesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -18942,6 +19831,10 @@ export const DNPropertiesApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -18983,6 +19876,10 @@ export const DNPropertiesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -19052,6 +19949,10 @@ export const DNPropertiesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -19402,6 +20303,10 @@ export const DataConnectorSettingsApiAxiosParamCreator = function (configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -19444,6 +20349,10 @@ export const DataConnectorSettingsApiAxiosParamCreator = function (configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -19478,6 +20387,10 @@ export const DataConnectorSettingsApiAxiosParamCreator = function (configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -19492,13 +20405,11 @@ export const DataConnectorSettingsApiAxiosParamCreator = function (configuration
         /**
          * 
          * @summary Update DataConnectorSettings
-         * @param {PbxDataConnectorSettings} pbxDataConnectorSettings New property values
+         * @param {PbxDataConnectorSettings} [pbxDataConnectorSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateDataConnectorSettings: async (pbxDataConnectorSettings: PbxDataConnectorSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxDataConnectorSettings' is not null or undefined
-            assertParamExists('updateDataConnectorSettings', 'pbxDataConnectorSettings', pbxDataConnectorSettings)
+        updateDataConnectorSettings: async (pbxDataConnectorSettings?: PbxDataConnectorSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/DataConnectorSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -19510,6 +20421,10 @@ export const DataConnectorSettingsApiAxiosParamCreator = function (configuration
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -19578,11 +20493,11 @@ export const DataConnectorSettingsApiFp = function(configuration?: Configuration
         /**
          * 
          * @summary Update DataConnectorSettings
-         * @param {PbxDataConnectorSettings} pbxDataConnectorSettings New property values
+         * @param {PbxDataConnectorSettings} [pbxDataConnectorSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateDataConnectorSettings(pbxDataConnectorSettings: PbxDataConnectorSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateDataConnectorSettings(pbxDataConnectorSettings?: PbxDataConnectorSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateDataConnectorSettings(pbxDataConnectorSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DataConnectorSettingsApi.updateDataConnectorSettings']?.[localVarOperationServerIndex]?.url;
@@ -19632,7 +20547,7 @@ export const DataConnectorSettingsApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateDataConnectorSettings(requestParameters: DataConnectorSettingsApiUpdateDataConnectorSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateDataConnectorSettings(requestParameters: DataConnectorSettingsApiUpdateDataConnectorSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateDataConnectorSettings(requestParameters.pbxDataConnectorSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -19660,7 +20575,7 @@ export interface DataConnectorSettingsApiUpdateDataConnectorSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxDataConnectorSettings: PbxDataConnectorSettings
+    readonly pbxDataConnectorSettings?: PbxDataConnectorSettings
 }
 
 /**
@@ -19705,7 +20620,7 @@ export class DataConnectorSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateDataConnectorSettings(requestParameters: DataConnectorSettingsApiUpdateDataConnectorSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateDataConnectorSettings(requestParameters: DataConnectorSettingsApiUpdateDataConnectorSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return DataConnectorSettingsApiFp(this.configuration).updateDataConnectorSettings(requestParameters.pbxDataConnectorSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -19737,6 +20652,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -19784,6 +20703,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -19816,6 +20739,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -19857,6 +20784,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -19886,6 +20817,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -19928,6 +20863,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -20007,6 +20946,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -20076,6 +21019,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -20155,6 +21102,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -20200,6 +21151,49 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @summary Invoke action ReportLogEvent
+         * @param {DefsReportLogEventRequestBody} defsReportLogEventRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reportLogEvent: async (defsReportLogEventRequestBody: DefsReportLogEventRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'defsReportLogEventRequestBody' is not null or undefined
+            assertParamExists('reportLogEvent', 'defsReportLogEventRequestBody', defsReportLogEventRequestBody)
+            const localVarPath = `/Defs/Pbx.ReportLogEvent`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(defsReportLogEventRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke action SendEmail
          * @param {DefsSendEmailRequestBody} defsSendEmailRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -20219,6 +21213,10 @@ export const DefsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -20391,6 +21389,19 @@ export const DefsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke action ReportLogEvent
+         * @param {DefsReportLogEventRequestBody} defsReportLogEventRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reportLogEvent(defsReportLogEventRequestBody: DefsReportLogEventRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reportLogEvent(defsReportLogEventRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefsApi.reportLogEvent']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke action SendEmail
          * @param {DefsSendEmailRequestBody} defsSendEmailRequestBody Action parameters
          * @param {*} [options] Override http request option.
@@ -20497,6 +21508,16 @@ export const DefsApiFactory = function (configuration?: Configuration, basePath?
          */
         listTimeZones(requestParameters: DefsApiListTimeZonesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxTimeZoneCollectionResponse> {
             return localVarFp.listTimeZones(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action ReportLogEvent
+         * @param {DefsApiReportLogEventRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reportLogEvent(requestParameters: DefsApiReportLogEventRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.reportLogEvent(requestParameters.defsReportLogEventRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -20717,6 +21738,16 @@ export interface DefsApiListTimeZonesRequest {
 }
 
 /**
+ * Request parameters for reportLogEvent operation in DefsApi.
+ */
+export interface DefsApiReportLogEventRequest {
+    /**
+     * Action parameters
+     */
+    readonly defsReportLogEventRequestBody: DefsReportLogEventRequestBody
+}
+
+/**
  * Request parameters for sendEmail operation in DefsApi.
  */
 export interface DefsApiSendEmailRequest {
@@ -20828,6 +21859,17 @@ export class DefsApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke action ReportLogEvent
+     * @param {DefsApiReportLogEventRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public reportLogEvent(requestParameters: DefsApiReportLogEventRequest, options?: RawAxiosRequestConfig) {
+        return DefsApiFp(this.configuration).reportLogEvent(requestParameters.defsReportLogEventRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Invoke action SendEmail
      * @param {DefsApiSendEmailRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -20873,6 +21915,10 @@ export const DeviceInfosApiAxiosParamCreator = function (configuration?: Configu
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -20911,6 +21957,10 @@ export const DeviceInfosApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -20961,6 +22011,10 @@ export const DeviceInfosApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -21034,6 +22088,10 @@ export const DeviceInfosApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -21352,6 +22410,10 @@ export const DialCodeSettingsApiAxiosParamCreator = function (configuration?: Co
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -21374,13 +22436,11 @@ export const DialCodeSettingsApiAxiosParamCreator = function (configuration?: Co
         /**
          * 
          * @summary Update DialCodeSettings
-         * @param {PbxDialCodeSettings} pbxDialCodeSettings New property values
+         * @param {PbxDialCodeSettings} [pbxDialCodeSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateDialCodeSettings: async (pbxDialCodeSettings: PbxDialCodeSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxDialCodeSettings' is not null or undefined
-            assertParamExists('updateDialCodeSettings', 'pbxDialCodeSettings', pbxDialCodeSettings)
+        updateDialCodeSettings: async (pbxDialCodeSettings?: PbxDialCodeSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/DialCodeSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -21392,6 +22452,10 @@ export const DialCodeSettingsApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -21436,11 +22500,11 @@ export const DialCodeSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update DialCodeSettings
-         * @param {PbxDialCodeSettings} pbxDialCodeSettings New property values
+         * @param {PbxDialCodeSettings} [pbxDialCodeSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateDialCodeSettings(pbxDialCodeSettings: PbxDialCodeSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateDialCodeSettings(pbxDialCodeSettings?: PbxDialCodeSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateDialCodeSettings(pbxDialCodeSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DialCodeSettingsApi.updateDialCodeSettings']?.[localVarOperationServerIndex]?.url;
@@ -21472,7 +22536,7 @@ export const DialCodeSettingsApiFactory = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateDialCodeSettings(requestParameters: DialCodeSettingsApiUpdateDialCodeSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateDialCodeSettings(requestParameters: DialCodeSettingsApiUpdateDialCodeSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateDialCodeSettings(requestParameters.pbxDialCodeSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -21500,7 +22564,7 @@ export interface DialCodeSettingsApiUpdateDialCodeSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxDialCodeSettings: PbxDialCodeSettings
+    readonly pbxDialCodeSettings?: PbxDialCodeSettings
 }
 
 /**
@@ -21525,7 +22589,7 @@ export class DialCodeSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateDialCodeSettings(requestParameters: DialCodeSettingsApiUpdateDialCodeSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateDialCodeSettings(requestParameters: DialCodeSettingsApiUpdateDialCodeSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return DialCodeSettingsApiFp(this.configuration).updateDialCodeSettings(requestParameters.pbxDialCodeSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -21563,6 +22627,10 @@ export const DidNumbersApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -21756,6 +22824,10 @@ export const DirectoriesApiAxiosParamCreator = function (configuration?: Configu
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -21871,6 +22943,10 @@ export const E164SettingsApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -21893,13 +22969,11 @@ export const E164SettingsApiAxiosParamCreator = function (configuration?: Config
         /**
          * 
          * @summary Update E164Settings
-         * @param {PbxE164Settings} pbxE164Settings New property values
+         * @param {PbxE164Settings} [pbxE164Settings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateE164Settings: async (pbxE164Settings: PbxE164Settings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxE164Settings' is not null or undefined
-            assertParamExists('updateE164Settings', 'pbxE164Settings', pbxE164Settings)
+        updateE164Settings: async (pbxE164Settings?: PbxE164Settings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/E164Settings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -21911,6 +22985,10 @@ export const E164SettingsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -21955,11 +23033,11 @@ export const E164SettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update E164Settings
-         * @param {PbxE164Settings} pbxE164Settings New property values
+         * @param {PbxE164Settings} [pbxE164Settings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateE164Settings(pbxE164Settings: PbxE164Settings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateE164Settings(pbxE164Settings?: PbxE164Settings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateE164Settings(pbxE164Settings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['E164SettingsApi.updateE164Settings']?.[localVarOperationServerIndex]?.url;
@@ -21991,7 +23069,7 @@ export const E164SettingsApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateE164Settings(requestParameters: E164SettingsApiUpdateE164SettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateE164Settings(requestParameters: E164SettingsApiUpdateE164SettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateE164Settings(requestParameters.pbxE164Settings, options).then((request) => request(axios, basePath));
         },
     };
@@ -22019,7 +23097,7 @@ export interface E164SettingsApiUpdateE164SettingsRequest {
     /**
      * New property values
      */
-    readonly pbxE164Settings: PbxE164Settings
+    readonly pbxE164Settings?: PbxE164Settings
 }
 
 /**
@@ -22044,7 +23122,7 @@ export class E164SettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateE164Settings(requestParameters: E164SettingsApiUpdateE164SettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateE164Settings(requestParameters: E164SettingsApiUpdateE164SettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return E164SettingsApiFp(this.configuration).updateE164Settings(requestParameters.pbxE164Settings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -22080,6 +23158,10 @@ export const EmailTemplateApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -22130,6 +23212,10 @@ export const EmailTemplateApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -22205,6 +23291,10 @@ export const EmailTemplateApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -22241,6 +23331,10 @@ export const EmailTemplateApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -22559,6 +23653,10 @@ export const EmergencyGeoLocationsApiAxiosParamCreator = function (configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -22605,13 +23703,11 @@ export const EmergencyGeoLocationsApiAxiosParamCreator = function (configuration
         /**
          * 
          * @summary Invoke action Update
-         * @param {EmergencyGeoLocationsUpdateRequestBody} emergencyGeoLocationsUpdateRequestBody Action parameters
+         * @param {EmergencyGeoLocationsUpdateRequestBody} [emergencyGeoLocationsUpdateRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        update: async (emergencyGeoLocationsUpdateRequestBody: EmergencyGeoLocationsUpdateRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'emergencyGeoLocationsUpdateRequestBody' is not null or undefined
-            assertParamExists('update', 'emergencyGeoLocationsUpdateRequestBody', emergencyGeoLocationsUpdateRequestBody)
+        update: async (emergencyGeoLocationsUpdateRequestBody?: EmergencyGeoLocationsUpdateRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/EmergencyGeoLocations/Pbx.Update`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22623,6 +23719,10 @@ export const EmergencyGeoLocationsApiAxiosParamCreator = function (configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -22673,11 +23773,11 @@ export const EmergencyGeoLocationsApiFp = function(configuration?: Configuration
         /**
          * 
          * @summary Invoke action Update
-         * @param {EmergencyGeoLocationsUpdateRequestBody} emergencyGeoLocationsUpdateRequestBody Action parameters
+         * @param {EmergencyGeoLocationsUpdateRequestBody} [emergencyGeoLocationsUpdateRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async update(emergencyGeoLocationsUpdateRequestBody: EmergencyGeoLocationsUpdateRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+        async update(emergencyGeoLocationsUpdateRequestBody?: EmergencyGeoLocationsUpdateRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.update(emergencyGeoLocationsUpdateRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['EmergencyGeoLocationsApi.update']?.[localVarOperationServerIndex]?.url;
@@ -22709,7 +23809,7 @@ export const EmergencyGeoLocationsApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        update(requestParameters: EmergencyGeoLocationsApiUpdateRequest, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+        update(requestParameters: EmergencyGeoLocationsApiUpdateRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<object> {
             return localVarFp.update(requestParameters.emergencyGeoLocationsUpdateRequestBody, options).then((request) => request(axios, basePath));
         },
     };
@@ -22767,7 +23867,7 @@ export interface EmergencyGeoLocationsApiUpdateRequest {
     /**
      * Action parameters
      */
-    readonly emergencyGeoLocationsUpdateRequestBody: EmergencyGeoLocationsUpdateRequestBody
+    readonly emergencyGeoLocationsUpdateRequestBody?: EmergencyGeoLocationsUpdateRequestBody
 }
 
 /**
@@ -22792,7 +23892,7 @@ export class EmergencyGeoLocationsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public update(requestParameters: EmergencyGeoLocationsApiUpdateRequest, options?: RawAxiosRequestConfig) {
+    public update(requestParameters: EmergencyGeoLocationsApiUpdateRequest = {}, options?: RawAxiosRequestConfig) {
         return EmergencyGeoLocationsApiFp(this.configuration).update(requestParameters.emergencyGeoLocationsUpdateRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -22829,6 +23929,10 @@ export const EmergencyNotificationsSettingsApiAxiosParamCreator = function (conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -22851,13 +23955,11 @@ export const EmergencyNotificationsSettingsApiAxiosParamCreator = function (conf
         /**
          * 
          * @summary Update EmergencyNotificationsSettings
-         * @param {PbxEmergencyNotificationsSettings} pbxEmergencyNotificationsSettings New property values
+         * @param {PbxEmergencyNotificationsSettings} [pbxEmergencyNotificationsSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateEmergencyNotificationsSettings: async (pbxEmergencyNotificationsSettings: PbxEmergencyNotificationsSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxEmergencyNotificationsSettings' is not null or undefined
-            assertParamExists('updateEmergencyNotificationsSettings', 'pbxEmergencyNotificationsSettings', pbxEmergencyNotificationsSettings)
+        updateEmergencyNotificationsSettings: async (pbxEmergencyNotificationsSettings?: PbxEmergencyNotificationsSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/EmergencyNotificationsSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22869,6 +23971,10 @@ export const EmergencyNotificationsSettingsApiAxiosParamCreator = function (conf
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -22913,11 +24019,11 @@ export const EmergencyNotificationsSettingsApiFp = function(configuration?: Conf
         /**
          * 
          * @summary Update EmergencyNotificationsSettings
-         * @param {PbxEmergencyNotificationsSettings} pbxEmergencyNotificationsSettings New property values
+         * @param {PbxEmergencyNotificationsSettings} [pbxEmergencyNotificationsSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateEmergencyNotificationsSettings(pbxEmergencyNotificationsSettings: PbxEmergencyNotificationsSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateEmergencyNotificationsSettings(pbxEmergencyNotificationsSettings?: PbxEmergencyNotificationsSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateEmergencyNotificationsSettings(pbxEmergencyNotificationsSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['EmergencyNotificationsSettingsApi.updateEmergencyNotificationsSettings']?.[localVarOperationServerIndex]?.url;
@@ -22949,7 +24055,7 @@ export const EmergencyNotificationsSettingsApiFactory = function (configuration?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateEmergencyNotificationsSettings(requestParameters: EmergencyNotificationsSettingsApiUpdateEmergencyNotificationsSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateEmergencyNotificationsSettings(requestParameters: EmergencyNotificationsSettingsApiUpdateEmergencyNotificationsSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateEmergencyNotificationsSettings(requestParameters.pbxEmergencyNotificationsSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -22977,7 +24083,7 @@ export interface EmergencyNotificationsSettingsApiUpdateEmergencyNotificationsSe
     /**
      * New property values
      */
-    readonly pbxEmergencyNotificationsSettings: PbxEmergencyNotificationsSettings
+    readonly pbxEmergencyNotificationsSettings?: PbxEmergencyNotificationsSettings
 }
 
 /**
@@ -23002,7 +24108,7 @@ export class EmergencyNotificationsSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateEmergencyNotificationsSettings(requestParameters: EmergencyNotificationsSettingsApiUpdateEmergencyNotificationsSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateEmergencyNotificationsSettings(requestParameters: EmergencyNotificationsSettingsApiUpdateEmergencyNotificationsSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return EmergencyNotificationsSettingsApiFp(this.configuration).updateEmergencyNotificationsSettings(requestParameters.pbxEmergencyNotificationsSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -23040,6 +24146,10 @@ export const EventLogsApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -23119,6 +24229,10 @@ export const EventLogsApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -23180,6 +24294,10 @@ export const EventLogsApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -23458,6 +24576,10 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23492,6 +24614,10 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -23538,6 +24664,10 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -23576,6 +24706,10 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -23629,6 +24763,10 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -23671,6 +24809,10 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -23708,6 +24850,10 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -23760,15 +24906,13 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
          * 
          * @summary Update entity in Fax
          * @param {number} id The unique identifier of Fax
-         * @param {PbxFax} pbxFax New property values
+         * @param {PbxFax} [pbxFax] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateFax: async (id: number, pbxFax: PbxFax, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateFax: async (id: number, pbxFax?: PbxFax, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateFax', 'id', id)
-            // verify required parameter 'pbxFax' is not null or undefined
-            assertParamExists('updateFax', 'pbxFax', pbxFax)
             const localVarPath = `/Fax({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -23781,6 +24925,10 @@ export const FaxApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -23914,11 +25062,11 @@ export const FaxApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in Fax
          * @param {number} id The unique identifier of Fax
-         * @param {PbxFax} pbxFax New property values
+         * @param {PbxFax} [pbxFax] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateFax(id: number, pbxFax: PbxFax, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateFax(id: number, pbxFax?: PbxFax, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateFax(id, pbxFax, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FaxApi.updateFax']?.[localVarOperationServerIndex]?.url;
@@ -24147,7 +25295,7 @@ export interface FaxApiUpdateFaxRequest {
     /**
      * New property values
      */
-    readonly pbxFax: PbxFax
+    readonly pbxFax?: PbxFax
 }
 
 /**
@@ -24272,6 +25420,10 @@ export const FaxServerSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -24301,6 +25453,10 @@ export const FaxServerSettingsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -24342,6 +25498,10 @@ export const FaxServerSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -24364,13 +25524,11 @@ export const FaxServerSettingsApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @summary Update FaxServerSettings
-         * @param {PbxFaxServerSettings} pbxFaxServerSettings New property values
+         * @param {PbxFaxServerSettings} [pbxFaxServerSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateFaxServerSettings: async (pbxFaxServerSettings: PbxFaxServerSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxFaxServerSettings' is not null or undefined
-            assertParamExists('updateFaxServerSettings', 'pbxFaxServerSettings', pbxFaxServerSettings)
+        updateFaxServerSettings: async (pbxFaxServerSettings?: PbxFaxServerSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/FaxServerSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24382,6 +25540,10 @@ export const FaxServerSettingsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -24450,11 +25612,11 @@ export const FaxServerSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update FaxServerSettings
-         * @param {PbxFaxServerSettings} pbxFaxServerSettings New property values
+         * @param {PbxFaxServerSettings} [pbxFaxServerSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateFaxServerSettings(pbxFaxServerSettings: PbxFaxServerSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateFaxServerSettings(pbxFaxServerSettings?: PbxFaxServerSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateFaxServerSettings(pbxFaxServerSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FaxServerSettingsApi.updateFaxServerSettings']?.[localVarOperationServerIndex]?.url;
@@ -24504,7 +25666,7 @@ export const FaxServerSettingsApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateFaxServerSettings(requestParameters: FaxServerSettingsApiUpdateFaxServerSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateFaxServerSettings(requestParameters: FaxServerSettingsApiUpdateFaxServerSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateFaxServerSettings(requestParameters.pbxFaxServerSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -24532,7 +25694,7 @@ export interface FaxServerSettingsApiUpdateFaxServerSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxFaxServerSettings: PbxFaxServerSettings
+    readonly pbxFaxServerSettings?: PbxFaxServerSettings
 }
 
 /**
@@ -24577,7 +25739,7 @@ export class FaxServerSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateFaxServerSettings(requestParameters: FaxServerSettingsApiUpdateFaxServerSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateFaxServerSettings(requestParameters: FaxServerSettingsApiUpdateFaxServerSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return FaxServerSettingsApiFp(this.configuration).updateFaxServerSettings(requestParameters.pbxFaxServerSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -24609,6 +25771,10 @@ export const FirewallApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -24656,6 +25822,10 @@ export const FirewallApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -24690,6 +25860,10 @@ export const FirewallApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -24719,6 +25893,10 @@ export const FirewallApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -24934,6 +26112,10 @@ export const FirmwaresApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -24968,6 +26150,10 @@ export const FirmwaresApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -25010,6 +26196,10 @@ export const FirmwaresApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -25047,6 +26237,10 @@ export const FirmwaresApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -25117,6 +26311,10 @@ export const FirmwaresApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -25434,6 +26632,10 @@ export const FxsApiAxiosParamCreator = function (configuration?: Configuration) 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25470,6 +26672,10 @@ export const FxsApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -25513,6 +26719,10 @@ export const FxsApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -25563,6 +26773,10 @@ export const FxsApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -25638,6 +26852,10 @@ export const FxsApiAxiosParamCreator = function (configuration?: Configuration) 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -25653,15 +26871,13 @@ export const FxsApiAxiosParamCreator = function (configuration?: Configuration) 
          * 
          * @summary Update entity in Fxs
          * @param {string} macAddress The unique identifier of Fxs
-         * @param {PbxFxs} pbxFxs New property values
+         * @param {PbxFxs} [pbxFxs] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateFxs: async (macAddress: string, pbxFxs: PbxFxs, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateFxs: async (macAddress: string, pbxFxs?: PbxFxs, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'macAddress' is not null or undefined
             assertParamExists('updateFxs', 'macAddress', macAddress)
-            // verify required parameter 'pbxFxs' is not null or undefined
-            assertParamExists('updateFxs', 'pbxFxs', pbxFxs)
             const localVarPath = `/Fxs({MacAddress})`
                 .replace(`{${"MacAddress"}}`, encodeURIComponent(String(macAddress)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -25674,6 +26890,10 @@ export const FxsApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -25780,11 +27000,11 @@ export const FxsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in Fxs
          * @param {string} macAddress The unique identifier of Fxs
-         * @param {PbxFxs} pbxFxs New property values
+         * @param {PbxFxs} [pbxFxs] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateFxs(macAddress: string, pbxFxs: PbxFxs, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateFxs(macAddress: string, pbxFxs?: PbxFxs, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateFxs(macAddress, pbxFxs, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FxsApi.updateFxs']?.[localVarOperationServerIndex]?.url;
@@ -25974,7 +27194,7 @@ export interface FxsApiUpdateFxsRequest {
     /**
      * New property values
      */
-    readonly pbxFxs: PbxFxs
+    readonly pbxFxs?: PbxFxs
 }
 
 /**
@@ -26081,6 +27301,10 @@ export const FxsTemplatesApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26117,6 +27341,10 @@ export const FxsTemplatesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -26160,6 +27388,10 @@ export const FxsTemplatesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -26210,6 +27442,10 @@ export const FxsTemplatesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -26283,6 +27519,10 @@ export const FxsTemplatesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -26645,6 +27885,10 @@ export const GeneralSettingsForAppsApiAxiosParamCreator = function (configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -26667,13 +27911,11 @@ export const GeneralSettingsForAppsApiAxiosParamCreator = function (configuratio
         /**
          * 
          * @summary Update GeneralSettingsForApps
-         * @param {PbxGeneralSettingsForApps} pbxGeneralSettingsForApps New property values
+         * @param {PbxGeneralSettingsForApps} [pbxGeneralSettingsForApps] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateGeneralSettingsForApps: async (pbxGeneralSettingsForApps: PbxGeneralSettingsForApps, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxGeneralSettingsForApps' is not null or undefined
-            assertParamExists('updateGeneralSettingsForApps', 'pbxGeneralSettingsForApps', pbxGeneralSettingsForApps)
+        updateGeneralSettingsForApps: async (pbxGeneralSettingsForApps?: PbxGeneralSettingsForApps, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/GeneralSettingsForApps`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26685,6 +27927,10 @@ export const GeneralSettingsForAppsApiAxiosParamCreator = function (configuratio
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -26729,11 +27975,11 @@ export const GeneralSettingsForAppsApiFp = function(configuration?: Configuratio
         /**
          * 
          * @summary Update GeneralSettingsForApps
-         * @param {PbxGeneralSettingsForApps} pbxGeneralSettingsForApps New property values
+         * @param {PbxGeneralSettingsForApps} [pbxGeneralSettingsForApps] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateGeneralSettingsForApps(pbxGeneralSettingsForApps: PbxGeneralSettingsForApps, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateGeneralSettingsForApps(pbxGeneralSettingsForApps?: PbxGeneralSettingsForApps, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateGeneralSettingsForApps(pbxGeneralSettingsForApps, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeneralSettingsForAppsApi.updateGeneralSettingsForApps']?.[localVarOperationServerIndex]?.url;
@@ -26765,7 +28011,7 @@ export const GeneralSettingsForAppsApiFactory = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateGeneralSettingsForApps(requestParameters: GeneralSettingsForAppsApiUpdateGeneralSettingsForAppsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateGeneralSettingsForApps(requestParameters: GeneralSettingsForAppsApiUpdateGeneralSettingsForAppsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateGeneralSettingsForApps(requestParameters.pbxGeneralSettingsForApps, options).then((request) => request(axios, basePath));
         },
     };
@@ -26793,7 +28039,7 @@ export interface GeneralSettingsForAppsApiUpdateGeneralSettingsForAppsRequest {
     /**
      * New property values
      */
-    readonly pbxGeneralSettingsForApps: PbxGeneralSettingsForApps
+    readonly pbxGeneralSettingsForApps?: PbxGeneralSettingsForApps
 }
 
 /**
@@ -26818,7 +28064,7 @@ export class GeneralSettingsForAppsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateGeneralSettingsForApps(requestParameters: GeneralSettingsForAppsApiUpdateGeneralSettingsForAppsRequest, options?: RawAxiosRequestConfig) {
+    public updateGeneralSettingsForApps(requestParameters: GeneralSettingsForAppsApiUpdateGeneralSettingsForAppsRequest = {}, options?: RawAxiosRequestConfig) {
         return GeneralSettingsForAppsApiFp(this.configuration).updateGeneralSettingsForApps(requestParameters.pbxGeneralSettingsForApps, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -26855,6 +28101,10 @@ export const GeneralSettingsForPbxApiAxiosParamCreator = function (configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -26877,13 +28127,11 @@ export const GeneralSettingsForPbxApiAxiosParamCreator = function (configuration
         /**
          * 
          * @summary Update GeneralSettingsForPbx
-         * @param {PbxGeneralSettingsForPbx} pbxGeneralSettingsForPbx New property values
+         * @param {PbxGeneralSettingsForPbx} [pbxGeneralSettingsForPbx] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateGeneralSettingsForPbx: async (pbxGeneralSettingsForPbx: PbxGeneralSettingsForPbx, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxGeneralSettingsForPbx' is not null or undefined
-            assertParamExists('updateGeneralSettingsForPbx', 'pbxGeneralSettingsForPbx', pbxGeneralSettingsForPbx)
+        updateGeneralSettingsForPbx: async (pbxGeneralSettingsForPbx?: PbxGeneralSettingsForPbx, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/GeneralSettingsForPbx`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26895,6 +28143,10 @@ export const GeneralSettingsForPbxApiAxiosParamCreator = function (configuration
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -26939,11 +28191,11 @@ export const GeneralSettingsForPbxApiFp = function(configuration?: Configuration
         /**
          * 
          * @summary Update GeneralSettingsForPbx
-         * @param {PbxGeneralSettingsForPbx} pbxGeneralSettingsForPbx New property values
+         * @param {PbxGeneralSettingsForPbx} [pbxGeneralSettingsForPbx] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateGeneralSettingsForPbx(pbxGeneralSettingsForPbx: PbxGeneralSettingsForPbx, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateGeneralSettingsForPbx(pbxGeneralSettingsForPbx?: PbxGeneralSettingsForPbx, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateGeneralSettingsForPbx(pbxGeneralSettingsForPbx, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeneralSettingsForPbxApi.updateGeneralSettingsForPbx']?.[localVarOperationServerIndex]?.url;
@@ -26975,7 +28227,7 @@ export const GeneralSettingsForPbxApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateGeneralSettingsForPbx(requestParameters: GeneralSettingsForPbxApiUpdateGeneralSettingsForPbxRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateGeneralSettingsForPbx(requestParameters: GeneralSettingsForPbxApiUpdateGeneralSettingsForPbxRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateGeneralSettingsForPbx(requestParameters.pbxGeneralSettingsForPbx, options).then((request) => request(axios, basePath));
         },
     };
@@ -27003,7 +28255,7 @@ export interface GeneralSettingsForPbxApiUpdateGeneralSettingsForPbxRequest {
     /**
      * New property values
      */
-    readonly pbxGeneralSettingsForPbx: PbxGeneralSettingsForPbx
+    readonly pbxGeneralSettingsForPbx?: PbxGeneralSettingsForPbx
 }
 
 /**
@@ -27028,8 +28280,137 @@ export class GeneralSettingsForPbxApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateGeneralSettingsForPbx(requestParameters: GeneralSettingsForPbxApiUpdateGeneralSettingsForPbxRequest, options?: RawAxiosRequestConfig) {
+    public updateGeneralSettingsForPbx(requestParameters: GeneralSettingsForPbxApiUpdateGeneralSettingsForPbxRequest = {}, options?: RawAxiosRequestConfig) {
         return GeneralSettingsForPbxApiFp(this.configuration).updateGeneralSettingsForPbx(requestParameters.pbxGeneralSettingsForPbx, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * GetUpdateDetailsApi - axios parameter creator
+ */
+export const GetUpdateDetailsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Invoke functionImport GetUpdateDetails
+         * @param {string} key Usage: key&#x3D;{key}
+         * @param {string} id Usage: id&#x3D;{id}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUpdateDetails: async (key: string, id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'key' is not null or undefined
+            assertParamExists('getUpdateDetails', 'key', key)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getUpdateDetails', 'id', id)
+            const localVarPath = `/GetUpdateDetails(key={key},id={id})`
+                .replace(`{${"key"}}`, encodeURIComponent(String(key)))
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * GetUpdateDetailsApi - functional programming interface
+ */
+export const GetUpdateDetailsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = GetUpdateDetailsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke functionImport GetUpdateDetails
+         * @param {string} key Usage: key&#x3D;{key}
+         * @param {string} id Usage: id&#x3D;{id}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUpdateDetails(key: string, id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAITemplateContents200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUpdateDetails(key, id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GetUpdateDetailsApi.getUpdateDetails']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * GetUpdateDetailsApi - factory interface
+ */
+export const GetUpdateDetailsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = GetUpdateDetailsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke functionImport GetUpdateDetails
+         * @param {GetUpdateDetailsApiGetUpdateDetailsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUpdateDetails(requestParameters: GetUpdateDetailsApiGetUpdateDetailsRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetAITemplateContents200Response> {
+            return localVarFp.getUpdateDetails(requestParameters.key, requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for getUpdateDetails operation in GetUpdateDetailsApi.
+ */
+export interface GetUpdateDetailsApiGetUpdateDetailsRequest {
+    /**
+     * Usage: key&#x3D;{key}
+     */
+    readonly key: string
+
+    /**
+     * Usage: id&#x3D;{id}
+     */
+    readonly id: string
+}
+
+/**
+ * GetUpdateDetailsApi - object-oriented interface
+ */
+export class GetUpdateDetailsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Invoke functionImport GetUpdateDetails
+     * @param {GetUpdateDetailsApiGetUpdateDetailsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getUpdateDetails(requestParameters: GetUpdateDetailsApiGetUpdateDetailsRequest, options?: RawAxiosRequestConfig) {
+        return GetUpdateDetailsApiFp(this.configuration).getUpdateDetails(requestParameters.key, requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -27065,6 +28446,10 @@ export const GoogleSettingsApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -27087,13 +28472,11 @@ export const GoogleSettingsApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @summary Invoke action GetGoogleUsers
-         * @param {GoogleSettingsGetGoogleUsersRequestBody} googleSettingsGetGoogleUsersRequestBody Action parameters
+         * @param {GoogleSettingsGetGoogleUsersRequestBody} [googleSettingsGetGoogleUsersRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getGoogleUsers: async (googleSettingsGetGoogleUsersRequestBody: GoogleSettingsGetGoogleUsersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'googleSettingsGetGoogleUsersRequestBody' is not null or undefined
-            assertParamExists('getGoogleUsers', 'googleSettingsGetGoogleUsersRequestBody', googleSettingsGetGoogleUsersRequestBody)
+        getGoogleUsers: async (googleSettingsGetGoogleUsersRequestBody?: GoogleSettingsGetGoogleUsersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/GoogleSettings/Pbx.GetGoogleUsers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27105,6 +28488,10 @@ export const GoogleSettingsApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -27126,13 +28513,11 @@ export const GoogleSettingsApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @summary Update GoogleSettings
-         * @param {PbxGoogleSettings} pbxGoogleSettings New property values
+         * @param {PbxGoogleSettings} [pbxGoogleSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateGoogleSettings: async (pbxGoogleSettings: PbxGoogleSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxGoogleSettings' is not null or undefined
-            assertParamExists('updateGoogleSettings', 'pbxGoogleSettings', pbxGoogleSettings)
+        updateGoogleSettings: async (pbxGoogleSettings?: PbxGoogleSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/GoogleSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27144,6 +28529,10 @@ export const GoogleSettingsApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -27188,11 +28577,11 @@ export const GoogleSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action GetGoogleUsers
-         * @param {GoogleSettingsGetGoogleUsersRequestBody} googleSettingsGetGoogleUsersRequestBody Action parameters
+         * @param {GoogleSettingsGetGoogleUsersRequestBody} [googleSettingsGetGoogleUsersRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getGoogleUsers(googleSettingsGetGoogleUsersRequestBody: GoogleSettingsGetGoogleUsersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxExternalAccountsPage>> {
+        async getGoogleUsers(googleSettingsGetGoogleUsersRequestBody?: GoogleSettingsGetGoogleUsersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxExternalAccountsPage>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getGoogleUsers(googleSettingsGetGoogleUsersRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GoogleSettingsApi.getGoogleUsers']?.[localVarOperationServerIndex]?.url;
@@ -27201,11 +28590,11 @@ export const GoogleSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update GoogleSettings
-         * @param {PbxGoogleSettings} pbxGoogleSettings New property values
+         * @param {PbxGoogleSettings} [pbxGoogleSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateGoogleSettings(pbxGoogleSettings: PbxGoogleSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateGoogleSettings(pbxGoogleSettings?: PbxGoogleSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateGoogleSettings(pbxGoogleSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GoogleSettingsApi.updateGoogleSettings']?.[localVarOperationServerIndex]?.url;
@@ -27237,7 +28626,7 @@ export const GoogleSettingsApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getGoogleUsers(requestParameters: GoogleSettingsApiGetGoogleUsersRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxExternalAccountsPage> {
+        getGoogleUsers(requestParameters: GoogleSettingsApiGetGoogleUsersRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxExternalAccountsPage> {
             return localVarFp.getGoogleUsers(requestParameters.googleSettingsGetGoogleUsersRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27247,7 +28636,7 @@ export const GoogleSettingsApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateGoogleSettings(requestParameters: GoogleSettingsApiUpdateGoogleSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateGoogleSettings(requestParameters: GoogleSettingsApiUpdateGoogleSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateGoogleSettings(requestParameters.pbxGoogleSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -27275,7 +28664,7 @@ export interface GoogleSettingsApiGetGoogleUsersRequest {
     /**
      * Action parameters
      */
-    readonly googleSettingsGetGoogleUsersRequestBody: GoogleSettingsGetGoogleUsersRequestBody
+    readonly googleSettingsGetGoogleUsersRequestBody?: GoogleSettingsGetGoogleUsersRequestBody
 }
 
 /**
@@ -27285,7 +28674,7 @@ export interface GoogleSettingsApiUpdateGoogleSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxGoogleSettings: PbxGoogleSettings
+    readonly pbxGoogleSettings?: PbxGoogleSettings
 }
 
 /**
@@ -27310,7 +28699,7 @@ export class GoogleSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getGoogleUsers(requestParameters: GoogleSettingsApiGetGoogleUsersRequest, options?: RawAxiosRequestConfig) {
+    public getGoogleUsers(requestParameters: GoogleSettingsApiGetGoogleUsersRequest = {}, options?: RawAxiosRequestConfig) {
         return GoogleSettingsApiFp(this.configuration).getGoogleUsers(requestParameters.googleSettingsGetGoogleUsersRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27321,7 +28710,7 @@ export class GoogleSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateGoogleSettings(requestParameters: GoogleSettingsApiUpdateGoogleSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateGoogleSettings(requestParameters: GoogleSettingsApiUpdateGoogleSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return GoogleSettingsApiFp(this.configuration).updateGoogleSettings(requestParameters.pbxGoogleSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -27354,6 +28743,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -27398,6 +28791,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27432,6 +28829,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -27478,6 +28879,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -27516,6 +28921,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -27567,6 +28976,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -27599,6 +29012,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -27643,6 +29060,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -27726,6 +29147,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -27804,6 +29229,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -27873,6 +29302,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27904,6 +29337,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -27945,6 +29382,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -28743,6 +30184,10 @@ export const HolidaysApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -28779,6 +30224,10 @@ export const HolidaysApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -28822,6 +30271,10 @@ export const HolidaysApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -28872,6 +30325,10 @@ export const HolidaysApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -28945,6 +30402,10 @@ export const HolidaysApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -29307,6 +30768,10 @@ export const HotelServicesApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -29329,13 +30794,11 @@ export const HotelServicesApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @summary Update HotelServices
-         * @param {PbxHotelServices} pbxHotelServices New property values
+         * @param {PbxHotelServices} [pbxHotelServices] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateHotelServices: async (pbxHotelServices: PbxHotelServices, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxHotelServices' is not null or undefined
-            assertParamExists('updateHotelServices', 'pbxHotelServices', pbxHotelServices)
+        updateHotelServices: async (pbxHotelServices?: PbxHotelServices, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/HotelServices`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29347,6 +30810,10 @@ export const HotelServicesApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -29391,11 +30858,11 @@ export const HotelServicesApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update HotelServices
-         * @param {PbxHotelServices} pbxHotelServices New property values
+         * @param {PbxHotelServices} [pbxHotelServices] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateHotelServices(pbxHotelServices: PbxHotelServices, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateHotelServices(pbxHotelServices?: PbxHotelServices, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateHotelServices(pbxHotelServices, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['HotelServicesApi.updateHotelServices']?.[localVarOperationServerIndex]?.url;
@@ -29427,7 +30894,7 @@ export const HotelServicesApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateHotelServices(requestParameters: HotelServicesApiUpdateHotelServicesRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateHotelServices(requestParameters: HotelServicesApiUpdateHotelServicesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateHotelServices(requestParameters.pbxHotelServices, options).then((request) => request(axios, basePath));
         },
     };
@@ -29455,7 +30922,7 @@ export interface HotelServicesApiUpdateHotelServicesRequest {
     /**
      * New property values
      */
-    readonly pbxHotelServices: PbxHotelServices
+    readonly pbxHotelServices?: PbxHotelServices
 }
 
 /**
@@ -29480,7 +30947,7 @@ export class HotelServicesApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateHotelServices(requestParameters: HotelServicesApiUpdateHotelServicesRequest, options?: RawAxiosRequestConfig) {
+    public updateHotelServices(requestParameters: HotelServicesApiUpdateHotelServicesRequest = {}, options?: RawAxiosRequestConfig) {
         return HotelServicesApiFp(this.configuration).updateHotelServices(requestParameters.pbxHotelServices, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -29513,6 +30980,10 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -29552,6 +31023,10 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -29598,6 +31073,10 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -29638,6 +31117,10 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -29715,6 +31198,10 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -29760,6 +31247,10 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -29812,15 +31303,13 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
          * 
          * @summary Update entity in InboundRules
          * @param {number} id The unique identifier of InboundRule
-         * @param {PbxInboundRule} pbxInboundRule New property values
+         * @param {PbxInboundRule} [pbxInboundRule] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateInboundRule: async (id: number, pbxInboundRule: PbxInboundRule, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateInboundRule: async (id: number, pbxInboundRule?: PbxInboundRule, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateInboundRule', 'id', id)
-            // verify required parameter 'pbxInboundRule' is not null or undefined
-            assertParamExists('updateInboundRule', 'pbxInboundRule', pbxInboundRule)
             const localVarPath = `/InboundRules({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -29833,6 +31322,10 @@ export const InboundRulesApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -29959,11 +31452,11 @@ export const InboundRulesApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in InboundRules
          * @param {number} id The unique identifier of InboundRule
-         * @param {PbxInboundRule} pbxInboundRule New property values
+         * @param {PbxInboundRule} [pbxInboundRule] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateInboundRule(id: number, pbxInboundRule: PbxInboundRule, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateInboundRule(id: number, pbxInboundRule?: PbxInboundRule, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateInboundRule(id, pbxInboundRule, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['InboundRulesApi.updateInboundRule']?.[localVarOperationServerIndex]?.url;
@@ -30208,7 +31701,7 @@ export interface InboundRulesApiUpdateInboundRuleRequest {
     /**
      * New property values
      */
-    readonly pbxInboundRule: PbxInboundRule
+    readonly pbxInboundRule?: PbxInboundRule
 }
 
 /**
@@ -30326,6 +31819,10 @@ export const LastCdrAndChatMessageTimestampApiAxiosParamCreator = function (conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -30519,6 +32016,10 @@ export const LicenseStatusApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30552,6 +32053,10 @@ export const LicenseStatusApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -30602,6 +32107,10 @@ export const LicenseStatusApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30642,6 +32151,10 @@ export const LicenseStatusApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -30671,6 +32184,10 @@ export const LicenseStatusApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -30713,6 +32230,10 @@ export const LicenseStatusApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30744,6 +32265,10 @@ export const LicenseStatusApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31106,6 +32631,10 @@ export const LoggingSettingsApiAxiosParamCreator = function (configuration?: Con
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -31128,13 +32657,11 @@ export const LoggingSettingsApiAxiosParamCreator = function (configuration?: Con
         /**
          * 
          * @summary Update LoggingSettings
-         * @param {PbxLoggingSettings} pbxLoggingSettings New property values
+         * @param {PbxLoggingSettings} [pbxLoggingSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateLoggingSettings: async (pbxLoggingSettings: PbxLoggingSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxLoggingSettings' is not null or undefined
-            assertParamExists('updateLoggingSettings', 'pbxLoggingSettings', pbxLoggingSettings)
+        updateLoggingSettings: async (pbxLoggingSettings?: PbxLoggingSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/LoggingSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31146,6 +32673,10 @@ export const LoggingSettingsApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31190,11 +32721,11 @@ export const LoggingSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update LoggingSettings
-         * @param {PbxLoggingSettings} pbxLoggingSettings New property values
+         * @param {PbxLoggingSettings} [pbxLoggingSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateLoggingSettings(pbxLoggingSettings: PbxLoggingSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateLoggingSettings(pbxLoggingSettings?: PbxLoggingSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateLoggingSettings(pbxLoggingSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['LoggingSettingsApi.updateLoggingSettings']?.[localVarOperationServerIndex]?.url;
@@ -31226,7 +32757,7 @@ export const LoggingSettingsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateLoggingSettings(requestParameters: LoggingSettingsApiUpdateLoggingSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateLoggingSettings(requestParameters: LoggingSettingsApiUpdateLoggingSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateLoggingSettings(requestParameters.pbxLoggingSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -31254,7 +32785,7 @@ export interface LoggingSettingsApiUpdateLoggingSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxLoggingSettings: PbxLoggingSettings
+    readonly pbxLoggingSettings?: PbxLoggingSettings
 }
 
 /**
@@ -31279,7 +32810,7 @@ export class LoggingSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateLoggingSettings(requestParameters: LoggingSettingsApiUpdateLoggingSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateLoggingSettings(requestParameters: LoggingSettingsApiUpdateLoggingSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return LoggingSettingsApiFp(this.configuration).updateLoggingSettings(requestParameters.pbxLoggingSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -31311,6 +32842,10 @@ export const MailSettingsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31361,6 +32896,10 @@ export const MailSettingsApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -31377,13 +32916,11 @@ export const MailSettingsApiAxiosParamCreator = function (configuration?: Config
         /**
          * 
          * @summary Update MailSettings
-         * @param {PbxMailSettings} pbxMailSettings New property values
+         * @param {PbxMailSettings} [pbxMailSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMailSettings: async (pbxMailSettings: PbxMailSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxMailSettings' is not null or undefined
-            assertParamExists('updateMailSettings', 'pbxMailSettings', pbxMailSettings)
+        updateMailSettings: async (pbxMailSettings?: PbxMailSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/MailSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31395,6 +32932,10 @@ export const MailSettingsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31452,11 +32993,11 @@ export const MailSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update MailSettings
-         * @param {PbxMailSettings} pbxMailSettings New property values
+         * @param {PbxMailSettings} [pbxMailSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateMailSettings(pbxMailSettings: PbxMailSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateMailSettings(pbxMailSettings?: PbxMailSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMailSettings(pbxMailSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MailSettingsApi.updateMailSettings']?.[localVarOperationServerIndex]?.url;
@@ -31498,7 +33039,7 @@ export const MailSettingsApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMailSettings(requestParameters: MailSettingsApiUpdateMailSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateMailSettings(requestParameters: MailSettingsApiUpdateMailSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateMailSettings(requestParameters.pbxMailSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -31536,7 +33077,7 @@ export interface MailSettingsApiUpdateMailSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxMailSettings: PbxMailSettings
+    readonly pbxMailSettings?: PbxMailSettings
 }
 
 /**
@@ -31572,8 +33113,301 @@ export class MailSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateMailSettings(requestParameters: MailSettingsApiUpdateMailSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateMailSettings(requestParameters: MailSettingsApiUpdateMailSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return MailSettingsApiFp(this.configuration).updateMailSettings(requestParameters.pbxMailSettings, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * McpServersApi - axios parameter creator
+ */
+export const McpServersApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Invoke action Exchange
+         * @param {McpServersExchangeRequestBody} mcpServersExchangeRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exchange: async (mcpServersExchangeRequestBody: McpServersExchangeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mcpServersExchangeRequestBody' is not null or undefined
+            assertParamExists('exchange', 'mcpServersExchangeRequestBody', mcpServersExchangeRequestBody)
+            const localVarPath = `/McpServers/Pbx.Exchange`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(mcpServersExchangeRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke function GetServerMetadata
+         * @param {string} targetIssuer Usage: targetIssuer&#x3D;{targetIssuer}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getServerMetadata: async (targetIssuer: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'targetIssuer' is not null or undefined
+            assertParamExists('getServerMetadata', 'targetIssuer', targetIssuer)
+            const localVarPath = `/McpServers/Pbx.GetServerMetadata(targetIssuer={targetIssuer})`
+                .replace(`{${"targetIssuer"}}`, encodeURIComponent(String(targetIssuer)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action Register
+         * @param {McpServersRegisterRequestBody} mcpServersRegisterRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        register: async (mcpServersRegisterRequestBody: McpServersRegisterRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mcpServersRegisterRequestBody' is not null or undefined
+            assertParamExists('register', 'mcpServersRegisterRequestBody', mcpServersRegisterRequestBody)
+            const localVarPath = `/McpServers/Pbx.Register`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(mcpServersRegisterRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * McpServersApi - functional programming interface
+ */
+export const McpServersApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = McpServersApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke action Exchange
+         * @param {McpServersExchangeRequestBody} mcpServersExchangeRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async exchange(mcpServersExchangeRequestBody: McpServersExchangeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exchange(mcpServersExchangeRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['McpServersApi.exchange']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke function GetServerMetadata
+         * @param {string} targetIssuer Usage: targetIssuer&#x3D;{targetIssuer}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getServerMetadata(targetIssuer: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxOAuthServerMetadata>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getServerMetadata(targetIssuer, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['McpServersApi.getServerMetadata']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action Register
+         * @param {McpServersRegisterRequestBody} mcpServersRegisterRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async register(mcpServersRegisterRequestBody: McpServersRegisterRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.register(mcpServersRegisterRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['McpServersApi.register']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * McpServersApi - factory interface
+ */
+export const McpServersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = McpServersApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke action Exchange
+         * @param {McpServersApiExchangeRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exchange(requestParameters: McpServersApiExchangeRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.exchange(requestParameters.mcpServersExchangeRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke function GetServerMetadata
+         * @param {McpServersApiGetServerMetadataRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getServerMetadata(requestParameters: McpServersApiGetServerMetadataRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxOAuthServerMetadata> {
+            return localVarFp.getServerMetadata(requestParameters.targetIssuer, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action Register
+         * @param {McpServersApiRegisterRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        register(requestParameters: McpServersApiRegisterRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.register(requestParameters.mcpServersRegisterRequestBody, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for exchange operation in McpServersApi.
+ */
+export interface McpServersApiExchangeRequest {
+    /**
+     * Action parameters
+     */
+    readonly mcpServersExchangeRequestBody: McpServersExchangeRequestBody
+}
+
+/**
+ * Request parameters for getServerMetadata operation in McpServersApi.
+ */
+export interface McpServersApiGetServerMetadataRequest {
+    /**
+     * Usage: targetIssuer&#x3D;{targetIssuer}
+     */
+    readonly targetIssuer: string
+}
+
+/**
+ * Request parameters for register operation in McpServersApi.
+ */
+export interface McpServersApiRegisterRequest {
+    /**
+     * Action parameters
+     */
+    readonly mcpServersRegisterRequestBody: McpServersRegisterRequestBody
+}
+
+/**
+ * McpServersApi - object-oriented interface
+ */
+export class McpServersApi extends BaseAPI {
+    /**
+     * 
+     * @summary Invoke action Exchange
+     * @param {McpServersApiExchangeRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public exchange(requestParameters: McpServersApiExchangeRequest, options?: RawAxiosRequestConfig) {
+        return McpServersApiFp(this.configuration).exchange(requestParameters.mcpServersExchangeRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke function GetServerMetadata
+     * @param {McpServersApiGetServerMetadataRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getServerMetadata(requestParameters: McpServersApiGetServerMetadataRequest, options?: RawAxiosRequestConfig) {
+        return McpServersApiFp(this.configuration).getServerMetadata(requestParameters.targetIssuer, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action Register
+     * @param {McpServersApiRegisterRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public register(requestParameters: McpServersApiRegisterRequest, options?: RawAxiosRequestConfig) {
+        return McpServersApiFp(this.configuration).register(requestParameters.mcpServersRegisterRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -31605,6 +33439,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31646,6 +33484,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -31660,13 +33502,11 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
         /**
          * 
          * @summary Invoke action GetM365Groups
-         * @param {Microsoft365IntegrationGetM365GroupsRequestBody} microsoft365IntegrationGetM365GroupsRequestBody Action parameters
+         * @param {Microsoft365IntegrationGetM365GroupsRequestBody} [microsoft365IntegrationGetM365GroupsRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getM365Groups: async (microsoft365IntegrationGetM365GroupsRequestBody: Microsoft365IntegrationGetM365GroupsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'microsoft365IntegrationGetM365GroupsRequestBody' is not null or undefined
-            assertParamExists('getM365Groups', 'microsoft365IntegrationGetM365GroupsRequestBody', microsoft365IntegrationGetM365GroupsRequestBody)
+        getM365Groups: async (microsoft365IntegrationGetM365GroupsRequestBody?: Microsoft365IntegrationGetM365GroupsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Microsoft365Integration/Pbx.GetM365Groups`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31678,6 +33518,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31699,13 +33543,11 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
         /**
          * 
          * @summary Invoke action GetM365Users
-         * @param {Microsoft365IntegrationGetM365UsersRequestBody} microsoft365IntegrationGetM365UsersRequestBody Action parameters
+         * @param {Microsoft365IntegrationGetM365UsersRequestBody} [microsoft365IntegrationGetM365UsersRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getM365Users: async (microsoft365IntegrationGetM365UsersRequestBody: Microsoft365IntegrationGetM365UsersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'microsoft365IntegrationGetM365UsersRequestBody' is not null or undefined
-            assertParamExists('getM365Users', 'microsoft365IntegrationGetM365UsersRequestBody', microsoft365IntegrationGetM365UsersRequestBody)
+        getM365Users: async (microsoft365IntegrationGetM365UsersRequestBody?: Microsoft365IntegrationGetM365UsersRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Microsoft365Integration/Pbx.GetM365Users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31717,6 +33559,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31758,6 +33604,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -31789,6 +33639,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31836,6 +33690,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -31868,6 +33726,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31909,6 +33771,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -31938,6 +33804,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -31975,6 +33845,10 @@ export const Microsoft365IntegrationApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -32030,11 +33904,11 @@ export const Microsoft365IntegrationApiFp = function(configuration?: Configurati
         /**
          * 
          * @summary Invoke action GetM365Groups
-         * @param {Microsoft365IntegrationGetM365GroupsRequestBody} microsoft365IntegrationGetM365GroupsRequestBody Action parameters
+         * @param {Microsoft365IntegrationGetM365GroupsRequestBody} [microsoft365IntegrationGetM365GroupsRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getM365Groups(microsoft365IntegrationGetM365GroupsRequestBody: Microsoft365IntegrationGetM365GroupsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxExternalGroupsPage>> {
+        async getM365Groups(microsoft365IntegrationGetM365GroupsRequestBody?: Microsoft365IntegrationGetM365GroupsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxExternalGroupsPage>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getM365Groups(microsoft365IntegrationGetM365GroupsRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['Microsoft365IntegrationApi.getM365Groups']?.[localVarOperationServerIndex]?.url;
@@ -32043,11 +33917,11 @@ export const Microsoft365IntegrationApiFp = function(configuration?: Configurati
         /**
          * 
          * @summary Invoke action GetM365Users
-         * @param {Microsoft365IntegrationGetM365UsersRequestBody} microsoft365IntegrationGetM365UsersRequestBody Action parameters
+         * @param {Microsoft365IntegrationGetM365UsersRequestBody} [microsoft365IntegrationGetM365UsersRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getM365Users(microsoft365IntegrationGetM365UsersRequestBody: Microsoft365IntegrationGetM365UsersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxExternalAccountsPage>> {
+        async getM365Users(microsoft365IntegrationGetM365UsersRequestBody?: Microsoft365IntegrationGetM365UsersRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxExternalAccountsPage>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getM365Users(microsoft365IntegrationGetM365UsersRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['Microsoft365IntegrationApi.getM365Users']?.[localVarOperationServerIndex]?.url;
@@ -32176,7 +34050,7 @@ export const Microsoft365IntegrationApiFactory = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getM365Groups(requestParameters: Microsoft365IntegrationApiGetM365GroupsRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxExternalGroupsPage> {
+        getM365Groups(requestParameters: Microsoft365IntegrationApiGetM365GroupsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxExternalGroupsPage> {
             return localVarFp.getM365Groups(requestParameters.microsoft365IntegrationGetM365GroupsRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -32186,7 +34060,7 @@ export const Microsoft365IntegrationApiFactory = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getM365Users(requestParameters: Microsoft365IntegrationApiGetM365UsersRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxExternalAccountsPage> {
+        getM365Users(requestParameters: Microsoft365IntegrationApiGetM365UsersRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxExternalAccountsPage> {
             return localVarFp.getM365Users(requestParameters.microsoft365IntegrationGetM365UsersRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -32275,7 +34149,7 @@ export interface Microsoft365IntegrationApiGetM365GroupsRequest {
     /**
      * Action parameters
      */
-    readonly microsoft365IntegrationGetM365GroupsRequestBody: Microsoft365IntegrationGetM365GroupsRequestBody
+    readonly microsoft365IntegrationGetM365GroupsRequestBody?: Microsoft365IntegrationGetM365GroupsRequestBody
 }
 
 /**
@@ -32285,7 +34159,7 @@ export interface Microsoft365IntegrationApiGetM365UsersRequest {
     /**
      * Action parameters
      */
-    readonly microsoft365IntegrationGetM365UsersRequestBody: Microsoft365IntegrationGetM365UsersRequestBody
+    readonly microsoft365IntegrationGetM365UsersRequestBody?: Microsoft365IntegrationGetM365UsersRequestBody
 }
 
 /**
@@ -32355,7 +34229,7 @@ export class Microsoft365IntegrationApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getM365Groups(requestParameters: Microsoft365IntegrationApiGetM365GroupsRequest, options?: RawAxiosRequestConfig) {
+    public getM365Groups(requestParameters: Microsoft365IntegrationApiGetM365GroupsRequest = {}, options?: RawAxiosRequestConfig) {
         return Microsoft365IntegrationApiFp(this.configuration).getM365Groups(requestParameters.microsoft365IntegrationGetM365GroupsRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -32366,7 +34240,7 @@ export class Microsoft365IntegrationApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getM365Users(requestParameters: Microsoft365IntegrationApiGetM365UsersRequest, options?: RawAxiosRequestConfig) {
+    public getM365Users(requestParameters: Microsoft365IntegrationApiGetM365UsersRequest = {}, options?: RawAxiosRequestConfig) {
         return Microsoft365IntegrationApiFp(this.configuration).getM365Users(requestParameters.microsoft365IntegrationGetM365UsersRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -32478,6 +34352,10 @@ export const Microsoft365TeamsIntegrationApiAxiosParamCreator = function (config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -32507,6 +34385,10 @@ export const Microsoft365TeamsIntegrationApiAxiosParamCreator = function (config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -32546,6 +34428,10 @@ export const Microsoft365TeamsIntegrationApiAxiosParamCreator = function (config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -32575,6 +34461,10 @@ export const Microsoft365TeamsIntegrationApiAxiosParamCreator = function (config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -32616,6 +34506,10 @@ export const Microsoft365TeamsIntegrationApiAxiosParamCreator = function (config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -32638,13 +34532,11 @@ export const Microsoft365TeamsIntegrationApiAxiosParamCreator = function (config
         /**
          * 
          * @summary Update Microsoft365TeamsIntegration
-         * @param {PbxMicrosoft365TeamsIntegration} pbxMicrosoft365TeamsIntegration New property values
+         * @param {PbxMicrosoft365TeamsIntegration} [pbxMicrosoft365TeamsIntegration] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMicrosoft365TeamsIntegration: async (pbxMicrosoft365TeamsIntegration: PbxMicrosoft365TeamsIntegration, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxMicrosoft365TeamsIntegration' is not null or undefined
-            assertParamExists('updateMicrosoft365TeamsIntegration', 'pbxMicrosoft365TeamsIntegration', pbxMicrosoft365TeamsIntegration)
+        updateMicrosoft365TeamsIntegration: async (pbxMicrosoft365TeamsIntegration?: PbxMicrosoft365TeamsIntegration, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Microsoft365TeamsIntegration`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32656,6 +34548,10 @@ export const Microsoft365TeamsIntegrationApiAxiosParamCreator = function (config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -32749,11 +34645,11 @@ export const Microsoft365TeamsIntegrationApiFp = function(configuration?: Config
         /**
          * 
          * @summary Update Microsoft365TeamsIntegration
-         * @param {PbxMicrosoft365TeamsIntegration} pbxMicrosoft365TeamsIntegration New property values
+         * @param {PbxMicrosoft365TeamsIntegration} [pbxMicrosoft365TeamsIntegration] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateMicrosoft365TeamsIntegration(pbxMicrosoft365TeamsIntegration: PbxMicrosoft365TeamsIntegration, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateMicrosoft365TeamsIntegration(pbxMicrosoft365TeamsIntegration?: PbxMicrosoft365TeamsIntegration, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMicrosoft365TeamsIntegration(pbxMicrosoft365TeamsIntegration, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['Microsoft365TeamsIntegrationApi.updateMicrosoft365TeamsIntegration']?.[localVarOperationServerIndex]?.url;
@@ -32822,7 +34718,7 @@ export const Microsoft365TeamsIntegrationApiFactory = function (configuration?: 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMicrosoft365TeamsIntegration(requestParameters: Microsoft365TeamsIntegrationApiUpdateMicrosoft365TeamsIntegrationRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateMicrosoft365TeamsIntegration(requestParameters: Microsoft365TeamsIntegrationApiUpdateMicrosoft365TeamsIntegrationRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateMicrosoft365TeamsIntegration(requestParameters.pbxMicrosoft365TeamsIntegration, options).then((request) => request(axios, basePath));
         },
     };
@@ -32860,7 +34756,7 @@ export interface Microsoft365TeamsIntegrationApiUpdateMicrosoft365TeamsIntegrati
     /**
      * New property values
      */
-    readonly pbxMicrosoft365TeamsIntegration: PbxMicrosoft365TeamsIntegration
+    readonly pbxMicrosoft365TeamsIntegration?: PbxMicrosoft365TeamsIntegration
 }
 
 /**
@@ -32926,7 +34822,7 @@ export class Microsoft365TeamsIntegrationApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateMicrosoft365TeamsIntegration(requestParameters: Microsoft365TeamsIntegrationApiUpdateMicrosoft365TeamsIntegrationRequest, options?: RawAxiosRequestConfig) {
+    public updateMicrosoft365TeamsIntegration(requestParameters: Microsoft365TeamsIntegrationApiUpdateMicrosoft365TeamsIntegrationRequest = {}, options?: RawAxiosRequestConfig) {
         return Microsoft365TeamsIntegrationApiFp(this.configuration).updateMicrosoft365TeamsIntegration(requestParameters.pbxMicrosoft365TeamsIntegration, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -32963,6 +34859,10 @@ export const MusicOnHoldSettingsApiAxiosParamCreator = function (configuration?:
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -32985,13 +34885,11 @@ export const MusicOnHoldSettingsApiAxiosParamCreator = function (configuration?:
         /**
          * 
          * @summary Update MusicOnHoldSettings
-         * @param {PbxMusicOnHoldSettings} pbxMusicOnHoldSettings New property values
+         * @param {PbxMusicOnHoldSettings} [pbxMusicOnHoldSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMusicOnHoldSettings: async (pbxMusicOnHoldSettings: PbxMusicOnHoldSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxMusicOnHoldSettings' is not null or undefined
-            assertParamExists('updateMusicOnHoldSettings', 'pbxMusicOnHoldSettings', pbxMusicOnHoldSettings)
+        updateMusicOnHoldSettings: async (pbxMusicOnHoldSettings?: PbxMusicOnHoldSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/MusicOnHoldSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33003,6 +34901,10 @@ export const MusicOnHoldSettingsApiAxiosParamCreator = function (configuration?:
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -33047,11 +34949,11 @@ export const MusicOnHoldSettingsApiFp = function(configuration?: Configuration) 
         /**
          * 
          * @summary Update MusicOnHoldSettings
-         * @param {PbxMusicOnHoldSettings} pbxMusicOnHoldSettings New property values
+         * @param {PbxMusicOnHoldSettings} [pbxMusicOnHoldSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateMusicOnHoldSettings(pbxMusicOnHoldSettings: PbxMusicOnHoldSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateMusicOnHoldSettings(pbxMusicOnHoldSettings?: PbxMusicOnHoldSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMusicOnHoldSettings(pbxMusicOnHoldSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MusicOnHoldSettingsApi.updateMusicOnHoldSettings']?.[localVarOperationServerIndex]?.url;
@@ -33083,7 +34985,7 @@ export const MusicOnHoldSettingsApiFactory = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateMusicOnHoldSettings(requestParameters: MusicOnHoldSettingsApiUpdateMusicOnHoldSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateMusicOnHoldSettings(requestParameters: MusicOnHoldSettingsApiUpdateMusicOnHoldSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateMusicOnHoldSettings(requestParameters.pbxMusicOnHoldSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -33111,7 +35013,7 @@ export interface MusicOnHoldSettingsApiUpdateMusicOnHoldSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxMusicOnHoldSettings: PbxMusicOnHoldSettings
+    readonly pbxMusicOnHoldSettings?: PbxMusicOnHoldSettings
 }
 
 /**
@@ -33136,7 +35038,7 @@ export class MusicOnHoldSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateMusicOnHoldSettings(requestParameters: MusicOnHoldSettingsApiUpdateMusicOnHoldSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateMusicOnHoldSettings(requestParameters: MusicOnHoldSettingsApiUpdateMusicOnHoldSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return MusicOnHoldSettingsApiFp(this.configuration).updateMusicOnHoldSettings(requestParameters.pbxMusicOnHoldSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -33168,6 +35070,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -33219,6 +35125,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -33248,6 +35158,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -33285,6 +35199,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -33329,6 +35247,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -33408,6 +35330,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -33477,6 +35403,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -33508,6 +35438,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -33545,6 +35479,10 @@ export const MyGroupApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -34087,6 +36025,10 @@ export const MyTokensApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -34152,6 +36094,10 @@ export const MyTokensApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -34356,6 +36302,10 @@ export const MyUserApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -34363,6 +36313,44 @@ export const MyUserApiAxiosParamCreator = function (configuration?: Configuratio
             if ($expand) {
                 localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
             }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action IssueDownloadTicket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        issueDownloadTicket: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/MyUser/Pbx.IssueDownloadTicket`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -34401,6 +36389,10 @@ export const MyUserApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -34480,6 +36472,10 @@ export const MyUserApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -34554,6 +36550,10 @@ export const MyUserApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -34620,6 +36620,10 @@ export const MyUserApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -34652,6 +36656,10 @@ export const MyUserApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -34691,6 +36699,18 @@ export const MyUserApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMyUser($select, $expand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MyUserApi.getMyUser']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action IssueDownloadTicket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async issueDownloadTicket(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxOneTimeTicket>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.issueDownloadTicket(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MyUserApi.issueDownloadTicket']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -34796,6 +36816,15 @@ export const MyUserApiFactory = function (configuration?: Configuration, basePat
          */
         getMyUser(requestParameters: MyUserApiGetMyUserRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxUser> {
             return localVarFp.getMyUser(requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action IssueDownloadTicket
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        issueDownloadTicket(options?: RawAxiosRequestConfig): AxiosPromise<PbxOneTimeTicket> {
+            return localVarFp.issueDownloadTicket(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -35026,6 +37055,16 @@ export class MyUserApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke action IssueDownloadTicket
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public issueDownloadTicket(options?: RawAxiosRequestConfig) {
+        return MyUserApiFp(this.configuration).issueDownloadTicket(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Get ForwardingProfiles from MyUser
      * @param {MyUserApiListMyUserForwardingProfilesRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -35112,6 +37151,10 @@ export const NetworkInterfacesApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -35307,6 +37350,10 @@ export const NetworkSettingsApiAxiosParamCreator = function (configuration?: Con
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -35363,6 +37410,10 @@ export const NetworkSettingsApiAxiosParamCreator = function (configuration?: Con
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -35385,13 +37436,11 @@ export const NetworkSettingsApiAxiosParamCreator = function (configuration?: Con
         /**
          * 
          * @summary Update NetworkSettings
-         * @param {PbxNetworkSettings} pbxNetworkSettings New property values
+         * @param {PbxNetworkSettings} [pbxNetworkSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateNetworkSettings: async (pbxNetworkSettings: PbxNetworkSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxNetworkSettings' is not null or undefined
-            assertParamExists('updateNetworkSettings', 'pbxNetworkSettings', pbxNetworkSettings)
+        updateNetworkSettings: async (pbxNetworkSettings?: PbxNetworkSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/NetworkSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35403,6 +37452,10 @@ export const NetworkSettingsApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -35464,11 +37517,11 @@ export const NetworkSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update NetworkSettings
-         * @param {PbxNetworkSettings} pbxNetworkSettings New property values
+         * @param {PbxNetworkSettings} [pbxNetworkSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateNetworkSettings(pbxNetworkSettings: PbxNetworkSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateNetworkSettings(pbxNetworkSettings?: PbxNetworkSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateNetworkSettings(pbxNetworkSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['NetworkSettingsApi.updateNetworkSettings']?.[localVarOperationServerIndex]?.url;
@@ -35510,7 +37563,7 @@ export const NetworkSettingsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateNetworkSettings(requestParameters: NetworkSettingsApiUpdateNetworkSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateNetworkSettings(requestParameters: NetworkSettingsApiUpdateNetworkSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateNetworkSettings(requestParameters.pbxNetworkSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -35568,7 +37621,7 @@ export interface NetworkSettingsApiUpdateNetworkSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxNetworkSettings: PbxNetworkSettings
+    readonly pbxNetworkSettings?: PbxNetworkSettings
 }
 
 /**
@@ -35604,7 +37657,7 @@ export class NetworkSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateNetworkSettings(requestParameters: NetworkSettingsApiUpdateNetworkSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateNetworkSettings(requestParameters: NetworkSettingsApiUpdateNetworkSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return NetworkSettingsApiFp(this.configuration).updateNetworkSettings(requestParameters.pbxNetworkSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -35636,6 +37689,10 @@ export const NotificationSettingsApiAxiosParamCreator = function (configuration?
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -35681,6 +37738,10 @@ export const NotificationSettingsApiAxiosParamCreator = function (configuration?
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -35822,6 +37883,493 @@ export class NotificationSettingsApi extends BaseAPI {
 
 
 /**
+ * OAuthClientsApi - axios parameter creator
+ */
+export const OAuthClientsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Delete entity from OAuthClients
+         * @param {string} id The unique identifier of OAuthClient
+         * @param {string} [ifMatch] ETag
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteOAuthClient: async (id: string, ifMatch?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteOAuthClient', 'id', id)
+            const localVarPath = `/OAuthClients({Id})`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            if (ifMatch != null) {
+                localVarHeaderParameter['If-Match'] = String(ifMatch);
+            }
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get entity from OAuthClients by key
+         * @param {string} id The unique identifier of OAuthClient
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOAuthClient: async (id: string, $select?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getOAuthClient', 'id', id)
+            const localVarPath = `/OAuthClients({Id})`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get entities from OAuthClients
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listOAuthClient: async ($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $orderby?: Set<string>, $select?: Set<string>, $expand?: Set<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/OAuthClients`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            if ($top !== undefined) {
+                localVarQueryParameter['$top'] = $top;
+            }
+
+            if ($skip !== undefined) {
+                localVarQueryParameter['$skip'] = $skip;
+            }
+
+            if ($search !== undefined) {
+                localVarQueryParameter['$search'] = $search;
+            }
+
+            if ($filter !== undefined) {
+                localVarQueryParameter['$filter'] = $filter;
+            }
+
+            if ($count !== undefined) {
+                localVarQueryParameter['$count'] = $count;
+            }
+
+            if ($orderby) {
+                localVarQueryParameter['$orderby'] = Array.from($orderby).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($select) {
+                localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
+            }
+
+            if ($expand) {
+                localVarQueryParameter['$expand'] = Array.from($expand).join(COLLECTION_FORMATS.csv);
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action RefreshClientMetadata
+         * @param {string} id The unique identifier of OAuthClient
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshClientMetadata: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('refreshClientMetadata', 'id', id)
+            const localVarPath = `/OAuthClients({Id})/Pbx.RefreshClientMetadata`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * OAuthClientsApi - functional programming interface
+ */
+export const OAuthClientsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OAuthClientsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Delete entity from OAuthClients
+         * @param {string} id The unique identifier of OAuthClient
+         * @param {string} [ifMatch] ETag
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteOAuthClient(id: string, ifMatch?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteOAuthClient(id, ifMatch, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OAuthClientsApi.deleteOAuthClient']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get entity from OAuthClients by key
+         * @param {string} id The unique identifier of OAuthClient
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOAuthClient(id: string, $select?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxOAuthClient>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOAuthClient(id, $select, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OAuthClientsApi.getOAuthClient']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get entities from OAuthClients
+         * @param {number} [$top] Show only the first n items
+         * @param {number} [$skip] Skip the first n items
+         * @param {string} [$search] Search items by search phrases
+         * @param {string} [$filter] Filter items by property values
+         * @param {boolean} [$count] Include count of items
+         * @param {Set<string>} [$orderby] Order items by property values
+         * @param {Set<string>} [$select] Select properties to be returned
+         * @param {Set<string>} [$expand] Expand related entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listOAuthClient($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, $orderby?: Set<string>, $select?: Set<string>, $expand?: Set<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxOAuthClientCollectionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listOAuthClient($top, $skip, $search, $filter, $count, $orderby, $select, $expand, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OAuthClientsApi.listOAuthClient']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action RefreshClientMetadata
+         * @param {string} id The unique identifier of OAuthClient
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refreshClientMetadata(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCanCreateBackup200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshClientMetadata(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OAuthClientsApi.refreshClientMetadata']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * OAuthClientsApi - factory interface
+ */
+export const OAuthClientsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = OAuthClientsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Delete entity from OAuthClients
+         * @param {OAuthClientsApiDeleteOAuthClientRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteOAuthClient(requestParameters: OAuthClientsApiDeleteOAuthClientRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteOAuthClient(requestParameters.id, requestParameters.ifMatch, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get entity from OAuthClients by key
+         * @param {OAuthClientsApiGetOAuthClientRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOAuthClient(requestParameters: OAuthClientsApiGetOAuthClientRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxOAuthClient> {
+            return localVarFp.getOAuthClient(requestParameters.id, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get entities from OAuthClients
+         * @param {OAuthClientsApiListOAuthClientRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listOAuthClient(requestParameters: OAuthClientsApiListOAuthClientRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxOAuthClientCollectionResponse> {
+            return localVarFp.listOAuthClient(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action RefreshClientMetadata
+         * @param {OAuthClientsApiRefreshClientMetadataRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshClientMetadata(requestParameters: OAuthClientsApiRefreshClientMetadataRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetCanCreateBackup200Response> {
+            return localVarFp.refreshClientMetadata(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for deleteOAuthClient operation in OAuthClientsApi.
+ */
+export interface OAuthClientsApiDeleteOAuthClientRequest {
+    /**
+     * The unique identifier of OAuthClient
+     */
+    readonly id: string
+
+    /**
+     * ETag
+     */
+    readonly ifMatch?: string
+}
+
+/**
+ * Request parameters for getOAuthClient operation in OAuthClientsApi.
+ */
+export interface OAuthClientsApiGetOAuthClientRequest {
+    /**
+     * The unique identifier of OAuthClient
+     */
+    readonly id: string
+
+    /**
+     * Select properties to be returned
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Expand related entities
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * Request parameters for listOAuthClient operation in OAuthClientsApi.
+ */
+export interface OAuthClientsApiListOAuthClientRequest {
+    /**
+     * Show only the first n items
+     */
+    readonly $top?: number
+
+    /**
+     * Skip the first n items
+     */
+    readonly $skip?: number
+
+    /**
+     * Search items by search phrases
+     */
+    readonly $search?: string
+
+    /**
+     * Filter items by property values
+     */
+    readonly $filter?: string
+
+    /**
+     * Include count of items
+     */
+    readonly $count?: boolean
+
+    /**
+     * Order items by property values
+     */
+    readonly $orderby?: Set<string>
+
+    /**
+     * Select properties to be returned
+     */
+    readonly $select?: Set<string>
+
+    /**
+     * Expand related entities
+     */
+    readonly $expand?: Set<string>
+}
+
+/**
+ * Request parameters for refreshClientMetadata operation in OAuthClientsApi.
+ */
+export interface OAuthClientsApiRefreshClientMetadataRequest {
+    /**
+     * The unique identifier of OAuthClient
+     */
+    readonly id: string
+}
+
+/**
+ * OAuthClientsApi - object-oriented interface
+ */
+export class OAuthClientsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Delete entity from OAuthClients
+     * @param {OAuthClientsApiDeleteOAuthClientRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public deleteOAuthClient(requestParameters: OAuthClientsApiDeleteOAuthClientRequest, options?: RawAxiosRequestConfig) {
+        return OAuthClientsApiFp(this.configuration).deleteOAuthClient(requestParameters.id, requestParameters.ifMatch, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get entity from OAuthClients by key
+     * @param {OAuthClientsApiGetOAuthClientRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getOAuthClient(requestParameters: OAuthClientsApiGetOAuthClientRequest, options?: RawAxiosRequestConfig) {
+        return OAuthClientsApiFp(this.configuration).getOAuthClient(requestParameters.id, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get entities from OAuthClients
+     * @param {OAuthClientsApiListOAuthClientRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public listOAuthClient(requestParameters: OAuthClientsApiListOAuthClientRequest = {}, options?: RawAxiosRequestConfig) {
+        return OAuthClientsApiFp(this.configuration).listOAuthClient(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action RefreshClientMetadata
+     * @param {OAuthClientsApiRefreshClientMetadataRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refreshClientMetadata(requestParameters: OAuthClientsApiRefreshClientMetadataRequest, options?: RawAxiosRequestConfig) {
+        return OAuthClientsApiFp(this.configuration).refreshClientMetadata(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * OfficeHoursApi - axios parameter creator
  */
 export const OfficeHoursApiAxiosParamCreator = function (configuration?: Configuration) {
@@ -35851,6 +38399,10 @@ export const OfficeHoursApiAxiosParamCreator = function (configuration?: Configu
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -35873,13 +38425,11 @@ export const OfficeHoursApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Update OfficeHours
-         * @param {PbxOfficeHours} pbxOfficeHours New property values
+         * @param {PbxOfficeHours} [pbxOfficeHours] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateOfficeHours: async (pbxOfficeHours: PbxOfficeHours, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxOfficeHours' is not null or undefined
-            assertParamExists('updateOfficeHours', 'pbxOfficeHours', pbxOfficeHours)
+        updateOfficeHours: async (pbxOfficeHours?: PbxOfficeHours, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/OfficeHours`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35891,6 +38441,10 @@ export const OfficeHoursApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -35935,11 +38489,11 @@ export const OfficeHoursApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update OfficeHours
-         * @param {PbxOfficeHours} pbxOfficeHours New property values
+         * @param {PbxOfficeHours} [pbxOfficeHours] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateOfficeHours(pbxOfficeHours: PbxOfficeHours, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateOfficeHours(pbxOfficeHours?: PbxOfficeHours, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateOfficeHours(pbxOfficeHours, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OfficeHoursApi.updateOfficeHours']?.[localVarOperationServerIndex]?.url;
@@ -35971,7 +38525,7 @@ export const OfficeHoursApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateOfficeHours(requestParameters: OfficeHoursApiUpdateOfficeHoursRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateOfficeHours(requestParameters: OfficeHoursApiUpdateOfficeHoursRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateOfficeHours(requestParameters.pbxOfficeHours, options).then((request) => request(axios, basePath));
         },
     };
@@ -35999,7 +38553,7 @@ export interface OfficeHoursApiUpdateOfficeHoursRequest {
     /**
      * New property values
      */
-    readonly pbxOfficeHours: PbxOfficeHours
+    readonly pbxOfficeHours?: PbxOfficeHours
 }
 
 /**
@@ -36024,7 +38578,7 @@ export class OfficeHoursApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateOfficeHours(requestParameters: OfficeHoursApiUpdateOfficeHoursRequest, options?: RawAxiosRequestConfig) {
+    public updateOfficeHours(requestParameters: OfficeHoursApiUpdateOfficeHoursRequest = {}, options?: RawAxiosRequestConfig) {
         return OfficeHoursApiFp(this.configuration).updateOfficeHours(requestParameters.pbxOfficeHours, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -36057,6 +38611,10 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -36103,6 +38661,10 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -36143,6 +38705,10 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -36220,6 +38786,10 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -36265,6 +38835,10 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -36339,6 +38913,10 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -36355,13 +38933,11 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @summary Invoke action Purge
-         * @param {OutboundRulesPurgeRequestBody} outboundRulesPurgeRequestBody Action parameters
+         * @param {OutboundRulesPurgeRequestBody} [outboundRulesPurgeRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        purge: async (outboundRulesPurgeRequestBody: OutboundRulesPurgeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'outboundRulesPurgeRequestBody' is not null or undefined
-            assertParamExists('purge', 'outboundRulesPurgeRequestBody', outboundRulesPurgeRequestBody)
+        purge: async (outboundRulesPurgeRequestBody?: OutboundRulesPurgeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/OutboundRules/Pbx.Purge`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36373,6 +38949,10 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -36416,6 +38996,10 @@ export const OutboundRulesApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -36541,11 +39125,11 @@ export const OutboundRulesApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action Purge
-         * @param {OutboundRulesPurgeRequestBody} outboundRulesPurgeRequestBody Action parameters
+         * @param {OutboundRulesPurgeRequestBody} [outboundRulesPurgeRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async purge(outboundRulesPurgeRequestBody: OutboundRulesPurgeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async purge(outboundRulesPurgeRequestBody?: OutboundRulesPurgeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.purge(outboundRulesPurgeRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OutboundRulesApi.purge']?.[localVarOperationServerIndex]?.url;
@@ -36641,7 +39225,7 @@ export const OutboundRulesApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        purge(requestParameters: OutboundRulesApiPurgeRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        purge(requestParameters: OutboundRulesApiPurgeRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.purge(requestParameters.outboundRulesPurgeRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -36809,7 +39393,7 @@ export interface OutboundRulesApiPurgeRequest {
     /**
      * Action parameters
      */
-    readonly outboundRulesPurgeRequestBody: OutboundRulesPurgeRequestBody
+    readonly outboundRulesPurgeRequestBody?: OutboundRulesPurgeRequestBody
 }
 
 /**
@@ -36904,7 +39488,7 @@ export class OutboundRulesApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public purge(requestParameters: OutboundRulesApiPurgeRequest, options?: RawAxiosRequestConfig) {
+    public purge(requestParameters: OutboundRulesApiPurgeRequest = {}, options?: RawAxiosRequestConfig) {
         return OutboundRulesApiFp(this.configuration).purge(requestParameters.outboundRulesPurgeRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -36953,6 +39537,10 @@ export const ParametersApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -36989,6 +39577,10 @@ export const ParametersApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -37032,6 +39624,10 @@ export const ParametersApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -37083,6 +39679,10 @@ export const ParametersApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -37120,6 +39720,10 @@ export const ParametersApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -37172,15 +39776,13 @@ export const ParametersApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Update entity in Parameters
          * @param {number} id The unique identifier of Parameter
-         * @param {PbxParameter} pbxParameter New property values
+         * @param {PbxParameter} [pbxParameter] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateParameter: async (id: number, pbxParameter: PbxParameter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateParameter: async (id: number, pbxParameter?: PbxParameter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateParameter', 'id', id)
-            // verify required parameter 'pbxParameter' is not null or undefined
-            assertParamExists('updateParameter', 'pbxParameter', pbxParameter)
             const localVarPath = `/Parameters({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -37193,6 +39795,10 @@ export const ParametersApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -37299,11 +39905,11 @@ export const ParametersApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in Parameters
          * @param {number} id The unique identifier of Parameter
-         * @param {PbxParameter} pbxParameter New property values
+         * @param {PbxParameter} [pbxParameter] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateParameter(id: number, pbxParameter: PbxParameter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateParameter(id: number, pbxParameter?: PbxParameter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateParameter(id, pbxParameter, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ParametersApi.updateParameter']?.[localVarOperationServerIndex]?.url;
@@ -37493,7 +40099,7 @@ export interface ParametersApiUpdateParameterRequest {
     /**
      * New property values
      */
-    readonly pbxParameter: PbxParameter
+    readonly pbxParameter?: PbxParameter
 }
 
 /**
@@ -37600,6 +40206,10 @@ export const ParkingsApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -37636,6 +40246,10 @@ export const ParkingsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -37679,6 +40293,10 @@ export const ParkingsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -37732,6 +40350,10 @@ export const ParkingsApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -37777,6 +40399,10 @@ export const ParkingsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -37860,6 +40486,10 @@ export const ParkingsApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -37907,15 +40537,13 @@ export const ParkingsApiAxiosParamCreator = function (configuration?: Configurat
          * 
          * @summary Update entity in Parkings
          * @param {number} id The unique identifier of Parking
-         * @param {PbxParking} pbxParking New property values
+         * @param {PbxParking} [pbxParking] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateParking: async (id: number, pbxParking: PbxParking, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateParking: async (id: number, pbxParking?: PbxParking, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateParking', 'id', id)
-            // verify required parameter 'pbxParking' is not null or undefined
-            assertParamExists('updateParking', 'pbxParking', pbxParking)
             const localVarPath = `/Parkings({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -37928,6 +40556,10 @@ export const ParkingsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -38057,11 +40689,11 @@ export const ParkingsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in Parkings
          * @param {number} id The unique identifier of Parking
-         * @param {PbxParking} pbxParking New property values
+         * @param {PbxParking} [pbxParking] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateParking(id: number, pbxParking: PbxParking, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateParking(id: number, pbxParking?: PbxParking, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateParking(id, pbxParking, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ParkingsApi.updateParking']?.[localVarOperationServerIndex]?.url;
@@ -38321,7 +40953,7 @@ export interface ParkingsApiUpdateParkingRequest {
     /**
      * New property values
      */
-    readonly pbxParking: PbxParking
+    readonly pbxParking?: PbxParking
 }
 
 /**
@@ -38442,6 +41074,10 @@ export const PeersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -38487,6 +41123,10 @@ export const PeersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -38566,6 +41206,10 @@ export const PeersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -38630,6 +41274,10 @@ export const PeersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -38978,6 +41626,10 @@ export const PhoneBookSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -39000,13 +41652,11 @@ export const PhoneBookSettingsApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @summary Update PhoneBookSettings
-         * @param {PbxPhoneBookSettings} pbxPhoneBookSettings New property values
+         * @param {PbxPhoneBookSettings} [pbxPhoneBookSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePhoneBookSettings: async (pbxPhoneBookSettings: PbxPhoneBookSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxPhoneBookSettings' is not null or undefined
-            assertParamExists('updatePhoneBookSettings', 'pbxPhoneBookSettings', pbxPhoneBookSettings)
+        updatePhoneBookSettings: async (pbxPhoneBookSettings?: PbxPhoneBookSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/PhoneBookSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -39018,6 +41668,10 @@ export const PhoneBookSettingsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -39062,11 +41716,11 @@ export const PhoneBookSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update PhoneBookSettings
-         * @param {PbxPhoneBookSettings} pbxPhoneBookSettings New property values
+         * @param {PbxPhoneBookSettings} [pbxPhoneBookSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePhoneBookSettings(pbxPhoneBookSettings: PbxPhoneBookSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updatePhoneBookSettings(pbxPhoneBookSettings?: PbxPhoneBookSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updatePhoneBookSettings(pbxPhoneBookSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PhoneBookSettingsApi.updatePhoneBookSettings']?.[localVarOperationServerIndex]?.url;
@@ -39098,7 +41752,7 @@ export const PhoneBookSettingsApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePhoneBookSettings(requestParameters: PhoneBookSettingsApiUpdatePhoneBookSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updatePhoneBookSettings(requestParameters: PhoneBookSettingsApiUpdatePhoneBookSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updatePhoneBookSettings(requestParameters.pbxPhoneBookSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -39126,7 +41780,7 @@ export interface PhoneBookSettingsApiUpdatePhoneBookSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxPhoneBookSettings: PbxPhoneBookSettings
+    readonly pbxPhoneBookSettings?: PbxPhoneBookSettings
 }
 
 /**
@@ -39151,7 +41805,7 @@ export class PhoneBookSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updatePhoneBookSettings(requestParameters: PhoneBookSettingsApiUpdatePhoneBookSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updatePhoneBookSettings(requestParameters: PhoneBookSettingsApiUpdatePhoneBookSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return PhoneBookSettingsApiFp(this.configuration).updatePhoneBookSettings(requestParameters.pbxPhoneBookSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -39186,6 +41840,10 @@ export const PhoneLogosApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -39231,6 +41889,10 @@ export const PhoneLogosApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -39474,6 +42136,10 @@ export const PhoneTemplatesApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -39510,6 +42176,10 @@ export const PhoneTemplatesApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -39553,6 +42223,10 @@ export const PhoneTemplatesApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -39608,6 +42282,10 @@ export const PhoneTemplatesApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -39655,15 +42333,13 @@ export const PhoneTemplatesApiAxiosParamCreator = function (configuration?: Conf
          * 
          * @summary Update entity in PhoneTemplates
          * @param {string} id The unique identifier of PhoneTemplate
-         * @param {PbxPhoneTemplate} pbxPhoneTemplate New property values
+         * @param {PbxPhoneTemplate} [pbxPhoneTemplate] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePhoneTemplate: async (id: string, pbxPhoneTemplate: PbxPhoneTemplate, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updatePhoneTemplate: async (id: string, pbxPhoneTemplate?: PbxPhoneTemplate, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updatePhoneTemplate', 'id', id)
-            // verify required parameter 'pbxPhoneTemplate' is not null or undefined
-            assertParamExists('updatePhoneTemplate', 'pbxPhoneTemplate', pbxPhoneTemplate)
             const localVarPath = `/PhoneTemplates({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -39676,6 +42352,10 @@ export const PhoneTemplatesApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -39769,11 +42449,11 @@ export const PhoneTemplatesApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in PhoneTemplates
          * @param {string} id The unique identifier of PhoneTemplate
-         * @param {PbxPhoneTemplate} pbxPhoneTemplate New property values
+         * @param {PbxPhoneTemplate} [pbxPhoneTemplate] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePhoneTemplate(id: string, pbxPhoneTemplate: PbxPhoneTemplate, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updatePhoneTemplate(id: string, pbxPhoneTemplate?: PbxPhoneTemplate, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updatePhoneTemplate(id, pbxPhoneTemplate, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PhoneTemplatesApi.updatePhoneTemplate']?.[localVarOperationServerIndex]?.url;
@@ -39943,7 +42623,7 @@ export interface PhoneTemplatesApiUpdatePhoneTemplateRequest {
     /**
      * New property values
      */
-    readonly pbxPhoneTemplate: PbxPhoneTemplate
+    readonly pbxPhoneTemplate?: PbxPhoneTemplate
 }
 
 /**
@@ -40038,6 +42718,10 @@ export const PhonesSettingsApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -40060,13 +42744,11 @@ export const PhonesSettingsApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @summary Update PhonesSettings
-         * @param {PbxPhonesSettings} pbxPhonesSettings New property values
+         * @param {PbxPhonesSettings} [pbxPhonesSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePhonesSettings: async (pbxPhonesSettings: PbxPhonesSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxPhonesSettings' is not null or undefined
-            assertParamExists('updatePhonesSettings', 'pbxPhonesSettings', pbxPhonesSettings)
+        updatePhonesSettings: async (pbxPhonesSettings?: PbxPhonesSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/PhonesSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -40078,6 +42760,10 @@ export const PhonesSettingsApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -40122,11 +42808,11 @@ export const PhonesSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update PhonesSettings
-         * @param {PbxPhonesSettings} pbxPhonesSettings New property values
+         * @param {PbxPhonesSettings} [pbxPhonesSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePhonesSettings(pbxPhonesSettings: PbxPhonesSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updatePhonesSettings(pbxPhonesSettings?: PbxPhonesSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updatePhonesSettings(pbxPhonesSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PhonesSettingsApi.updatePhonesSettings']?.[localVarOperationServerIndex]?.url;
@@ -40158,7 +42844,7 @@ export const PhonesSettingsApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePhonesSettings(requestParameters: PhonesSettingsApiUpdatePhonesSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updatePhonesSettings(requestParameters: PhonesSettingsApiUpdatePhonesSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updatePhonesSettings(requestParameters.pbxPhonesSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -40186,7 +42872,7 @@ export interface PhonesSettingsApiUpdatePhonesSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxPhonesSettings: PbxPhonesSettings
+    readonly pbxPhonesSettings?: PbxPhonesSettings
 }
 
 /**
@@ -40211,7 +42897,7 @@ export class PhonesSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updatePhonesSettings(requestParameters: PhonesSettingsApiUpdatePhonesSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updatePhonesSettings(requestParameters: PhonesSettingsApiUpdatePhonesSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return PhonesSettingsApiFp(this.configuration).updatePhonesSettings(requestParameters.pbxPhonesSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -40244,6 +42930,10 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -40290,6 +42980,10 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -40325,6 +43019,10 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -40374,6 +43072,10 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -40409,6 +43111,10 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -40464,6 +43170,10 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -40511,15 +43221,13 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
          * 
          * @summary Update entity in Playlists
          * @param {string} name The unique identifier of Playlist
-         * @param {PbxPlaylist} pbxPlaylist New property values
+         * @param {PbxPlaylist} [pbxPlaylist] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePlaylist: async (name: string, pbxPlaylist: PbxPlaylist, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updatePlaylist: async (name: string, pbxPlaylist?: PbxPlaylist, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'name' is not null or undefined
             assertParamExists('updatePlaylist', 'name', name)
-            // verify required parameter 'pbxPlaylist' is not null or undefined
-            assertParamExists('updatePlaylist', 'pbxPlaylist', pbxPlaylist)
             const localVarPath = `/Playlists({Name})`
                 .replace(`{${"Name"}}`, encodeURIComponent(String(name)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -40532,6 +43240,10 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -40652,11 +43364,11 @@ export const PlaylistsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in Playlists
          * @param {string} name The unique identifier of Playlist
-         * @param {PbxPlaylist} pbxPlaylist New property values
+         * @param {PbxPlaylist} [pbxPlaylist] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePlaylist(name: string, pbxPlaylist: PbxPlaylist, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updatePlaylist(name: string, pbxPlaylist?: PbxPlaylist, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updatePlaylist(name, pbxPlaylist, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PlaylistsApi.updatePlaylist']?.[localVarOperationServerIndex]?.url;
@@ -40871,7 +43583,7 @@ export interface PlaylistsApiUpdatePlaylistRequest {
     /**
      * New property values
      */
-    readonly pbxPlaylist: PbxPlaylist
+    readonly pbxPlaylist?: PbxPlaylist
 }
 
 /**
@@ -40993,6 +43705,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -41029,6 +43745,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -41071,6 +43791,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -41106,6 +43830,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -41156,6 +43884,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -41239,6 +43971,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -41312,6 +44048,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -41355,6 +44095,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -41390,6 +44134,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -41436,6 +44184,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -41453,15 +44205,13 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Update entity in PromptSets
          * @param {number} id The unique identifier of PromptSet
-         * @param {PbxPromptSet} pbxPromptSet New property values
+         * @param {PbxPromptSet} [pbxPromptSet] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePromptSet: async (id: number, pbxPromptSet: PbxPromptSet, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updatePromptSet: async (id: number, pbxPromptSet?: PbxPromptSet, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updatePromptSet', 'id', id)
-            // verify required parameter 'pbxPromptSet' is not null or undefined
-            assertParamExists('updatePromptSet', 'pbxPromptSet', pbxPromptSet)
             const localVarPath = `/PromptSets({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -41474,6 +44224,10 @@ export const PromptSetsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -41656,11 +44410,11 @@ export const PromptSetsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in PromptSets
          * @param {number} id The unique identifier of PromptSet
-         * @param {PbxPromptSet} pbxPromptSet New property values
+         * @param {PbxPromptSet} [pbxPromptSet] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePromptSet(id: number, pbxPromptSet: PbxPromptSet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updatePromptSet(id: number, pbxPromptSet?: PbxPromptSet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updatePromptSet(id, pbxPromptSet, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PromptSetsApi.updatePromptSet']?.[localVarOperationServerIndex]?.url;
@@ -41999,7 +44753,7 @@ export interface PromptSetsApiUpdatePromptSetRequest {
     /**
      * New property values
      */
-    readonly pbxPromptSet: PbxPromptSet
+    readonly pbxPromptSet?: PbxPromptSet
 }
 
 /**
@@ -42157,6 +44911,10 @@ export const PurgeSettingsApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -42189,6 +44947,10 @@ export const PurgeSettingsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -42228,6 +44990,10 @@ export const PurgeSettingsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -42424,6 +45190,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -42460,6 +45230,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -42502,6 +45276,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -42537,6 +45315,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -42585,6 +45367,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -42639,6 +45425,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -42722,6 +45512,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -42791,6 +45585,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -42866,6 +45664,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -42902,6 +45704,10 @@ export const QueuesApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -43580,6 +46386,10 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -43616,6 +46426,10 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -43658,6 +46472,10 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -43693,6 +46511,10 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -43741,6 +46563,10 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -43795,6 +46621,10 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -43874,6 +46704,10 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -43921,15 +46755,13 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
          * 
          * @summary Update entity in Receptionists
          * @param {number} id The unique identifier of Receptionist
-         * @param {PbxReceptionist} pbxReceptionist New property values
+         * @param {PbxReceptionist} [pbxReceptionist] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateReceptionist: async (id: number, pbxReceptionist: PbxReceptionist, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateReceptionist: async (id: number, pbxReceptionist?: PbxReceptionist, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateReceptionist', 'id', id)
-            // verify required parameter 'pbxReceptionist' is not null or undefined
-            assertParamExists('updateReceptionist', 'pbxReceptionist', pbxReceptionist)
             const localVarPath = `/Receptionists({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -43942,6 +46774,10 @@ export const ReceptionistsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -44083,11 +46919,11 @@ export const ReceptionistsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in Receptionists
          * @param {number} id The unique identifier of Receptionist
-         * @param {PbxReceptionist} pbxReceptionist New property values
+         * @param {PbxReceptionist} [pbxReceptionist] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateReceptionist(id: number, pbxReceptionist: PbxReceptionist, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateReceptionist(id: number, pbxReceptionist?: PbxReceptionist, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateReceptionist(id, pbxReceptionist, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ReceptionistsApi.updateReceptionist']?.[localVarOperationServerIndex]?.url;
@@ -44356,7 +47192,7 @@ export interface ReceptionistsApiUpdateReceptionistRequest {
     /**
      * New property values
      */
-    readonly pbxReceptionist: PbxReceptionist
+    readonly pbxReceptionist?: PbxReceptionist
 }
 
 /**
@@ -44481,6 +47317,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -44513,6 +47353,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -44552,6 +47396,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -44597,40 +47445,6 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Invoke function DownloadRecordingByName
-         * @param {string} recName Usage: recName&#x3D;{recName}
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        downloadRecordingByName: async (recName: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'recName' is not null or undefined
-            assertParamExists('downloadRecordingByName', 'recName', recName)
-            const localVarPath = `/Recordings/Pbx.DownloadRecordingByName(recName={recName})`
-                .replace(`{${"recName"}}`, encodeURIComponent(String(recName)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
             // authentication Application required
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
@@ -44664,6 +47478,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -44706,6 +47524,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -44777,6 +47599,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -44806,6 +47632,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -44848,6 +47678,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -44882,6 +47716,10 @@ export const RecordingsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -44958,19 +47796,6 @@ export const RecordingsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.downloadRecording(recId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['RecordingsApi.downloadRecording']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Invoke function DownloadRecordingByName
-         * @param {string} recName Usage: recName&#x3D;{recName}
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async downloadRecordingByName(recName: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadRecordingByName(recName, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['RecordingsApi.downloadRecordingByName']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -45105,16 +47930,6 @@ export const RecordingsApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * 
-         * @summary Invoke function DownloadRecordingByName
-         * @param {RecordingsApiDownloadRecordingByNameRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        downloadRecordingByName(requestParameters: RecordingsApiDownloadRecordingByNameRequest, options?: RawAxiosRequestConfig): AxiosPromise<object> {
-            return localVarFp.downloadRecordingByName(requestParameters.recName, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary Invoke function GetRecordingRepositorySettings
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -45201,16 +48016,6 @@ export interface RecordingsApiDownloadRecordingRequest {
      * Usage: recId&#x3D;{recId}
      */
     readonly recId: number
-}
-
-/**
- * Request parameters for downloadRecordingByName operation in RecordingsApi.
- */
-export interface RecordingsApiDownloadRecordingByNameRequest {
-    /**
-     * Usage: recName&#x3D;{recName}
-     */
-    readonly recName: string
 }
 
 /**
@@ -45327,17 +48132,6 @@ export class RecordingsApi extends BaseAPI {
 
     /**
      * 
-     * @summary Invoke function DownloadRecordingByName
-     * @param {RecordingsApiDownloadRecordingByNameRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public downloadRecordingByName(requestParameters: RecordingsApiDownloadRecordingByNameRequest, options?: RawAxiosRequestConfig) {
-        return RecordingsApiFp(this.configuration).downloadRecordingByName(requestParameters.recName, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary Invoke function GetRecordingRepositorySettings
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -45430,6 +48224,10 @@ export const RemoteArchivingSettingsApiAxiosParamCreator = function (configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -45459,6 +48257,10 @@ export const RemoteArchivingSettingsApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -45498,6 +48300,10 @@ export const RemoteArchivingSettingsApiAxiosParamCreator = function (configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -45527,6 +48333,10 @@ export const RemoteArchivingSettingsApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -45568,6 +48378,10 @@ export const RemoteArchivingSettingsApiAxiosParamCreator = function (configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -45590,13 +48404,11 @@ export const RemoteArchivingSettingsApiAxiosParamCreator = function (configurati
         /**
          * 
          * @summary Update RemoteArchivingSettings
-         * @param {PbxRemoteArchivingSettings} pbxRemoteArchivingSettings New property values
+         * @param {PbxRemoteArchivingSettings} [pbxRemoteArchivingSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateRemoteArchivingSettings: async (pbxRemoteArchivingSettings: PbxRemoteArchivingSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxRemoteArchivingSettings' is not null or undefined
-            assertParamExists('updateRemoteArchivingSettings', 'pbxRemoteArchivingSettings', pbxRemoteArchivingSettings)
+        updateRemoteArchivingSettings: async (pbxRemoteArchivingSettings?: PbxRemoteArchivingSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/RemoteArchivingSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -45608,6 +48420,10 @@ export const RemoteArchivingSettingsApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -45700,11 +48516,11 @@ export const RemoteArchivingSettingsApiFp = function(configuration?: Configurati
         /**
          * 
          * @summary Update RemoteArchivingSettings
-         * @param {PbxRemoteArchivingSettings} pbxRemoteArchivingSettings New property values
+         * @param {PbxRemoteArchivingSettings} [pbxRemoteArchivingSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateRemoteArchivingSettings(pbxRemoteArchivingSettings: PbxRemoteArchivingSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateRemoteArchivingSettings(pbxRemoteArchivingSettings?: PbxRemoteArchivingSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateRemoteArchivingSettings(pbxRemoteArchivingSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['RemoteArchivingSettingsApi.updateRemoteArchivingSettings']?.[localVarOperationServerIndex]?.url;
@@ -45772,7 +48588,7 @@ export const RemoteArchivingSettingsApiFactory = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateRemoteArchivingSettings(requestParameters: RemoteArchivingSettingsApiUpdateRemoteArchivingSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateRemoteArchivingSettings(requestParameters: RemoteArchivingSettingsApiUpdateRemoteArchivingSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateRemoteArchivingSettings(requestParameters.pbxRemoteArchivingSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -45800,7 +48616,7 @@ export interface RemoteArchivingSettingsApiUpdateRemoteArchivingSettingsRequest 
     /**
      * New property values
      */
-    readonly pbxRemoteArchivingSettings: PbxRemoteArchivingSettings
+    readonly pbxRemoteArchivingSettings?: PbxRemoteArchivingSettings
 }
 
 /**
@@ -45865,7 +48681,7 @@ export class RemoteArchivingSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateRemoteArchivingSettings(requestParameters: RemoteArchivingSettingsApiUpdateRemoteArchivingSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateRemoteArchivingSettings(requestParameters: RemoteArchivingSettingsApiUpdateRemoteArchivingSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return RemoteArchivingSettingsApiFp(this.configuration).updateRemoteArchivingSettings(requestParameters.pbxRemoteArchivingSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -45923,6 +48739,10 @@ export const ReportAbandonedChatsStatisticsApiAxiosParamCreator = function (conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -46013,6 +48833,10 @@ export const ReportAbandonedChatsStatisticsApiAxiosParamCreator = function (conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -46371,6 +49195,10 @@ export const ReportAbandonedQueueCallsApiAxiosParamCreator = function (configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -46456,6 +49284,10 @@ export const ReportAbandonedQueueCallsApiAxiosParamCreator = function (configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -46814,6 +49646,10 @@ export const ReportAgentLoginHistoryApiAxiosParamCreator = function (configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -46903,6 +49739,10 @@ export const ReportAgentLoginHistoryApiAxiosParamCreator = function (configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -47263,6 +50103,10 @@ export const ReportAgentsInQueueStatisticsApiAxiosParamCreator = function (confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -47348,6 +50192,10 @@ export const ReportAgentsInQueueStatisticsApiAxiosParamCreator = function (confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -47684,6 +50532,10 @@ export const ReportAuditLogApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -47753,6 +50605,10 @@ export const ReportAuditLogApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -48063,6 +50919,10 @@ export const ReportAverageQueueWaitingTimeApiAxiosParamCreator = function (confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -48152,6 +51012,10 @@ export const ReportAverageQueueWaitingTimeApiAxiosParamCreator = function (confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -48516,6 +51380,10 @@ export const ReportBreachesSlaApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -48601,6 +51469,10 @@ export const ReportBreachesSlaApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -48959,6 +51831,10 @@ export const ReportCallCostByExtensionGroupApiAxiosParamCreator = function (conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -49044,6 +51920,10 @@ export const ReportCallCostByExtensionGroupApiAxiosParamCreator = function (conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -49418,6 +52298,10 @@ export const ReportCallDistributionApiAxiosParamCreator = function (configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -49523,6 +52407,10 @@ export const ReportCallDistributionApiAxiosParamCreator = function (configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -49963,6 +52851,10 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -50081,6 +52973,10 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -50162,6 +53058,10 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -50253,6 +53153,10 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -50334,6 +53238,10 @@ export const ReportCallLogDataApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -51056,6 +53964,10 @@ export const ReportChatLogApiAxiosParamCreator = function (configuration?: Confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -51165,6 +54077,10 @@ export const ReportChatLogApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -51591,6 +54507,10 @@ export const ReportDetailedQueueStatisticsApiAxiosParamCreator = function (confi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -51676,6 +54596,10 @@ export const ReportDetailedQueueStatisticsApiAxiosParamCreator = function (confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -52024,6 +54948,10 @@ export const ReportExtensionStatisticsApiAxiosParamCreator = function (configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -52109,6 +55037,10 @@ export const ReportExtensionStatisticsApiAxiosParamCreator = function (configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -52457,6 +55389,10 @@ export const ReportExtensionStatisticsByGroupApiAxiosParamCreator = function (co
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -52542,6 +55478,10 @@ export const ReportExtensionStatisticsByGroupApiAxiosParamCreator = function (co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -52886,6 +55826,10 @@ export const ReportExtensionsStatisticsByRingGroupsApiAxiosParamCreator = functi
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -52967,6 +55911,10 @@ export const ReportExtensionsStatisticsByRingGroupsApiAxiosParamCreator = functi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -53307,6 +56255,10 @@ export const ReportInboundCallsApiAxiosParamCreator = function (configuration?: 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -53392,6 +56344,10 @@ export const ReportInboundCallsApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -53730,6 +56686,10 @@ export const ReportInboundRulesApiAxiosParamCreator = function (configuration?: 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -53799,6 +56759,10 @@ export const ReportInboundRulesApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -54103,6 +57067,10 @@ export const ReportOutboundCallsApiAxiosParamCreator = function (configuration?:
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -54188,6 +57156,10 @@ export const ReportOutboundCallsApiAxiosParamCreator = function (configuration?:
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -54542,6 +57514,10 @@ export const ReportQueueAgentsChatStatisticsApiAxiosParamCreator = function (con
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -54627,6 +57603,10 @@ export const ReportQueueAgentsChatStatisticsApiAxiosParamCreator = function (con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -54975,6 +57955,10 @@ export const ReportQueueAgentsChatStatisticsTotalsApiAxiosParamCreator = functio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -55060,6 +58044,10 @@ export const ReportQueueAgentsChatStatisticsTotalsApiAxiosParamCreator = functio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -55412,6 +58400,10 @@ export const ReportQueueAnUnCallsApiAxiosParamCreator = function (configuration?
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -55501,6 +58493,10 @@ export const ReportQueueAnUnCallsApiAxiosParamCreator = function (configuration?
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -55865,6 +58861,10 @@ export const ReportQueueAnsweredCallsByWaitTimeApiAxiosParamCreator = function (
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -55950,6 +58950,10 @@ export const ReportQueueAnsweredCallsByWaitTimeApiAxiosParamCreator = function (
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -56300,6 +59304,10 @@ export const ReportQueueCallbacksApiAxiosParamCreator = function (configuration?
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -56381,6 +59389,10 @@ export const ReportQueueCallbacksApiAxiosParamCreator = function (configuration?
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -56717,6 +59729,10 @@ export const ReportQueueChatPerformanceApiAxiosParamCreator = function (configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -56802,6 +59818,10 @@ export const ReportQueueChatPerformanceApiAxiosParamCreator = function (configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -57150,6 +60170,10 @@ export const ReportQueueFailedCallbacksApiAxiosParamCreator = function (configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -57231,6 +60255,10 @@ export const ReportQueueFailedCallbacksApiAxiosParamCreator = function (configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -57573,6 +60601,10 @@ export const ReportQueuePerformanceOverviewApiAxiosParamCreator = function (conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -57658,6 +60690,10 @@ export const ReportQueuePerformanceOverviewApiAxiosParamCreator = function (conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -58006,6 +61042,10 @@ export const ReportQueuePerformanceTotalsApiAxiosParamCreator = function (config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -58091,6 +61131,10 @@ export const ReportQueuePerformanceTotalsApiAxiosParamCreator = function (config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -58435,6 +61479,10 @@ export const ReportRingGroupStatisticsApiAxiosParamCreator = function (configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -58516,6 +61564,10 @@ export const ReportRingGroupStatisticsApiAxiosParamCreator = function (configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -58852,6 +61904,10 @@ export const ReportStatisticSlaApiAxiosParamCreator = function (configuration?: 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -58937,6 +61993,10 @@ export const ReportStatisticSlaApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -59285,6 +62345,10 @@ export const ReportTeamQueueGeneralStatisticsApiAxiosParamCreator = function (co
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -59370,6 +62434,10 @@ export const ReportTeamQueueGeneralStatisticsApiAxiosParamCreator = function (co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -59738,6 +62806,10 @@ export const ReportUserActivityApiAxiosParamCreator = function (configuration?: 
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -59843,6 +62915,10 @@ export const ReportUserActivityApiAxiosParamCreator = function (configuration?: 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -60230,6 +63306,10 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -60266,6 +63346,10 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -60308,6 +63392,10 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -60343,6 +63431,10 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -60396,6 +63488,10 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -60441,6 +63537,10 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -60524,6 +63624,10 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -60571,15 +63675,13 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Update entity in RingGroups
          * @param {number} id The unique identifier of RingGroup
-         * @param {PbxRingGroup} pbxRingGroup New property values
+         * @param {PbxRingGroup} [pbxRingGroup] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateRingGroup: async (id: number, pbxRingGroup: PbxRingGroup, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateRingGroup: async (id: number, pbxRingGroup?: PbxRingGroup, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateRingGroup', 'id', id)
-            // verify required parameter 'pbxRingGroup' is not null or undefined
-            assertParamExists('updateRingGroup', 'pbxRingGroup', pbxRingGroup)
             const localVarPath = `/RingGroups({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -60592,6 +63694,10 @@ export const RingGroupsApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -60733,11 +63839,11 @@ export const RingGroupsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in RingGroups
          * @param {number} id The unique identifier of RingGroup
-         * @param {PbxRingGroup} pbxRingGroup New property values
+         * @param {PbxRingGroup} [pbxRingGroup] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateRingGroup(id: number, pbxRingGroup: PbxRingGroup, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateRingGroup(id: number, pbxRingGroup?: PbxRingGroup, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateRingGroup(id, pbxRingGroup, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['RingGroupsApi.updateRingGroup']?.[localVarOperationServerIndex]?.url;
@@ -61006,7 +64112,7 @@ export interface RingGroupsApiUpdateRingGroupRequest {
     /**
      * New property values
      */
-    readonly pbxRingGroup: PbxRingGroup
+    readonly pbxRingGroup?: PbxRingGroup
 }
 
 /**
@@ -61134,6 +64240,10 @@ export const SbcsApiAxiosParamCreator = function (configuration?: Configuration)
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -61170,6 +64280,10 @@ export const SbcsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -61213,6 +64327,10 @@ export const SbcsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -61263,6 +64381,10 @@ export const SbcsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -61338,6 +64460,10 @@ export const SbcsApiAxiosParamCreator = function (configuration?: Configuration)
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -61374,6 +64500,10 @@ export const SbcsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -61781,6 +64911,10 @@ export const ScheduledReportsApiAxiosParamCreator = function (configuration?: Co
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -61817,6 +64951,10 @@ export const ScheduledReportsApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -61860,6 +64998,10 @@ export const ScheduledReportsApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -61910,6 +65052,10 @@ export const ScheduledReportsApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -61983,6 +65129,10 @@ export const ScheduledReportsApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -62345,6 +65495,10 @@ export const SecureSipSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -62367,13 +65521,11 @@ export const SecureSipSettingsApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @summary Update SecureSipSettings
-         * @param {PbxSecureSipSettings} pbxSecureSipSettings New property values
+         * @param {PbxSecureSipSettings} [pbxSecureSipSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSecureSipSettings: async (pbxSecureSipSettings: PbxSecureSipSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxSecureSipSettings' is not null or undefined
-            assertParamExists('updateSecureSipSettings', 'pbxSecureSipSettings', pbxSecureSipSettings)
+        updateSecureSipSettings: async (pbxSecureSipSettings?: PbxSecureSipSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/SecureSipSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -62385,6 +65537,10 @@ export const SecureSipSettingsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -62429,11 +65585,11 @@ export const SecureSipSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update SecureSipSettings
-         * @param {PbxSecureSipSettings} pbxSecureSipSettings New property values
+         * @param {PbxSecureSipSettings} [pbxSecureSipSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateSecureSipSettings(pbxSecureSipSettings: PbxSecureSipSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateSecureSipSettings(pbxSecureSipSettings?: PbxSecureSipSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateSecureSipSettings(pbxSecureSipSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SecureSipSettingsApi.updateSecureSipSettings']?.[localVarOperationServerIndex]?.url;
@@ -62465,7 +65621,7 @@ export const SecureSipSettingsApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSecureSipSettings(requestParameters: SecureSipSettingsApiUpdateSecureSipSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateSecureSipSettings(requestParameters: SecureSipSettingsApiUpdateSecureSipSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateSecureSipSettings(requestParameters.pbxSecureSipSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -62493,7 +65649,7 @@ export interface SecureSipSettingsApiUpdateSecureSipSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxSecureSipSettings: PbxSecureSipSettings
+    readonly pbxSecureSipSettings?: PbxSecureSipSettings
 }
 
 /**
@@ -62518,7 +65674,7 @@ export class SecureSipSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateSecureSipSettings(requestParameters: SecureSipSettingsApiUpdateSecureSipSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateSecureSipSettings(requestParameters: SecureSipSettingsApiUpdateSecureSipSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return SecureSipSettingsApiFp(this.configuration).updateSecureSipSettings(requestParameters.pbxSecureSipSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -62556,6 +65712,10 @@ export const SecurityTokensApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -62626,6 +65786,10 @@ export const SecurityTokensApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -62831,6 +65995,10 @@ export const ServicePrincipalsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -62867,6 +66035,10 @@ export const ServicePrincipalsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -62913,6 +66085,10 @@ export const ServicePrincipalsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -62948,6 +66124,10 @@ export const ServicePrincipalsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -63003,6 +66183,10 @@ export const ServicePrincipalsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -63050,15 +66234,13 @@ export const ServicePrincipalsApiAxiosParamCreator = function (configuration?: C
          * 
          * @summary Update entity in ServicePrincipals
          * @param {number} id The unique identifier of ServicePrincipal
-         * @param {PbxServicePrincipal} pbxServicePrincipal New property values
+         * @param {PbxServicePrincipal} [pbxServicePrincipal] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateServicePrincipal: async (id: number, pbxServicePrincipal: PbxServicePrincipal, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateServicePrincipal: async (id: number, pbxServicePrincipal?: PbxServicePrincipal, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('updateServicePrincipal', 'id', id)
-            // verify required parameter 'pbxServicePrincipal' is not null or undefined
-            assertParamExists('updateServicePrincipal', 'pbxServicePrincipal', pbxServicePrincipal)
             const localVarPath = `/ServicePrincipals({Id})`
                 .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -63071,6 +66253,10 @@ export const ServicePrincipalsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -63177,11 +66363,11 @@ export const ServicePrincipalsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in ServicePrincipals
          * @param {number} id The unique identifier of ServicePrincipal
-         * @param {PbxServicePrincipal} pbxServicePrincipal New property values
+         * @param {PbxServicePrincipal} [pbxServicePrincipal] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateServicePrincipal(id: number, pbxServicePrincipal: PbxServicePrincipal, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateServicePrincipal(id: number, pbxServicePrincipal?: PbxServicePrincipal, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateServicePrincipal(id, pbxServicePrincipal, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ServicePrincipalsApi.updateServicePrincipal']?.[localVarOperationServerIndex]?.url;
@@ -63371,7 +66557,7 @@ export interface ServicePrincipalsApiUpdateServicePrincipalRequest {
     /**
      * New property values
      */
-    readonly pbxServicePrincipal: PbxServicePrincipal
+    readonly pbxServicePrincipal?: PbxServicePrincipal
 }
 
 /**
@@ -63478,6 +66664,10 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -63512,6 +66702,10 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -63556,6 +66750,10 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -63595,6 +66793,10 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -63669,6 +66871,10 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -63700,6 +66906,10 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -63742,6 +66952,10 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -63776,6 +66990,10 @@ export const ServicesApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -64239,6 +67457,10 @@ export const SipDevicesApiAxiosParamCreator = function (configuration?: Configur
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -64307,6 +67529,10 @@ export const SipDevicesApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -64519,6 +67745,10 @@ export const SyslogSettingsApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -64564,6 +67794,10 @@ export const SyslogSettingsApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -64580,13 +67814,11 @@ export const SyslogSettingsApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @summary Update SyslogSettings
-         * @param {PbxSyslogSettings} pbxSyslogSettings New property values
+         * @param {PbxSyslogSettings} [pbxSyslogSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSyslogSettings: async (pbxSyslogSettings: PbxSyslogSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxSyslogSettings' is not null or undefined
-            assertParamExists('updateSyslogSettings', 'pbxSyslogSettings', pbxSyslogSettings)
+        updateSyslogSettings: async (pbxSyslogSettings?: PbxSyslogSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/SyslogSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -64598,6 +67830,10 @@ export const SyslogSettingsApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -64655,11 +67891,11 @@ export const SyslogSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update SyslogSettings
-         * @param {PbxSyslogSettings} pbxSyslogSettings New property values
+         * @param {PbxSyslogSettings} [pbxSyslogSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateSyslogSettings(pbxSyslogSettings: PbxSyslogSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateSyslogSettings(pbxSyslogSettings?: PbxSyslogSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateSyslogSettings(pbxSyslogSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SyslogSettingsApi.updateSyslogSettings']?.[localVarOperationServerIndex]?.url;
@@ -64701,7 +67937,7 @@ export const SyslogSettingsApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSyslogSettings(requestParameters: SyslogSettingsApiUpdateSyslogSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateSyslogSettings(requestParameters: SyslogSettingsApiUpdateSyslogSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateSyslogSettings(requestParameters.pbxSyslogSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -64739,7 +67975,7 @@ export interface SyslogSettingsApiUpdateSyslogSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxSyslogSettings: PbxSyslogSettings
+    readonly pbxSyslogSettings?: PbxSyslogSettings
 }
 
 /**
@@ -64775,7 +68011,7 @@ export class SyslogSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateSyslogSettings(requestParameters: SyslogSettingsApiUpdateSyslogSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateSyslogSettings(requestParameters: SyslogSettingsApiUpdateSyslogSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return SyslogSettingsApiFp(this.configuration).updateSyslogSettings(requestParameters.pbxSyslogSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -64810,6 +68046,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -64839,6 +68079,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -64882,6 +68126,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -64913,6 +68161,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -64960,6 +68212,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -64989,6 +68245,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65039,6 +68299,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65118,6 +68382,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -65164,13 +68432,11 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
         /**
          * 
          * @summary Invoke action RequestHelp
-         * @param {SystemStatusRequestHelpRequestBody} systemStatusRequestHelpRequestBody Action parameters
+         * @param {SystemStatusRequestHelpRequestBody} [systemStatusRequestHelpRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        requestHelp: async (systemStatusRequestHelpRequestBody: SystemStatusRequestHelpRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'systemStatusRequestHelpRequestBody' is not null or undefined
-            assertParamExists('requestHelp', 'systemStatusRequestHelpRequestBody', systemStatusRequestHelpRequestBody)
+        requestHelp: async (systemStatusRequestHelpRequestBody?: SystemStatusRequestHelpRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/SystemStatus/Pbx.RequestHelp`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -65182,6 +68448,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65218,6 +68488,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65260,6 +68534,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65334,6 +68612,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -65368,6 +68650,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65409,6 +68695,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -65438,6 +68728,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65477,6 +68771,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65536,6 +68834,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -65573,6 +68875,10 @@ export const SystemStatusApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -65750,11 +69056,11 @@ export const SystemStatusApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke action RequestHelp
-         * @param {SystemStatusRequestHelpRequestBody} systemStatusRequestHelpRequestBody Action parameters
+         * @param {SystemStatusRequestHelpRequestBody} [systemStatusRequestHelpRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async requestHelp(systemStatusRequestHelpRequestBody: SystemStatusRequestHelpRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async requestHelp(systemStatusRequestHelpRequestBody?: SystemStatusRequestHelpRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.requestHelp(systemStatusRequestHelpRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemStatusApi.requestHelp']?.[localVarOperationServerIndex]?.url;
@@ -65983,7 +69289,7 @@ export const SystemStatusApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        requestHelp(requestParameters: SystemStatusApiRequestHelpRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        requestHelp(requestParameters: SystemStatusApiRequestHelpRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.requestHelp(requestParameters.systemStatusRequestHelpRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -66207,7 +69513,7 @@ export interface SystemStatusApiRequestHelpRequest {
     /**
      * Action parameters
      */
-    readonly systemStatusRequestHelpRequestBody: SystemStatusRequestHelpRequestBody
+    readonly systemStatusRequestHelpRequestBody?: SystemStatusRequestHelpRequestBody
 }
 
 /**
@@ -66445,7 +69751,7 @@ export class SystemStatusApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public requestHelp(requestParameters: SystemStatusApiRequestHelpRequest, options?: RawAxiosRequestConfig) {
+    public requestHelp(requestParameters: SystemStatusApiRequestHelpRequest = {}, options?: RawAxiosRequestConfig) {
         return SystemStatusApiFp(this.configuration).requestHelp(requestParameters.systemStatusRequestHelpRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -66578,6 +69884,10 @@ export const TenantPropertiesApiAxiosParamCreator = function (configuration?: Co
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -66614,6 +69924,10 @@ export const TenantPropertiesApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -66657,6 +69971,10 @@ export const TenantPropertiesApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -66707,6 +70025,10 @@ export const TenantPropertiesApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -66780,6 +70102,10 @@ export const TenantPropertiesApiAxiosParamCreator = function (configuration?: Co
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -67143,6 +70469,10 @@ export const TrunkTemplatesApiAxiosParamCreator = function (configuration?: Conf
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -67179,6 +70509,10 @@ export const TrunkTemplatesApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -67222,6 +70556,10 @@ export const TrunkTemplatesApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -67272,6 +70610,10 @@ export const TrunkTemplatesApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -67345,6 +70687,10 @@ export const TrunkTemplatesApiAxiosParamCreator = function (configuration?: Conf
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -67708,6 +71054,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -67744,6 +71094,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -67790,6 +71144,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -67827,6 +71185,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -67858,6 +71220,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -67900,6 +71266,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -67937,6 +71307,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -67990,6 +71364,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -68032,6 +71410,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -68061,6 +71443,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -68104,6 +71490,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -68141,6 +71531,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -68215,6 +71609,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -68250,6 +71648,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -68292,6 +71694,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -68327,6 +71733,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -68373,6 +71783,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -68411,6 +71825,10 @@ export const TrunksApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -69301,40 +72719,6 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
-         * @summary Invoke functionImport GetClientCrmUpdates
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getClientCrmUpdates: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/GetClientCrmUpdates()`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Invoke functionImport GetPromptSetUpdates
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -69351,6 +72735,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -69390,6 +72778,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -69419,6 +72811,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -69458,6 +72854,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -69487,6 +72887,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -69526,6 +72930,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -69558,6 +72966,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -69602,6 +73014,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -69638,6 +73054,10 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -69658,18 +73078,6 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
 export const UpdatesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UpdatesApiAxiosParamCreator(configuration)
     return {
-        /**
-         * 
-         * @summary Invoke functionImport GetClientCrmUpdates
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getClientCrmUpdates(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxUpdateList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getClientCrmUpdates(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UpdatesApi.getClientCrmUpdates']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
         /**
          * 
          * @summary Invoke functionImport GetPromptSetUpdates
@@ -69791,15 +73199,6 @@ export const UpdatesApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
-         * @summary Invoke functionImport GetClientCrmUpdates
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getClientCrmUpdates(options?: RawAxiosRequestConfig): AxiosPromise<PbxUpdateList> {
-            return localVarFp.getClientCrmUpdates(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary Invoke functionImport GetPromptSetUpdates
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -69908,16 +73307,6 @@ export interface UpdatesApiSetUpdateSettingsRequest {
  * UpdatesApi - object-oriented interface
  */
 export class UpdatesApi extends BaseAPI {
-    /**
-     * 
-     * @summary Invoke functionImport GetClientCrmUpdates
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public getClientCrmUpdates(options?: RawAxiosRequestConfig) {
-        return UpdatesApiFp(this.configuration).getClientCrmUpdates(options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @summary Invoke functionImport GetPromptSetUpdates
@@ -70044,6 +73433,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -70078,6 +73471,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70122,6 +73519,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -70158,6 +73559,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70208,6 +73613,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -70245,6 +73654,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70320,6 +73733,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -70352,6 +73769,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70393,6 +73814,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -70422,6 +73847,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70459,6 +73888,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70504,6 +73937,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -70536,6 +73973,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70581,6 +74022,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -70616,6 +74061,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70669,6 +74118,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -70715,6 +74168,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -70747,6 +74204,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70795,6 +74256,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -70878,6 +74343,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -70951,6 +74420,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -71030,6 +74503,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -71099,6 +74576,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -71137,6 +74618,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -71181,6 +74666,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -71220,6 +74709,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -71254,6 +74747,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -71302,6 +74799,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -71336,6 +74837,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -71380,6 +74885,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -71414,6 +74923,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -71459,6 +74972,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -71495,6 +75012,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -71543,6 +75064,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -71577,6 +75102,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -73453,6 +76982,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -73482,6 +77015,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -73524,6 +77061,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -73540,15 +77081,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @summary Invoke function GetConfiguredConverters
-         * @param {number} [$top] Show only the first n items
-         * @param {number} [$skip] Skip the first n items
-         * @param {string} [$search] Search items by search phrases
-         * @param {string} [$filter] Filter items by property values
-         * @param {boolean} [$count] Include count of items
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConfiguredConverters: async ($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getConfiguredConverters: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/VoicemailSettings/Pbx.GetConfiguredConverters()`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -73565,25 +77101,9 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
-            if ($top !== undefined) {
-                localVarQueryParameter['$top'] = $top;
-            }
-
-            if ($skip !== undefined) {
-                localVarQueryParameter['$skip'] = $skip;
-            }
-
-            if ($search !== undefined) {
-                localVarQueryParameter['$search'] = $search;
-            }
-
-            if ($filter !== undefined) {
-                localVarQueryParameter['$filter'] = $filter;
-            }
-
-            if ($count !== undefined) {
-                localVarQueryParameter['$count'] = $count;
-            }
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -73599,15 +77119,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @summary Invoke function GetConnectedConvertersData
-         * @param {number} [$top] Show only the first n items
-         * @param {number} [$skip] Skip the first n items
-         * @param {string} [$search] Search items by search phrases
-         * @param {string} [$filter] Filter items by property values
-         * @param {boolean} [$count] Include count of items
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConnectedConvertersData: async ($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getConnectedConvertersData: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/VoicemailSettings/Pbx.GetConnectedConvertersData()`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -73624,25 +77139,9 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
-            if ($top !== undefined) {
-                localVarQueryParameter['$top'] = $top;
-            }
-
-            if ($skip !== undefined) {
-                localVarQueryParameter['$skip'] = $skip;
-            }
-
-            if ($search !== undefined) {
-                localVarQueryParameter['$search'] = $search;
-            }
-
-            if ($filter !== undefined) {
-                localVarQueryParameter['$filter'] = $filter;
-            }
-
-            if ($count !== undefined) {
-                localVarQueryParameter['$count'] = $count;
-            }
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -73682,6 +77181,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -73716,6 +77219,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -73777,6 +77284,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($select) {
                 localVarQueryParameter['$select'] = Array.from($select).join(COLLECTION_FORMATS.csv);
             }
@@ -73799,13 +77310,11 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @summary Update VoicemailSettings
-         * @param {PbxVoicemailSettings} pbxVoicemailSettings New property values
+         * @param {PbxVoicemailSettings} [pbxVoicemailSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateVoicemailSettings: async (pbxVoicemailSettings: PbxVoicemailSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pbxVoicemailSettings' is not null or undefined
-            assertParamExists('updateVoicemailSettings', 'pbxVoicemailSettings', pbxVoicemailSettings)
+        updateVoicemailSettings: async (pbxVoicemailSettings?: PbxVoicemailSettings, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/VoicemailSettings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -73817,6 +77326,10 @@ export const VoicemailSettingsApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -73884,16 +77397,11 @@ export const VoicemailSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke function GetConfiguredConverters
-         * @param {number} [$top] Show only the first n items
-         * @param {number} [$skip] Skip the first n items
-         * @param {string} [$search] Search items by search phrases
-         * @param {string} [$filter] Filter items by property values
-         * @param {boolean} [$count] Include count of items
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getConfiguredConverters($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConfiguredConverters200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getConfiguredConverters($top, $skip, $search, $filter, $count, options);
+        async getConfiguredConverters(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxConfiguredAiServers>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getConfiguredConverters(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['VoicemailSettingsApi.getConfiguredConverters']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -73901,16 +77409,11 @@ export const VoicemailSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Invoke function GetConnectedConvertersData
-         * @param {number} [$top] Show only the first n items
-         * @param {number} [$skip] Skip the first n items
-         * @param {string} [$search] Search items by search phrases
-         * @param {string} [$filter] Filter items by property values
-         * @param {boolean} [$count] Include count of items
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getConnectedConvertersData($top?: number, $skip?: number, $search?: string, $filter?: string, $count?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConnectedConvertersData200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getConnectedConvertersData($top, $skip, $search, $filter, $count, options);
+        async getConnectedConvertersData(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxConnectedAiServers>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getConnectedConvertersData(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['VoicemailSettingsApi.getConnectedConvertersData']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -73962,11 +77465,11 @@ export const VoicemailSettingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update VoicemailSettings
-         * @param {PbxVoicemailSettings} pbxVoicemailSettings New property values
+         * @param {PbxVoicemailSettings} [pbxVoicemailSettings] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateVoicemailSettings(pbxVoicemailSettings: PbxVoicemailSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateVoicemailSettings(pbxVoicemailSettings?: PbxVoicemailSettings, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateVoicemailSettings(pbxVoicemailSettings, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['VoicemailSettingsApi.updateVoicemailSettings']?.[localVarOperationServerIndex]?.url;
@@ -74012,22 +77515,20 @@ export const VoicemailSettingsApiFactory = function (configuration?: Configurati
         /**
          * 
          * @summary Invoke function GetConfiguredConverters
-         * @param {VoicemailSettingsApiGetConfiguredConvertersRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConfiguredConverters(requestParameters: VoicemailSettingsApiGetConfiguredConvertersRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<GetConfiguredConverters200Response> {
-            return localVarFp.getConfiguredConverters(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(axios, basePath));
+        getConfiguredConverters(options?: RawAxiosRequestConfig): AxiosPromise<PbxConfiguredAiServers> {
+            return localVarFp.getConfiguredConverters(options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Invoke function GetConnectedConvertersData
-         * @param {VoicemailSettingsApiGetConnectedConvertersDataRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConnectedConvertersData(requestParameters: VoicemailSettingsApiGetConnectedConvertersDataRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<GetConnectedConvertersData200Response> {
-            return localVarFp.getConnectedConvertersData(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(axios, basePath));
+        getConnectedConvertersData(options?: RawAxiosRequestConfig): AxiosPromise<PbxConnectedAiServers> {
+            return localVarFp.getConnectedConvertersData(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -74066,7 +77567,7 @@ export const VoicemailSettingsApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateVoicemailSettings(requestParameters: VoicemailSettingsApiUpdateVoicemailSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        updateVoicemailSettings(requestParameters: VoicemailSettingsApiUpdateVoicemailSettingsRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateVoicemailSettings(requestParameters.pbxVoicemailSettings, options).then((request) => request(axios, basePath));
         },
     };
@@ -74080,66 +77581,6 @@ export interface VoicemailSettingsApiDeleteConverterConfigurationRequest {
      * Action parameters
      */
     readonly voicemailSettingsDeleteConverterConfigurationRequestBody: VoicemailSettingsDeleteConverterConfigurationRequestBody
-}
-
-/**
- * Request parameters for getConfiguredConverters operation in VoicemailSettingsApi.
- */
-export interface VoicemailSettingsApiGetConfiguredConvertersRequest {
-    /**
-     * Show only the first n items
-     */
-    readonly $top?: number
-
-    /**
-     * Skip the first n items
-     */
-    readonly $skip?: number
-
-    /**
-     * Search items by search phrases
-     */
-    readonly $search?: string
-
-    /**
-     * Filter items by property values
-     */
-    readonly $filter?: string
-
-    /**
-     * Include count of items
-     */
-    readonly $count?: boolean
-}
-
-/**
- * Request parameters for getConnectedConvertersData operation in VoicemailSettingsApi.
- */
-export interface VoicemailSettingsApiGetConnectedConvertersDataRequest {
-    /**
-     * Show only the first n items
-     */
-    readonly $top?: number
-
-    /**
-     * Skip the first n items
-     */
-    readonly $skip?: number
-
-    /**
-     * Search items by search phrases
-     */
-    readonly $search?: string
-
-    /**
-     * Filter items by property values
-     */
-    readonly $filter?: string
-
-    /**
-     * Include count of items
-     */
-    readonly $count?: boolean
 }
 
 /**
@@ -74204,7 +77645,7 @@ export interface VoicemailSettingsApiUpdateVoicemailSettingsRequest {
     /**
      * New property values
      */
-    readonly pbxVoicemailSettings: PbxVoicemailSettings
+    readonly pbxVoicemailSettings?: PbxVoicemailSettings
 }
 
 /**
@@ -74245,23 +77686,21 @@ export class VoicemailSettingsApi extends BaseAPI {
     /**
      * 
      * @summary Invoke function GetConfiguredConverters
-     * @param {VoicemailSettingsApiGetConfiguredConvertersRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getConfiguredConverters(requestParameters: VoicemailSettingsApiGetConfiguredConvertersRequest = {}, options?: RawAxiosRequestConfig) {
-        return VoicemailSettingsApiFp(this.configuration).getConfiguredConverters(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(this.axios, this.basePath));
+    public getConfiguredConverters(options?: RawAxiosRequestConfig) {
+        return VoicemailSettingsApiFp(this.configuration).getConfiguredConverters(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Invoke function GetConnectedConvertersData
-     * @param {VoicemailSettingsApiGetConnectedConvertersDataRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getConnectedConvertersData(requestParameters: VoicemailSettingsApiGetConnectedConvertersDataRequest = {}, options?: RawAxiosRequestConfig) {
-        return VoicemailSettingsApiFp(this.configuration).getConnectedConvertersData(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, options).then((request) => request(this.axios, this.basePath));
+    public getConnectedConvertersData(options?: RawAxiosRequestConfig) {
+        return VoicemailSettingsApiFp(this.configuration).getConnectedConvertersData(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -74304,7 +77743,7 @@ export class VoicemailSettingsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateVoicemailSettings(requestParameters: VoicemailSettingsApiUpdateVoicemailSettingsRequest, options?: RawAxiosRequestConfig) {
+    public updateVoicemailSettings(requestParameters: VoicemailSettingsApiUpdateVoicemailSettingsRequest = {}, options?: RawAxiosRequestConfig) {
         return VoicemailSettingsApiFp(this.configuration).updateVoicemailSettings(requestParameters.pbxVoicemailSettings, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -74337,6 +77776,10 @@ export const WebsiteLinksApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -74376,6 +77819,10 @@ export const WebsiteLinksApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -74422,6 +77869,10 @@ export const WebsiteLinksApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             localVarHeaderParameter['Accept'] = 'application/json';
 
             if (ifMatch != null) {
@@ -74460,6 +77911,10 @@ export const WebsiteLinksApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -74515,6 +77970,10 @@ export const WebsiteLinksApiAxiosParamCreator = function (configuration?: Config
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
             if ($top !== undefined) {
                 localVarQueryParameter['$top'] = $top;
             }
@@ -74562,15 +78021,13 @@ export const WebsiteLinksApiAxiosParamCreator = function (configuration?: Config
          * 
          * @summary Update entity in WebsiteLinks
          * @param {string} link The unique identifier of Weblink
-         * @param {PbxWeblink} pbxWeblink New property values
+         * @param {PbxWeblink} [pbxWeblink] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateWeblink: async (link: string, pbxWeblink: PbxWeblink, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateWeblink: async (link: string, pbxWeblink?: PbxWeblink, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'link' is not null or undefined
             assertParamExists('updateWeblink', 'link', link)
-            // verify required parameter 'pbxWeblink' is not null or undefined
-            assertParamExists('updateWeblink', 'pbxWeblink', pbxWeblink)
             const localVarPath = `/WebsiteLinks({Link})`
                 .replace(`{${"Link"}}`, encodeURIComponent(String(link)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -74583,6 +78040,10 @@ export const WebsiteLinksApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -74622,6 +78083,10 @@ export const WebsiteLinksApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
             // authentication Application required
             // oauth required
@@ -74728,11 +78193,11 @@ export const WebsiteLinksApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update entity in WebsiteLinks
          * @param {string} link The unique identifier of Weblink
-         * @param {PbxWeblink} pbxWeblink New property values
+         * @param {PbxWeblink} [pbxWeblink] New property values
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateWeblink(link: string, pbxWeblink: PbxWeblink, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateWeblink(link: string, pbxWeblink?: PbxWeblink, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateWeblink(link, pbxWeblink, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['WebsiteLinksApi.updateWeblink']?.[localVarOperationServerIndex]?.url;
@@ -74945,7 +78410,7 @@ export interface WebsiteLinksApiUpdateWeblinkRequest {
     /**
      * New property values
      */
-    readonly pbxWeblink: PbxWeblink
+    readonly pbxWeblink?: PbxWeblink
 }
 
 /**

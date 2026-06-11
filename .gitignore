@@ -1,4 +1,6 @@
 .idea
+.env
+.env.yarn
 
 .yarn/*
 !.yarn/cache

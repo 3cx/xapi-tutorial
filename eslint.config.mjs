@@ -25,4 +25,7 @@ export default [
             ],
         },
     },
+    {
+        ignores: ['src/xapi/**'],
+    },
 ];

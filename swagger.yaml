@@ -5,7 +5,7 @@ info:
   version: 1.0.0
   x-ms-generated-by:
     toolName: Microsoft.OpenApi.OData
-    toolVersion: 1.0.9.0
+    toolVersion: 0.0.0.0
 servers:
   - url: /xapi/v1
 paths:
@@ -255,20 +255,44 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.AISettings'
-        required: true
       responses:
         '204':
           description: Success
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
-  /AISettings/Pbx.GetAIResources():
+  '/AISettings/Pbx.GetAIResources(provider={provider})':
     description: Provides operations to call the GetAIResources method.
     get:
       tags:
         - AISettings
       summary: Invoke function GetAIResources
       operationId: GetAIResources
+      parameters:
+        - name: provider
+          in: path
+          description: 'Usage: provider={provider}'
+          required: true
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.AIResources'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+  /AISettings/Pbx.GetCurrentAIResources():
+    description: Provides operations to call the GetCurrentAIResources method.
+    get:
+      tags:
+        - AISettings
+      summary: Invoke function GetCurrentAIResources
+      operationId: GetCurrentAIResources
       responses:
         '200':
           description: Success
@@ -489,7 +513,6 @@ paths:
                 id:
                   type: string
                   nullable: true
-        required: true
       responses:
         '204':
           description: Success
@@ -517,7 +540,6 @@ paths:
                 vectorid:
                   type: string
                   nullable: true
-        required: true
       responses:
         '204':
           description: Success
@@ -542,7 +564,6 @@ paths:
                 fileid:
                   type: string
                   nullable: true
-        required: true
       responses:
         '204':
           description: Success
@@ -570,6 +591,42 @@ paths:
       responses:
         '204':
           description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /AISettings/Pbx.BatchDeleteFiles:
+    description: Provides operations to call the BatchDeleteFiles method.
+    post:
+      tags:
+        - AISettings
+      summary: Invoke action BatchDeleteFiles
+      operationId: BatchDeleteFiles
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: AISettingsBatchDeleteFilesRequestBody
+              type: object
+              properties:
+                model:
+                  $ref: '#/components/schemas/Pbx.RemoveVectorStoreFiles'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+                  - type: object
+                    properties:
+                      value:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pbx.VectorFileResult'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -620,7 +677,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.AmazonIntegrationSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -691,7 +747,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.AntiHackingSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -1025,6 +1080,38 @@ paths:
       responses:
         '204':
           description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /Backups/Pbx.GetSftpHostKey:
+    description: Provides operations to call the GetSftpHostKey method.
+    post:
+      tags:
+        - Backups
+      summary: Invoke action GetSftpHostKey
+      operationId: GetSftpHostKey
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: BackupsGetSftpHostKeyRequestBody
+              type: object
+              properties:
+                sftpPath:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: string
+                    nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -1424,7 +1511,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.BlocklistAddr'
-        required: true
       responses:
         '204':
           description: Success
@@ -1551,7 +1637,6 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/Pbx.CallCostSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -1643,7 +1728,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.CallFlowApp'
-        required: true
       responses:
         '204':
           description: Success
@@ -2016,7 +2100,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.CallParkingSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -2070,7 +2153,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.CallTypesSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -2124,7 +2206,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.CDRSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -2289,7 +2370,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.ChatLogSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -2454,7 +2534,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.CodecsSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -2572,7 +2651,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.ConferenceSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -2784,7 +2862,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.ConsoleRestrictions'
-        required: true
       responses:
         '204':
           description: Success
@@ -3042,7 +3119,6 @@ paths:
               properties:
                 contactSource:
                   $ref: '#/components/schemas/Pbx.ContactSource'
-        required: true
       responses:
         '204':
           description: Success
@@ -3066,7 +3142,6 @@ paths:
               properties:
                 contactSource:
                   $ref: '#/components/schemas/Pbx.ContactSource'
-        required: true
       responses:
         '204':
           description: Success
@@ -3093,7 +3168,6 @@ paths:
                 number:
                   type: string
                   nullable: true
-        required: true
       responses:
         '204':
           description: Success
@@ -3168,7 +3242,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Contact'
-        required: true
       responses:
         '204':
           description: Success
@@ -3294,7 +3367,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.CountryCodes'
-        required: true
       responses:
         '204':
           description: Success
@@ -3370,7 +3442,9 @@ paths:
               title: CrmIntegrationTestRequestBody
               type: object
               properties:
-                number:
+                mode:
+                  $ref: '#/components/schemas/Pbx.CrmTestMode'
+                query:
                   type: string
         required: true
       responses:
@@ -3746,7 +3820,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.DataConnectorSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -4095,6 +4168,30 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
+  /Defs/Pbx.ReportLogEvent:
+    description: Provides operations to call the ReportLogEvent method.
+    post:
+      tags:
+        - Defs
+      summary: Invoke action ReportLogEvent
+      operationId: ReportLogEvent
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: DefsReportLogEventRequestBody
+              type: object
+              properties:
+                request:
+                  $ref: '#/components/schemas/Pbx.ReportLogEvent'
+        required: true
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /Defs/Pbx.SendEmail:
     description: Provides operations to call the SendEmail method.
     post:
@@ -4325,7 +4422,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.DialCodeSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -4597,7 +4693,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.E164Settings'
-        required: true
       responses:
         '204':
           description: Success
@@ -4803,7 +4898,6 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/Pbx.EmergencyGeoLocation'
-        required: true
       responses:
         '200':
           description: Success
@@ -4863,7 +4957,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.EmergencyNotificationsSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -5182,7 +5275,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Fax'
-        required: true
       responses:
         '204':
           description: Success
@@ -5292,7 +5384,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.FaxServerSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -5671,7 +5762,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Fxs'
-        required: true
       responses:
         '204':
           description: Success
@@ -5936,7 +6026,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.GeneralSettingsForApps'
-        required: true
       responses:
         '204':
           description: Success
@@ -5990,7 +6079,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.GeneralSettingsForPbx'
-        required: true
       responses:
         '204':
           description: Success
@@ -6044,7 +6132,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.GoogleSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -6070,7 +6157,6 @@ paths:
                   allOf:
                     - $ref: '#/components/schemas/Pbx.UsersRequestOptions'
                   nullable: true
-        required: true
       responses:
         '200':
           description: Success
@@ -6718,7 +6804,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.HotelServices'
-        required: true
       responses:
         '204':
           description: Success
@@ -6860,7 +6945,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.InboundRule'
-        required: true
       responses:
         '204':
           description: Success
@@ -7232,7 +7316,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.LoggingSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -7286,7 +7369,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.MailSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -7320,6 +7402,86 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pbx.TestResult'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/McpServers/Pbx.GetServerMetadata(targetIssuer={targetIssuer})':
+    description: Provides operations to call the GetServerMetadata method.
+    get:
+      tags:
+        - McpServers
+      summary: Invoke function GetServerMetadata
+      operationId: GetServerMetadata
+      parameters:
+        - name: targetIssuer
+          in: path
+          description: 'Usage: targetIssuer={targetIssuer}'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.OAuthServerMetadata'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: function
+  /McpServers/Pbx.Register:
+    description: Provides operations to call the Register method.
+    post:
+      tags:
+        - McpServers
+      summary: Invoke action Register
+      operationId: Register
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: McpServersRegisterRequestBody
+              type: object
+              properties:
+                registrationEndpoint:
+                  type: string
+                scope:
+                  type: string
+        required: true
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /McpServers/Pbx.Exchange:
+    description: Provides operations to call the Exchange method.
+    post:
+      tags:
+        - McpServers
+      summary: Invoke action Exchange
+      operationId: Exchange
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: McpServersExchangeRequestBody
+              type: object
+              properties:
+                code:
+                  type: string
+                scope:
+                  type: string
+                tokenEndpoint:
+                  type: string
+                verifier:
+                  type: string
+        required: true
+      responses:
+        '204':
+          description: Success
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: action
@@ -7500,7 +7662,6 @@ paths:
                   allOf:
                     - $ref: '#/components/schemas/Pbx.UsersRequestOptions'
                   nullable: true
-        required: true
       responses:
         '200':
           description: Success
@@ -7530,7 +7691,6 @@ paths:
                   allOf:
                     - $ref: '#/components/schemas/Pbx.GroupsRequestOptions'
                   nullable: true
-        required: true
       responses:
         '200':
           description: Success
@@ -7626,7 +7786,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Microsoft365TeamsIntegration'
-        required: true
       responses:
         '204':
           description: Success
@@ -7763,7 +7922,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.MusicOnHoldSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -8266,6 +8424,19 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
+  /MyUser/Pbx.IssueDownloadTicket:
+    description: Provides operations to call the IssueDownloadTicket method.
+    post:
+      tags:
+        - MyUser
+      summary: Invoke action IssueDownloadTicket
+      operationId: IssueDownloadTicket
+      responses:
+        '200':
+          $ref: '#/components/responses/IssueDownloadTicketResponse'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /NetworkInterfaces:
     description: Provides operations to manage the collection of NetworkInterface entities.
     get:
@@ -8358,7 +8529,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.NetworkSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -8450,6 +8620,153 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  /OAuthClients:
+    description: Provides operations to manage the collection of OAuthClient entities.
+    get:
+      tags:
+        - OAuthClients
+      summary: Get entities from OAuthClients
+      operationId: ListOAuthClient
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/count'
+        - name: $orderby
+          in: query
+          description: Order items by property values
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/Pbx.OAuthClientCollectionResponse'
+        default:
+          $ref: '#/components/responses/error'
+  '/OAuthClients({Id})':
+    description: Provides operations to manage the collection of OAuthClient entities.
+    get:
+      tags:
+        - OAuthClients
+      summary: Get entity from OAuthClients by key
+      operationId: GetOAuthClient
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of OAuthClient
+          required: true
+          schema:
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+            type: string
+            format: uuid
+          x-ms-docs-key-type: OAuthClient
+        - name: $select
+          in: query
+          description: Select properties to be returned
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        - name: $expand
+          in: query
+          description: Expand related entities
+          explode: false
+          schema:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Retrieved entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pbx.OAuthClient'
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+    delete:
+      tags:
+        - OAuthClients
+      summary: Delete entity from OAuthClients
+      operationId: DeleteOAuthClient
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of OAuthClient
+          required: true
+          schema:
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+            type: string
+            format: uuid
+          x-ms-docs-key-type: OAuthClient
+        - name: If-Match
+          in: header
+          description: ETag
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
+  '/OAuthClients({Id})/Pbx.RefreshClientMetadata':
+    description: Provides operations to call the RefreshClientMetadata method.
+    post:
+      tags:
+        - OAuthClients
+      summary: Invoke action RefreshClientMetadata
+      operationId: RefreshClientMetadata
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of OAuthClient
+          required: true
+          schema:
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+            type: string
+            format: uuid
+          x-ms-docs-key-type: OAuthClient
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: boolean
+                    default: false
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /OfficeHours:
     description: Provides operations to manage the OfficeHours singleton.
     get:
@@ -8497,7 +8814,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.OfficeHours'
-        required: true
       responses:
         '204':
           description: Success
@@ -8751,7 +9067,6 @@ paths:
                   allOf:
                     - $ref: '#/components/schemas/Pbx.XOutboundRulePurge'
                   nullable: true
-        required: true
       responses:
         '204':
           description: Success
@@ -8947,7 +9262,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Parameter'
-        required: true
       responses:
         '204':
           description: Success
@@ -9215,7 +9529,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Parking'
-        required: true
       responses:
         '204':
           description: Success
@@ -9480,7 +9793,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.PhoneBookSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -9605,7 +9917,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.PhonesSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -9741,7 +10052,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.PhoneTemplate'
-        required: true
       responses:
         '204':
           description: Success
@@ -9901,7 +10211,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Playlist'
-        required: true
       responses:
         '204':
           description: Success
@@ -10101,7 +10410,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.PromptSet'
-        required: true
       responses:
         '204':
           description: Success
@@ -11060,7 +11368,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Receptionist'
-        required: true
       responses:
         '204':
           description: Success
@@ -11156,30 +11463,6 @@ paths:
             minimum: -2147483648
             type: integer
             format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pbx.IActionResult'
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: function
-  '/Recordings/Pbx.DownloadRecordingByName(recName={recName})':
-    description: Provides operations to call the DownloadRecordingByName method.
-    get:
-      tags:
-        - Recordings
-      summary: Invoke function DownloadRecordingByName
-      operationId: DownloadRecordingByName
-      parameters:
-        - name: recName
-          in: path
-          description: 'Usage: recName={recName}'
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Success
@@ -11423,7 +11706,6 @@ paths:
                   allOf:
                     - $ref: '#/components/schemas/Pbx.RequestHelp'
                   nullable: true
-        required: true
       responses:
         '204':
           description: Success
@@ -11960,7 +12242,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.RemoteArchivingSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -17496,7 +17777,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.RingGroup'
-        required: true
       responses:
         '204':
           description: Success
@@ -17902,7 +18182,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.SecureSipSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -18046,7 +18325,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.ServicePrincipal'
-        required: true
       responses:
         '204':
           description: Success
@@ -18507,7 +18785,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.SyslogSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -19524,23 +19801,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: functionImport
-  /GetClientCrmUpdates():
-    description: Provides operations to call the GetClientCrmUpdates method.
-    get:
-      tags:
-        - Updates
-      summary: Invoke functionImport GetClientCrmUpdates
-      operationId: GetClientCrmUpdates
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pbx.UpdateList'
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: functionImport
   /GetServerCrmUpdates():
     description: Provides operations to call the GetServerCrmUpdates method.
     get:
@@ -19582,6 +19842,43 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: actionImport
+  '/GetUpdateDetails(key={key},id={id})':
+    description: Provides operations to call the GetUpdateDetails method.
+    get:
+      tags:
+        - GetUpdateDetails
+      summary: Invoke functionImport GetUpdateDetails
+      operationId: GetUpdateDetails
+      parameters:
+        - name: key
+          in: path
+          description: 'Usage: key={key}'
+          required: true
+          schema:
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+            type: string
+            format: uuid
+        - name: id
+          in: path
+          description: 'Usage: id={id}'
+          required: true
+          schema:
+            pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: string
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: functionImport
   /GetUpdatesStats():
     description: Provides operations to call the GetUpdatesStats method.
     get:
@@ -20832,7 +21129,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.VoicemailSettings'
-        required: true
       responses:
         '204':
           description: Success
@@ -20921,27 +21217,13 @@ paths:
         - VoicemailSettings
       summary: Invoke function GetConnectedConvertersData
       operationId: GetConnectedConvertersData
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-                  - type: object
-                    properties:
-                      value:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/Pbx.OnBoardConverterData'
+                $ref: '#/components/schemas/Pbx.ConnectedAiServers'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
@@ -20952,27 +21234,13 @@ paths:
         - VoicemailSettings
       summary: Invoke function GetConfiguredConverters
       operationId: GetConfiguredConverters
-      parameters:
-        - $ref: '#/components/parameters/top'
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/search'
-        - $ref: '#/components/parameters/filter'
-        - $ref: '#/components/parameters/count'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
-                  - type: object
-                    properties:
-                      value:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/Pbx.OnBoardConverterRow'
+                $ref: '#/components/schemas/Pbx.ConfiguredAiServers'
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: function
@@ -21155,7 +21423,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pbx.Weblink'
-        required: true
       responses:
         '204':
           description: Success
@@ -22195,7 +22462,7 @@ components:
       type: object
       properties:
         '@odata.count':
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.CallFlowScript:
@@ -22283,7 +22550,7 @@ components:
             Timeout:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             TimeoutForwardDN:
@@ -22409,13 +22676,13 @@ components:
             MulticastPacketTime:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             MulticastPort:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             Name:
@@ -22432,7 +22699,7 @@ components:
             RingTime:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             VMEmailList:
@@ -22539,14 +22806,29 @@ components:
               items:
                 $ref: '#/components/schemas/Pbx.QueueAgent'
               x-ms-navigationProperty: true
+            AnnounceEstimatedWaitTime:
+              type: boolean
+              nullable: true
+            AnnounceEstimatedWaitTimeInterval:
+              maximum: 2147483647
+              minimum: -2147483648
+              type: integer
+              format: int32
+              nullable: true
             AnnouncementInterval:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             AnnounceQueuePosition:
               type: boolean
+              nullable: true
+            AutoLogoutMissedCalls:
+              maximum: 2147483647
+              minimum: -2147483648
+              type: integer
+              format: int32
               nullable: true
             BreakRoute:
               allOf:
@@ -22555,10 +22837,32 @@ components:
             CallbackEnableTime:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
+            CallbackOfferOnly:
+              type: boolean
+              nullable: true
+            CallbackOfferPrompt:
+              type: string
+              nullable: true
             CallbackPrefix:
+              type: string
+              nullable: true
+            ComfortPrompts:
+              type: array
+              items:
+                type: string
+            ComfortPromptsEnabled:
+              type: boolean
+              nullable: true
+            ComfortPromptsInterval:
+              maximum: 2147483647
+              minimum: -2147483648
+              type: integer
+              format: int32
+              nullable: true
+            DestinationNoAnswerPrompt:
               type: string
               nullable: true
             EnableIntro:
@@ -22589,15 +22893,25 @@ components:
             MasterTimeout:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             MaxCallersInQueue:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
+            MaxWaitStrategyEnabled:
+              type: boolean
+              nullable: true
+            MaxWaitTimeSkillGroupValues:
+              type: array
+              items:
+                maximum: 2147483647
+                minimum: -2147483648
+                type: integer
+                format: int32
             Name:
               type: string
               nullable: true
@@ -22639,14 +22953,20 @@ components:
             RingTimeout:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
+              nullable: true
+            SkillBasedRingAllCumulativePollingEnabled:
+              type: boolean
               nullable: true
             SLATime:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
+              nullable: true
+            StopBackgroundWhenPrompt:
+              type: boolean
               nullable: true
             TypeOfChatOwnershipType:
               allOf:
@@ -22662,7 +22982,7 @@ components:
             WrapUpTime:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
     Pbx.User:
@@ -22742,6 +23062,9 @@ components:
               nullable: true
             FirstName:
               type: string
+              nullable: true
+            ForbidRecording:
+              type: boolean
               nullable: true
             ForwardingExceptions:
               type: array
@@ -22837,13 +23160,13 @@ components:
             PinProtectTimeout:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             PrimaryGroupId:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             PromptSet:
@@ -22905,6 +23228,18 @@ components:
             WebMeetingFriendlyName:
               type: string
               nullable: true
+    Pbx.OneTimeTicket:
+      title: OneTimeTicket
+      type: object
+      properties:
+        ExpiresInSeconds:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        Ticket:
+          type: string
     Pbx.CallControlResultResponse:
       title: CallControlResultResponse
       type: object
@@ -22948,7 +23283,7 @@ components:
         Capabilities:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FirmwareAvailable:
@@ -22992,6 +23327,10 @@ components:
       title: MultiEditUserData
       type: object
       properties:
+        AgentSettings:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.AgentSettings'
+          nullable: true
         AllowLanOnly:
           type: boolean
           nullable: true
@@ -23027,6 +23366,9 @@ components:
           type: boolean
           nullable: true
         EnableHotdesking:
+          type: boolean
+          nullable: true
+        ForbidRecording:
           type: boolean
           nullable: true
         ForwardingExceptions:
@@ -23100,7 +23442,7 @@ components:
         PinProtectTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PromptSet:
@@ -23209,7 +23551,7 @@ components:
         MaxQueueCustomRingtones:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Models:
@@ -23270,13 +23612,13 @@ components:
         DefaultProxyPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         DefaultRegistrarPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Description:
@@ -23288,6 +23630,9 @@ components:
             $ref: '#/components/schemas/Pbx.TrunkEditorType'
         Id:
           type: string
+        IsCustom:
+          type: boolean
+          nullable: true
         MessagingTemplate:
           allOf:
             - $ref: '#/components/schemas/Pbx.TrunkMessagingTemplate'
@@ -23340,13 +23685,13 @@ components:
         FromDnType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FromIdParticipant:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Id:
@@ -23366,13 +23711,13 @@ components:
         RefParticipantId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StartTime:
@@ -23401,13 +23746,13 @@ components:
         ToDnType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ToIdParticipant:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Transcription:
@@ -23416,7 +23761,7 @@ components:
         TranscriptionResult:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.RecordingRepositorySettings:
@@ -23426,7 +23771,7 @@ components:
         AutoDeleteRecordingDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AutoDeleteRecordingEnabled:
@@ -23438,7 +23783,7 @@ components:
         RecordingDiskSpace:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RecordingPath:
@@ -23447,11 +23792,11 @@ components:
         RecordingsQuota:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RecordingUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.SystemDirectory:
@@ -23489,7 +23834,7 @@ components:
             AnswerAfter:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             BreakRoute:
@@ -23548,6 +23893,9 @@ components:
               items:
                 $ref: '#/components/schemas/Pbx.UserGroup'
               x-ms-navigationProperty: true
+            MusicOnHold:
+              type: string
+              nullable: true
             Name:
               type: string
               nullable: true
@@ -23602,7 +23950,7 @@ components:
         MaxPrompts:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Sbcs:
@@ -23660,7 +24008,7 @@ components:
         Priority:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Routes:
@@ -23707,7 +24055,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -23770,10 +24118,6 @@ components:
               allOf:
                 - $ref: '#/components/schemas/Pbx.ConcealedPassword'
               nullable: true
-            AutoHolidayMode:
-              allOf:
-                - $ref: '#/components/schemas/Pbx.HolidayMode'
-              nullable: true
             Certificate:
               type: string
               nullable: true
@@ -23793,6 +24137,9 @@ components:
             Direction:
               allOf:
                 - $ref: '#/components/schemas/Pbx.DirectionType'
+              nullable: true
+            DisableCallTransfer:
+              type: boolean
               nullable: true
             DisableVideo:
               type: boolean
@@ -23875,6 +24222,9 @@ components:
               items:
                 $ref: '#/components/schemas/Pbx.InboundRule'
               x-ms-navigationProperty: true
+            ScriptName:
+              type: string
+              nullable: true
             SecondaryRegistrar:
               type: string
               nullable: true
@@ -23884,7 +24234,7 @@ components:
             SimultaneousCalls:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             Tags:
@@ -23908,7 +24258,7 @@ components:
             TunnelRemotePort:
               maximum: 2147483647
               minimum: -2147483648
-              type: number
+              type: integer
               format: int32
               nullable: true
             UseSeparateAuthId:
@@ -24121,7 +24471,7 @@ components:
         FxsLineCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FxsLines:
@@ -24219,7 +24569,7 @@ components:
         MaxSimCalls:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProductCode:
@@ -24231,7 +24581,7 @@ components:
         SimMeetingParticipants:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Support:
@@ -24429,7 +24779,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Link:
@@ -24537,7 +24887,7 @@ components:
         FileName:
           type: string
         Size:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.CreateBackup:
@@ -24555,7 +24905,7 @@ components:
       type: object
       properties:
         Footprint:
-          type: number
+          type: integer
           format: int64
           nullable: true
         IsEncrypted:
@@ -24574,7 +24924,7 @@ components:
         Rotation:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Schedule:
@@ -24606,7 +24956,7 @@ components:
         Interval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Mode:
@@ -24662,7 +25012,7 @@ components:
         AudioPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Connection:
@@ -24687,7 +25037,7 @@ components:
         LogSize:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -24707,7 +25057,7 @@ components:
         PhoneUserId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProvisionLink:
@@ -24833,7 +25183,7 @@ components:
         FirewallKeepAliveInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Id:
@@ -24853,7 +25203,7 @@ components:
         SipPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StunDisabled:
@@ -24865,13 +25215,13 @@ components:
         StunPrimaryPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StunQuery:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StunSecondaryHost:
@@ -24880,7 +25230,7 @@ components:
         StunSecondaryPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StunThirdHost:
@@ -24889,13 +25239,13 @@ components:
         StunThirdPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TunnelPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CDRSettings:
@@ -24912,7 +25262,7 @@ components:
         LogSize:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LogType:
@@ -24932,7 +25282,7 @@ components:
         SocketPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CallCostSettings:
@@ -25013,7 +25363,7 @@ components:
         EventId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Group:
@@ -25055,11 +25405,11 @@ components:
         HandleCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MemoryUsed:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Name:
@@ -25082,11 +25432,11 @@ components:
         ThreadCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TotalProcessorTime:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.GarbageCollect:
@@ -25102,7 +25452,7 @@ components:
         Generation:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Mode:
@@ -25302,23 +25652,29 @@ components:
         TlsPortForNativeFQDN:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TlsPortForNonNativeFQDN:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.VoicemailSettings:
       title: VoicemailSettings
       type: object
       properties:
+        AnalyzeModelGrok:
+          type: string
+          nullable: true
+        AnalyzeModelOpenAI:
+          type: string
+          nullable: true
         AutoDeleteDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AutoDeleteEnabled:
@@ -25338,7 +25694,7 @@ components:
         MinDuration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         OperatorEnabled:
@@ -25347,7 +25703,7 @@ components:
         Quota:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RemoteStorageEnabled:
@@ -25359,19 +25715,22 @@ components:
         SendEmailQuotaPercentage:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TranscribeEngine:
           allOf:
             - $ref: '#/components/schemas/Pbx.TranscribeEngine'
           nullable: true
+        TranscribeKeyGrok:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          nullable: true
         TranscribeLanguage:
           type: string
           nullable: true
         TranscribeModelOpenAI:
-          allOf:
-            - $ref: '#/components/schemas/Pbx.OpenAIModel'
+          type: string
           nullable: true
         TranscribeRegion:
           type: string
@@ -25381,7 +25740,7 @@ components:
             - $ref: '#/components/schemas/Pbx.ConcealedPassword'
           nullable: true
         UsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.LanguageItem:
@@ -25394,22 +25753,6 @@ components:
         Name:
           type: string
           nullable: true
-    Pbx.OnBoardUICommand:
-      title: OnBoardUICommand
-      type: object
-      properties:
-        ErrorMessage:
-          type: string
-        McuId:
-          type: string
-        Operation:
-          type: string
-        RequestExpiration:
-          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
-          type: string
-          format: date-time
-        State:
-          type: string
     Pbx.OnBoardConverterSession:
       title: OnBoardConverterSession
       type: object
@@ -25436,71 +25779,6 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
-    Pbx.OnBoardConverterDataDetail:
-      title: OnBoardConverterDataDetail
-      type: object
-      properties:
-        Active:
-          type: boolean
-        Cloud:
-          type: boolean
-        Enabled:
-          type: boolean
-        Guid:
-          type: string
-        Host:
-          type: string
-        Ip:
-          type: string
-        Port:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
-        Version:
-          type: string
-    Pbx.OnBoardConverterRow:
-      title: OnBoardConverterRow
-      type: object
-      properties:
-        Active:
-          type: boolean
-        Cloud:
-          type: boolean
-        Enabled:
-          type: boolean
-        Guid:
-          type: string
-        Host:
-          type: string
-        InstallScript:
-          type: string
-        Ip:
-          type: string
-        Port:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
-        Secret:
-          type: string
-        ServerOS:
-          $ref: '#/components/schemas/Pbx.OnBoardMcuServerOS'
-        ServerStatus:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: integer
-          format: int32
-        TsActivated:
-          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
-          type: string
-          format: date-time
-        TsCreated:
-          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
-          type: string
-          format: date-time
-        Version:
-          type: string
     Pbx.OnBoardConverterData:
       title: OnBoardConverterData
       type: object
@@ -25512,6 +25790,8 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+        Connected:
+          type: boolean
         Converter:
           $ref: '#/components/schemas/Pbx.OnBoardConverterDataDetail'
         Cpu:
@@ -25519,16 +25799,28 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+        CpuMac:
+          $ref: '#/components/schemas/Pbx.MacCpuInfo'
         Delay:
           maximum: 2147483647
           minimum: -2147483648
           type: integer
           format: int32
+        DiskSpaceFree:
+          type: integer
+          format: int64
         DiskSpacePerc:
           maximum: 2147483647
           minimum: -2147483648
           type: integer
           format: int32
+        DiskSpaceTotal:
+          type: integer
+          format: int64
+        Gpu:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.DebianGpuInfo'
         Instances:
           maximum: 2147483647
           minimum: -2147483648
@@ -25539,20 +25831,65 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
-        Sessions:
+        MemoryTotal:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        MemoryUsed:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        SessionsList:
           type: array
           items:
             $ref: '#/components/schemas/Pbx.OnBoardConverterSession'
-        TranscriptionQueue:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          format: int32
-          nullable: true
+        StartTime:
+          type: string
         Ts:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
           type: string
           format: date-time
+    Pbx.OnBoardUICommand:
+      title: OnBoardUICommand
+      type: object
+      properties:
+        ErrorMessage:
+          type: string
+        McuId:
+          type: string
+        Operation:
+          type: string
+        RequestExpiration:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+        State:
+          type: string
+    Pbx.ConfiguredAiServers:
+      title: ConfiguredAiServers
+      type: object
+      properties:
+        ConfiguredServers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.OnBoardConverterRow'
+        ReleaseChannel:
+          $ref: '#/components/schemas/Pbx.OnBoardConverterReleaseChannel'
+    Pbx.ConnectedAiServers:
+      title: ConnectedAiServers
+      type: object
+      properties:
+        ConnectedServers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.OnBoardConverterData'
+        TranscriptionQueue:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
     Pbx.ConferenceSettings:
       title: ConferenceSettings
       type: object
@@ -25563,9 +25900,6 @@ components:
         DtmfMode:
           allOf:
             - $ref: '#/components/schemas/Pbx.DtmfMode'
-          nullable: true
-        EnableLocalMCU:
-          type: boolean
           nullable: true
         EnablePin:
           type: boolean
@@ -25589,6 +25923,10 @@ components:
           nullable: true
         PinNumber:
           type: string
+          nullable: true
+        VideoConferenceMode:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.VideoConferenceMode'
           nullable: true
         Zone:
           type: string
@@ -25676,7 +26014,7 @@ components:
         Secret:
           type: string
         ServerOS:
-          $ref: '#/components/schemas/Pbx.OnBoardMcuServerOS'
+          type: string
         ServerStatus:
           maximum: 2147483647
           minimum: -2147483648
@@ -25708,6 +26046,8 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+        Available:
+          type: boolean
         ClockSkew:
           maximum: 2147483647
           minimum: -2147483648
@@ -25752,6 +26092,8 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+        Online:
+          type: boolean
         RestartTime:
           type: string
         StartTime:
@@ -25918,13 +26260,13 @@ components:
         NoAnswerTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.Firmware:
@@ -25952,7 +26294,7 @@ components:
         Count:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FileNames:
@@ -25963,7 +26305,7 @@ components:
           type: string
           nullable: true
         TotalSize:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.AISettings:
@@ -25981,6 +26323,13 @@ components:
           type: string
           nullable: true
         CompletionModel:
+          type: string
+          nullable: true
+        ManagementAPIKey:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          nullable: true
+        Provider:
           type: string
           nullable: true
         RealtimeModel:
@@ -26014,6 +26363,12 @@ components:
       title: AIModel
       type: object
       properties:
+        Description:
+          type: string
+          nullable: true
+        Example:
+          type: string
+          nullable: true
         Id:
           type: string
         Name:
@@ -26051,7 +26406,7 @@ components:
         Bytes:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         CreatedAt:
@@ -26069,13 +26424,13 @@ components:
         FilesCompleted:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FilesTotal:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Id:
@@ -26137,10 +26492,8 @@ components:
           type: string
           nullable: true
         Size:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          format: int32
+          type: integer
+          format: int64
           nullable: true
         Status:
           type: string
@@ -26157,6 +26510,30 @@ components:
           items:
             type: string
         VectorId:
+          type: string
+    Pbx.RemoveVectorStoreFiles:
+      title: RemoveVectorStoreFiles
+      type: object
+      properties:
+        FileIds:
+          type: array
+          items:
+            type: string
+        VectorId:
+          type: string
+    Pbx.VectorFileResult:
+      title: VectorFileResult
+      type: object
+      properties:
+        Error:
+          type: string
+          nullable: true
+        ExternalFileId:
+          type: string
+          nullable: true
+        FileName:
+          type: string
+        Status:
           type: string
     Pbx.SystemStatus:
       title: SystemStatus
@@ -26177,11 +26554,11 @@ components:
         CallsActive:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ChatUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         CurrentLocalIp:
@@ -26193,7 +26570,7 @@ components:
         DiskUsage:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ExpirationDate:
@@ -26204,20 +26581,20 @@ components:
         ExtensionsRegistered:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ExtensionsTotal:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FQDN:
           type: string
           nullable: true
         FreeDiskSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         HasNotRunningServices:
@@ -26274,7 +26651,7 @@ components:
           type: boolean
           nullable: true
         LogUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         MaintenanceExpiresAt:
@@ -26285,13 +26662,13 @@ components:
         MaxSimCalls:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MaxUserExtensions:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         OS:
@@ -26301,14 +26678,14 @@ components:
         OutboundRules:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProductCode:
           type: string
           nullable: true
         RecordingQuota:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RecordingQuotaReached:
@@ -26318,7 +26695,7 @@ components:
           type: boolean
           nullable: true
         RecordingUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RemoteConfigurationRequired:
@@ -26338,25 +26715,25 @@ components:
           type: boolean
           nullable: true
         TotalDiskSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         TrunksRegistered:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TrunksTotal:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         UserExtensions:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Version:
@@ -26381,19 +26758,19 @@ components:
               nullable: true
             - $ref: '#/components/schemas/ReferenceNumeric'
         FreeDiskSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         FreePhysicalMemory:
-          type: number
+          type: integer
           format: int64
           nullable: true
         FreeVirtualMemory:
-          type: number
+          type: integer
           format: int64
           nullable: true
         TickCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Time:
@@ -26402,15 +26779,15 @@ components:
           format: date-time
           nullable: true
         TotalDiskSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         TotalPhysicalMemory:
-          type: number
+          type: integer
           format: int64
           nullable: true
         TotalVirtualMemory:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.ProcessTelemetry:
@@ -26418,15 +26795,15 @@ components:
       type: object
       properties:
         HandleCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         PrivateMemory:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ProcessCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Service:
@@ -26434,7 +26811,7 @@ components:
             - $ref: '#/components/schemas/Pbx.PhoneSystemService'
           nullable: true
         ThreadCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Time:
@@ -26482,23 +26859,23 @@ components:
               nullable: true
             - $ref: '#/components/schemas/ReferenceNumeric'
         Count:
-          type: number
+          type: integer
           format: int64
           nullable: true
         MaxDuration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RequestId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SumDuration:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.SystemExtensionStatus:
@@ -26536,25 +26913,25 @@ components:
       type: object
       properties:
         CallsUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ChatFilesCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ChatsUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         EventLogUsedSpace:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.VersionUpdateType:
@@ -26572,7 +26949,7 @@ components:
         CustomTemplatesCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Firewall:
@@ -26581,7 +26958,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Phones:
@@ -26593,7 +26970,7 @@ components:
         UnsupportedFirmwaresCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.RequestHelp:
@@ -26603,7 +26980,7 @@ components:
         GrantPeriodDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         IssueDescription:
@@ -26630,7 +27007,7 @@ components:
         MaxVolumePercent:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -26664,7 +27041,7 @@ components:
         FaxServerId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         G711ToT38Fallback:
@@ -26673,7 +27050,7 @@ components:
         MaxAge:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Number:
@@ -26786,6 +27163,32 @@ components:
         Value:
           type: string
           nullable: true
+    Pbx.McpServer:
+      title: McpServer
+      type: object
+      properties:
+        ClientId:
+          type: string
+        Id:
+          pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+          type: string
+          format: uuid
+        Issuer:
+          type: string
+    Pbx.OAuthServerMetadata:
+      title: OAuthServerMetadata
+      type: object
+      properties:
+        AuthorizationEndpoint:
+          type: string
+        ClientIdMetadataDocumentSupported:
+          type: boolean
+          nullable: true
+        RegistrationEndpoint:
+          type: string
+          nullable: true
+        TokenEndpoint:
+          type: string
     Pbx.DidNumber:
       title: DidNumber
       type: object
@@ -26832,6 +27235,16 @@ components:
       title: RefreshToken
       type: object
       properties:
+        Client:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.OAuthClient'
+          nullable: true
+          x-ms-navigationProperty: true
+        ClientId:
+          pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+          type: string
+          format: uuid
+          nullable: true
         Created:
           pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
           type: string
@@ -26853,7 +27266,9 @@ components:
           type: integer
           format: int32
         LoginType:
-          $ref: '#/components/schemas/Pbx.LoginType'
+          $ref: '#/components/schemas/Pbx.GrantType'
+        OverrideConsoleRestrictions:
+          type: boolean
         ReasonRevoked:
           allOf:
             - $ref: '#/components/schemas/Pbx.RevokeReason'
@@ -26866,6 +27281,12 @@ components:
         RevokedByIp:
           type: string
           nullable: true
+        RotateOnRefresh:
+          type: boolean
+        Scopes:
+          type: array
+          items:
+            type: string
         SlidingExpiration:
           type: boolean
         Token:
@@ -27042,24 +27463,111 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.SyslogCustomRelayConfig'
           nullable: true
-        DatadogConfig:
-          allOf:
-            - $ref: '#/components/schemas/Pbx.SyslogDatadogConfig'
-          nullable: true
-        ElasticConfig:
-          allOf:
-            - $ref: '#/components/schemas/Pbx.SyslogElkConfig'
-          nullable: true
         IntegrationType:
           allOf:
             - $ref: '#/components/schemas/Pbx.SyslogIntegrationType'
           nullable: true
-        IsEnabled:
-          type: boolean
+    Pbx.ClientIdMetadataDocument:
+      title: ClientIdMetadataDocument
+      type: object
+      properties:
+        ClientId:
+          type: string
           nullable: true
-        SplunkConfig:
-          allOf:
-            - $ref: '#/components/schemas/Pbx.SyslogSplunkConfig'
+        ClientName:
+          type: string
+          nullable: true
+        ClientUri:
+          type: string
+          nullable: true
+        GrantTypes:
+          type: array
+          items:
+            type: string
+        JwksUri:
+          type: string
+          nullable: true
+        LogoUri:
+          type: string
+          nullable: true
+        PolicyUri:
+          type: string
+          nullable: true
+        RedirectUris:
+          type: array
+          items:
+            type: string
+        ResponseTypes:
+          type: array
+          items:
+            type: string
+        Scope:
+          type: string
+          nullable: true
+        TokenEndpointAuthMethod:
+          type: string
+          nullable: true
+        TosUri:
+          type: string
+          nullable: true
+    Pbx.OAuthClient:
+      title: OAuthClient
+      type: object
+      properties:
+        ClientId:
+          type: string
+        CreatedAt:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+        CreatedBy:
+          type: string
+        Id:
+          pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+          type: string
+          format: uuid
+        Metadata:
+          $ref: '#/components/schemas/Pbx.ClientIdMetadataDocument'
+        OverrideConsoleRestrictions:
+          type: boolean
+        Persistent:
+          type: boolean
+        ProvisioningType:
+          $ref: '#/components/schemas/Pbx.OAuthProvisioningType'
+        RefreshTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.RefreshToken'
+          x-ms-navigationProperty: true
+        Scopes:
+          type: array
+          items:
+            type: string
+        UsedAt:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+          nullable: true
+    Pbx.XReportRecording:
+      title: XReportRecording
+      type: object
+      properties:
+        Id:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        SentimentScore:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
+        Summary:
+          type: string
+          nullable: true
+        Transcription:
+          type: string
           nullable: true
     Pbx.CallHistoryView:
       title: CallHistoryView
@@ -27106,7 +27614,7 @@ components:
         DstRecId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SegmentActionId:
@@ -27166,7 +27674,7 @@ components:
         SrcRecId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ChatHistoryView:
@@ -27291,7 +27799,7 @@ components:
       type: object
       properties:
         RingGroupAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RingGroupDisplayName:
@@ -27300,13 +27808,13 @@ components:
         RingGroupDn:
           type: string
         RingGroupReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RingGroupSentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ExtensionsStatisticsByRingGroups:
@@ -27314,7 +27822,7 @@ components:
       type: object
       properties:
         ExtensionAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ExtensionDisplayName:
@@ -27328,23 +27836,23 @@ components:
         RingGroupDn:
           type: string
         RingGroupReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         RingGroupUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SortOrder:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CallLogData:
@@ -27363,20 +27871,20 @@ components:
         ActionDnType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ActionType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Answered:
           type: boolean
           nullable: true
         CallCost:
-          type: number
+          type: integer
           format: decimal
           nullable: true
         CallHistoryId:
@@ -27404,7 +27912,7 @@ components:
         DestinationType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Direction:
@@ -27413,13 +27921,13 @@ components:
         DstRecId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Indent:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MainCallHistoryId:
@@ -27431,6 +27939,10 @@ components:
         Reason:
           type: string
           nullable: true
+        Recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.XReportRecording'
         RecordingUrl:
           type: string
           nullable: true
@@ -27442,13 +27954,13 @@ components:
         SegmentId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SourceCallerId:
@@ -27463,13 +27975,13 @@ components:
         SourceType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SrcRecId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StartTime:
@@ -27483,7 +27995,7 @@ components:
         SubrowDescNumber:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Summary:
@@ -27512,7 +28024,7 @@ components:
         OverallScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Party1:
@@ -27529,7 +28041,7 @@ components:
         Summary:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Transcoding:
@@ -27545,7 +28057,7 @@ components:
         Dn:
           type: string
         InboundAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         InboundAnsweredTalkingDur:
@@ -27554,11 +28066,11 @@ components:
           format: duration
           nullable: true
         InboundUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         OutboundAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         OutboundAnsweredTalkingDur:
@@ -27567,7 +28079,7 @@ components:
           format: duration
           nullable: true
         OutboundUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.ReportExtensionStatisticsByGroup:
@@ -27580,7 +28092,7 @@ components:
         Dn:
           type: string
         InboundAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         InboundAnsweredTalkingDur:
@@ -27589,11 +28101,11 @@ components:
           format: duration
           nullable: true
         InboundUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         OutboundAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         OutboundAnsweredTalkingDur:
@@ -27602,13 +28114,13 @@ components:
           format: duration
           nullable: true
         OutboundUnansweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CallCostByExtensionGroup:
@@ -27616,7 +28128,7 @@ components:
       type: object
       properties:
         BillingCost:
-          type: number
+          type: integer
           format: decimal
           nullable: true
         CallType:
@@ -27628,7 +28140,7 @@ components:
         DstDnClass:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         GroupName:
@@ -27665,7 +28177,7 @@ components:
       type: object
       properties:
         ExtensionAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ExtensionDisplayName:
@@ -27674,11 +28186,11 @@ components:
         ExtensionDn:
           type: string
         ExtensionDroppedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDisplayName:
@@ -27687,13 +28199,13 @@ components:
           type: string
           nullable: true
         QueueReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         SortOrder:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TalkTime:
@@ -27706,11 +28218,11 @@ components:
       type: object
       properties:
         ExtensionAnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         ExtensionDroppedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDisplayName:
@@ -27719,7 +28231,7 @@ components:
         QueueDn:
           type: string
         QueueReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.TeamQueueGeneralStatistics:
@@ -27729,11 +28241,11 @@ components:
         AgentsInQueueCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AvgTalkTime:
@@ -27747,7 +28259,7 @@ components:
         QueueDnNumber:
           type: string
         ReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         TotalTalkTime:
@@ -27760,7 +28272,7 @@ components:
       type: object
       properties:
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AvgRingTime:
@@ -27774,11 +28286,11 @@ components:
           format: duration
           nullable: true
         CallbacksCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         CallsCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDn:
@@ -27826,7 +28338,7 @@ components:
           type: boolean
           nullable: true
         PollingAttempts:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDisplayName:
@@ -27866,7 +28378,7 @@ components:
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Source:
@@ -27876,20 +28388,20 @@ components:
       type: object
       properties:
         CallbacksCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Dn:
           type: string
           nullable: true
         FailCallbacksCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QueueDnNumber:
           type: string
         ReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.AgentsInQueueStatistics:
@@ -27897,17 +28409,17 @@ components:
       type: object
       properties:
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AnsweredPercent:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AnsweredPerHourCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AvgRingTime:
@@ -27931,7 +28443,7 @@ components:
           format: duration
           nullable: true
         LostCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Queue:
@@ -27975,7 +28487,7 @@ components:
       type: object
       properties:
         BadSlaCallsCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Dn:
@@ -27984,7 +28496,7 @@ components:
         QueueDnNumber:
           type: string
         ReceivedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
     Pbx.BreachesSla:
@@ -28012,19 +28524,19 @@ components:
       type: object
       properties:
         AbandonedCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         IncomingCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         QuantityAgents:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Queue:
@@ -28037,11 +28549,11 @@ components:
       type: object
       properties:
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         DealtWithCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Dn:
@@ -28057,7 +28569,7 @@ components:
         SortOrder:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.QueueAgentsChatStatisticsTotals:
@@ -28065,11 +28577,11 @@ components:
       type: object
       properties:
         AnsweredCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         DealtWithCount:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Queue:
@@ -28210,7 +28722,7 @@ components:
         Answered:
           type: boolean
         CallCost:
-          type: number
+          type: integer
           format: decimal
           nullable: true
         CallDuration:
@@ -28238,9 +28750,13 @@ components:
         RecordingId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
+        Recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.XReportRecording'
         RecordingUrl:
           type: string
           nullable: true
@@ -28255,7 +28771,7 @@ components:
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SourceCallerId:
@@ -28323,9 +28839,13 @@ components:
         RecordingId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
+        Recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.XReportRecording'
         RecordingUrl:
           type: string
           nullable: true
@@ -28340,7 +28860,7 @@ components:
         SentimentScore:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SourceCallerId:
@@ -28383,7 +28903,7 @@ components:
         Action:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Id:
@@ -28401,7 +28921,7 @@ components:
         ObjectType:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PrevData:
@@ -28410,7 +28930,7 @@ components:
         Source:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Timestamp:
@@ -28458,13 +28978,13 @@ components:
         YValue1:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         YValue2:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ScheduledReport:
@@ -28519,7 +29039,7 @@ components:
         GroupId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         GroupRights:
@@ -28530,7 +29050,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MemberName:
@@ -28655,7 +29175,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         InboundParams:
@@ -28669,10 +29189,13 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.IPInRegistrationContactType'
           nullable: true
+        IsCustom:
+          type: boolean
+          nullable: true
         Lines:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MatchingStrategy:
@@ -28692,7 +29215,7 @@ components:
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProxyHost:
@@ -28701,7 +29224,7 @@ components:
         ProxyPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RequireRegistrationFor:
@@ -28731,11 +29254,13 @@ components:
         TimeBetweenReg:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Type:
-          $ref: '#/components/schemas/Pbx.GatewayType'
+          allOf:
+            - $ref: '#/components/schemas/Pbx.GatewayType'
+          nullable: true
         UseIPInContact:
           type: boolean
           nullable: true
@@ -28786,19 +29311,19 @@ components:
         LocalRTPPortEnd:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LocalRTPPortStart:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LocalSipPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LogoDescription:
@@ -28830,7 +29355,7 @@ components:
         RemoteSpmPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RingTone:
@@ -29009,6 +29534,9 @@ components:
       title: SystemParameters
       type: object
       properties:
+        AIVersion:
+          type: string
+          nullable: true
         Custom1Name:
           type: string
           nullable: true
@@ -29021,7 +29549,7 @@ components:
         ENL:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ENLRange:
@@ -29031,7 +29559,7 @@ components:
         FirstExternalPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         FQDN:
@@ -29046,13 +29574,13 @@ components:
         HttpPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HttpsPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         IpV6:
@@ -29089,7 +29617,7 @@ components:
         MaxDIDPerTrunk:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PbxExternalHost:
@@ -29098,7 +29626,7 @@ components:
         ProcessorCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RemoteStorageStatus:
@@ -29111,13 +29639,13 @@ components:
         SipPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SipsPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StaticIp:
@@ -29129,7 +29657,7 @@ components:
         TunnnelPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Version:
@@ -29138,7 +29666,7 @@ components:
         WebrtcLastPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.License:
@@ -29148,18 +29676,47 @@ components:
         CountryCode:
           type: string
           nullable: true
+        IsBrandingEnabled:
+          type: boolean
+          nullable: true
+        IsCfdEnabled:
+          type: boolean
+          nullable: true
+        IsEnterprise:
+          type: boolean
+          nullable: true
         IsMaintainceExpired:
+          type: boolean
+          nullable: true
+        IsProfessional:
           type: boolean
           nullable: true
         MaxSimCalls:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ProductCode:
           type: string
           nullable: true
+    Pbx.ReportLogEvent:
+      title: ReportLogEvent
+      type: object
+      properties:
+        EventId:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        Params:
+          type: array
+          items:
+            type: string
+        Source:
+          type: string
+        Type:
+          $ref: '#/components/schemas/Pbx.EventLogType'
     Pbx.SendEmail:
       title: SendEmail
       type: object
@@ -29311,6 +29868,9 @@ components:
         EnableChat:
           type: boolean
           nullable: true
+        EnableSelectorCallerId:
+          type: boolean
+          nullable: true
         HideAbandonedQueueCalls:
           type: boolean
           nullable: true
@@ -29336,13 +29896,16 @@ components:
         AllowFwdToExternal:
           type: boolean
           nullable: true
+        AllRolesCanApproveApps:
+          type: boolean
+          nullable: true
         BusyMonitor:
           type: boolean
           nullable: true
         BusyMonitorTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         DisableOutboundCallsOutOfficeHours:
@@ -29360,6 +29923,15 @@ components:
           format: duration
           nullable: true
         LimitCallPickup:
+          type: boolean
+          nullable: true
+        OAuthCimdEnabled:
+          type: boolean
+          nullable: true
+        OAuthDcrEnabled:
+          type: boolean
+          nullable: true
+        OAuthOpenIdConnectEnabled:
           type: boolean
           nullable: true
         OperatorExtension:
@@ -29393,13 +29965,13 @@ components:
         AutoPickupTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MaximumParkedCalls:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MusicOnHold:
@@ -29518,13 +30090,13 @@ components:
         FanvilUpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         GrandstreamUpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PhoneAllowMultiFirmwares:
@@ -29533,7 +30105,7 @@ components:
         SnomUpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         UseProvisioningSecret:
@@ -29545,7 +30117,7 @@ components:
         YealinkUpdateInterval:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.OfficeHours:
@@ -29586,7 +30158,7 @@ components:
         ResolvingLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ResolvingType:
@@ -29642,13 +30214,13 @@ components:
         KeepLogsDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LoggingLevel:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.ChatLogSettings:
@@ -29658,13 +30230,13 @@ components:
         AutoClearMonths:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         AutoCloseDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RemoteStorageEnabled:
@@ -29677,43 +30249,43 @@ components:
         HackAuthRequests:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackBarrierAmber:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackBarrierGreen:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackBarrierRed:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackBlacklistDuration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         HackChallengeRequests:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MaxRequestPerPeriod:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SecurityDefenseProgram:
@@ -29722,7 +30294,7 @@ components:
         ThrottlePeriodLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.Rights:
@@ -29796,7 +30368,7 @@ components:
         NumberLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         NumberLengthEnabled:
@@ -29935,13 +30507,13 @@ components:
         DectMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         DepartmentContactsMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Fqdn:
@@ -29950,25 +30522,25 @@ components:
         LiveChatMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         OutboundRulesMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PersonalContactsMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PromptsMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ResellerId:
@@ -29980,7 +30552,7 @@ components:
         SbcMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         StartupLicense:
@@ -30016,7 +30588,7 @@ components:
         TrunksMaxCount:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         UserNumberFrom:
@@ -30046,7 +30618,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -30068,7 +30640,7 @@ components:
         Id:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -30154,7 +30726,7 @@ components:
         NoAnswerTimeout:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         OfficeHoursAutoQueueLogOut:
@@ -30303,7 +30875,7 @@ components:
         Priority:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PriorityConfigurable:
@@ -30312,13 +30884,13 @@ components:
         PriorityMax:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         PriorityMin:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Type:
@@ -30328,19 +30900,19 @@ components:
         VlanId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         VlanIdMax:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         VlanIdMin:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.CustomQueueRingtone:
@@ -30361,34 +30933,39 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.AgentRoutingAction'
           nullable: true
+        AgentFallback:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.AgentRoutingAction'
+          nullable: true
         AgentType:
           type: string
           nullable: true
         AllowedExtensions:
           type: string
           nullable: true
+        AllowWebsearch:
+          type: boolean
+          nullable: true
+        BossInterruptionSettings:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.BossInterruptionSettings'
+          nullable: true
         CallerDoesNotRespondAction:
           allOf:
             - $ref: '#/components/schemas/Pbx.AgentRoutingAction'
           nullable: true
-        CallPrioritySettings:
-          allOf:
-            - $ref: '#/components/schemas/Pbx.CallPrioritySettings'
-          nullable: true
         CheckStatusBeforeTransfer:
-          type: boolean
-          nullable: true
-        ConfidentialModeEnabled:
           type: boolean
           nullable: true
         EnableNameMatching:
           type: boolean
           nullable: true
-        EnableSpamProtection:
-          type: boolean
-          nullable: true
         FirstMessage:
           type: string
+          nullable: true
+        HumanHandoff:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.AgentRoutingDirectory'
           nullable: true
         Knowledgebase:
           type: array
@@ -30400,11 +30977,8 @@ components:
         MaxCallDuration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
-          nullable: true
-        PhoneBookMatching:
-          type: boolean
           nullable: true
         PhonebookOverride:
           allOf:
@@ -30427,10 +31001,6 @@ components:
           nullable: true
         SystemPrompt:
           type: string
-          nullable: true
-        TokenBudget:
-          allOf:
-            - $ref: '#/components/schemas/Pbx.CallTokenBudget'
           nullable: true
         Voice:
           type: string
@@ -30475,27 +31045,24 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.PeerType'
           nullable: true
-    Pbx.CallPrioritySettings:
-      title: CallPrioritySettings
+    Pbx.BossInterruptionSettings:
+      title: BossInterruptionSettings
       type: object
       properties:
-        IsEnabled:
-          type: boolean
-          nullable: true
-        PriorityHigh:
+        Block:
           allOf:
-            - $ref: '#/components/schemas/Pbx.CallPriority'
+            - $ref: '#/components/schemas/Pbx.InterruptionDecision'
           nullable: true
-        PriorityLow:
+        Interrupt:
           allOf:
-            - $ref: '#/components/schemas/Pbx.CallPriority'
+            - $ref: '#/components/schemas/Pbx.InterruptionDecision'
           nullable: true
-        PriorityMedium:
+        Notify:
           allOf:
-            - $ref: '#/components/schemas/Pbx.CallPriority'
+            - $ref: '#/components/schemas/Pbx.InterruptionDecision'
           nullable: true
-    Pbx.CallPriority:
-      title: CallPriority
+    Pbx.InterruptionDecision:
+      title: InterruptionDecision
       type: object
       properties:
         Action:
@@ -30504,39 +31071,6 @@ components:
         Instructions:
           type: string
           nullable: true
-    Pbx.CallTokenBudget:
-      title: CallTokenBudget
-      type: object
-      properties:
-        Enabled:
-          type: boolean
-          nullable: true
-        MaxInputTokens:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          format: int32
-          nullable: true
-        MinInputTokens:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          format: int32
-          nullable: true
-        NormalSpeechTpm:
-          maximum: 2147483647
-          minimum: -2147483648
-          type: number
-          format: int32
-          nullable: true
-        Tolerance:
-          oneOf:
-            - type: number
-              format: float
-              nullable: true
-            - type: string
-              nullable: true
-            - $ref: '#/components/schemas/ReferenceNumeric'
     Pbx.ReceptionistForward:
       title: ReceptionistForward
       type: object
@@ -30645,13 +31179,13 @@ components:
         MaxLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         MinLength:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -30686,7 +31220,7 @@ components:
         Allowed:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Unlimited:
@@ -30695,7 +31229,7 @@ components:
         Used:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.OutboundRoute:
@@ -30712,13 +31246,13 @@ components:
           type: string
           nullable: true
         StripDigits:
-          type: number
+          type: integer
           format: uint8
           nullable: true
         TrunkId:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TrunkName:
@@ -30783,13 +31317,13 @@ components:
         LocalAudioPortEnd:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LocalAudioPortStart:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         LocalInterface:
@@ -30798,7 +31332,7 @@ components:
         LocalSipPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Method:
@@ -30814,7 +31348,7 @@ components:
         RemotePort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         SbcName:
@@ -31008,7 +31542,7 @@ components:
         ChatDelay:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Height:
@@ -31055,13 +31589,13 @@ components:
         RepeatHours:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         RepeatMinutes:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ScheduleType:
@@ -31087,6 +31621,9 @@ components:
           pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
           type: string
           format: uuid
+          nullable: true
+        HasExtraDetails:
+          type: boolean
           nullable: true
         Ignore:
           type: boolean
@@ -31200,6 +31737,9 @@ components:
         S3Path:
           type: string
           nullable: true
+        SftpHostKeyFingerprint:
+          type: string
+          nullable: true
         SftpPassword:
           allOf:
             - $ref: '#/components/schemas/Pbx.ConcealedPassword'
@@ -31235,7 +31775,7 @@ components:
       type: object
       properties:
         Calls:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Cpu:
@@ -31250,14 +31790,14 @@ components:
           format: duration
           nullable: true
         Latency:
-          type: number
+          type: integer
           format: int64
           nullable: true
         Memory:
           type: string
           nullable: true
         RegisteredPhones:
-          type: number
+          type: integer
           format: int64
           nullable: true
         UdpActive:
@@ -31328,7 +31868,7 @@ components:
         Length:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Name:
@@ -31440,6 +31980,125 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.IntegrationSyncType'
           nullable: true
+    Pbx.OnBoardConverterDataDetail:
+      title: OnBoardConverterDataDetail
+      type: object
+      properties:
+        Active:
+          type: boolean
+        Cloud:
+          type: boolean
+        Enabled:
+          type: boolean
+        Guid:
+          type: string
+        Host:
+          type: string
+        Ip:
+          type: string
+        Port:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        Version:
+          type: string
+    Pbx.DebianGpuInfo:
+      title: DebianGpuInfo
+      type: object
+      properties:
+        GpuId:
+          type: string
+        GpuName:
+          type: string
+        GpuUsagePercent:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        MemoryFree:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        MemoryTotal:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        MemoryUsagePercent:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        MemoryUsed:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+    Pbx.MacCpuInfo:
+      title: MacCpuInfo
+      type: object
+      properties:
+        Ane:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        Cpu:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        Gpu:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+    Pbx.OnBoardConverterRow:
+      title: OnBoardConverterRow
+      type: object
+      properties:
+        Active:
+          type: boolean
+        Cloud:
+          type: boolean
+        Enabled:
+          type: boolean
+        Guid:
+          type: string
+        Host:
+          type: string
+        InstallScript:
+          type: string
+        Ip:
+          type: string
+        Port:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        Secret:
+          type: string
+        ServerOS:
+          type: string
+        ServerOSVersion:
+          type: string
+        ServerStatus:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        TsActivated:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+        TsCreated:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+        Version:
+          type: string
     Pbx.OnBoardMcuDataDetail:
       title: OnBoardMcuDataDetail
       type: object
@@ -31503,7 +32162,7 @@ components:
         moderator:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         name:
@@ -31528,25 +32187,25 @@ components:
         canchangemedia:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         clicktocall:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         forcemoderator:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         hideparticipants:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         mcu:
@@ -31561,13 +32220,13 @@ components:
         moderateparticipants:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         needorganizer:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         note:
@@ -31581,7 +32240,7 @@ components:
         privaterooms:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         quickmeeting:
@@ -31603,7 +32262,7 @@ components:
         Value:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.VectorStoreExpiration:
@@ -31616,7 +32275,7 @@ components:
         Days:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ExpiresAt:
@@ -31727,7 +32386,7 @@ components:
         ScheduleDays:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
     Pbx.RemotePostgreConfig:
@@ -31763,7 +32422,7 @@ components:
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         ServerTrustMode:
@@ -31788,7 +32447,7 @@ components:
             - $ref: '#/components/schemas/Pbx.ConcealedPassword'
           nullable: true
         Port:
-          type: number
+          type: integer
           format: int64
           nullable: true
         UserId:
@@ -31809,7 +32468,7 @@ components:
             - $ref: '#/components/schemas/Pbx.ConcealedPassword'
           nullable: true
         Port:
-          type: number
+          type: integer
           format: int64
           nullable: true
         UserId:
@@ -31873,45 +32532,12 @@ components:
         Port:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Protocol:
           allOf:
             - $ref: '#/components/schemas/Pbx.SyslogProtocol'
-          nullable: true
-    Pbx.SyslogDatadogConfig:
-      title: SyslogDatadogConfig
-      type: object
-      properties:
-        ApiKey:
-          type: string
-          nullable: true
-        Url:
-          type: string
-          nullable: true
-    Pbx.SyslogSplunkConfig:
-      title: SyslogSplunkConfig
-      type: object
-      properties:
-        Token:
-          type: string
-          nullable: true
-        Url:
-          type: string
-          nullable: true
-    Pbx.SyslogElkConfig:
-      title: SyslogElkConfig
-      type: object
-      properties:
-        ApiKey:
-          type: string
-          nullable: true
-        IndexName:
-          type: string
-          nullable: true
-        Url:
-          type: string
           nullable: true
     Pbx.SyslogCategoryConfig:
       title: SyslogCategoryConfig
@@ -31936,7 +32562,7 @@ components:
         Burst:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Codec:
@@ -31945,13 +32571,13 @@ components:
         Duration:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         GlobalPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Inbound:
@@ -31960,7 +32586,7 @@ components:
         LocalPort:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         Location:
@@ -32012,7 +32638,7 @@ components:
         RxPackets:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TunAddressStr:
@@ -32021,7 +32647,7 @@ components:
         TxBursts:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         TxJitter:
@@ -32043,7 +32669,7 @@ components:
         TxPackets:
           maximum: 2147483647
           minimum: -2147483648
-          type: number
+          type: integer
           format: int32
           nullable: true
         UserAgent:
@@ -32142,6 +32768,13 @@ components:
         - Requested
         - Active
       type: string
+    Pbx.CrmTestMode:
+      title: CrmTestMode
+      enum:
+        - PhoneExact
+        - Search
+        - Email
+      type: string
     Pbx.PeerType:
       title: PeerType
       enum:
@@ -32205,6 +32838,14 @@ components:
         - SRTPEnabled
         - SRTPEnforced
       type: string
+    Pbx.IPInRegistrationContactType:
+      title: IPInRegistrationContactType
+      enum:
+        - External
+        - Internal
+        - Both
+        - Specified
+      type: string
     Pbx.MatchingStrategyType:
       title: MatchingStrategyType
       enum:
@@ -32231,14 +32872,6 @@ components:
         - BRI
         - T1
         - E1
-      type: string
-    Pbx.IPInRegistrationContactType:
-      title: IPInRegistrationContactType
-      enum:
-        - External
-        - Internal
-        - Both
-        - Specified
       type: string
     Pbx.RuleCallTypeType:
       title: RuleCallTypeType
@@ -32314,13 +32947,6 @@ components:
         - TCP
         - TLS
       type: string
-    Pbx.HolidayMode:
-      title: HolidayMode
-      enum:
-        - Disabled
-        - PlayAndDrop
-        - PlayAndContinue
-      type: string
     Pbx.Authentication:
       title: Authentication
       enum:
@@ -32393,6 +33019,7 @@ components:
         - CallbackFail
         - SLATimeBreached
         - CallLost
+        - AgentAutoLogout
       type: string
     Pbx.ResetQueueStatisticsFrequency:
       title: ResetQueueStatisticsFrequency
@@ -32897,21 +33524,21 @@ components:
         - Whisper
         - Engine3CX
         - Engine3CXLocal
+        - Grok
       type: string
-    Pbx.OpenAIModel:
-      title: OpenAIModel
+    Pbx.OnBoardConverterReleaseChannel:
+      title: OnBoardConverterReleaseChannel
       enum:
-        - Default
-        - Custom
-        - GPT_4o
-        - GPT_4o_mini
+        - Beta
+        - ReleaseCandidate
+        - Release
       type: string
-    Pbx.OnBoardMcuServerOS:
-      title: OnBoardMcuServerOS
+    Pbx.VideoConferenceMode:
+      title: VideoConferenceMode
       enum:
-        - Debian10
-        - Debian11
-        - Debian12
+        - Disabled
+        - Cloud
+        - Private
       type: string
     Pbx.DtmfMode:
       title: DtmfMode
@@ -33046,11 +33673,23 @@ components:
         - Logout
         - Manual
       type: string
-    Pbx.LoginType:
-      title: LoginType
+    Pbx.GrantType:
+      title: GrantType
       enum:
-        - Local
-        - Guest
+        - Password
+        - Support
+        - Sso
+        - OAuthClient
+        - ClientCredentials
+        - Provisioning
+      type: string
+    Pbx.OAuthProvisioningType:
+      title: OAuthProvisioningType
+      enum:
+        - Manual
+        - Dcr
+        - Cimd
+        - System
       type: string
     Pbx.OffloadDestination:
       title: OffloadDestination
@@ -33077,10 +33716,8 @@ components:
     Pbx.SyslogIntegrationType:
       title: SyslogIntegrationType
       enum:
+        - None
         - Custom
-        - Splunk
-        - Elastic
-        - Datadog
       type: string
     Pbx.SyslogProtocol:
       title: SyslogProtocol
@@ -33632,6 +34269,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.Fax'
+    Pbx.McpServerCollectionResponse:
+      title: Collection of McpServer
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.McpServer'
     Pbx.DidNumberCollectionResponse:
       title: Collection of DidNumber
       type: object
@@ -33687,6 +34335,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.EmergencyGeoLocation'
+    Pbx.OAuthClientCollectionResponse:
+      title: Collection of OAuthClient
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.OAuthClient'
     Pbx.CallHistoryViewCollectionResponse:
       title: Collection of CallHistoryView
       type: object
@@ -34501,6 +35160,39 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.OnBoardConverterSession'
+    Pbx.DebianGpuInfoCollectionResponse:
+      title: Collection of Pbx.DebianGpuInfo
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.DebianGpuInfo'
+    Pbx.OnBoardConverterRowCollectionResponse:
+      title: Collection of Pbx.OnBoardConverterRow
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.OnBoardConverterRow'
+    Pbx.OnBoardConverterDataCollectionResponse:
+      title: Collection of Pbx.OnBoardConverterData
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.OnBoardConverterData'
     Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipantCollectionResponse:
       title: Collection of Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipant
       type: object
@@ -34611,6 +35303,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.ExtensionFilter'
+    Pbx.XReportRecordingCollectionResponse:
+      title: Collection of Pbx.XReportRecording
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.XReportRecording'
     Pbx.GatewayParameterBindingCollectionResponse:
       title: Collection of Pbx.GatewayParameterBinding
       type: object
@@ -34797,6 +35500,7 @@ components:
         - WARNINGS.XAPI.CANNOT_CONNECT_FTP
         - WARNINGS.XAPI.CANNOT_CONNECT_SMB
         - WARNINGS.XAPI.CANNOT_CONNECT_SFTP
+        - WARNINGS.XAPI.SFTP_INVALID_HOST_KEY
         - WARNINGS.XAPI.CANNOT_CONNECT_GOOGLE_BUCKET
         - WARNINGS.XAPI.CANNOT_CONNECT_AMAZON_S3_BUCKET
         - WARNINGS.XAPI.PLAYLIST_NO_SOURCE
@@ -34904,6 +35608,7 @@ components:
         - XapiCannotConnectFtp
         - XapiCannotConnectSmb
         - XapiCannotConnectSftp
+        - XapiSftpInvalidHostKey
         - XapiCannotConnectGoogleBucket
         - XapiCannotConnectAmazonS3Bucket
         - XapiPlaylistNoSource
@@ -35216,6 +35921,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.FaxCollectionResponse'
+    Pbx.McpServerCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.McpServerCollectionResponse'
     Pbx.DidNumberCollectionResponse:
       description: Retrieved collection
       content:
@@ -35246,6 +35957,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.EmergencyGeoLocationCollectionResponse'
+    Pbx.OAuthClientCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.OAuthClientCollectionResponse'
     Pbx.CallHistoryViewCollectionResponse:
       description: Retrieved collection
       content:
@@ -35690,6 +36407,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.OnBoardConverterSessionCollectionResponse'
+    Pbx.DebianGpuInfoCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.DebianGpuInfoCollectionResponse'
+    Pbx.OnBoardConverterRowCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.OnBoardConverterRowCollectionResponse'
+    Pbx.OnBoardConverterDataCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.OnBoardConverterDataCollectionResponse'
     Pbx.KeyValuePair_2OfString_OnBoardConnectedParticipantCollectionResponse:
       description: Retrieved collection
       content:
@@ -35750,6 +36485,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.ExtensionFilterCollectionResponse'
+    Pbx.XReportRecordingCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.XReportRecordingCollectionResponse'
     Pbx.GatewayParameterBindingCollectionResponse:
       description: Retrieved collection
       content:
@@ -35837,6 +36578,12 @@ components:
             properties:
               value:
                 type: string
+    IssueDownloadTicketResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.OneTimeTicket'
     GetPhoneSecretResponse:
       description: Success
       content:
@@ -36063,6 +36810,12 @@ components:
         SLATime: 0
         AnnounceQueuePosition: true
         AnnouncementInterval: 0
+        AnnounceEstimatedWaitTime: true
+        AnnounceEstimatedWaitTimeInterval: 0
+        MaxWaitStrategyEnabled: true
+        SkillBasedRingAllCumulativePollingEnabled: true
+        MaxWaitTimeSkillGroupValues:
+          - 0
         WrapUpTime: 0
         MaxCallersInQueue: 0
         PriorityQueue: true
@@ -36070,6 +36823,7 @@ components:
         IntroFile: string
         OnHoldFile: string
         GreetingFile: string
+        DestinationNoAnswerPrompt: string
         PlayFullPrompt: true
         ForwardNoAnswer:
           '@odata.type': Pbx.Destination
@@ -36077,6 +36831,8 @@ components:
         TypeOfChatOwnershipType: TakeManually
         Recording: Disabled
         CallbackEnableTime: 0
+        CallbackOfferOnly: true
+        CallbackOfferPrompt: string
         CallbackPrefix: string
         NotifyCodes:
           - Callback
@@ -36092,6 +36848,12 @@ components:
           '@odata.type': Pbx.Route
         VMEmailOptions: None
         VMEmailList: string
+        AutoLogoutMissedCalls: 0
+        ComfortPromptsEnabled: true
+        ComfortPrompts:
+          - string
+        ComfortPromptsInterval: 0
+        StopBackgroundWhenPrompt: true
         Agents:
           - '@odata.type': Pbx.QueueAgent
         Managers:
@@ -36118,6 +36880,7 @@ components:
         RecordCalls: true
         AllowOwnRecordings: true
         RecordExternalCallsOnly: true
+        ForbidRecording: true
         RecordEmailNotify: true
         PrimaryGroupId: 0
         FirstName: string
@@ -36187,6 +36950,10 @@ components:
           - '@odata.type': Pbx.ExtensionRule
         Phones:
           - '@odata.type': Pbx.Phone
+    Pbx.OneTimeTicket:
+      value:
+        Ticket: string
+        ExpiresInSeconds: 0
     Pbx.CallControlResultResponse:
       value:
         FinalStatus: string
@@ -36231,6 +36998,7 @@ components:
         RecordCalls: true
         AllowOwnRecordings: true
         RecordExternalCallsOnly: true
+        ForbidRecording: true
         RecordEmailNotify: true
         Mobile: string
         SendEmailMissedCalls: true
@@ -36264,6 +37032,8 @@ components:
         EmergencyAdditionalInfo: string
         TranscriptionMode: Nothing
         DatevEnabled: true
+        AgentSettings:
+          '@odata.type': Pbx.AgentSettings
         Greetings:
           - '@odata.type': Pbx.Greeting
         ForwardingProfiles:
@@ -36327,6 +37097,7 @@ components:
         TemplateType: Preferred
         Countries:
           - string
+        IsCustom: true
         Editors:
           - Messaging
         Description: string
@@ -36415,6 +37186,7 @@ components:
         CurrentGroupHours: Default
         PromptSet: string
         CustomPrompt: string
+        MusicOnHold: string
         TimeZoneId: string
         OverrideExpiresAt: '0001-01-01T00:00:00.0000000+00:00'
         OverrideHolidays: true
@@ -36549,12 +37321,13 @@ components:
         Tags:
           - MS
         DisableVideo: true
+        DisableCallTransfer: true
         CertificateName: string
         CertificateExpirationDate: string
         Certificate: string
         TrunkRegTimes:
           - '@odata.type': Pbx.Variable
-        AutoHolidayMode: Disabled
+        ScriptName: string
         RoutingRules:
           - '@odata.type': Pbx.InboundRule
         ReceiveExtensions:
@@ -37092,9 +37865,13 @@ components:
         AutoDeleteEnabled: true
         AutoDeleteDays: 0
         TranscribeEngine: None
-        TranscribeModelOpenAI: Default
+        TranscribeModelOpenAI: string
+        AnalyzeModelOpenAI: string
+        AnalyzeModelGrok: string
         TranscribeRegion: string
         TranscribeSecretKey:
+          '@odata.type': Pbx.ConcealedPassword
+        TranscribeKeyGrok:
           '@odata.type': Pbx.ConcealedPassword
         TranscribeLanguage: string
         RemoteStorageEnabled: true
@@ -37104,13 +37881,6 @@ components:
       value:
         Code: string
         Name: string
-    Pbx.OnBoardUICommand:
-      value:
-        Operation: string
-        McuId: string
-        State: string
-        ErrorMessage: string
-        RequestExpiration: '0001-01-01T00:00:00.0000000+00:00'
     Pbx.OnBoardConverterSession:
       value:
         Id: string
@@ -37120,47 +37890,47 @@ components:
         Progress: 0
         Eta: '0001-01-01T00:00:00.0000000+00:00'
         Attempts: 0
-    Pbx.OnBoardConverterDataDetail:
-      value:
-        Host: string
-        Ip: string
-        Port: 0
-        Enabled: true
-        Version: string
-        Cloud: true
-        Active: true
-        Guid: string
-    Pbx.OnBoardConverterRow:
-      value:
-        Host: string
-        Ip: string
-        Port: 0
-        Enabled: true
-        Active: true
-        Secret: string
-        Cloud: true
-        Version: string
-        TsCreated: '0001-01-01T00:00:00.0000000+00:00'
-        TsActivated: '0001-01-01T00:00:00.0000000+00:00'
-        ServerStatus: 0
-        Guid: string
-        ServerOS: Debian10
-        InstallScript: string
     Pbx.OnBoardConverterData:
       value:
+        SessionsList:
+          - '@odata.type': Pbx.OnBoardConverterSession
+        Available: true
         Converter:
           '@odata.type': Pbx.OnBoardConverterDataDetail
         Cpu: 0
+        MemoryUsed: 0
         MemoryPerc: 0
+        MemoryTotal: 0
         Ts: '0001-01-01T00:00:00.0000000+00:00'
+        StartTime: string
         ClockSkew: 0
         Delay: 0
+        DiskSpaceFree: 0
+        DiskSpaceTotal: 0
         DiskSpacePerc: 0
-        Available: true
+        Connected: true
         Instances: 0
-        Sessions:
-          - '@odata.type': Pbx.OnBoardConverterSession
+        Gpu:
+          - '@odata.type': Pbx.DebianGpuInfo
+        CpuMac:
+          '@odata.type': Pbx.MacCpuInfo
+    Pbx.OnBoardUICommand:
+      value:
+        Operation: string
+        McuId: string
+        State: string
+        ErrorMessage: string
+        RequestExpiration: '0001-01-01T00:00:00.0000000+00:00'
+    Pbx.ConfiguredAiServers:
+      value:
+        ReleaseChannel: Beta
+        ConfiguredServers:
+          - '@odata.type': Pbx.OnBoardConverterRow
+    Pbx.ConnectedAiServers:
+      value:
         TranscriptionQueue: 0
+        ConnectedServers:
+          - '@odata.type': Pbx.OnBoardConverterData
     Pbx.ConferenceSettings:
       value:
         Id: 0
@@ -37172,7 +37942,7 @@ components:
         Zone: string
         MusicOnHold: string
         LogoPath: string
-        EnableLocalMCU: true
+        VideoConferenceMode: Disabled
         DtmfMode: None
     Pbx.MCURequestStatus:
       value:
@@ -37204,7 +37974,7 @@ components:
         TsActivated: '0001-01-01T00:00:00.0000000+00:00'
         ServerStatus: 0
         Guid: string
-        ServerOS: Debian10
+        ServerOS: string
         InstallScript: string
     Pbx.OnBoardMcuData:
       value:
@@ -37226,6 +37996,8 @@ components:
         FreeDiskSpace: 0
         Attempts: 0
         Connected: true
+        Online: true
+        Available: true
     Pbx.OnBoardMeeting:
       value:
         Sessionid: string
@@ -37305,7 +38077,10 @@ components:
           - string
     Pbx.AISettings:
       value:
+        Provider: string
         APIKey:
+          '@odata.type': Pbx.ConcealedPassword
+        ManagementAPIKey:
           '@odata.type': Pbx.ConcealedPassword
         RealtimeModel: string
         CompletionModel: string
@@ -37328,6 +38103,8 @@ components:
         Id: string
         Name: string
         Preview: true
+        Description: string
+        Example: string
     Pbx.AIResources:
       value:
         Chips:
@@ -37379,6 +38156,17 @@ components:
         VectorId: string
         FileIds:
           - string
+    Pbx.RemoveVectorStoreFiles:
+      value:
+        VectorId: string
+        FileIds:
+          - string
+    Pbx.VectorFileResult:
+      value:
+        FileName: string
+        ExternalFileId: string
+        Status: string
+        Error: string
     Pbx.SystemStatus:
       value:
         Id: 0
@@ -37570,6 +38358,17 @@ components:
     Pbx.CrmTemplateSource:
       value:
         Value: string
+    Pbx.McpServer:
+      value:
+        Id: 00000000-0000-0000-0000-000000000000 (identifier)
+        Issuer: string
+        ClientId: string
+    Pbx.OAuthServerMetadata:
+      value:
+        AuthorizationEndpoint: string
+        TokenEndpoint: string
+        ClientIdMetadataDocumentSupported: true
+        RegistrationEndpoint: string
     Pbx.DidNumber:
       value:
         Number: string (identifier)
@@ -37603,7 +38402,14 @@ components:
         RevokedByIp: string
         ReasonRevoked: TooMany
         SlidingExpiration: true
-        LoginType: Local
+        RotateOnRefresh: true
+        LoginType: Password
+        ClientId: 00000000-0000-0000-0000-000000000000
+        Scopes:
+          - string
+        OverrideConsoleRestrictions: true
+        Client:
+          '@odata.type': Pbx.OAuthClient
     Pbx.Holiday:
       value:
         Group: string
@@ -37668,18 +38474,50 @@ components:
           '@odata.type': Pbx.AmazonCredentials
     Pbx.SyslogSettings:
       value:
-        IsEnabled: true
-        IntegrationType: Custom
+        IntegrationType: None
         CustomRelayConfig:
           '@odata.type': Pbx.SyslogCustomRelayConfig
-        DatadogConfig:
-          '@odata.type': Pbx.SyslogDatadogConfig
-        SplunkConfig:
-          '@odata.type': Pbx.SyslogSplunkConfig
-        ElasticConfig:
-          '@odata.type': Pbx.SyslogElkConfig
         CategoryConfig:
           '@odata.type': Pbx.SyslogCategoryConfig
+    Pbx.ClientIdMetadataDocument:
+      value:
+        ClientId: string
+        ClientName: string
+        GrantTypes:
+          - string
+        ResponseTypes:
+          - string
+        RedirectUris:
+          - string
+        ClientUri: string
+        TosUri: string
+        PolicyUri: string
+        LogoUri: string
+        JwksUri: string
+        Scope: string
+        TokenEndpointAuthMethod: string
+    Pbx.OAuthClient:
+      value:
+        Id: 00000000-0000-0000-0000-000000000000 (identifier)
+        ClientId: string
+        Metadata:
+          '@odata.type': Pbx.ClientIdMetadataDocument
+        Scopes:
+          - string
+        CreatedAt: '0001-01-01T00:00:00.0000000+00:00'
+        CreatedBy: string
+        Persistent: true
+        ProvisioningType: Manual
+        UsedAt: '0001-01-01T00:00:00.0000000+00:00'
+        OverrideConsoleRestrictions: true
+        RefreshTokens:
+          - '@odata.type': Pbx.RefreshToken
+    Pbx.XReportRecording:
+      value:
+        Id: 0
+        SentimentScore: 0
+        Summary: string
+        Transcription: string
     Pbx.CallHistoryView:
       value:
         SegmentId: 0
@@ -37804,6 +38642,8 @@ components:
         SentimentScore: 0
         Summary: string
         Transcription: string
+        Recordings:
+          - '@odata.type': Pbx.XReportRecording
     Pbx.QualityReport:
       value:
         Summary: 0
@@ -38040,6 +38880,8 @@ components:
         RuleName: string
         QualityReport: true
         Status: string
+        Recordings:
+          - '@odata.type': Pbx.XReportRecording
     Pbx.InboundCall:
       value:
         CdrId: string (identifier)
@@ -38065,6 +38907,8 @@ components:
         Transcription: string
         RuleName: string
         QualityReport: true
+        Recordings:
+          - '@odata.type': Pbx.XReportRecording
     Pbx.AuditLog:
       value:
         Id: 0
@@ -38172,22 +39016,23 @@ components:
         SRTPMode: SRTPDisabled
         Host: string
         ProxyHost: string
+        ProxyPort: 0
+        TimeBetweenReg: 0
+        SpecifiedIPForRegistrationContact: string
+        IPInRegistrationContact: External
         Internal: true
         Lines: 0
         MatchingStrategy: MatchAnyFields
         Name: string
         OutboundCallerID: string
         Port: 0
-        ProxyPort: 0
         RequireRegistrationFor: Nothing
         SupportReinvite: true
         SupportReplaces: true
         TemplateFilename: string
-        TimeBetweenReg: 0
+        IsCustom: true
         Type: Unknown
         UseIPInContact: true
-        IPInRegistrationContact: External
-        SpecifiedIPForRegistrationContact: string
         Id: 0
     Pbx.PhoneSettings:
       value:
@@ -38317,12 +39162,24 @@ components:
         IsTranscriptionEnabled: true
         IsRemoteBackup: true
         RemoteStorageStatus: NotConfigured
+        AIVersion: string
     Pbx.License:
       value:
         ProductCode: string
         CountryCode: string
         IsMaintainceExpired: true
         MaxSimCalls: 0
+        IsProfessional: true
+        IsEnterprise: true
+        IsBrandingEnabled: true
+        IsCfdEnabled: true
+    Pbx.ReportLogEvent:
+      value:
+        Type: Error
+        Source: string
+        EventId: 0
+        Params:
+          - string
     Pbx.SendEmail:
       value:
         Destination: string
@@ -38380,6 +39237,7 @@ components:
         BrandMainImage: string
         BrandUrl: string
         EnableChat: true
+        EnableSelectorCallerId: true
         AllowChangePassword: true
         AllowBlockCalls: true
         HideCRMContacts: true
@@ -38400,6 +39258,10 @@ components:
         ScheduledReportGenerationTime: string
         HDAutoLogoutEnabled: true
         HDAutoLogoutTime: string
+        AllRolesCanApproveApps: true
+        OAuthOpenIdConnectEnabled: true
+        OAuthDcrEnabled: true
+        OAuthCimdEnabled: true
     Pbx.CallParkingSettings:
       value:
         MaximumParkedCalls: 0
@@ -38732,29 +39594,29 @@ components:
         SystemPrompt: string
         Voice: string
         Language: string
-        PhoneBookMatching: true
         AllowedExtensions: string
         Knowledgebase:
           - string
         RoutingDirectory:
           - '@odata.type': Pbx.AgentRoutingDirectory
+        HumanHandoff:
+          '@odata.type': Pbx.AgentRoutingDirectory
         AgentType: string
-        EnableSpamProtection: true
+        AgentFallback:
+          '@odata.type': Pbx.AgentRoutingAction
         SpamAction:
           '@odata.type': Pbx.AgentRoutingAction
         SpamInstructions: string
-        CallPrioritySettings:
-          '@odata.type': Pbx.CallPrioritySettings
+        BossInterruptionSettings:
+          '@odata.type': Pbx.BossInterruptionSettings
         EnableNameMatching: true
         AbusiveCallerAction:
           '@odata.type': Pbx.AgentRoutingAction
         CallerDoesNotRespondAction:
           '@odata.type': Pbx.AgentRoutingAction
-        TokenBudget:
-          '@odata.type': Pbx.CallTokenBudget
         CheckStatusBeforeTransfer: true
-        ConfidentialModeEnabled: true
         SwitchLanguage: true
+        AllowWebsearch: true
         PhonebookOverride:
           '@odata.type': Pbx.Peer
     Pbx.AgentRoutingDirectory:
@@ -38767,32 +39629,24 @@ components:
           - MS
     Pbx.AgentRoutingAction:
       value:
-        Action: string
         Number: string
+        Action: string
         Name: string
         Type: None
         Tags:
           - MS
-    Pbx.CallPrioritySettings:
+    Pbx.BossInterruptionSettings:
       value:
-        IsEnabled: true
-        PriorityLow:
-          '@odata.type': Pbx.CallPriority
-        PriorityMedium:
-          '@odata.type': Pbx.CallPriority
-        PriorityHigh:
-          '@odata.type': Pbx.CallPriority
-    Pbx.CallPriority:
+        Block:
+          '@odata.type': Pbx.InterruptionDecision
+        Interrupt:
+          '@odata.type': Pbx.InterruptionDecision
+        Notify:
+          '@odata.type': Pbx.InterruptionDecision
+    Pbx.InterruptionDecision:
       value:
         Instructions: string
         Action: string
-    Pbx.CallTokenBudget:
-      value:
-        Enabled: true
-        NormalSpeechTpm: 0
-        Tolerance: 0
-        MinInputTokens: 0
-        MaxInputTokens: 0
     Pbx.ReceptionistForward:
       value:
         ForwardType: EndCall
@@ -38985,6 +39839,7 @@ components:
         ServerVersion: string
         OutOfDate: true
         UpdateType: Release
+        HasExtraDetails: true
     Pbx.CategoryUpdate:
       value:
         Category: string
@@ -39023,6 +39878,7 @@ components:
           '@odata.type': Pbx.ConcealedPassword
         SftpPrivateKey:
           '@odata.type': Pbx.ConcealedDataFile
+        SftpHostKeyFingerprint: string
         GbJson:
           '@odata.type': Pbx.ConcealedDataFile
         GbPath: string
@@ -39108,6 +39964,47 @@ components:
           - string
         SyncType: SyncAllUsers
         IsEnabled: true
+    Pbx.OnBoardConverterDataDetail:
+      value:
+        Host: string
+        Ip: string
+        Port: 0
+        Enabled: true
+        Version: string
+        Cloud: true
+        Active: true
+        Guid: string
+    Pbx.DebianGpuInfo:
+      value:
+        GpuId: string
+        GpuName: string
+        MemoryTotal: 0
+        MemoryUsed: 0
+        MemoryFree: 0
+        GpuUsagePercent: 0
+        MemoryUsagePercent: 0
+    Pbx.MacCpuInfo:
+      value:
+        Cpu: 0
+        Gpu: 0
+        Ane: 0
+    Pbx.OnBoardConverterRow:
+      value:
+        Host: string
+        Ip: string
+        Port: 0
+        Enabled: true
+        Active: true
+        Secret: string
+        Cloud: true
+        Version: string
+        TsCreated: '0001-01-01T00:00:00.0000000+00:00'
+        TsActivated: '0001-01-01T00:00:00.0000000+00:00'
+        ServerStatus: 0
+        Guid: string
+        ServerOS: string
+        ServerOSVersion: string
+        InstallScript: string
     Pbx.OnBoardMcuDataDetail:
       value:
         Host: string
@@ -39263,19 +40160,6 @@ components:
           '@odata.type': Pbx.ConcealedDataFile
         ClientPrivateKey:
           '@odata.type': Pbx.ConcealedDataFile
-    Pbx.SyslogDatadogConfig:
-      value:
-        Url: string
-        ApiKey: string
-    Pbx.SyslogSplunkConfig:
-      value:
-        Url: string
-        Token: string
-    Pbx.SyslogElkConfig:
-      value:
-        Url: string
-        ApiKey: string
-        IndexName: string
     Pbx.SyslogCategoryConfig:
       value:
         IsEventLogsEnabled: true
@@ -39411,10 +40295,20 @@ components:
   securitySchemes:
     Application:
       type: oauth2
-      description: Use service principal credentials created via Admin/Integrations/API
+      description: OAuth2/OpenID Connect. Use client credentials for service principals (Admin/Integrations/API) or authorization code flow with PKCE for user authentication with OpenID Connect support.
       flows:
         clientCredentials:
           tokenUrl: /connect/token
           scopes: { }
+        authorizationCode:
+          authorizationUrl: /connect/authorize
+          tokenUrl: /connect/token
+          refreshUrl: /connect/token
+          scopes:
+            openid: OpenID Connect authentication
+            profile: Access to user profile information
+            email: Access to user email address
+            offline_access: Refresh token for offline access
+          x-pkce-required: true
 security:
   - Application: [ ]

@@ -25,7 +25,9 @@ export async function getAccessToken(basePath: string, username: string, passwor
         body: formParams,
     });
     if (!refreshResponseFetch.ok) {
-        throw new Error(`Refresh failed with status code ${refreshResponseFetch.status}'`);
+        const body = await refreshResponseFetch.json().catch(() => null);
+        const msg = body?.error_description ?? body?.error ?? `HTTP ${refreshResponseFetch.status}`;
+        throw new Error(msg);
     }
     return refreshResponseFetch.json();
 }

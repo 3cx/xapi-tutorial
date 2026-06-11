@@ -5,7 +5,7 @@ import { ContactsApi, PbxContact } from './xapi';
 import { xapiConfig } from '../config';
 import { colorize } from 'json-colorizer';
 
-describe('FAX tests', () => {
+describe('Contacts tests', () => {
     let api: ContactsApi;
     let item: PbxContact;
 

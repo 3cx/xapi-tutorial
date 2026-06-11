@@ -16,15 +16,37 @@ From the Admin Console in the 3CX Webclient, go to Integrations > API:
 > [!IMPORTANT]
 > You must have a 3CX Enterprise license to use 3CX XAPI.
 
+## Credentials
+
+Copy the example env file and fill in your PBX details:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```
+XAPI_URL=https://your-pbx.example.com
+XAPI_CLIENT_ID=<client_id from step 2>
+XAPI_CLIENT_SECRET=<client_secret from step 4>
+```
+
 ## Test run
 
-In the config.ts file put your base PBX URL, client_id from step 2. and client_secret from step 4.
+> **Warning:** The tests CAN ALTER your PBX! Make a backup or use a separate instance.
 
-Note the following:
-Run tests inband because only one access token can be created at a time.
-The tests CAN ALTER your PBX! Please make a backup or use a separate instance.  
+Tests must run sequentially — only one access token can be active at a time.
 
-You can explore Jest test suites in src folder and see how to perform actions
-Launch "yarn jest -i" to launch them all
+```bash
+# All tests
+yarn jest -i
 
-Launch "yarn jest -i src/fax.spec.ts" to launch individual test
+# Single file
+yarn jest -i src/fax.spec.ts
+
+# Single test by name
+yarn jest -i src/users.spec.ts -t "test name here"
+```
+
+You can explore the Jest test suites in the `src/` folder to see how to use the API.
