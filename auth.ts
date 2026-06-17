@@ -43,7 +43,7 @@ export function createXAPIConfiguration(basePath: string, username: string, pass
             const now = Date.now();
             if (!accessTokenResponse || now > expires) {
                 accessTokenResponse = await getAccessToken(basePath, username, password);
-                expires = now + accessTokenResponse.expires_in * 60 * 1000;
+                expires = now + accessTokenResponse.expires_in * 1000;
             }
             return accessTokenResponse.access_token;
         }),
