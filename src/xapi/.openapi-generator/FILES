@@ -21,6 +21,7 @@ docs/ActiveCallsApi.md
 docs/ActivityLogApi.md
 docs/AmazonIntegrationSettingsApi.md
 docs/AntiHackingSettingsApi.md
+docs/AssignRequestBody.md
 docs/BackupsApi.md
 docs/BackupsBackupRequestBody.md
 docs/BackupsBackupsRestoreRequestBody.md
@@ -137,6 +138,8 @@ docs/FaxBulkFaxDeleteRequestBody.md
 docs/FaxServerSettingsApi.md
 docs/FirewallApi.md
 docs/FirmwaresApi.md
+docs/FirmwaresFirmwarePushFirmwareForPhonesRequestBody.md
+docs/FirmwaresFirmwareSetAsDefaultRequestBody.md
 docs/FxsApi.md
 docs/FxsTemplatesApi.md
 docs/GeneralSettingsForAppsApi.md
@@ -154,7 +157,6 @@ docs/GetPhoneRegistrars200Response.md
 docs/GetRoutes200Response.md
 docs/GetSftpHostKey200Response.md
 docs/GetTranscribeLanguages200Response.md
-docs/GetUpdateDetailsApi.md
 docs/GetUsersByPrincipalNames200Response.md
 docs/GoogleSettingsApi.md
 docs/GoogleSettingsGetGoogleUsersRequestBody.md
@@ -164,6 +166,7 @@ docs/GroupsDeleteCompanyByNumberRequestBody.md
 docs/GroupsLinkGroupPartnerRequestBody.md
 docs/GroupsReplaceGroupLicenseKeyRequestBody.md
 docs/HolidaysApi.md
+docs/HotelRoomsApi.md
 docs/HotelServicesApi.md
 docs/InboundRulesApi.md
 docs/InboundRulesBulkInboundRulesDeleteRequestBody.md
@@ -406,7 +409,9 @@ docs/PbxFaxServerSettings.md
 docs/PbxFileSystemType.md
 docs/PbxFirewallState.md
 docs/PbxFirmware.md
+docs/PbxFirmwareCategory.md
 docs/PbxFirmwareCollectionResponse.md
+docs/PbxFirmwareInfo.md
 docs/PbxFirmwareState.md
 docs/PbxFirstAvailableNumber.md
 docs/PbxForwardingProfile.md
@@ -449,7 +454,9 @@ docs/PbxGroupProps.md
 docs/PbxGroupsRequestOptions.md
 docs/PbxHoliday.md
 docs/PbxHolidayCollectionResponse.md
+docs/PbxHotelGuest.md
 docs/PbxHotelServices.md
+docs/PbxHotfixInfo.md
 docs/PbxIPInRegistrationContactType.md
 docs/PbxIVRForwardType.md
 docs/PbxIVRType.md
@@ -461,6 +468,7 @@ docs/PbxInboundRuleReport.md
 docs/PbxInboundRuleReportCollectionResponse.md
 docs/PbxInfoLevel.md
 docs/PbxInstallFirmware.md
+docs/PbxInstallResult.md
 docs/PbxInstallUpdates.md
 docs/PbxIntegrationSyncType.md
 docs/PbxInterruptionDecision.md
@@ -563,6 +571,8 @@ docs/PbxPhoneCollectionResponse.md
 docs/PbxPhoneDeviceVlanInfo.md
 docs/PbxPhoneDeviceVlanInfoCollectionResponse.md
 docs/PbxPhoneDeviceVlanType.md
+docs/PbxPhoneKey.md
+docs/PbxPhoneKeyCollectionResponse.md
 docs/PbxPhoneLldpInfo.md
 docs/PbxPhoneLogo.md
 docs/PbxPhoneLogoCollectionResponse.md
@@ -722,6 +732,8 @@ docs/PbxTimeReportDataCollectionResponse.md
 docs/PbxTimeZone.md
 docs/PbxTimeZoneCollectionResponse.md
 docs/PbxTranscribeEngine.md
+docs/PbxTranscribeProviderSettings.md
+docs/PbxTranscribeSettings.md
 docs/PbxTranscriptionType.md
 docs/PbxTrunk.md
 docs/PbxTrunkCollectionResponse.md
@@ -848,6 +860,8 @@ docs/ReportRingGroupStatisticsApi.md
 docs/ReportStatisticSlaApi.md
 docs/ReportTeamQueueGeneralStatisticsApi.md
 docs/ReportUserActivityApi.md
+docs/ResendRpsRequestBody.md
+docs/RevokeRpsRequestBody.md
 docs/RingGroupsApi.md
 docs/RunAnalysis200Response.md
 docs/SbcsApi.md
@@ -864,6 +878,10 @@ docs/ServicesStartRequestBody.md
 docs/ServicesStopRequestBody.md
 docs/SetMonitorStatusRequestBody.md
 docs/SipDevicesApi.md
+docs/SipDevicesBulkSwitchFirmwareRequestBody.md
+docs/SipDevicesBulkUpdateFirmwareRequestBody.md
+docs/SipDevicesSipDeviceClearFirmwareRequestBody.md
+docs/SipDevicesSipDeviceMovePhoneRequestBody.md
 docs/SipDevicesSipDevicePushFirmwareRequestBody.md
 docs/StringCollectionResponse.md
 docs/SyslogSettingsApi.md
@@ -896,7 +914,6 @@ docs/UsersRebootPhoneRequestBody.md
 docs/UsersRegeneratePasswordsRequestBody.md
 docs/UsersReprovisionAllPhonesRequestBody.md
 docs/UsersReprovisionPhoneRequestBody.md
-docs/UsersUpgradePhoneRequestBody.md
 docs/VoicemailSettingsApi.md
 docs/VoicemailSettingsDeleteConverterConfigurationRequestBody.md
 docs/WebsiteLinksApi.md

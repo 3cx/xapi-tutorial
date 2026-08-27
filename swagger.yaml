@@ -3,9 +3,7 @@ info:
   title: XAPI
   description: This OData service is located at /xapi/v1
   version: 1.0.0
-  x-ms-generated-by:
-    toolName: Microsoft.OpenApi.OData
-    toolVersion: 0.0.0.0
+  x-pbx-version: 20.0.10.1479
 servers:
   - url: /xapi/v1
 paths:
@@ -5593,6 +5591,51 @@ paths:
           schema:
             type: string
           x-ms-docs-key-type: Firmware
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: FirmwaresFirmwarePushFirmwareForPhonesRequestBody
+              type: object
+              properties:
+                macs:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/Firmwares({Id})/Pbx.SetAsDefault':
+    description: Provides operations to call the SetAsDefault method.
+    post:
+      tags:
+        - Firmwares
+      summary: Invoke action SetAsDefault
+      operationId: SetAsDefault
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of Firmware
+          required: true
+          schema:
+            type: string
+          x-ms-docs-key-type: Firmware
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: FirmwaresFirmwareSetAsDefaultRequestBody
+              type: object
+              properties:
+                value:
+                  type: boolean
+                  default: false
+        required: true
       responses:
         '204':
           description: Success
@@ -6757,6 +6800,56 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  '/HotelRooms({Id})/Pbx.Assign':
+    description: Provides operations to call the Assign method.
+    post:
+      tags:
+        - HotelRooms
+      summary: Invoke action Assign
+      operationId: Assign
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of User
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: User
+      requestBody:
+        $ref: '#/components/requestBodies/AssignRequestBody'
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/HotelRooms({Id})/Pbx.Clear':
+    description: Provides operations to call the Clear method.
+    post:
+      tags:
+        - HotelRooms
+      summary: Invoke action Clear
+      operationId: Clear
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of User
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: User
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
   /HotelServices:
     description: Provides operations to manage the HotelServices singleton.
     get:
@@ -18729,8 +18822,167 @@ paths:
               title: SipDevicesSipDevicePushFirmwareRequestBody
               type: object
               properties:
+                extensionId:
+                  maximum: 2147483647
+                  minimum: -2147483648
+                  type: integer
+                  format: int32
                 firmwareId:
                   type: string
+                mac:
+                  type: string
+                  nullable: true
+        required: true
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/SipDevices({Id})/Pbx.ClearFirmware':
+    description: Provides operations to call the ClearFirmware method.
+    post:
+      tags:
+        - SipDevices
+      summary: Invoke action ClearFirmware
+      operationId: ClearFirmware
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of SipDevice
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: SipDevice
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: SipDevicesSipDeviceClearFirmwareRequestBody
+              type: object
+              properties:
+                extensionId:
+                  maximum: 2147483647
+                  minimum: -2147483648
+                  type: integer
+                  format: int32
+                mac:
+                  type: string
+        required: true
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /SipDevices/Pbx.BulkSwitchFirmware:
+    description: Provides operations to call the BulkSwitchFirmware method.
+    post:
+      tags:
+        - SipDevices
+      summary: Invoke action BulkSwitchFirmware
+      operationId: BulkSwitchFirmware
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: SipDevicesBulkSwitchFirmwareRequestBody
+              type: object
+              properties:
+                info:
+                  allOf:
+                    - $ref: '#/components/schemas/Pbx.FirmwareInfo'
+                  nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Pbx.IActionResult'
+                nullable: true
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  /SipDevices/Pbx.BulkUpdateFirmware:
+    description: Provides operations to call the BulkUpdateFirmware method.
+    post:
+      tags:
+        - SipDevices
+      summary: Invoke action BulkUpdateFirmware
+      operationId: BulkUpdateFirmware
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: SipDevicesBulkUpdateFirmwareRequestBody
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    maximum: 2147483647
+                    minimum: -2147483648
+                    type: integer
+                    format: int32
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Pbx.IActionResult'
+                nullable: true
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/SipDevices({Id})/Pbx.MovePhone':
+    description: Provides operations to call the MovePhone method.
+    post:
+      tags:
+        - SipDevices
+      summary: Invoke action MovePhone
+      operationId: MovePhone
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of SipDevice
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: SipDevice
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              title: SipDevicesSipDeviceMovePhoneRequestBody
+              type: object
+              properties:
+                dstExtensionId:
+                  maximum: 2147483647
+                  minimum: -2147483648
+                  type: integer
+                  format: int32
+                mac:
+                  type: string
+                srcExtensionId:
+                  maximum: 2147483647
+                  minimum: -2147483648
+                  type: integer
+                  format: int32
         required: true
       responses:
         '204':
@@ -19733,40 +19985,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: actionImport
-  /HasDebianUpgrade():
-    description: Provides operations to call the HasDebianUpgrade method.
-    get:
-      tags:
-        - Updates
-      summary: Invoke functionImport HasDebianUpgrade
-      operationId: HasDebianUpgrade
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  value:
-                    type: boolean
-                    default: false
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: functionImport
-  /UpgradeDebian:
-    description: Provides operations to call the UpgradeDebian method.
-    post:
-      tags:
-        - Updates
-      summary: Invoke actionImport UpgradeDebian
-      operationId: UpgradeDebian
-      responses:
-        '204':
-          description: Success
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: actionImport
   /GetUpdates():
     description: Provides operations to call the GetUpdates method.
     get:
@@ -19837,8 +20055,14 @@ paths:
                   $ref: '#/components/schemas/Pbx.InstallUpdates'
         required: true
       responses:
-        '204':
+        '200':
           description: Success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Pbx.InstallResult'
+                nullable: true
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: actionImport
@@ -19846,7 +20070,7 @@ paths:
     description: Provides operations to call the GetUpdateDetails method.
     get:
       tags:
-        - GetUpdateDetails
+        - Updates
       summary: Invoke functionImport GetUpdateDetails
       operationId: GetUpdateDetails
       parameters:
@@ -20171,30 +20395,6 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
-  '/Users({Id})/Pbx.GetPhoneSecret()':
-    description: Provides operations to call the GetPhoneSecret method.
-    get:
-      tags:
-        - Users
-      summary: Invoke function GetPhoneSecret
-      operationId: GetPhoneSecret
-      parameters:
-        - name: Id
-          in: path
-          description: The unique identifier of User
-          required: true
-          schema:
-            maximum: 2147483647
-            minimum: -2147483648
-            type: integer
-            format: int32
-          x-ms-docs-key-type: User
-      responses:
-        '200':
-          $ref: '#/components/responses/GetPhoneSecretResponse'
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: function
   '/Users({Id})/Pbx.Regenerate':
     description: Provides operations to call the Regenerate method.
     post:
@@ -20246,6 +20446,58 @@ paths:
                 opts:
                   $ref: '#/components/schemas/Pbx.RegenerateOptions'
         required: true
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/Users({Id})/Pbx.ResendRps':
+    description: Provides operations to call the ResendRps method.
+    post:
+      tags:
+        - Users
+      summary: Invoke action ResendRps
+      operationId: ResendRps
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of User
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: User
+      requestBody:
+        $ref: '#/components/requestBodies/ResendRpsRequestBody'
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: action
+  '/Users({Id})/Pbx.RevokeRps':
+    description: Provides operations to call the RevokeRps method.
+    post:
+      tags:
+        - Users
+      summary: Invoke action RevokeRps
+      operationId: RevokeRps
+      parameters:
+        - name: Id
+          in: path
+          description: The unique identifier of User
+          required: true
+          schema:
+            maximum: 2147483647
+            minimum: -2147483648
+            type: integer
+            format: int32
+          x-ms-docs-key-type: User
+      requestBody:
+        $ref: '#/components/requestBodies/RevokeRpsRequestBody'
       responses:
         '204':
           description: Success
@@ -20444,34 +20696,6 @@ paths:
               type: object
               properties:
                 mac:
-                  type: string
-        required: true
-      responses:
-        '204':
-          description: Success
-        default:
-          $ref: '#/components/responses/error'
-      x-ms-docs-operation-type: action
-  /Users/Pbx.UpgradePhone:
-    description: Provides operations to call the UpgradePhone method.
-    post:
-      tags:
-        - Users
-      summary: Invoke action UpgradePhone
-      operationId: UpgradePhone
-      requestBody:
-        description: Action parameters
-        content:
-          application/json:
-            schema:
-              title: UsersUpgradePhoneRequestBody
-              type: object
-              properties:
-                mac:
-                  type: string
-                useragent:
-                  type: string
-                version:
                   type: string
         required: true
       responses:
@@ -23106,6 +23330,9 @@ components:
             IsRegistered:
               type: boolean
               nullable: true
+            IsRestricted:
+              type: boolean
+              nullable: true
             Language:
               type: string
               nullable: true
@@ -23253,8 +23480,8 @@ components:
         Result:
           allOf:
             - $ref: '#/components/schemas/Pbx.CallParticipant'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         VttId:
           type: string
           nullable: true
@@ -23287,10 +23514,22 @@ components:
           format: int32
           nullable: true
         FirmwareAvailable:
+          type: boolean
+          nullable: true
+        FirmwareLatestId:
           type: string
+          nullable: true
+        FirmwareOutdated:
+          type: boolean
           nullable: true
         FirmwareVersion:
           type: string
+          nullable: true
+        Id:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
           nullable: true
         InterfaceLink:
           type: string
@@ -23298,10 +23537,43 @@ components:
         IpAddress:
           type: string
           nullable: true
+        IsDectDevice:
+          type: boolean
+          nullable: true
+        IsRouter:
+          type: boolean
+          nullable: true
         MAC:
           type: string
           nullable: true
         Model:
+          type: string
+          nullable: true
+        ModelMismatch:
+          type: boolean
+          nullable: true
+        ProvLink:
+          type: string
+          nullable: true
+        ProvType:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ProvType'
+          nullable: true
+        RpsCapable:
+          type: boolean
+          nullable: true
+        RpsExpirationUTC:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+          nullable: true
+        SbcDisplayName:
+          type: string
+          nullable: true
+        SbcName:
+          type: string
+          nullable: true
+        TemplateModel:
           type: string
           nullable: true
         UserAgent:
@@ -23502,6 +23774,21 @@ components:
           type: string
           nullable: true
         UserAgent:
+          type: string
+          nullable: true
+    Pbx.HotelGuest:
+      title: HotelGuest
+      type: object
+      properties:
+        Email:
+          type: string
+          nullable: true
+        FirstName:
+          type: string
+        LastName:
+          type: string
+          nullable: true
+        Mobile:
           type: string
           nullable: true
     Pbx.PhoneTemplate:
@@ -24349,8 +24636,8 @@ components:
         DefaultRule:
           allOf:
             - $ref: '#/components/schemas/Pbx.InboundRule'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         Groups:
           type: array
           items:
@@ -24418,8 +24705,8 @@ components:
         TrunkDN:
           allOf:
             - $ref: '#/components/schemas/Pbx.Peer'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
     Pbx.Country:
       title: Country
       type: object
@@ -24505,16 +24792,16 @@ components:
         Registered:
           allOf:
             - $ref: '#/components/schemas/Pbx.RegistrarFxs'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         Secret:
           type: string
           nullable: true
         Template:
           allOf:
             - $ref: '#/components/schemas/Pbx.FxsTemplate'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         TimeZone:
           type: string
           nullable: true
@@ -24761,8 +25048,8 @@ components:
         DN:
           allOf:
             - $ref: '#/components/schemas/Pbx.Peer'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         EnableReCaptcha:
           type: boolean
           nullable: true
@@ -24817,6 +25104,15 @@ components:
         AutoUpdateEnabled:
           type: boolean
           nullable: true
+        HotfixAndSecurityEnabled:
+          type: boolean
+          nullable: true
+        HotfixAndSecurityHour:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
         Schedule:
           allOf:
             - $ref: '#/components/schemas/Pbx.BackupSchedule'
@@ -24842,6 +25138,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        UpdatesRunning:
+          type: boolean
+          nullable: true
     Pbx.InstallUpdates:
       title: InstallUpdates
       type: object
@@ -24856,6 +25155,13 @@ components:
           pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
           type: string
           format: uuid
+    Pbx.InstallResult:
+      title: InstallResult
+      type: object
+      properties:
+        UpdatesRunning:
+          type: boolean
+          nullable: true
     Pbx.UpdatesStats:
       title: UpdatesStats
       type: object
@@ -25120,8 +25426,8 @@ components:
             Trunk:
               allOf:
                 - $ref: '#/components/schemas/Pbx.Trunk'
-              nullable: true
               x-ms-navigationProperty: true
+              nullable: true
     Pbx.ServicePrincipal:
       allOf:
         - $ref: '#/components/schemas/Pbx.DN'
@@ -25665,12 +25971,6 @@ components:
       title: VoicemailSettings
       type: object
       properties:
-        AnalyzeModelGrok:
-          type: string
-          nullable: true
-        AnalyzeModelOpenAI:
-          type: string
-          nullable: true
         AutoDeleteDays:
           maximum: 2147483647
           minimum: -2147483648
@@ -25718,26 +26018,9 @@ components:
           type: integer
           format: int32
           nullable: true
-        TranscribeEngine:
+        TranscribeSettings:
           allOf:
-            - $ref: '#/components/schemas/Pbx.TranscribeEngine'
-          nullable: true
-        TranscribeKeyGrok:
-          allOf:
-            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
-          nullable: true
-        TranscribeLanguage:
-          type: string
-          nullable: true
-        TranscribeModelOpenAI:
-          type: string
-          nullable: true
-        TranscribeRegion:
-          type: string
-          nullable: true
-        TranscribeSecretKey:
-          allOf:
-            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+            - $ref: '#/components/schemas/Pbx.TranscribeSettings'
           nullable: true
         UsedSpace:
           type: integer
@@ -26273,6 +26556,21 @@ components:
       title: Firmware
       type: object
       properties:
+        Default:
+          type: boolean
+          nullable: true
+        Deployed:
+          type: boolean
+          nullable: true
+        Description:
+          type: string
+          nullable: true
+        Devices:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+          nullable: true
         Filename:
           type: string
           nullable: true
@@ -26280,6 +26578,10 @@ components:
           type: string
         Model:
           type: string
+          nullable: true
+        Size:
+          type: integer
+          format: int64
           nullable: true
         Vendor:
           type: string
@@ -26324,6 +26626,9 @@ components:
           nullable: true
         CompletionModel:
           type: string
+          nullable: true
+        Enabled:
+          type: boolean
           nullable: true
         ManagementAPIKey:
           allOf:
@@ -26391,6 +26696,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Pbx.AIModel'
+        RestrictedModelAccess:
+          type: array
+          items:
+            type: string
         Templates:
           type: array
           items:
@@ -26589,6 +26898,9 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+          nullable: true
+        Firmware3CXOutdated:
+          type: boolean
           nullable: true
         FQDN:
           type: string
@@ -27198,8 +27510,8 @@ components:
         RoutingRule:
           allOf:
             - $ref: '#/components/schemas/Pbx.InboundRule'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         TemplateFileName:
           type: string
           nullable: true
@@ -27238,8 +27550,8 @@ components:
         Client:
           allOf:
             - $ref: '#/components/schemas/Pbx.OAuthClient'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         ClientId:
           pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
           type: string
@@ -29045,8 +29357,8 @@ components:
         GroupRights:
           allOf:
             - $ref: '#/components/schemas/Pbx.Rights'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         Id:
           maximum: 2147483647
           minimum: -2147483648
@@ -29065,8 +29377,8 @@ components:
         Rights:
           allOf:
             - $ref: '#/components/schemas/Pbx.Rights'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         Tags:
           type: array
           items:
@@ -29361,6 +29673,11 @@ components:
         RingTone:
           type: string
           nullable: true
+        RpsExpirationUTC:
+          pattern: '^[0-9]{4,}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,12})?(Z|[+-][0-9][0-9]:[0-9][0-9])$'
+          type: string
+          format: date-time
+          nullable: true
         SbcName:
           type: string
           nullable: true
@@ -29447,16 +29764,32 @@ components:
       title: SipDevice
       type: object
       properties:
+        AssignedFirmware:
+          type: string
+          nullable: true
+        Category:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.FirmwareCategory'
+          nullable: true
+        CustomFirmware:
+          type: boolean
+          nullable: true
         DN:
           allOf:
             - $ref: '#/components/schemas/Pbx.Peer'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
+        HotDesking:
+          type: boolean
+          nullable: true
         Id:
           maximum: 2147483647
           minimum: -2147483648
           type: integer
           format: int32
+        Online:
+          type: boolean
+          nullable: true
         PhoneWebPassword:
           type: string
           nullable: true
@@ -29467,6 +29800,17 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.PhoneRegistrar'
           nullable: true
+    Pbx.FirmwareInfo:
+      title: FirmwareInfo
+      type: object
+      properties:
+        FirmwareId:
+          type: string
+          nullable: true
+        Keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pbx.PhoneKey'
     Pbx.GatewayParameter:
       title: GatewayParameter
       type: object
@@ -29683,6 +30027,12 @@ components:
           type: boolean
           nullable: true
         IsEnterprise:
+          type: boolean
+          nullable: true
+        IsExtensionLimitEnforcementEnabled:
+          type: boolean
+          nullable: true
+        IsMailServerRestricted:
           type: boolean
           nullable: true
         IsMaintainceExpired:
@@ -30078,10 +30428,10 @@ components:
         AllowMultiQueueRingtones:
           type: boolean
           nullable: true
-        AutoCleanupFirmware:
+        AutoUpdatePhonesOnAdd:
           type: boolean
           nullable: true
-        AutoUpdatePhonesOnAdd:
+        AutoUpdateScheduled:
           type: boolean
           nullable: true
         CustomDNDProfile:
@@ -30099,8 +30449,9 @@ components:
           type: integer
           format: int32
           nullable: true
-        PhoneAllowMultiFirmwares:
-          type: boolean
+        Schedule:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.BackupSchedule'
           nullable: true
         SnomUpdateInterval:
           maximum: 2147483647
@@ -30111,7 +30462,7 @@ components:
         UseProvisioningSecret:
           type: boolean
           nullable: true
-        UseRpcForLocalPhones:
+        UseRpsForLocalPhones:
           type: boolean
           nullable: true
         YealinkUpdateInterval:
@@ -30176,8 +30527,8 @@ components:
         EmergencyDNPrompt:
           allOf:
             - $ref: '#/components/schemas/Pbx.Peer'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         EmergencyPlayPrompt:
           type: string
           nullable: true
@@ -30983,8 +31334,8 @@ components:
         PhonebookOverride:
           allOf:
             - $ref: '#/components/schemas/Pbx.Peer'
-          nullable: true
           x-ms-navigationProperty: true
+          nullable: true
         RoutingDirectory:
           type: array
           items:
@@ -31138,6 +31489,9 @@ components:
           type: boolean
           nullable: true
         CanBeSBC:
+          type: boolean
+          nullable: true
+        FirmwareCustomizable:
           type: boolean
           nullable: true
         Name:
@@ -31655,6 +32009,25 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+        Critical:
+          type: boolean
+        Hotfix:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.HotfixInfo'
+          nullable: true
+    Pbx.HotfixInfo:
+      title: HotfixInfo
+      type: object
+      properties:
+        Description:
+          type: string
+          nullable: true
+        DescriptionLink:
+          type: string
+          nullable: true
+        ServerVersion:
+          type: string
+          nullable: true
     Pbx.BackupContents:
       title: BackupContents
       type: object
@@ -31980,6 +32353,72 @@ components:
           allOf:
             - $ref: '#/components/schemas/Pbx.IntegrationSyncType'
           nullable: true
+    Pbx.TranscribeSettings:
+      title: TranscribeSettings
+      type: object
+      properties:
+        AnalyzeModelGoogle:
+          type: string
+          nullable: true
+        AnalyzeModelGrok:
+          type: string
+          nullable: true
+        AnalyzeModelOpenAI:
+          type: string
+          nullable: true
+        Google:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.TranscribeProviderSettings'
+          nullable: true
+        Grok:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.TranscribeProviderSettings'
+          nullable: true
+        OpenAI:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.TranscribeProviderSettings'
+          nullable: true
+        TcxAI:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.TranscribeProviderSettings'
+          nullable: true
+        TranscribeEngine:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.TranscribeEngine'
+          nullable: true
+        TranscribeKeyGrok:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          nullable: true
+        TranscribeLanguage:
+          type: string
+          nullable: true
+        TranscribeModelOpenAI:
+          type: string
+          nullable: true
+        TranscribeRegion:
+          type: string
+          nullable: true
+        TranscribeSecretKey:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedPassword'
+          nullable: true
+    Pbx.TranscribeProviderSettings:
+      title: TranscribeProviderSettings
+      type: object
+      properties:
+        DefaultSentimentPrompt:
+          type: string
+          nullable: true
+        DefaultSummaryPrompt:
+          type: string
+          nullable: true
+        SentimentPrompt:
+          type: string
+          nullable: true
+        SummaryPrompt:
+          type: string
+          nullable: true
     Pbx.OnBoardConverterDataDetail:
       title: OnBoardConverterDataDetail
       type: object
@@ -32001,6 +32440,10 @@ components:
           minimum: -2147483648
           type: integer
           format: int32
+        ServerOS:
+          type: string
+        ServerOSVersion:
+          type: string
         Version:
           type: string
     Pbx.DebianGpuInfo:
@@ -32436,6 +32879,10 @@ components:
       title: RemoteMySqlConfig
       type: object
       properties:
+        CACertificate:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ConcealedDataFile'
+          nullable: true
         Database:
           type: string
           nullable: true
@@ -32449,6 +32896,10 @@ components:
         Port:
           type: integer
           format: int64
+          nullable: true
+        ServerTrustMode:
+          allOf:
+            - $ref: '#/components/schemas/Pbx.ServerTrustMode'
           nullable: true
         UserId:
           type: string
@@ -32473,6 +32924,9 @@ components:
           nullable: true
         UserId:
           type: string
+          nullable: true
+        ValidateServerCertificate:
+          type: boolean
           nullable: true
     Pbx.DataTypesToOffload:
       title: DataTypesToOffload
@@ -32675,6 +33129,22 @@ components:
         UserAgent:
           type: string
           nullable: true
+    Pbx.PhoneKey:
+      title: PhoneKey
+      type: object
+      properties:
+        ExtensionId:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
+        Mac:
+          type: string
+        RegId:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: integer
+          format: int32
     Pbx.ENL:
       title: ENL
       type: object
@@ -33214,6 +33684,12 @@ components:
         - RegistrationIsBlocked
         - ForwardingFailed
         - ForwardingFailedEndCall
+        - RegistrationFailedNoResponse
+        - ProxyFQDNIsNotResolved
+        - RegistrarFQDNIsNotResolved
+        - AltProxyFQDNIsNotResolved
+        - NoTargetResolved
+        - ErrProxyFqdnHasNoNAPTRorSRV
         - WarnOutboundDuration
         - NumberFormatsMismatch
         - TrunkIsInboundOnly
@@ -33228,9 +33704,6 @@ components:
         - AltProxyZeroPortIP
         - ForwardingEndsCall
         - MainTrunkNumber
-        - ProxyFQDNIsNotResolved
-        - RegistrarFQDNIsNotResolved
-        - AltProxyFQDNIsNotResolved
         - NotSupportedSessionTimers
         - OutboundDialed
         - NumberFormatsMatch
@@ -33394,6 +33867,7 @@ components:
         - MajorRelease
         - Alpha
         - Hotfix
+        - RC
       type: string
     Pbx.FailoverMode:
       title: FailoverMode
@@ -33677,7 +34151,7 @@ components:
       title: GrantType
       enum:
         - Password
-        - Support
+        - Guest
         - Sso
         - OAuthClient
         - ClientCredentials
@@ -33774,6 +34248,13 @@ components:
         - Monthly
         - Hourly
         - NotScheduled
+      type: string
+    Pbx.FirmwareCategory:
+      title: FirmwareCategory
+      enum:
+        - None
+        - TcxTested
+        - VendorTested
       type: string
     Pbx.AvatarStyle:
       title: AvatarStyle
@@ -35358,6 +35839,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Pbx.CustomQueueRingtone'
+    Pbx.PhoneKeyCollectionResponse:
+      title: Collection of Pbx.PhoneKey
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCollectionPaginationCountResponse'
+        - type: object
+          properties:
+            value:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx.PhoneKey'
     Pbx.EmailVariableCollectionResponse:
       title: Collection of Pbx.EmailVariable
       type: object
@@ -35469,6 +35961,7 @@ components:
         - WARNINGS.GROUP_WITH_MEMBERS_CANNOT_BE_DELETED
         - WARNINGS.XAPI.OTHER_USER_ROLE_DOWNGRADE
         - WARNINGS.XAPI.INVALID_LICENSE_TYPE
+        - WARNINGS.XAPI.INVALID_KEY_OR_PASSPHRASE
         - WARNINGS.INVALID_PASSWORD
         - WARNINGS.XAPI.NOT_FOUND
         - WARNINGS.XAPI.FILE_NOT_FOUND
@@ -35480,6 +35973,7 @@ components:
         - WARNINGS.XAPI.ALREADY_IN_USE
         - WARNINGS.MAC_ADDRESS_ALREADY_IN_USE
         - WARNINGS.XAPI.PLAYLIST_IN_USE
+        - WARNINGS.XAPI.TEMPLATE_IN_USE
         - WARNINGS.XAPI.OUT_OF_THE_RANGE
         - WARNINGS.XAPI.TOO_MANY_PHONES
         - WARNINGS.XAPI.TOO_MANY_TRUNKS
@@ -35492,6 +35986,7 @@ components:
         - WARNINGS.FAX_SERVER_CANNOT_BE_DELETED
         - WARNINGS.OPERATOR_CANNOT_BE_DELETED
         - WARNINGS.USER_EXTENSION_CANNOT_BE_DELETED
+        - WARNINGS.XAPI.CANNOT_CLEAR_OWN_EXTENSION
         - WARNINGS.XAPI.NUMBER_IGNORED
         - WARNINGS.XAPI.INVALID_TIMEZONE
         - WARNINGS.XAPI.INVALID_PATH
@@ -35532,6 +36027,7 @@ components:
         - WARNINGS.ALREADY_EXPIRED
         - WARNINGS.EXTRACTING_OUTSIDE_THE_DESTINATION_DIRECTORY
         - WARNINGS.WIRESHARK_NOT_FOUND
+        - WARNINGS.UPDATES_ALREADY_RUNNING
         - WARNINGS.CANNOT_DELETE_TRUNKS_BINDED_ERMERGENCY_NUMBER
         - WARNINGS.BLACKLIST_NUMBER_LIMIT_EXCEEDED
         - WARNINGS.DOUBLE_QUOTES_NOT_ALLOWED
@@ -35577,6 +36073,7 @@ components:
         - GroupWithMembersCannotBeDeleted
         - XapiOtherUserRoleDowngrade
         - XapiInvalidLicenseType
+        - XapiInvalidKeyOrPassphrase
         - InvalidPassword
         - XapiNotFound
         - XapiFileNotFound
@@ -35588,6 +36085,7 @@ components:
         - XapiAlreadyInUse
         - MacAddressAlreadyInUse
         - XapiPlaylistInUse
+        - XapiTemplateInUse
         - XapiOutOfTheRange
         - XapiTooManyPhones
         - XapiTooManyTrunks
@@ -35600,6 +36098,7 @@ components:
         - FaxServerCannotBeDeleted
         - OperatorCannotBeDeleted
         - UserExtensionCannotBeDeleted
+        - XapiCannotClearOwnExtension
         - XapiNumberIgnored
         - XapiInvalidTimezone
         - XapiInvalidPath
@@ -35640,6 +36139,7 @@ components:
         - AlreadyExpired
         - ExtractingOutsideTheDestinationDirectory
         - WiresharkNotFound
+        - UpdatesAlreadyRunning
         - CannotDeleteTrunksBindedErmergencyNumber
         - BlacklistNumberLimitExceeded
         - DoubleQuotesNotAllowed
@@ -36515,6 +37015,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.CustomQueueRingtoneCollectionResponse'
+    Pbx.PhoneKeyCollectionResponse:
+      description: Retrieved collection
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pbx.PhoneKeyCollectionResponse'
     Pbx.EmailVariableCollectionResponse:
       description: Retrieved collection
       content:
@@ -36584,15 +37090,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pbx.OneTimeTicket'
-    GetPhoneSecretResponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              value:
-                type: string
     HasDuplicatedEmailResponse:
       description: Success
       content:
@@ -36916,6 +37413,7 @@ components:
         Language: string
         Internal: true
         Enabled: true
+        IsRestricted: true
         PromptSet: string
         HideInPhonebook: true
         Tags:
@@ -36973,6 +37471,8 @@ components:
         ConfigurationLink: true
     Pbx.PhoneRegistrar:
       value:
+        ProvLink: string
+        Id: 0
         Capabilities: 0
         Vendor: string
         Model: string
@@ -36981,7 +37481,18 @@ components:
         IpAddress: string
         InterfaceLink: string
         FirmwareVersion: string
-        FirmwareAvailable: string
+        FirmwareAvailable: true
+        FirmwareOutdated: true
+        FirmwareLatestId: string
+        SbcName: string
+        SbcDisplayName: string
+        IsRouter: true
+        ProvType: LocalLan
+        RpsExpirationUTC: '0001-01-01T00:00:00.0000000+00:00'
+        RpsCapable: true
+        IsDectDevice: true
+        ModelMismatch: true
+        TemplateModel: string
     Pbx.UserDeleteError:
       value:
         ExtensionNumber: string
@@ -37050,6 +37561,12 @@ components:
       value:
         Model: string
         UserAgent: string
+    Pbx.HotelGuest:
+      value:
+        FirstName: string
+        LastName: string
+        Email: string
+        Mobile: string
     Pbx.PhoneTemplate:
       value:
         Codecs:
@@ -37550,6 +38067,8 @@ components:
         AutoUpdateEnabled: true
         Schedule:
           '@odata.type': Pbx.BackupSchedule
+        HotfixAndSecurityEnabled: true
+        HotfixAndSecurityHour: 0
     Pbx.UpdateList:
       value:
         IsMaintananceExpired: true
@@ -37557,11 +38076,15 @@ components:
         Entries:
           - '@odata.type': Pbx.UpdateItem
         LastSuccessfulUpdate: '0001-01-01T00:00:00.0000000+00:00'
+        UpdatesRunning: true
     Pbx.InstallUpdates:
       value:
         Key: 00000000-0000-0000-0000-000000000000
         Entries:
           - 00000000-0000-0000-0000-000000000000
+    Pbx.InstallResult:
+      value:
+        UpdatesRunning: true
     Pbx.UpdatesStats:
       value:
         TcxUpdate:
@@ -37864,19 +38387,11 @@ components:
         MinDuration: 0
         AutoDeleteEnabled: true
         AutoDeleteDays: 0
-        TranscribeEngine: None
-        TranscribeModelOpenAI: string
-        AnalyzeModelOpenAI: string
-        AnalyzeModelGrok: string
-        TranscribeRegion: string
-        TranscribeSecretKey:
-          '@odata.type': Pbx.ConcealedPassword
-        TranscribeKeyGrok:
-          '@odata.type': Pbx.ConcealedPassword
-        TranscribeLanguage: string
         RemoteStorageEnabled: true
         OperatorEnabled: true
         CallRecordingStereo: true
+        TranscribeSettings:
+          '@odata.type': Pbx.TranscribeSettings
     Pbx.LanguageItem:
       value:
         Code: string
@@ -38068,6 +38583,11 @@ components:
         Vendor: string
         Model: string
         Version: string
+        Description: string
+        Devices: 0
+        Default: true
+        Deployed: true
+        Size: 0
     Pbx.FirmwareState:
       value:
         Id: string
@@ -38077,6 +38597,7 @@ components:
           - string
     Pbx.AISettings:
       value:
+        Enabled: true
         Provider: string
         APIKey:
           '@odata.type': Pbx.ConcealedPassword
@@ -38117,6 +38638,8 @@ components:
           - '@odata.type': Pbx.AIAgentTemplate
         Voices:
           - '@odata.type': Pbx.AIVoice
+        RestrictedModelAccess:
+          - string
     Pbx.VectorStore:
       value:
         Id: string
@@ -38221,6 +38744,7 @@ components:
         RemoteConfigurationRequired: true
         ChatUsedSpace: 0
         LogUsedSpace: 0
+        Firmware3CXOutdated: true
     Pbx.SystemTelemetry:
       value:
         Time: '0001-01-01T00:00:00.0000000+00:00'
@@ -39073,6 +39597,7 @@ components:
         AllowCustomQueueRingtones: true
         CustomQueueRingtones:
           - '@odata.type': Pbx.CustomQueueRingtone
+        RpsExpirationUTC: '0001-01-01T00:00:00.0000000+00:00'
     Pbx.DeviceInfo:
       value:
         DetectedAt: '0001-01-01T00:00:00.0000000+00:00'
@@ -39098,8 +39623,18 @@ components:
           '@odata.type': Pbx.PhoneRegistrar
         ProvLink: string
         PhoneWebPassword: string
+        AssignedFirmware: string
+        CustomFirmware: true
+        Online: true
+        Category: None
+        HotDesking: true
         DN:
           '@odata.type': Pbx.Peer
+    Pbx.FirmwareInfo:
+      value:
+        FirmwareId: string
+        Keys:
+          - '@odata.type': Pbx.PhoneKey
     Pbx.GatewayParameter:
       value:
         CanHaveDID: true
@@ -39168,6 +39703,8 @@ components:
         ProductCode: string
         CountryCode: string
         IsMaintainceExpired: true
+        IsExtensionLimitEnforcementEnabled: true
+        IsMailServerRestricted: true
         MaxSimCalls: 0
         IsProfessional: true
         IsEnterprise: true
@@ -39310,16 +39847,17 @@ components:
     Pbx.PhonesSettings:
       value:
         CustomDNDProfile: string
-        PhoneAllowMultiFirmwares: true
         AutoUpdatePhonesOnAdd: true
         AllowMultiQueueRingtones: true
-        UseRpcForLocalPhones: true
+        UseRpsForLocalPhones: true
         UseProvisioningSecret: true
-        AutoCleanupFirmware: true
         FanvilUpdateInterval: 0
         YealinkUpdateInterval: 0
         SnomUpdateInterval: 0
         GrandstreamUpdateInterval: 0
+        AutoUpdateScheduled: true
+        Schedule:
+          '@odata.type': Pbx.BackupSchedule
     Pbx.OfficeHours:
       value:
         Hours:
@@ -39675,6 +40213,7 @@ components:
         UserAgent: string
         URL: string
         CanBeSBC: true
+        FirmwareCustomizable: true
     Pbx.TrunkMessagingTemplate:
       value:
         Provider: string
@@ -39844,6 +40383,14 @@ components:
       value:
         Category: string
         Count: 0
+        Critical: true
+        Hotfix:
+          '@odata.type': Pbx.HotfixInfo
+    Pbx.HotfixInfo:
+      value:
+        ServerVersion: string
+        Description: string
+        DescriptionLink: string
     Pbx.BackupContents:
       value:
         License: true
@@ -39964,6 +40511,33 @@ components:
           - string
         SyncType: SyncAllUsers
         IsEnabled: true
+    Pbx.TranscribeSettings:
+      value:
+        TranscribeEngine: None
+        TranscribeModelOpenAI: string
+        AnalyzeModelOpenAI: string
+        AnalyzeModelGrok: string
+        AnalyzeModelGoogle: string
+        TranscribeRegion: string
+        TranscribeSecretKey:
+          '@odata.type': Pbx.ConcealedPassword
+        TranscribeKeyGrok:
+          '@odata.type': Pbx.ConcealedPassword
+        TranscribeLanguage: string
+        OpenAI:
+          '@odata.type': Pbx.TranscribeProviderSettings
+        Grok:
+          '@odata.type': Pbx.TranscribeProviderSettings
+        Google:
+          '@odata.type': Pbx.TranscribeProviderSettings
+        TcxAI:
+          '@odata.type': Pbx.TranscribeProviderSettings
+    Pbx.TranscribeProviderSettings:
+      value:
+        SummaryPrompt: string
+        SentimentPrompt: string
+        DefaultSummaryPrompt: string
+        DefaultSentimentPrompt: string
     Pbx.OnBoardConverterDataDetail:
       value:
         Host: string
@@ -39974,6 +40548,8 @@ components:
         Cloud: true
         Active: true
         Guid: string
+        ServerOS: string
+        ServerOSVersion: string
     Pbx.DebianGpuInfo:
       value:
         GpuId: string
@@ -40127,6 +40703,9 @@ components:
         UserId: string
         Password:
           '@odata.type': Pbx.ConcealedPassword
+        ServerTrustMode: Prefer
+        CACertificate:
+          '@odata.type': Pbx.ConcealedDataFile
     Pbx.RemoteSqlServerConfig:
       value:
         Host: string
@@ -40135,6 +40714,7 @@ components:
         UserId: string
         Password:
           '@odata.type': Pbx.ConcealedPassword
+        ValidateServerCertificate: true
     Pbx.DataTypesToOffload:
       value:
         CallHistory: true
@@ -40188,6 +40768,11 @@ components:
         TxBursts: 0
         Burst: 0
         Location: string
+    Pbx.PhoneKey:
+      value:
+        ExtensionId: 0
+        Mac: string
+        RegId: 0
     Pbx.ENL:
       value:
         From: 0
@@ -40257,6 +40842,28 @@ components:
               opts:
                 $ref: '#/components/schemas/Pbx.RegenerateOptions'
       required: true
+    ResendRpsRequestBody:
+      description: Action parameters
+      content:
+        application/json:
+          schema:
+            title: ResendRpsRequestBody
+            type: object
+            properties:
+              mac:
+                type: string
+                nullable: true
+    RevokeRpsRequestBody:
+      description: Action parameters
+      content:
+        application/json:
+          schema:
+            title: RevokeRpsRequestBody
+            type: object
+            properties:
+              mac:
+                type: string
+      required: true
     MakeCallUserRecordGreetingRequestBody:
       description: Action parameters
       content:
@@ -40269,6 +40876,17 @@ components:
                 type: string
               filename:
                 type: string
+      required: true
+    AssignRequestBody:
+      description: Action parameters
+      content:
+        application/json:
+          schema:
+            title: AssignRequestBody
+            type: object
+            properties:
+              guest:
+                $ref: '#/components/schemas/Pbx.HotelGuest'
       required: true
     ReplaceMyGroupLicenseKeyRequestBody:
       description: Action parameters

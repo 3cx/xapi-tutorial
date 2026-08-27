@@ -60,6 +60,9 @@ export interface ActionImportPurgeChatsRequestBody {
 export interface ActionImportSetUpdateSettingsRequestBody {
     'settings'?: PbxUpdateSettings;
 }
+export interface AssignRequestBody {
+    'guest'?: PbxHotelGuest;
+}
 export interface BackupsBackupRequestBody {
     'description'?: PbxCreateBackup;
 }
@@ -358,6 +361,12 @@ export interface EmergencyGeoLocationsUpdateRequestBody {
 export interface FaxBulkFaxDeleteRequestBody {
     'ids'?: Array<number>;
 }
+export interface FirmwaresFirmwarePushFirmwareForPhonesRequestBody {
+    'macs'?: Array<string>;
+}
+export interface FirmwaresFirmwareSetAsDefaultRequestBody {
+    'value'?: boolean;
+}
 export interface GetAITemplateContents200Response {
     'value'?: string;
 }
@@ -524,6 +533,7 @@ export interface PbxAIResources {
     'Chips'?: Array<PbxAIModel>;
     'Models'?: Array<PbxAIModel>;
     'RealtimeModels'?: Array<PbxAIModel>;
+    'RestrictedModelAccess'?: Array<string>;
     'Templates'?: Array<PbxAIAgentTemplate>;
     'Voices'?: Array<PbxAIVoice>;
 }
@@ -532,6 +542,7 @@ export interface PbxAISettings {
     'CompanyDescription'?: string | null;
     'CompanyName'?: string | null;
     'CompletionModel'?: string | null;
+    'Enabled'?: boolean | null;
     'ManagementAPIKey'?: PbxConcealedPassword | null;
     'Provider'?: string | null;
     'RealtimeModel'?: string | null;
@@ -738,6 +749,12 @@ export const PbxAnalysisCode = {
     RegistrationIsBlocked: 'RegistrationIsBlocked',
     ForwardingFailed: 'ForwardingFailed',
     ForwardingFailedEndCall: 'ForwardingFailedEndCall',
+    RegistrationFailedNoResponse: 'RegistrationFailedNoResponse',
+    ProxyFqdnisNotResolved: 'ProxyFQDNIsNotResolved',
+    RegistrarFqdnisNotResolved: 'RegistrarFQDNIsNotResolved',
+    AltProxyFqdnisNotResolved: 'AltProxyFQDNIsNotResolved',
+    NoTargetResolved: 'NoTargetResolved',
+    ErrProxyFqdnHasNoNaptRorSrv: 'ErrProxyFqdnHasNoNAPTRorSRV',
     WarnOutboundDuration: 'WarnOutboundDuration',
     NumberFormatsMismatch: 'NumberFormatsMismatch',
     TrunkIsInboundOnly: 'TrunkIsInboundOnly',
@@ -752,9 +769,6 @@ export const PbxAnalysisCode = {
     AltProxyZeroPortIp: 'AltProxyZeroPortIP',
     ForwardingEndsCall: 'ForwardingEndsCall',
     MainTrunkNumber: 'MainTrunkNumber',
-    ProxyFqdnisNotResolved: 'ProxyFQDNIsNotResolved',
-    RegistrarFqdnisNotResolved: 'RegistrarFQDNIsNotResolved',
-    AltProxyFqdnisNotResolved: 'AltProxyFQDNIsNotResolved',
     NotSupportedSessionTimers: 'NotSupportedSessionTimers',
     OutboundDialed: 'OutboundDialed',
     NumberFormatsMatch: 'NumberFormatsMatch',
@@ -1267,6 +1281,8 @@ export interface PbxCallTypesSettings {
 export interface PbxCategoryUpdate {
     'Category'?: string | null;
     'Count'?: number;
+    'Critical'?: boolean;
+    'Hotfix'?: PbxHotfixInfo | null;
 }
 export interface PbxCategoryUpdateCollectionResponse {
     '@odata.count'?: number | null;
@@ -2154,15 +2170,34 @@ export interface PbxFirewallState {
     'Stopping'?: boolean | null;
 }
 export interface PbxFirmware {
+    'Default'?: boolean | null;
+    'Deployed'?: boolean | null;
+    'Description'?: string | null;
+    'Devices'?: number | null;
     'Filename'?: string | null;
     'Id'?: string;
     'Model'?: string | null;
+    'Size'?: number | null;
     'Vendor'?: string | null;
     'Version'?: string | null;
 }
+
+export const PbxFirmwareCategory = {
+    None: 'None',
+    TcxTested: 'TcxTested',
+    VendorTested: 'VendorTested',
+} as const;
+
+export type PbxFirmwareCategory = typeof PbxFirmwareCategory[keyof typeof PbxFirmwareCategory];
+
+
 export interface PbxFirmwareCollectionResponse {
     '@odata.count'?: number | null;
     'value'?: Array<PbxFirmware>;
+}
+export interface PbxFirmwareInfo {
+    'FirmwareId'?: string | null;
+    'Keys'?: Array<PbxPhoneKey>;
 }
 export interface PbxFirmwareState {
     'Count'?: number | null;
@@ -2458,7 +2493,7 @@ export interface PbxGoogleUserSync {
 
 export const PbxGrantType = {
     Password: 'Password',
-    Support: 'Support',
+    Guest: 'Guest',
     Sso: 'Sso',
     OAuthClient: 'OAuthClient',
     ClientCredentials: 'ClientCredentials',
@@ -2592,6 +2627,12 @@ export interface PbxHolidayCollectionResponse {
     '@odata.count'?: number | null;
     'value'?: Array<PbxHoliday>;
 }
+export interface PbxHotelGuest {
+    'Email'?: string | null;
+    'FirstName'?: string;
+    'LastName'?: string | null;
+    'Mobile'?: string | null;
+}
 export interface PbxHotelServices {
     'Enabled'?: boolean | null;
     'HotelGroups'?: Array<string>;
@@ -2603,6 +2644,11 @@ export interface PbxHotelServices {
 }
 
 
+export interface PbxHotfixInfo {
+    'Description'?: string | null;
+    'DescriptionLink'?: string | null;
+    'ServerVersion'?: string | null;
+}
 
 export const PbxIPInRegistrationContactType = {
     External: 'External',
@@ -2719,6 +2765,9 @@ export interface PbxInstallFirmware {
     'Model'?: string | null;
     'UserAgent'?: string | null;
 }
+export interface PbxInstallResult {
+    'UpdatesRunning'?: boolean | null;
+}
 export interface PbxInstallUpdates {
     'Entries'?: Array<string>;
     'Key'?: string;
@@ -2759,6 +2808,8 @@ export interface PbxLicense {
     'IsBrandingEnabled'?: boolean | null;
     'IsCfdEnabled'?: boolean | null;
     'IsEnterprise'?: boolean | null;
+    'IsExtensionLimitEnforcementEnabled'?: boolean | null;
+    'IsMailServerRestricted'?: boolean | null;
     'IsMaintainceExpired'?: boolean | null;
     'IsProfessional'?: boolean | null;
     'MaxSimCalls'?: number | null;
@@ -3336,6 +3387,8 @@ export interface PbxOnBoardConverterDataDetail {
     'Host'?: string;
     'Ip'?: string;
     'Port'?: number;
+    'ServerOS'?: string;
+    'ServerOSVersion'?: string;
     'Version'?: string;
 }
 
@@ -3681,6 +3734,15 @@ export const PbxPhoneDeviceVlanType = {
 export type PbxPhoneDeviceVlanType = typeof PbxPhoneDeviceVlanType[keyof typeof PbxPhoneDeviceVlanType];
 
 
+export interface PbxPhoneKey {
+    'ExtensionId'?: number;
+    'Mac'?: string;
+    'RegId'?: number;
+}
+export interface PbxPhoneKeyCollectionResponse {
+    '@odata.count'?: number | null;
+    'value'?: Array<PbxPhoneKey>;
+}
 export interface PbxPhoneLldpInfo {
     'Configurable'?: boolean | null;
     'Value'?: boolean | null;
@@ -3696,6 +3758,7 @@ export interface PbxPhoneLogoCollectionResponse {
 export interface PbxPhoneModel {
     'AddAllowed'?: boolean | null;
     'CanBeSBC'?: boolean | null;
+    'FirmwareCustomizable'?: boolean | null;
     'Name'?: string | null;
     'URL'?: string | null;
     'UserAgent'?: string | null;
@@ -3706,15 +3769,30 @@ export interface PbxPhoneModelCollectionResponse {
 }
 export interface PbxPhoneRegistrar {
     'Capabilities'?: number | null;
-    'FirmwareAvailable'?: string | null;
+    'FirmwareAvailable'?: boolean | null;
+    'FirmwareLatestId'?: string | null;
+    'FirmwareOutdated'?: boolean | null;
     'FirmwareVersion'?: string | null;
+    'Id'?: number | null;
     'InterfaceLink'?: string | null;
     'IpAddress'?: string | null;
+    'IsDectDevice'?: boolean | null;
+    'IsRouter'?: boolean | null;
     'MAC'?: string | null;
     'Model'?: string | null;
+    'ModelMismatch'?: boolean | null;
+    'ProvLink'?: string | null;
+    'ProvType'?: PbxProvType | null;
+    'RpsCapable'?: boolean | null;
+    'RpsExpirationUTC'?: string | null;
+    'SbcDisplayName'?: string | null;
+    'SbcName'?: string | null;
+    'TemplateModel'?: string | null;
     'UserAgent'?: string | null;
     'Vendor'?: string | null;
 }
+
+
 export interface PbxPhoneSettings {
     'AllowCustomQueueRingtones'?: boolean | null;
     'Backlight'?: string | null;
@@ -3740,6 +3818,7 @@ export interface PbxPhoneSettings {
     'RemoteSpmHost'?: string | null;
     'RemoteSpmPort'?: number | null;
     'RingTone'?: string | null;
+    'RpsExpirationUTC'?: string | null;
     'SbcName'?: string | null;
     'ScreenSaver'?: string | null;
     'Secret'?: string | null;
@@ -3817,15 +3896,15 @@ export type PbxPhonebookPriorityOptions = typeof PbxPhonebookPriorityOptions[key
 
 export interface PbxPhonesSettings {
     'AllowMultiQueueRingtones'?: boolean | null;
-    'AutoCleanupFirmware'?: boolean | null;
     'AutoUpdatePhonesOnAdd'?: boolean | null;
+    'AutoUpdateScheduled'?: boolean | null;
     'CustomDNDProfile'?: string | null;
     'FanvilUpdateInterval'?: number | null;
     'GrandstreamUpdateInterval'?: number | null;
-    'PhoneAllowMultiFirmwares'?: boolean | null;
+    'Schedule'?: PbxBackupSchedule | null;
     'SnomUpdateInterval'?: number | null;
     'UseProvisioningSecret'?: boolean | null;
-    'UseRpcForLocalPhones'?: boolean | null;
+    'UseRpsForLocalPhones'?: boolean | null;
     'YealinkUpdateInterval'?: number | null;
 }
 export interface PbxPlaylist {
@@ -4388,12 +4467,16 @@ export interface PbxRemoteArchivingSettings {
     'Voicemails'?: PbxArchiveSubsystem | null;
 }
 export interface PbxRemoteMySqlConfig {
+    'CACertificate'?: PbxConcealedDataFile | null;
     'Database'?: string | null;
     'Host'?: string | null;
     'Password'?: PbxConcealedPassword | null;
     'Port'?: number | null;
+    'ServerTrustMode'?: PbxServerTrustMode | null;
     'UserId'?: string | null;
 }
+
+
 export interface PbxRemotePostgreConfig {
     'AuthenticateMode'?: PbxAuthenticateMode | null;
     'CACertificate'?: PbxConcealedDataFile | null;
@@ -4414,6 +4497,7 @@ export interface PbxRemoteSqlServerConfig {
     'Password'?: PbxConcealedPassword | null;
     'Port'?: number | null;
     'UserId'?: string | null;
+    'ValidateServerCertificate'?: boolean | null;
 }
 
 export const PbxRemoteStorageStatus = {
@@ -4898,12 +4982,19 @@ export type PbxSetpointType = typeof PbxSetpointType[keyof typeof PbxSetpointTyp
 
 
 export interface PbxSipDevice {
+    'AssignedFirmware'?: string | null;
+    'Category'?: PbxFirmwareCategory | null;
+    'CustomFirmware'?: boolean | null;
     'DN'?: PbxPeer | null;
+    'HotDesking'?: boolean | null;
     'Id'?: number;
+    'Online'?: boolean | null;
     'PhoneWebPassword'?: string | null;
     'ProvLink'?: string | null;
     'Registrar'?: PbxPhoneRegistrar | null;
 }
+
+
 export interface PbxSipDeviceCollectionResponse {
     '@odata.count'?: number | null;
     'value'?: Array<PbxSipDevice>;
@@ -5084,6 +5175,7 @@ export interface PbxSystemStatus {
     'ExpirationDate'?: string | null;
     'ExtensionsRegistered'?: number | null;
     'ExtensionsTotal'?: number | null;
+    'Firmware3CXOutdated'?: boolean | null;
     'FQDN'?: string | null;
     'FreeDiskSpace'?: number | null;
     'HasNotRunningServices'?: boolean | null;
@@ -5205,6 +5297,29 @@ export const PbxTranscribeEngine = {
 } as const;
 
 export type PbxTranscribeEngine = typeof PbxTranscribeEngine[keyof typeof PbxTranscribeEngine];
+
+
+export interface PbxTranscribeProviderSettings {
+    'DefaultSentimentPrompt'?: string | null;
+    'DefaultSummaryPrompt'?: string | null;
+    'SentimentPrompt'?: string | null;
+    'SummaryPrompt'?: string | null;
+}
+export interface PbxTranscribeSettings {
+    'AnalyzeModelGoogle'?: string | null;
+    'AnalyzeModelGrok'?: string | null;
+    'AnalyzeModelOpenAI'?: string | null;
+    'Google'?: PbxTranscribeProviderSettings | null;
+    'Grok'?: PbxTranscribeProviderSettings | null;
+    'OpenAI'?: PbxTranscribeProviderSettings | null;
+    'TcxAI'?: PbxTranscribeProviderSettings | null;
+    'TranscribeEngine'?: PbxTranscribeEngine | null;
+    'TranscribeKeyGrok'?: PbxConcealedPassword | null;
+    'TranscribeLanguage'?: string | null;
+    'TranscribeModelOpenAI'?: string | null;
+    'TranscribeRegion'?: string | null;
+    'TranscribeSecretKey'?: PbxConcealedPassword | null;
+}
 
 
 
@@ -5489,9 +5604,12 @@ export interface PbxUpdateList {
     'IsMaintananceExpired'?: boolean | null;
     'Key'?: string | null;
     'LastSuccessfulUpdate'?: string | null;
+    'UpdatesRunning'?: boolean | null;
 }
 export interface PbxUpdateSettings {
     'AutoUpdateEnabled'?: boolean | null;
+    'HotfixAndSecurityEnabled'?: boolean | null;
+    'HotfixAndSecurityHour'?: number | null;
     'Schedule'?: PbxBackupSchedule | null;
 }
 
@@ -5501,6 +5619,7 @@ export const PbxUpdateType = {
     MajorRelease: 'MajorRelease',
     Alpha: 'Alpha',
     Hotfix: 'Hotfix',
+    Rc: 'RC',
 } as const;
 
 export type PbxUpdateType = typeof PbxUpdateType[keyof typeof PbxUpdateType];
@@ -5555,6 +5674,7 @@ export interface PbxUser {
     'Hours'?: PbxSchedule | null;
     'Internal'?: boolean | null;
     'IsRegistered'?: boolean | null;
+    'IsRestricted'?: boolean | null;
     'Language'?: string | null;
     'LastName'?: string | null;
     'Mobile'?: string | null;
@@ -5760,8 +5880,6 @@ export type PbxVideoConferenceMode = typeof PbxVideoConferenceMode[keyof typeof 
 
 
 export interface PbxVoicemailSettings {
-    'AnalyzeModelGrok'?: string | null;
-    'AnalyzeModelOpenAI'?: string | null;
     'AutoDeleteDays'?: number | null;
     'AutoDeleteEnabled'?: boolean | null;
     'CallRecordingStereo'?: boolean | null;
@@ -5773,16 +5891,9 @@ export interface PbxVoicemailSettings {
     'RemoteStorageEnabled'?: boolean | null;
     'SendEmailQuotaEnabled'?: boolean | null;
     'SendEmailQuotaPercentage'?: number | null;
-    'TranscribeEngine'?: PbxTranscribeEngine | null;
-    'TranscribeKeyGrok'?: PbxConcealedPassword | null;
-    'TranscribeLanguage'?: string | null;
-    'TranscribeModelOpenAI'?: string | null;
-    'TranscribeRegion'?: string | null;
-    'TranscribeSecretKey'?: PbxConcealedPassword | null;
+    'TranscribeSettings'?: PbxTranscribeSettings | null;
     'UsedSpace'?: number | null;
 }
-
-
 export interface PbxVoipProvider {
     'Countries'?: Array<string>;
     'Id'?: string;
@@ -5814,6 +5925,7 @@ export const PbxWarnings = {
     GroupWithMembersCannotBeDeleted: 'WARNINGS.GROUP_WITH_MEMBERS_CANNOT_BE_DELETED',
     XapiOtherUserRoleDowngrade: 'WARNINGS.XAPI.OTHER_USER_ROLE_DOWNGRADE',
     XapiInvalidLicenseType: 'WARNINGS.XAPI.INVALID_LICENSE_TYPE',
+    XapiInvalidKeyOrPassphrase: 'WARNINGS.XAPI.INVALID_KEY_OR_PASSPHRASE',
     InvalidPassword: 'WARNINGS.INVALID_PASSWORD',
     XapiNotFound: 'WARNINGS.XAPI.NOT_FOUND',
     XapiFileNotFound: 'WARNINGS.XAPI.FILE_NOT_FOUND',
@@ -5825,6 +5937,7 @@ export const PbxWarnings = {
     XapiAlreadyInUse: 'WARNINGS.XAPI.ALREADY_IN_USE',
     MacAddressAlreadyInUse: 'WARNINGS.MAC_ADDRESS_ALREADY_IN_USE',
     XapiPlaylistInUse: 'WARNINGS.XAPI.PLAYLIST_IN_USE',
+    XapiTemplateInUse: 'WARNINGS.XAPI.TEMPLATE_IN_USE',
     XapiOutOfTheRange: 'WARNINGS.XAPI.OUT_OF_THE_RANGE',
     XapiTooManyPhones: 'WARNINGS.XAPI.TOO_MANY_PHONES',
     XapiTooManyTrunks: 'WARNINGS.XAPI.TOO_MANY_TRUNKS',
@@ -5837,6 +5950,7 @@ export const PbxWarnings = {
     FaxServerCannotBeDeleted: 'WARNINGS.FAX_SERVER_CANNOT_BE_DELETED',
     OperatorCannotBeDeleted: 'WARNINGS.OPERATOR_CANNOT_BE_DELETED',
     UserExtensionCannotBeDeleted: 'WARNINGS.USER_EXTENSION_CANNOT_BE_DELETED',
+    XapiCannotClearOwnExtension: 'WARNINGS.XAPI.CANNOT_CLEAR_OWN_EXTENSION',
     XapiNumberIgnored: 'WARNINGS.XAPI.NUMBER_IGNORED',
     XapiInvalidTimezone: 'WARNINGS.XAPI.INVALID_TIMEZONE',
     XapiInvalidPath: 'WARNINGS.XAPI.INVALID_PATH',
@@ -5877,6 +5991,7 @@ export const PbxWarnings = {
     AlreadyExpired: 'WARNINGS.ALREADY_EXPIRED',
     ExtractingOutsideTheDestinationDirectory: 'WARNINGS.EXTRACTING_OUTSIDE_THE_DESTINATION_DIRECTORY',
     WiresharkNotFound: 'WARNINGS.WIRESHARK_NOT_FOUND',
+    UpdatesAlreadyRunning: 'WARNINGS.UPDATES_ALREADY_RUNNING',
     CannotDeleteTrunksBindedErmergencyNumber: 'WARNINGS.CANNOT_DELETE_TRUNKS_BINDED_ERMERGENCY_NUMBER',
     BlacklistNumberLimitExceeded: 'WARNINGS.BLACKLIST_NUMBER_LIMIT_EXCEEDED',
     DoubleQuotesNotAllowed: 'WARNINGS.DOUBLE_QUOTES_NOT_ALLOWED',
@@ -6056,6 +6171,12 @@ export interface RegenerateRequestBody {
 export interface ReplaceMyGroupLicenseKeyRequestBody {
     'licenseKey'?: string;
 }
+export interface ResendRpsRequestBody {
+    'mac'?: string | null;
+}
+export interface RevokeRpsRequestBody {
+    'mac'?: string;
+}
 export interface RunAnalysis200Response {
     '@odata.count'?: number | null;
     'value'?: Array<PbxTrunkReport>;
@@ -6081,8 +6202,25 @@ export interface ServicesStopRequestBody {
 export interface SetMonitorStatusRequestBody {
     'days'?: number;
 }
+export interface SipDevicesBulkSwitchFirmwareRequestBody {
+    'info'?: PbxFirmwareInfo | null;
+}
+export interface SipDevicesBulkUpdateFirmwareRequestBody {
+    'ids'?: Array<number>;
+}
+export interface SipDevicesSipDeviceClearFirmwareRequestBody {
+    'extensionId'?: number;
+    'mac'?: string;
+}
+export interface SipDevicesSipDeviceMovePhoneRequestBody {
+    'dstExtensionId'?: number;
+    'mac'?: string;
+    'srcExtensionId'?: number;
+}
 export interface SipDevicesSipDevicePushFirmwareRequestBody {
+    'extensionId'?: number;
     'firmwareId'?: string;
+    'mac'?: string | null;
 }
 export interface StringCollectionResponse {
     '@odata.count'?: number | null;
@@ -6165,11 +6303,6 @@ export interface UsersReprovisionAllPhonesRequestBody {
 }
 export interface UsersReprovisionPhoneRequestBody {
     'mac'?: string;
-}
-export interface UsersUpgradePhoneRequestBody {
-    'mac'?: string;
-    'useragent'?: string;
-    'version'?: string;
 }
 export interface VoicemailSettingsDeleteConverterConfigurationRequestBody {
     'id'?: string;
@@ -26293,10 +26426,11 @@ export const FirmwaresApiAxiosParamCreator = function (configuration?: Configura
          * 
          * @summary Invoke action PushFirmwareForPhones
          * @param {string} id The unique identifier of Firmware
+         * @param {FirmwaresFirmwarePushFirmwareForPhonesRequestBody} [firmwaresFirmwarePushFirmwareForPhonesRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pushFirmwareForPhones: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pushFirmwareForPhones: async (id: string, firmwaresFirmwarePushFirmwareForPhonesRequestBody?: FirmwaresFirmwarePushFirmwareForPhonesRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('pushFirmwareForPhones', 'id', id)
             const localVarPath = `/Firmwares({Id})/Pbx.PushFirmwareForPhones`
@@ -26320,11 +26454,60 @@ export const FirmwaresApiAxiosParamCreator = function (configuration?: Configura
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
 
+            localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(firmwaresFirmwarePushFirmwareForPhonesRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action SetAsDefault
+         * @param {string} id The unique identifier of Firmware
+         * @param {FirmwaresFirmwareSetAsDefaultRequestBody} firmwaresFirmwareSetAsDefaultRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setAsDefault: async (id: string, firmwaresFirmwareSetAsDefaultRequestBody: FirmwaresFirmwareSetAsDefaultRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('setAsDefault', 'id', id)
+            // verify required parameter 'firmwaresFirmwareSetAsDefaultRequestBody' is not null or undefined
+            assertParamExists('setAsDefault', 'firmwaresFirmwareSetAsDefaultRequestBody', firmwaresFirmwareSetAsDefaultRequestBody)
+            const localVarPath = `/Firmwares({Id})/Pbx.SetAsDefault`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(firmwaresFirmwareSetAsDefaultRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -26402,13 +26585,28 @@ export const FirmwaresApiFp = function(configuration?: Configuration) {
          * 
          * @summary Invoke action PushFirmwareForPhones
          * @param {string} id The unique identifier of Firmware
+         * @param {FirmwaresFirmwarePushFirmwareForPhonesRequestBody} [firmwaresFirmwarePushFirmwareForPhonesRequestBody] Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pushFirmwareForPhones(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pushFirmwareForPhones(id, options);
+        async pushFirmwareForPhones(id: string, firmwaresFirmwarePushFirmwareForPhonesRequestBody?: FirmwaresFirmwarePushFirmwareForPhonesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pushFirmwareForPhones(id, firmwaresFirmwarePushFirmwareForPhonesRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FirmwaresApi.pushFirmwareForPhones']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action SetAsDefault
+         * @param {string} id The unique identifier of Firmware
+         * @param {FirmwaresFirmwareSetAsDefaultRequestBody} firmwaresFirmwareSetAsDefaultRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async setAsDefault(id: string, firmwaresFirmwareSetAsDefaultRequestBody: FirmwaresFirmwareSetAsDefaultRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.setAsDefault(id, firmwaresFirmwareSetAsDefaultRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FirmwaresApi.setAsDefault']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -26466,7 +26664,17 @@ export const FirmwaresApiFactory = function (configuration?: Configuration, base
          * @throws {RequiredError}
          */
         pushFirmwareForPhones(requestParameters: FirmwaresApiPushFirmwareForPhonesRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.pushFirmwareForPhones(requestParameters.id, options).then((request) => request(axios, basePath));
+            return localVarFp.pushFirmwareForPhones(requestParameters.id, requestParameters.firmwaresFirmwarePushFirmwareForPhonesRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action SetAsDefault
+         * @param {FirmwaresApiSetAsDefaultRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setAsDefault(requestParameters: FirmwaresApiSetAsDefaultRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.setAsDefault(requestParameters.id, requestParameters.firmwaresFirmwareSetAsDefaultRequestBody, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -26539,6 +26747,26 @@ export interface FirmwaresApiPushFirmwareForPhonesRequest {
      * The unique identifier of Firmware
      */
     readonly id: string
+
+    /**
+     * Action parameters
+     */
+    readonly firmwaresFirmwarePushFirmwareForPhonesRequestBody?: FirmwaresFirmwarePushFirmwareForPhonesRequestBody
+}
+
+/**
+ * Request parameters for setAsDefault operation in FirmwaresApi.
+ */
+export interface FirmwaresApiSetAsDefaultRequest {
+    /**
+     * The unique identifier of Firmware
+     */
+    readonly id: string
+
+    /**
+     * Action parameters
+     */
+    readonly firmwaresFirmwareSetAsDefaultRequestBody: FirmwaresFirmwareSetAsDefaultRequestBody
 }
 
 /**
@@ -26595,7 +26823,18 @@ export class FirmwaresApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public pushFirmwareForPhones(requestParameters: FirmwaresApiPushFirmwareForPhonesRequest, options?: RawAxiosRequestConfig) {
-        return FirmwaresApiFp(this.configuration).pushFirmwareForPhones(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+        return FirmwaresApiFp(this.configuration).pushFirmwareForPhones(requestParameters.id, requestParameters.firmwaresFirmwarePushFirmwareForPhonesRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action SetAsDefault
+     * @param {FirmwaresApiSetAsDefaultRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public setAsDefault(requestParameters: FirmwaresApiSetAsDefaultRequest, options?: RawAxiosRequestConfig) {
+        return FirmwaresApiFp(this.configuration).setAsDefault(requestParameters.id, requestParameters.firmwaresFirmwareSetAsDefaultRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -28282,135 +28521,6 @@ export class GeneralSettingsForPbxApi extends BaseAPI {
      */
     public updateGeneralSettingsForPbx(requestParameters: GeneralSettingsForPbxApiUpdateGeneralSettingsForPbxRequest = {}, options?: RawAxiosRequestConfig) {
         return GeneralSettingsForPbxApiFp(this.configuration).updateGeneralSettingsForPbx(requestParameters.pbxGeneralSettingsForPbx, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * GetUpdateDetailsApi - axios parameter creator
- */
-export const GetUpdateDetailsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Invoke functionImport GetUpdateDetails
-         * @param {string} key Usage: key&#x3D;{key}
-         * @param {string} id Usage: id&#x3D;{id}
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUpdateDetails: async (key: string, id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'key' is not null or undefined
-            assertParamExists('getUpdateDetails', 'key', key)
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getUpdateDetails', 'id', id)
-            const localVarPath = `/GetUpdateDetails(key={key},id={id})`
-                .replace(`{${"key"}}`, encodeURIComponent(String(key)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * GetUpdateDetailsApi - functional programming interface
- */
-export const GetUpdateDetailsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = GetUpdateDetailsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @summary Invoke functionImport GetUpdateDetails
-         * @param {string} key Usage: key&#x3D;{key}
-         * @param {string} id Usage: id&#x3D;{id}
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getUpdateDetails(key: string, id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAITemplateContents200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUpdateDetails(key, id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['GetUpdateDetailsApi.getUpdateDetails']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * GetUpdateDetailsApi - factory interface
- */
-export const GetUpdateDetailsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = GetUpdateDetailsApiFp(configuration)
-    return {
-        /**
-         * 
-         * @summary Invoke functionImport GetUpdateDetails
-         * @param {GetUpdateDetailsApiGetUpdateDetailsRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUpdateDetails(requestParameters: GetUpdateDetailsApiGetUpdateDetailsRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetAITemplateContents200Response> {
-            return localVarFp.getUpdateDetails(requestParameters.key, requestParameters.id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for getUpdateDetails operation in GetUpdateDetailsApi.
- */
-export interface GetUpdateDetailsApiGetUpdateDetailsRequest {
-    /**
-     * Usage: key&#x3D;{key}
-     */
-    readonly key: string
-
-    /**
-     * Usage: id&#x3D;{id}
-     */
-    readonly id: string
-}
-
-/**
- * GetUpdateDetailsApi - object-oriented interface
- */
-export class GetUpdateDetailsApi extends BaseAPI {
-    /**
-     * 
-     * @summary Invoke functionImport GetUpdateDetails
-     * @param {GetUpdateDetailsApiGetUpdateDetailsRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public getUpdateDetails(requestParameters: GetUpdateDetailsApiGetUpdateDetailsRequest, options?: RawAxiosRequestConfig) {
-        return GetUpdateDetailsApiFp(this.configuration).getUpdateDetails(requestParameters.key, requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -30733,6 +30843,222 @@ export class HolidaysApi extends BaseAPI {
      */
     public updateHoliday(requestParameters: HolidaysApiUpdateHolidayRequest, options?: RawAxiosRequestConfig) {
         return HolidaysApiFp(this.configuration).updateHoliday(requestParameters.id, requestParameters.pbxHoliday, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * HotelRoomsApi - axios parameter creator
+ */
+export const HotelRoomsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Invoke action Assign
+         * @param {number} id The unique identifier of User
+         * @param {AssignRequestBody} assignRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assign: async (id: number, assignRequestBody: AssignRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('assign', 'id', id)
+            // verify required parameter 'assignRequestBody' is not null or undefined
+            assertParamExists('assign', 'assignRequestBody', assignRequestBody)
+            const localVarPath = `/HotelRooms({Id})/Pbx.Assign`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(assignRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action Clear
+         * @param {number} id The unique identifier of User
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        clear: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('clear', 'id', id)
+            const localVarPath = `/HotelRooms({Id})/Pbx.Clear`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * HotelRoomsApi - functional programming interface
+ */
+export const HotelRoomsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = HotelRoomsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke action Assign
+         * @param {number} id The unique identifier of User
+         * @param {AssignRequestBody} assignRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async assign(id: number, assignRequestBody: AssignRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.assign(id, assignRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['HotelRoomsApi.assign']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action Clear
+         * @param {number} id The unique identifier of User
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async clear(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.clear(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['HotelRoomsApi.clear']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * HotelRoomsApi - factory interface
+ */
+export const HotelRoomsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = HotelRoomsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Invoke action Assign
+         * @param {HotelRoomsApiAssignRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assign(requestParameters: HotelRoomsApiAssignRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.assign(requestParameters.id, requestParameters.assignRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action Clear
+         * @param {HotelRoomsApiClearRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        clear(requestParameters: HotelRoomsApiClearRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.clear(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for assign operation in HotelRoomsApi.
+ */
+export interface HotelRoomsApiAssignRequest {
+    /**
+     * The unique identifier of User
+     */
+    readonly id: number
+
+    /**
+     * Action parameters
+     */
+    readonly assignRequestBody: AssignRequestBody
+}
+
+/**
+ * Request parameters for clear operation in HotelRoomsApi.
+ */
+export interface HotelRoomsApiClearRequest {
+    /**
+     * The unique identifier of User
+     */
+    readonly id: number
+}
+
+/**
+ * HotelRoomsApi - object-oriented interface
+ */
+export class HotelRoomsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Invoke action Assign
+     * @param {HotelRoomsApiAssignRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public assign(requestParameters: HotelRoomsApiAssignRequest, options?: RawAxiosRequestConfig) {
+        return HotelRoomsApiFp(this.configuration).assign(requestParameters.id, requestParameters.assignRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action Clear
+     * @param {HotelRoomsApiClearRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public clear(requestParameters: HotelRoomsApiClearRequest, options?: RawAxiosRequestConfig) {
+        return HotelRoomsApiFp(this.configuration).clear(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -67428,6 +67754,137 @@ export const SipDevicesApiAxiosParamCreator = function (configuration?: Configur
     return {
         /**
          * 
+         * @summary Invoke action BulkSwitchFirmware
+         * @param {SipDevicesBulkSwitchFirmwareRequestBody} [sipDevicesBulkSwitchFirmwareRequestBody] Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        bulkSwitchFirmware: async (sipDevicesBulkSwitchFirmwareRequestBody?: SipDevicesBulkSwitchFirmwareRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/SipDevices/Pbx.BulkSwitchFirmware`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sipDevicesBulkSwitchFirmwareRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action BulkUpdateFirmware
+         * @param {SipDevicesBulkUpdateFirmwareRequestBody} sipDevicesBulkUpdateFirmwareRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        bulkUpdateFirmware: async (sipDevicesBulkUpdateFirmwareRequestBody: SipDevicesBulkUpdateFirmwareRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sipDevicesBulkUpdateFirmwareRequestBody' is not null or undefined
+            assertParamExists('bulkUpdateFirmware', 'sipDevicesBulkUpdateFirmwareRequestBody', sipDevicesBulkUpdateFirmwareRequestBody)
+            const localVarPath = `/SipDevices/Pbx.BulkUpdateFirmware`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sipDevicesBulkUpdateFirmwareRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action ClearFirmware
+         * @param {number} id The unique identifier of SipDevice
+         * @param {SipDevicesSipDeviceClearFirmwareRequestBody} sipDevicesSipDeviceClearFirmwareRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        clearFirmware: async (id: number, sipDevicesSipDeviceClearFirmwareRequestBody: SipDevicesSipDeviceClearFirmwareRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('clearFirmware', 'id', id)
+            // verify required parameter 'sipDevicesSipDeviceClearFirmwareRequestBody' is not null or undefined
+            assertParamExists('clearFirmware', 'sipDevicesSipDeviceClearFirmwareRequestBody', sipDevicesSipDeviceClearFirmwareRequestBody)
+            const localVarPath = `/SipDevices({Id})/Pbx.ClearFirmware`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sipDevicesSipDeviceClearFirmwareRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get entities from SipDevices
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
@@ -67506,6 +67963,53 @@ export const SipDevicesApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * 
+         * @summary Invoke action MovePhone
+         * @param {number} id The unique identifier of SipDevice
+         * @param {SipDevicesSipDeviceMovePhoneRequestBody} sipDevicesSipDeviceMovePhoneRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        movePhone: async (id: number, sipDevicesSipDeviceMovePhoneRequestBody: SipDevicesSipDeviceMovePhoneRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('movePhone', 'id', id)
+            // verify required parameter 'sipDevicesSipDeviceMovePhoneRequestBody' is not null or undefined
+            assertParamExists('movePhone', 'sipDevicesSipDeviceMovePhoneRequestBody', sipDevicesSipDeviceMovePhoneRequestBody)
+            const localVarPath = `/SipDevices({Id})/Pbx.MovePhone`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sipDevicesSipDeviceMovePhoneRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke action PushFirmware
          * @param {number} id The unique identifier of SipDevice
          * @param {SipDevicesSipDevicePushFirmwareRequestBody} sipDevicesSipDevicePushFirmwareRequestBody Action parameters
@@ -67562,6 +68066,46 @@ export const SipDevicesApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Invoke action BulkSwitchFirmware
+         * @param {SipDevicesBulkSwitchFirmwareRequestBody} [sipDevicesBulkSwitchFirmwareRequestBody] Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async bulkSwitchFirmware(sipDevicesBulkSwitchFirmwareRequestBody?: SipDevicesBulkSwitchFirmwareRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.bulkSwitchFirmware(sipDevicesBulkSwitchFirmwareRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SipDevicesApi.bulkSwitchFirmware']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action BulkUpdateFirmware
+         * @param {SipDevicesBulkUpdateFirmwareRequestBody} sipDevicesBulkUpdateFirmwareRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async bulkUpdateFirmware(sipDevicesBulkUpdateFirmwareRequestBody: SipDevicesBulkUpdateFirmwareRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.bulkUpdateFirmware(sipDevicesBulkUpdateFirmwareRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SipDevicesApi.bulkUpdateFirmware']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action ClearFirmware
+         * @param {number} id The unique identifier of SipDevice
+         * @param {SipDevicesSipDeviceClearFirmwareRequestBody} sipDevicesSipDeviceClearFirmwareRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async clearFirmware(id: number, sipDevicesSipDeviceClearFirmwareRequestBody: SipDevicesSipDeviceClearFirmwareRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.clearFirmware(id, sipDevicesSipDeviceClearFirmwareRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SipDevicesApi.clearFirmware']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Get entities from SipDevices
          * @param {number} [$top] Show only the first n items
          * @param {number} [$skip] Skip the first n items
@@ -67578,6 +68122,20 @@ export const SipDevicesApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.listSipDevice($top, $skip, $search, $filter, $count, $orderby, $select, $expand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SipDevicesApi.listSipDevice']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action MovePhone
+         * @param {number} id The unique identifier of SipDevice
+         * @param {SipDevicesSipDeviceMovePhoneRequestBody} sipDevicesSipDeviceMovePhoneRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async movePhone(id: number, sipDevicesSipDeviceMovePhoneRequestBody: SipDevicesSipDeviceMovePhoneRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.movePhone(id, sipDevicesSipDeviceMovePhoneRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SipDevicesApi.movePhone']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -67605,6 +68163,36 @@ export const SipDevicesApiFactory = function (configuration?: Configuration, bas
     return {
         /**
          * 
+         * @summary Invoke action BulkSwitchFirmware
+         * @param {SipDevicesApiBulkSwitchFirmwareRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        bulkSwitchFirmware(requestParameters: SipDevicesApiBulkSwitchFirmwareRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.bulkSwitchFirmware(requestParameters.sipDevicesBulkSwitchFirmwareRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action BulkUpdateFirmware
+         * @param {SipDevicesApiBulkUpdateFirmwareRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        bulkUpdateFirmware(requestParameters: SipDevicesApiBulkUpdateFirmwareRequest, options?: RawAxiosRequestConfig): AxiosPromise<object> {
+            return localVarFp.bulkUpdateFirmware(requestParameters.sipDevicesBulkUpdateFirmwareRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action ClearFirmware
+         * @param {SipDevicesApiClearFirmwareRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        clearFirmware(requestParameters: SipDevicesApiClearFirmwareRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.clearFirmware(requestParameters.id, requestParameters.sipDevicesSipDeviceClearFirmwareRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get entities from SipDevices
          * @param {SipDevicesApiListSipDeviceRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -67612,6 +68200,16 @@ export const SipDevicesApiFactory = function (configuration?: Configuration, bas
          */
         listSipDevice(requestParameters: SipDevicesApiListSipDeviceRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PbxSipDeviceCollectionResponse> {
             return localVarFp.listSipDevice(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action MovePhone
+         * @param {SipDevicesApiMovePhoneRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        movePhone(requestParameters: SipDevicesApiMovePhoneRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.movePhone(requestParameters.id, requestParameters.sipDevicesSipDeviceMovePhoneRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -67625,6 +68223,41 @@ export const SipDevicesApiFactory = function (configuration?: Configuration, bas
         },
     };
 };
+
+/**
+ * Request parameters for bulkSwitchFirmware operation in SipDevicesApi.
+ */
+export interface SipDevicesApiBulkSwitchFirmwareRequest {
+    /**
+     * Action parameters
+     */
+    readonly sipDevicesBulkSwitchFirmwareRequestBody?: SipDevicesBulkSwitchFirmwareRequestBody
+}
+
+/**
+ * Request parameters for bulkUpdateFirmware operation in SipDevicesApi.
+ */
+export interface SipDevicesApiBulkUpdateFirmwareRequest {
+    /**
+     * Action parameters
+     */
+    readonly sipDevicesBulkUpdateFirmwareRequestBody: SipDevicesBulkUpdateFirmwareRequestBody
+}
+
+/**
+ * Request parameters for clearFirmware operation in SipDevicesApi.
+ */
+export interface SipDevicesApiClearFirmwareRequest {
+    /**
+     * The unique identifier of SipDevice
+     */
+    readonly id: number
+
+    /**
+     * Action parameters
+     */
+    readonly sipDevicesSipDeviceClearFirmwareRequestBody: SipDevicesSipDeviceClearFirmwareRequestBody
+}
 
 /**
  * Request parameters for listSipDevice operation in SipDevicesApi.
@@ -67672,6 +68305,21 @@ export interface SipDevicesApiListSipDeviceRequest {
 }
 
 /**
+ * Request parameters for movePhone operation in SipDevicesApi.
+ */
+export interface SipDevicesApiMovePhoneRequest {
+    /**
+     * The unique identifier of SipDevice
+     */
+    readonly id: number
+
+    /**
+     * Action parameters
+     */
+    readonly sipDevicesSipDeviceMovePhoneRequestBody: SipDevicesSipDeviceMovePhoneRequestBody
+}
+
+/**
  * Request parameters for pushFirmware operation in SipDevicesApi.
  */
 export interface SipDevicesApiPushFirmwareRequest {
@@ -67692,6 +68340,39 @@ export interface SipDevicesApiPushFirmwareRequest {
 export class SipDevicesApi extends BaseAPI {
     /**
      * 
+     * @summary Invoke action BulkSwitchFirmware
+     * @param {SipDevicesApiBulkSwitchFirmwareRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public bulkSwitchFirmware(requestParameters: SipDevicesApiBulkSwitchFirmwareRequest = {}, options?: RawAxiosRequestConfig) {
+        return SipDevicesApiFp(this.configuration).bulkSwitchFirmware(requestParameters.sipDevicesBulkSwitchFirmwareRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action BulkUpdateFirmware
+     * @param {SipDevicesApiBulkUpdateFirmwareRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public bulkUpdateFirmware(requestParameters: SipDevicesApiBulkUpdateFirmwareRequest, options?: RawAxiosRequestConfig) {
+        return SipDevicesApiFp(this.configuration).bulkUpdateFirmware(requestParameters.sipDevicesBulkUpdateFirmwareRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action ClearFirmware
+     * @param {SipDevicesApiClearFirmwareRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public clearFirmware(requestParameters: SipDevicesApiClearFirmwareRequest, options?: RawAxiosRequestConfig) {
+        return SipDevicesApiFp(this.configuration).clearFirmware(requestParameters.id, requestParameters.sipDevicesSipDeviceClearFirmwareRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Get entities from SipDevices
      * @param {SipDevicesApiListSipDeviceRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -67699,6 +68380,17 @@ export class SipDevicesApi extends BaseAPI {
      */
     public listSipDevice(requestParameters: SipDevicesApiListSipDeviceRequest = {}, options?: RawAxiosRequestConfig) {
         return SipDevicesApiFp(this.configuration).listSipDevice(requestParameters.$top, requestParameters.$skip, requestParameters.$search, requestParameters.$filter, requestParameters.$count, requestParameters.$orderby, requestParameters.$select, requestParameters.$expand, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action MovePhone
+     * @param {SipDevicesApiMovePhoneRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public movePhone(requestParameters: SipDevicesApiMovePhoneRequest, options?: RawAxiosRequestConfig) {
+        return SipDevicesApiFp(this.configuration).movePhone(requestParameters.id, requestParameters.sipDevicesSipDeviceMovePhoneRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -72795,6 +73487,52 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Invoke functionImport GetUpdateDetails
+         * @param {string} key Usage: key&#x3D;{key}
+         * @param {string} id Usage: id&#x3D;{id}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUpdateDetails: async (key: string, id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'key' is not null or undefined
+            assertParamExists('getUpdateDetails', 'key', key)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getUpdateDetails', 'id', id)
+            const localVarPath = `/GetUpdateDetails(key={key},id={id})`
+                .replace(`{${"key"}}`, encodeURIComponent(String(key)))
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke functionImport GetUpdateSettings
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -72877,44 +73615,6 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
          */
         getUpdatesStats: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/GetUpdatesStats()`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Invoke functionImport HasDebianUpgrade
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        hasDebianUpgrade: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/HasDebianUpgrade()`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -73031,44 +73731,6 @@ export const UpdatesApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @summary Invoke actionImport UpgradeDebian
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        upgradeDebian: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/UpgradeDebian`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -73100,6 +73762,20 @@ export const UpdatesApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getServerCrmUpdates(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UpdatesApi.getServerCrmUpdates']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke functionImport GetUpdateDetails
+         * @param {string} key Usage: key&#x3D;{key}
+         * @param {string} id Usage: id&#x3D;{id}
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUpdateDetails(key: string, id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAITemplateContents200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUpdateDetails(key, id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UpdatesApi.getUpdateDetails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -73140,24 +73816,12 @@ export const UpdatesApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Invoke functionImport HasDebianUpgrade
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async hasDebianUpgrade(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCanCreateBackup200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.hasDebianUpgrade(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UpdatesApi.hasDebianUpgrade']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary Invoke actionImport InstallUpdates
          * @param {ActionImportInstallUpdatesRequestBody} actionImportInstallUpdatesRequestBody Action parameters
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async installUpdates(actionImportInstallUpdatesRequestBody: ActionImportInstallUpdatesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async installUpdates(actionImportInstallUpdatesRequestBody: ActionImportInstallUpdatesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PbxInstallResult>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.installUpdates(actionImportInstallUpdatesRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UpdatesApi.installUpdates']?.[localVarOperationServerIndex]?.url;
@@ -73174,18 +73838,6 @@ export const UpdatesApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.setUpdateSettings(actionImportSetUpdateSettingsRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UpdatesApi.setUpdateSettings']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Invoke actionImport UpgradeDebian
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async upgradeDebian(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.upgradeDebian(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UpdatesApi.upgradeDebian']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -73217,6 +73869,16 @@ export const UpdatesApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Invoke functionImport GetUpdateDetails
+         * @param {UpdatesApiGetUpdateDetailsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUpdateDetails(requestParameters: UpdatesApiGetUpdateDetailsRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetAITemplateContents200Response> {
+            return localVarFp.getUpdateDetails(requestParameters.key, requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Invoke functionImport GetUpdateSettings
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -73244,21 +73906,12 @@ export const UpdatesApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Invoke functionImport HasDebianUpgrade
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        hasDebianUpgrade(options?: RawAxiosRequestConfig): AxiosPromise<GetCanCreateBackup200Response> {
-            return localVarFp.hasDebianUpgrade(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary Invoke actionImport InstallUpdates
          * @param {UpdatesApiInstallUpdatesRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        installUpdates(requestParameters: UpdatesApiInstallUpdatesRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        installUpdates(requestParameters: UpdatesApiInstallUpdatesRequest, options?: RawAxiosRequestConfig): AxiosPromise<PbxInstallResult> {
             return localVarFp.installUpdates(requestParameters.actionImportInstallUpdatesRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -73271,17 +73924,23 @@ export const UpdatesApiFactory = function (configuration?: Configuration, basePa
         setUpdateSettings(requestParameters: UpdatesApiSetUpdateSettingsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.setUpdateSettings(requestParameters.actionImportSetUpdateSettingsRequestBody, options).then((request) => request(axios, basePath));
         },
-        /**
-         * 
-         * @summary Invoke actionImport UpgradeDebian
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        upgradeDebian(options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.upgradeDebian(options).then((request) => request(axios, basePath));
-        },
     };
 };
+
+/**
+ * Request parameters for getUpdateDetails operation in UpdatesApi.
+ */
+export interface UpdatesApiGetUpdateDetailsRequest {
+    /**
+     * Usage: key&#x3D;{key}
+     */
+    readonly key: string
+
+    /**
+     * Usage: id&#x3D;{id}
+     */
+    readonly id: string
+}
 
 /**
  * Request parameters for installUpdates operation in UpdatesApi.
@@ -73329,6 +73988,17 @@ export class UpdatesApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke functionImport GetUpdateDetails
+     * @param {UpdatesApiGetUpdateDetailsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getUpdateDetails(requestParameters: UpdatesApiGetUpdateDetailsRequest, options?: RawAxiosRequestConfig) {
+        return UpdatesApiFp(this.configuration).getUpdateDetails(requestParameters.key, requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Invoke functionImport GetUpdateSettings
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -73359,16 +74029,6 @@ export class UpdatesApi extends BaseAPI {
 
     /**
      * 
-     * @summary Invoke functionImport HasDebianUpgrade
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public hasDebianUpgrade(options?: RawAxiosRequestConfig) {
-        return UpdatesApiFp(this.configuration).hasDebianUpgrade(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary Invoke actionImport InstallUpdates
      * @param {UpdatesApiInstallUpdatesRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -73387,16 +74047,6 @@ export class UpdatesApi extends BaseAPI {
      */
     public setUpdateSettings(requestParameters: UpdatesApiSetUpdateSettingsRequest, options?: RawAxiosRequestConfig) {
         return UpdatesApiFp(this.configuration).setUpdateSettings(requestParameters.actionImportSetUpdateSettingsRequestBody, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Invoke actionImport UpgradeDebian
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public upgradeDebian(options?: RawAxiosRequestConfig) {
-        return UpdatesApiFp(this.configuration).upgradeDebian(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -73989,48 +74639,6 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(usersGetPhoneRegistrarsRequestBody, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Invoke function GetPhoneSecret
-         * @param {number} id The unique identifier of User
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPhoneSecret: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getPhoneSecret', 'id', id)
-            const localVarPath = `/Users({Id})/Pbx.GetPhoneSecret()`
-                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -74947,6 +75555,98 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Invoke action ResendRps
+         * @param {number} id The unique identifier of User
+         * @param {ResendRpsRequestBody} [resendRpsRequestBody] Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        resendRps: async (id: number, resendRpsRequestBody?: ResendRpsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('resendRps', 'id', id)
+            const localVarPath = `/Users({Id})/Pbx.ResendRps`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(resendRpsRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Invoke action RevokeRps
+         * @param {number} id The unique identifier of User
+         * @param {RevokeRpsRequestBody} revokeRpsRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        revokeRps: async (id: number, revokeRpsRequestBody: RevokeRpsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('revokeRps', 'id', id)
+            // verify required parameter 'revokeRpsRequestBody' is not null or undefined
+            assertParamExists('revokeRps', 'revokeRpsRequestBody', revokeRpsRequestBody)
+            const localVarPath = `/Users({Id})/Pbx.RevokeRps`
+                .replace(`{${"Id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            // authentication Application required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(revokeRpsRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Invoke action SendWelcomeEmail
          * @param {number} id The unique identifier of User
          * @param {*} [options] Override http request option.
@@ -75075,49 +75775,6 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(pbxUser, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Invoke action UpgradePhone
-         * @param {UsersUpgradePhoneRequestBody} usersUpgradePhoneRequestBody Action parameters
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        upgradePhone: async (usersUpgradePhoneRequestBody: UsersUpgradePhoneRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'usersUpgradePhoneRequestBody' is not null or undefined
-            assertParamExists('upgradePhone', 'usersUpgradePhoneRequestBody', usersUpgradePhoneRequestBody)
-            const localVarPath = `/Users/Pbx.UpgradePhone`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            // authentication Application required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "Application", [], configuration)
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            localVarHeaderParameter['Accept'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(usersUpgradePhoneRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -75307,19 +75964,6 @@ export const UsersApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPhoneRegistrars(usersGetPhoneRegistrarsRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UsersApi.getPhoneRegistrars']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Invoke function GetPhoneSecret
-         * @param {number} id The unique identifier of User
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getPhoneSecret(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAITemplateContents200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPhoneSecret(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UsersApi.getPhoneSecret']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -75582,6 +76226,34 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Invoke action ResendRps
+         * @param {number} id The unique identifier of User
+         * @param {ResendRpsRequestBody} [resendRpsRequestBody] Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async resendRps(id: number, resendRpsRequestBody?: ResendRpsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.resendRps(id, resendRpsRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.resendRps']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Invoke action RevokeRps
+         * @param {number} id The unique identifier of User
+         * @param {RevokeRpsRequestBody} revokeRpsRequestBody Action parameters
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async revokeRps(id: number, revokeRpsRequestBody: RevokeRpsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.revokeRps(id, revokeRpsRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UsersApi.revokeRps']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Invoke action SendWelcomeEmail
          * @param {number} id The unique identifier of User
          * @param {*} [options] Override http request option.
@@ -75619,19 +76291,6 @@ export const UsersApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateUser(id, pbxUser, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UsersApi.updateUser']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Invoke action UpgradePhone
-         * @param {UsersUpgradePhoneRequestBody} usersUpgradePhoneRequestBody Action parameters
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async upgradePhone(usersUpgradePhoneRequestBody: UsersUpgradePhoneRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.upgradePhone(usersUpgradePhoneRequestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UsersApi.upgradePhone']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -75770,16 +76429,6 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          */
         getPhoneRegistrars(requestParameters: UsersApiGetPhoneRegistrarsRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetPhoneRegistrars200Response> {
             return localVarFp.getPhoneRegistrars(requestParameters.usersGetPhoneRegistrarsRequestBody, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Invoke function GetPhoneSecret
-         * @param {UsersApiGetPhoneSecretRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPhoneSecret(requestParameters: UsersApiGetPhoneSecretRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetAITemplateContents200Response> {
-            return localVarFp.getPhoneSecret(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -75953,6 +76602,26 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary Invoke action ResendRps
+         * @param {UsersApiResendRpsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        resendRps(requestParameters: UsersApiResendRpsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.resendRps(requestParameters.id, requestParameters.resendRpsRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Invoke action RevokeRps
+         * @param {UsersApiRevokeRpsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        revokeRps(requestParameters: UsersApiRevokeRpsRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.revokeRps(requestParameters.id, requestParameters.revokeRpsRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Invoke action SendWelcomeEmail
          * @param {UsersApiSendWelcomeEmailRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -75980,16 +76649,6 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          */
         updateUser(requestParameters: UsersApiUpdateUserRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.updateUser(requestParameters.id, requestParameters.pbxUser, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Invoke action UpgradePhone
-         * @param {UsersApiUpgradePhoneRequest} requestParameters Request parameters.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        upgradePhone(requestParameters: UsersApiUpgradePhoneRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.upgradePhone(requestParameters.usersUpgradePhoneRequestBody, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -76147,16 +76806,6 @@ export interface UsersApiGetPhoneRegistrarsRequest {
      * Action parameters
      */
     readonly usersGetPhoneRegistrarsRequestBody: UsersGetPhoneRegistrarsRequestBody
-}
-
-/**
- * Request parameters for getPhoneSecret operation in UsersApi.
- */
-export interface UsersApiGetPhoneSecretRequest {
-    /**
-     * The unique identifier of User
-     */
-    readonly id: number
 }
 
 /**
@@ -76515,6 +77164,36 @@ export interface UsersApiReprovisionPhoneRequest {
 }
 
 /**
+ * Request parameters for resendRps operation in UsersApi.
+ */
+export interface UsersApiResendRpsRequest {
+    /**
+     * The unique identifier of User
+     */
+    readonly id: number
+
+    /**
+     * Action parameters
+     */
+    readonly resendRpsRequestBody?: ResendRpsRequestBody
+}
+
+/**
+ * Request parameters for revokeRps operation in UsersApi.
+ */
+export interface UsersApiRevokeRpsRequest {
+    /**
+     * The unique identifier of User
+     */
+    readonly id: number
+
+    /**
+     * Action parameters
+     */
+    readonly revokeRpsRequestBody: RevokeRpsRequestBody
+}
+
+/**
  * Request parameters for sendWelcomeEmail operation in UsersApi.
  */
 export interface UsersApiSendWelcomeEmailRequest {
@@ -76552,16 +77231,6 @@ export interface UsersApiUpdateUserRequest {
      * New property values
      */
     readonly pbxUser: PbxUser
-}
-
-/**
- * Request parameters for upgradePhone operation in UsersApi.
- */
-export interface UsersApiUpgradePhoneRequest {
-    /**
-     * Action parameters
-     */
-    readonly usersUpgradePhoneRequestBody: UsersUpgradePhoneRequestBody
 }
 
 /**
@@ -76707,17 +77376,6 @@ export class UsersApi extends BaseAPI {
      */
     public getPhoneRegistrars(requestParameters: UsersApiGetPhoneRegistrarsRequest, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).getPhoneRegistrars(requestParameters.usersGetPhoneRegistrarsRequestBody, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Invoke function GetPhoneSecret
-     * @param {UsersApiGetPhoneSecretRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public getPhoneSecret(requestParameters: UsersApiGetPhoneSecretRequest, options?: RawAxiosRequestConfig) {
-        return UsersApiFp(this.configuration).getPhoneSecret(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -76909,6 +77567,28 @@ export class UsersApi extends BaseAPI {
 
     /**
      * 
+     * @summary Invoke action ResendRps
+     * @param {UsersApiResendRpsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public resendRps(requestParameters: UsersApiResendRpsRequest, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).resendRps(requestParameters.id, requestParameters.resendRpsRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Invoke action RevokeRps
+     * @param {UsersApiRevokeRpsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public revokeRps(requestParameters: UsersApiRevokeRpsRequest, options?: RawAxiosRequestConfig) {
+        return UsersApiFp(this.configuration).revokeRps(requestParameters.id, requestParameters.revokeRpsRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Invoke action SendWelcomeEmail
      * @param {UsersApiSendWelcomeEmailRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -76938,17 +77618,6 @@ export class UsersApi extends BaseAPI {
      */
     public updateUser(requestParameters: UsersApiUpdateUserRequest, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).updateUser(requestParameters.id, requestParameters.pbxUser, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Invoke action UpgradePhone
-     * @param {UsersApiUpgradePhoneRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public upgradePhone(requestParameters: UsersApiUpgradePhoneRequest, options?: RawAxiosRequestConfig) {
-        return UsersApiFp(this.configuration).upgradePhone(requestParameters.usersUpgradePhoneRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
