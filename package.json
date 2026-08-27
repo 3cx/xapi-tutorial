@@ -7,25 +7,25 @@
     "lint": "eslint",
     "gen": "openapi-generator-cli generate"
   },
-  "packageManager": "yarn@4.16.0",
+  "packageManager": "yarn@4.18.0",
   "devDependencies": {
     "@3cx/eslint-config-airbnb": "^1.0.0",
     "@eslint/js": "^10.0.1",
     "@jest/globals": "^30.4.1",
-    "@openapitools/openapi-generator-cli": "^2.35.0",
+    "@openapitools/openapi-generator-cli": "^2.41.0",
     "@types/async-lock": "^1.4.2",
     "@types/confusing-browser-globals": "^1.0.3",
-    "@types/node": "^22.19.20",
+    "@types/node": "^22.20.1",
     "async-lock": "^1.4.1",
-    "axios": "^1.17.0",
-    "eslint": "^10.4.1",
-    "globals": "^17.6.0",
+    "axios": "^1.20.0",
+    "eslint": "^10.9.1",
+    "globals": "^17.11.0",
     "jest": "^30.4.2",
     "json-colorizer": "^3.0.1",
-    "ts-jest": "^29.4.11",
+    "ts-jest": "^29.4.12",
     "ts-node": "^10.9.2",
     "typescript": "6.0.3",
-    "typescript-eslint": "^8.61.0"
+    "typescript-eslint": "^8.68.0"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
